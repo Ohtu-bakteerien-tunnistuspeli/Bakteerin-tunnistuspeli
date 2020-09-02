@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import skeletonService from '../services/skeleton'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { zeroMessage, getMessage } from '../reducers/skeletonReducer'
 
 const SkeletonComponent = () => {
-    const [message, setMessage] = useState('')
+    const dispatch = useDispatch()
+    const message = useSelector(state => state.message)
     const buttonAction = async () => {
         if (message !== '') {
-            setMessage('')
+            dispatch(zeroMessage())
         } else {
-            const receivedMessage = await skeletonService.get()
-            setMessage(receivedMessage)
+            dispatch(getMessage())
         }
     }
     return (
