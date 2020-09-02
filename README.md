@@ -2,7 +2,7 @@
 
 ## Kuvaus
 
-Ohjelmistotuotantoprojekti Fall 2020, University of Helsinki
+Ohjelmistotuotantoprojekti Syksy 2020, University of Helsinki
 
 Bakteerien tunnistuspeli on eläinlääketieteen 2. opiskeluvuoden opiskelijoille tarkoitettu peli, jolla heitä pelin nimen mukaisesti opetetaan tunnistamaan bakteereita, koska laboratoriotöihin ei voida ottaa vaarallisimpia bakteereita käsiteltäväksi ja laboratoriotöille on entistä vähemmän aikaa. 
 
