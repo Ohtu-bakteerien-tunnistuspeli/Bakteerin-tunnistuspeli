@@ -12,7 +12,7 @@ Bakteerien tunnistuspeli on eläinlääketieteen 2. opiskeluvuoden opiskelijoill
 
 ## Projektin eteneminen
 
-#### [Product Backlog](https://docs.google.com/spreadsheets/d/12xJrbVst9k16_iVKd5tLSyz1scCOyxyB2eKr0lhYCek/edit#gid=0)
+#### [Product Backlog](https://docs.google.com/spreadsheets/d/13aVMJ1TTyBXDFdkrcqV24AvCQ7HG7I2idkTudiMc-Kk/edit#gid=0)
 
 #### [Sprint Backlog](https://docs.google.com/spreadsheets/d/12xJrbVst9k16_iVKd5tLSyz1scCOyxyB2eKr0lhYCek/edit#gid=0)
 
