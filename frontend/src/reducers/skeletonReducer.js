@@ -2,13 +2,13 @@ import skeletonService from '../services/skeleton'
 
 const reducer = (state = '', action) => {
     switch (action.type) {
-        case 'ZERO_MESSAGE': {
-            return action.data
-        }
-        case 'GET_MESSAGE': {
-            return action.data
-        }
-        default: return state
+    case 'ZERO_MESSAGE': {
+        return action.data
+    }
+    case 'GET_MESSAGE': {
+        return action.data
+    }
+    default: return state
     }
 }
 
