@@ -9,6 +9,7 @@ Bakteerien tunnistuspeli on eläinlääketieteen 2. opiskeluvuoden opiskelijoill
 ## Dokumentaatio
 * Frontend
 * Backend
+* [Definition of Done](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/blob/master/documentation/definition_of_done.md)
 
 ## Projektin eteneminen
 
