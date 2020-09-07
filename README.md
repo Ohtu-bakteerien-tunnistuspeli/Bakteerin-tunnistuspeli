@@ -25,6 +25,8 @@ Bakteerien tunnistuspeli on eläinlääketieteen 2. opiskeluvuoden opiskelijoill
 
 ## Lisenssi
 
+Tämä projekti on lisensöity [MIT lisenssillä](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/blob/master/LICENSE)
+This project is licensed under the terms of the [MIT license](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/blob/master/LICENSE)
 
 
 
