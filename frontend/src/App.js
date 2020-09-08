@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route, Redirect, Link, useRouteMatch, useHistory } from 'react-router-dom'
 import SkeletonComponent from './components/Skeleton'
+import { useDispatch } from 'react-redux'
+import { returnUser } from './reducers/userReducer'
 import Login from './components/Login'
 
 const App = () => {
     const match = useRouteMatch('/hello/:name')
     const name = match ? match.params.name : ''
     const history = useHistory()
+    const dispatch = useDispatch()
+    useEffect(() => {
+         dispatch(returnUser())
+    }, [dispatch])
     return (
         <div >
             <Switch>
