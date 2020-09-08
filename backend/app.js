@@ -10,5 +10,7 @@ const skeletonRouter = require('./controllers/skeleton')
 app.use('/api/skeleton', skeletonRouter)
 const userRouter = require('./controllers/user')
 app.use('/api/user', userRouter)
+const bacteriumRouter = require('./controllers/bacterium')
+app.use('/api/bacteria', bacteriumRouter)
 
 module.exports = app
