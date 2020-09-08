@@ -8,7 +8,7 @@ const security = require('./utils/security')
 app.use(security.tokenExtractor)
 const skeletonRouter = require('./controllers/skeleton')
 app.use('/api/skeleton', skeletonRouter)
-const loginRouter = require('./controllers/login')
-app.use('/api/login', loginRouter)
+const userRouter = require('./controllers/user')
+app.use('/api/user', userRouter)
 
 module.exports = app
