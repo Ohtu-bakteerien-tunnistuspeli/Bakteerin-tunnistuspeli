@@ -1,4 +1,4 @@
-import userService from '../services/skeleton'
+import userService from '../services/user'
 
 const reducer = (state = null, action) => {
     switch (action.type) {
