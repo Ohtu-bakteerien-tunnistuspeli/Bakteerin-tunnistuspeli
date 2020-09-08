@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route, Redirect, Link, useRouteMatch, useHistory } from 'react-router-dom'
 import SkeletonComponent from './components/Skeleton'
+import Login from './components/Login'
 
 const App = () => {
     const match = useRouteMatch('/hello/:name')
@@ -9,7 +10,10 @@ const App = () => {
     return (
         <div >
             <Switch>
-                <Route path='/skeleton'>
+                <Route path='/'>
+                    <Login></Login>
+                </Route>
+                {/*<Route path='/skeleton'>
                     <SkeletonComponent></SkeletonComponent>
                     <button onClick={() => history.push('/hello')}>to hello</button>
                 </Route>
@@ -24,7 +28,7 @@ const App = () => {
                 </Route>
                 <Route path='/'>
                     <Redirect to='/skeleton'></Redirect>
-                </Route>
+    </Route>*/}
             </Switch>
         </div>
     )
