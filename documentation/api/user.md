@@ -20,7 +20,7 @@ Response body contains User object:
 `
     {
         token: String,
-        usernname: String
+        username: String
     }
 `
 
