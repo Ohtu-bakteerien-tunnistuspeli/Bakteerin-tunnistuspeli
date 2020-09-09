@@ -33,16 +33,17 @@ const Login = () => {
         <div>
           username
                   <input
-            name="username" />
+            id="username" name="username" />
         </div>
         <div>
           password
                   <input
+            id = "password"
             type="password"
             name="password"
           />
         </div>
-        <button type="submit">login</button>
+        <button id="submit" type="submit">login</button>
       </form>
     </div>
   )
