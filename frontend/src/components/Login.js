@@ -1,44 +1,44 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { login } from '../reducers/userReducer'
 
 const Login = () => {
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
 
-    const handleLogin = (event) => {
-        event.preventDefault()
-        console.log('logging in with', username, password)
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    const username = event.target.username.value
+    const password = event.target.password.value
+    console.log('logging in with', username, password)
+    try {
+      dispatch(login(username, password))
+    } catch (exeption) {
+      console.log("Error occured in login")
     }
-          return (
-            <div>
-              <h2>Log in to application</h2>
-              {/* <Notification message={errorMessage} />*/}
 
-              <form onSubmit={handleLogin}>
-                <div>
-                  username
+  }
+  return (
+    <div>
+      <h2>Log in to Bakteeripeli</h2>
+
+      <form onSubmit={handleLogin}>
+        <div>
+          username
                   <input
-                    id="username"
-                    type="text"
-                    value={username}
-                    name="Username"
-                    onChange={({ target }) => setUsername(target.value)}
-                  />
-                </div>
-                <div>
-                  password
+            name="username" />
+        </div>
+        <div>
+          password
                   <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    name="Password"
-                    onChange={({ target }) => setPassword(target.value)}
-                  />
-                </div>
-                <button id="submit" type="submit">login</button>
-              </form>
-            </div>
-          )
+            type="password"
+            name="password"
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    </div>
+  )
 }
 
 export default Login
