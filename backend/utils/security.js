@@ -12,18 +12,24 @@ const tokenExtractor = (request, response, next) => {
 }
 
 const verifyToken = (request, response) => {
-    try {
-        const decodedToken = request.token ? jwt.verify(request.token, config.SECRET) : null
-        if (!decodedToken || !decodedToken.iat) {
-            return { isSecured: false, response: response.status(401).json({ error: 'token missing or invalid' }) }
-        }
-        return { isSecured: true }
-    } catch (error) {
-        return { isSecured: false, response: response.status(401).json({ error: 'token missing or invalid' }) }
+    const decodedToken = request.token ? jwt.verify(request.token, config.SECRET) : null
+    if (!decodedToken || !decodedToken.iat) {
+        request.isSecured = false
+        return false
     }
+    return true 
+
+}
+
+const authorizationHandler = (error, request, response, next) => {
+    if (error.name === 'JsonWebTokenError' || !request.isSecured) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    next(error)
 }
 
 module.exports = {
     tokenExtractor,
-    verifyToken
+    verifyToken,
+    authorizationHandler
 }

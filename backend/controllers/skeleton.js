@@ -6,11 +6,11 @@ skeletonRouter.get('/', async (request, response) => {
 })
 
 skeletonRouter.get('/secured', async (request, response) => {
-    const securityResponse = security.verifyToken(request, response)
-    if (securityResponse.isSecured) {
+    const isSecured = security.verifyToken(request, response)
+    if (isSecured) {
         return response.json({ greeting: 'hello world' })
     } else {
-        return securityResponse.response
+        throw Error('JsonWebTokenError' )
     }
 })
 
