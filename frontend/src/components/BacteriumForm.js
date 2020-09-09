@@ -16,6 +16,7 @@ const BacteriumForm = () => {
         <div>
             <form onSubmit={addBacterium}>
                 <input
+                    id="newBacterium"
                     value={newBacterium}
                     onChange={({ target }) => setNewBacterium(target.value)}
                 />

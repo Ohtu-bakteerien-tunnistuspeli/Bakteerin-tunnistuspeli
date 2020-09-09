@@ -1,4 +1,4 @@
-describe('Login page: ', function() {
+describe('Game', function() {
     beforeEach(function() {
         cy.visit('http://localhost:3000')
     })
@@ -27,5 +27,33 @@ describe('Login page: ', function() {
         cy.get('#submit').click()
 
         cy.contains('Log in to Bakteeripeli')
+    })
+
+    describe('After logging in', function() {
+        beforeEach(function() {
+            cy.login({ username: 'username', password: 'password' })
+        })
+
+        it('a new bacterium can be added', function() {
+            cy.get('#newBacterium').type('testibakteeri')
+            cy.contains('Lisää').click()
+
+            cy.contains('testibakteeri')
+        })
+
+        it('user can log out', function() {
+            cy.contains('Logout').click()
+            cy.contains('Log in to Bakteeripeli')
+        })
+
+        describe('and there is a bacterium', function() {
+            beforeEach(function() {
+                cy.addBacterium({ name: 'pneumokokki' })
+            })
+
+            it('it can be found on the list', function() {
+                cy.contains('pneumokokki')
+            })
+        })
     })
 })
