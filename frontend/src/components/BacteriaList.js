@@ -4,6 +4,8 @@ import BacteriumForm from './BacteriumForm'
 
 const BacteriaList = () => {
     const bacteria = useSelector(state => state.bacteria)
+
+    
     return (
         <div>
             <h2>Bakteerit</h2>

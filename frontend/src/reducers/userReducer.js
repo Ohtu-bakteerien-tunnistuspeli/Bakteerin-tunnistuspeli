@@ -19,7 +19,7 @@ const reducer = (state = null, action) => {
 export const login = (username, password) => {
     return async dispatch => {
         let user = await userService.login({ username, password })
-        if (!user.error) {
+        if (user && !user.error) {
             user.token = `bearer ${user.token}`
             window.localStorage.setItem('loggedUser', JSON.stringify(user))
             dispatch({

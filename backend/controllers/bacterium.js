@@ -15,8 +15,7 @@ let bacteria = [{
 ]
 
 bacteriumRouter.get('/', async (request, response) => {
-    //const isSecured = security.verifyToken(request, response)
-    const isSecured = true //poista kun kirjautuminen toimii
+    const isSecured = security.verifyToken(request, response)
     if (isSecured) {
       /*
       const backteria = await Bacterium.find({})
@@ -31,8 +30,7 @@ bacteriumRouter.get('/', async (request, response) => {
 })
 
 bacteriumRouter.post('/', async (request, response) => {
-    //const isSecured = security.verifyToken(request, response)
-    const isSecured = true //poista kun kirjautuminen toimii
+    const isSecured = security.verifyToken(request, response)
     if (isSecured) {
         /*
         try {

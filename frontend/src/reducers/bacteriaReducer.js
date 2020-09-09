@@ -13,9 +13,9 @@ const reducer = (state = null, action) => {
 }
 
 
-export const getBacteria = () => {
+export const getBacteria = (token) => {
     return async dispatch => {
-        const bacteria = await bacteriaService.get()
+        const bacteria = await bacteriaService.get(token)
         dispatch({
             type: 'GET_BACTERIA',
             data: bacteria
@@ -24,9 +24,9 @@ export const getBacteria = () => {
     }
 }
 
-export const addBacteria= (name) => {
+export const addBacteria= (name, token) => {
     return async dispatch => {
-        const bacterium = await bacteriaService.add(name)
+        const bacterium = await bacteriaService.add(name, token)
         dispatch({
             type: 'ADD_BACTERIUM',
             data: bacterium

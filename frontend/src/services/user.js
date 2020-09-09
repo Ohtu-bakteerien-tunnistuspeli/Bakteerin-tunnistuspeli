@@ -4,7 +4,7 @@ const baseUrl = '/api/user'
 
 const login = (credentials) => {
     const request = axios.post(`${baseUrl}/login`, credentials)
-    return request.then(response => response.data)
+    return request.then(response => response.data).catch(error => {return})
 }
 
 export default { login }
