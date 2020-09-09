@@ -17,7 +17,7 @@ loginRouter.post('/login', async (request, response) => {
         ? false
         : (body.password === user.passwordHash)
     if (!(user && passwordCorrect)) {
-        return response.status(401).json({
+        return response.status(400).json({
             error: 'Invalid username or password'
         })
     }
