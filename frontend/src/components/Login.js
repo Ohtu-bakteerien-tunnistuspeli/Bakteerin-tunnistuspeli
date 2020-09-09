@@ -24,7 +24,7 @@ const Login = () => {
     if(user) {
       history.push('/bakteeriLista')
     }
-  }, [user])
+  }, [user, history])
   return (
     <div>
       <h2>Log in to Bakteeripeli</h2>
