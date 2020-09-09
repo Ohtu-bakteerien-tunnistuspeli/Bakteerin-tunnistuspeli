@@ -6,7 +6,7 @@ This endpoint lets user to login.
 Request body should contain JSON:
 `
     {
-        username: String
+        username: String,
         password: String
     }
 `
@@ -19,7 +19,7 @@ Request body should contain JSON:
 Response body contains User object:
 `
     {
-        token: String
+        token: String,
         usernname: String
     }
 `
