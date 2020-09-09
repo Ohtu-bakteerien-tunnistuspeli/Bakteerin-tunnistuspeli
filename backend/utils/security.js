@@ -17,7 +17,7 @@ const verifyToken = (request, response) => {
         request.isSecured = false
         return false
     }
-    return true 
+    return true
 
 }
 

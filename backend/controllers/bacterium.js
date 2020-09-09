@@ -7,25 +7,25 @@ const Bacterium = require('../models/bacterium')
 let bacteria = [{
     id:  1,
     name: 'koli'
-    }, 
-    {
+},
+{
     id:  2,
     name: 'tetanus'
-    },
+},
 ]
 
 bacteriumRouter.get('/', async (request, response) => {
     const isSecured = security.verifyToken(request, response)
     if (isSecured) {
-      /*
+        /*
       const backteria = await Bacterium.find({})
       response.json(backteria.map(bacterium => bacterium.toJSON()))
       */
-      /* When database is ready remove from here*/
-      return response.json(bacteria)
-      /*  until here */
+        /* When database is ready remove from here*/
+        return response.json(bacteria)
+        /*  until here */
     } else {
-      throw Error('JsonWebTokenError' )
+        throw Error('JsonWebTokenError' )
     }
 })
 
@@ -39,20 +39,19 @@ bacteriumRouter.post('/', async (request, response) => {
           return response.status(201).json(savedBacterium)
         } catch (error) {
           return response.status(400).json({ error: error.message })
-        }  
+        }
         */
         /* When database is ready remove from here*/
         const newBacterium = {
-          id:  bacteria.length +1,
-          name: request.body.name
+            id:  bacteria.length +1,
+            name: request.body.name
         }
-                             
         bacteria.push(newBacterium)
         response.status(201).json(newBacterium)
         /*  until here */
-  } else {
-    throw Error('JsonWebTokenError' )
-  }
+    } else {
+        throw Error('JsonWebTokenError' )
+    }
 })
 
 module.exports = bacteriumRouter
