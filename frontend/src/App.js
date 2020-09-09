@@ -1,21 +1,32 @@
 import React, { useEffect } from 'react'
 import { Switch, Route, Redirect, Link, useRouteMatch, useHistory } from 'react-router-dom'
 import SkeletonComponent from './components/Skeleton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import { returnUser } from './reducers/userReducer'
+import { getBacteria } from './reducers/bacteriaReducer'
 import Login from './components/Login'
+import BacteriaList from './components/BacteriaList'
 
 const App = () => {
     const match = useRouteMatch('/hello/:name')
     const name = match ? match.params.name : ''
     const history = useHistory()
     const dispatch = useDispatch()
+    const bacteria = useSelector(state => state.bacteria)
+    const user = useSelector(state => state.user)
     useEffect(() => {
-         dispatch(returnUser())
-    }, [dispatch])
+        dispatch(returnUser())
+        //if (!bacteria && user) {
+        if(!bacteria) {
+            dispatch(getBacteria())
+        }
+    }, [dispatch, bacteria])
     return (
         <div >
             <Switch>
+                <Route path='/bakteeriLista'>
+                    <BacteriaList></BacteriaList>
+                </Route>
                 <Route path='/'>
                     <Login></Login>
                 </Route>

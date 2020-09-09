@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+require('express-async-errors')
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
@@ -12,5 +13,5 @@ const userRouter = require('./controllers/user')
 app.use('/api/user', userRouter)
 const bacteriumRouter = require('./controllers/bacterium')
 app.use('/api/bacteria', bacteriumRouter)
-
+app.use(security.authorizationHandler)
 module.exports = app
