@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { Switch, Route, Redirect, Link, useRouteMatch, useHistory } from 'react-router-dom'
 import SkeletonComponent from './components/Skeleton'
-import { useDispatch, useSelector} from 'react-redux'
-import { returnUser } from './reducers/userReducer'
-import { getBacteria } from './reducers/bacteriaReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
 import BacteriaList from './components/BacteriaList'
-
+import { getBacteria } from './reducers/bacteriaReducer'
 const App = () => {
     const match = useRouteMatch('/hello/:name')
     const name = match ? match.params.name : ''
@@ -16,13 +15,26 @@ const App = () => {
     const user = useSelector(state => state.user)
     useEffect(() => {
         dispatch(returnUser())
-        //if (!bacteria && user) {
-        if(!bacteria) {
-            dispatch(getBacteria())
-        }
     }, [dispatch])
+    const logoutButton = async () => {
+        dispatch(logout())
+    }
+    useEffect(() => {
+        if (!user) {
+            history.push('/')
+        } else {
+            if(!bacteria) {
+                dispatch(getBacteria(user.token))
+            }
+        }
+    }, [user]) //eslint-disable-line
     return (
         <div >
+            {user ?
+                <button onClick={logoutButton}>Logout</button>
+                :
+                <></>
+            }
             <Switch>
                 <Route path='/bakteeriLista'>
                     <BacteriaList></BacteriaList>

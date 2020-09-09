@@ -2,13 +2,15 @@ import axios from 'axios'
 const baseUrl = '/api/bacteria'
 
 
-const get = () => {
-    const request = axios.get(baseUrl)
+const get = (token) => {
+    const config = { headers: { Authorization: token } }
+    const request = axios.get(baseUrl, config)
     return request.then(response => response.data)
 }
 
-const add= (name) => {
-    const request = axios.post(baseUrl, {name: name})
+const add= (name,token) => {
+    const config = { headers: { Authorization: token } }
+    const request = axios.post(baseUrl, {name: name}, config)
     return request.then(response => response.data)
 }
 
