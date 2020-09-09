@@ -15,23 +15,25 @@ let bacteria = [{
 ]
 
 bacteriumRouter.get('/', async (request, response) => {
-    const securityResponse = security.verifyToken(request, response)
-    if (securityResponse.isSecured) {
+    //const isSecured = security.verifyToken(request, response)
+    const isSecured = true //poista kun kirjautuminen toimii
+    if (isSecured) {
       /*
       const backteria = await Bacterium.find({})
       response.json(backteria.map(bacterium => bacterium.toJSON()))
       */
       /* When database is ready remove from here*/
-      response.json(bacteria)
+      return response.json(bacteria)
       /*  until here */
     } else {
-      return securityResponse.response
+      throw Error('JsonWebTokenError' )
     }
 })
 
-bacteriumRouter.post('/create', async (request, response) => {
-    const securityResponse = security.verifyToken(request, response)
-    if (securityResponse.isSecured) {
+bacteriumRouter.post('/', async (request, response) => {
+    //const isSecured = security.verifyToken(request, response)
+    const isSecured = true //poista kun kirjautuminen toimii
+    if (isSecured) {
         /*
         try {
           const bacterium = new Bacterium(request.body)
@@ -44,14 +46,14 @@ bacteriumRouter.post('/create', async (request, response) => {
         /* When database is ready remove from here*/
         const newBacterium = {
           id:  bacteria.length +1,
-          ...request.body
+          name: request.body.name
         }
                              
         bacteria.push(newBacterium)
         response.status(201).json(newBacterium)
         /*  until here */
   } else {
-    return securityResponse.response
+    throw Error('JsonWebTokenError' )
   }
 })
 
