@@ -20,7 +20,7 @@ const App = () => {
         if(!bacteria) {
             dispatch(getBacteria())
         }
-    }, [dispatch, bacteria])
+    }, [dispatch])
     return (
         <div >
             <Switch>

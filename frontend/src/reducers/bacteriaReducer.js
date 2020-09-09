@@ -28,7 +28,7 @@ export const addBacteria= (name) => {
     return async dispatch => {
         const bacterium = await bacteriaService.add(name)
         dispatch({
-            type: 'ADD_BACTERIA',
+            type: 'ADD_BACTERIUM',
             data: bacterium
         })
 
