@@ -20,8 +20,8 @@ const BacteriaList = () => {
                     {bacteria.map(bacterium =>
                         <li key={bacterium.id}>
                             {bacterium.name}
-                            <button onClick={() => deleteBact(bacterium)}>Poista</button>
-                            <button onClick='tee jotain'>Muokkaa</button>
+                            <button id='edit' onClick='tee jotain'>Muokkaa</button>
+                            <button id='delete' onClick={() => deleteBact(bacterium)}>Poista</button>
                         </li>
                     )}
                 </ul>

@@ -54,6 +54,13 @@ describe('Game', function() {
             it('it can be found on the list', function() {
                 cy.contains('pneumokokki')
             })
+
+            it('it can be deleted from the list', function() {
+                cy.addBacterium({ name: 'testdelete' })
+
+                cy.contains('testdelete').find('#delete').click()
+                cy.get('div').should('not.contain', 'testdelete')
+            })
         })
     })
 })
