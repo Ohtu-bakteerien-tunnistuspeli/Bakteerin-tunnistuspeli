@@ -16,6 +16,22 @@ module.exports = {
         'ecmaVersion': 2018,
         'sourceType': 'module'
     },
+    'settings': {
+        'react': {
+          'createClass': 'createReactClass',
+          'pragma': 'React',
+          'version': 'detect',
+          'flowVersion': '0.53'
+        },
+        'propWrapperFunctions': [
+          { 'property': 'freeze', 'object': 'Object' },
+          { 'property': 'myFavoriteWrapper' }
+        ],
+        'linkComponents': [
+          'Hyperlink',
+          { 'name': 'Link', 'linkAttribute': 'to' }
+        ]
+      },
     "plugins": [
         "react","cypress",
  //       "jest"
