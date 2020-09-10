@@ -28,7 +28,7 @@ const App = () => {
             }
         }
     }, [user]) //eslint-disable-line
-  
+
     return (
         <div >
             {user ?

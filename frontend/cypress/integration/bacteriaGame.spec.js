@@ -2,7 +2,7 @@ describe('Game', function() {
     beforeEach(function() {
         cy.visit('http://localhost:3000')
     })
-    
+
     it('Login page can be opened', function() {
         cy.contains('Log in to Bakteeripeli')
     })
