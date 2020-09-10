@@ -1,12 +1,12 @@
 # Endpoint starts with: `/api/bacteria`
-Provides access to create a new bacterium and fetch all added bacteria.
+Provides access to create a new bacterium, modify and delete an existing bacterium object, and fetch all added bacteria.
 
 ## `GET /api/bacteria/`
-This "/" -endpoint provides a list of all added bacteria.
+This endpoint retuns a list of all added bacteria.
+
 |Header|value|
 |Content-Type |application/json|
 |Status Code|200 OK|
-
 
 Response body contains array of Backterium objects:
 `[
@@ -25,7 +25,7 @@ Response body contains array of Backterium objects:
 
 
 ### `POST /api/bacteria/`
-This "/create/" -endpoint returns a Bacterium object, if object was saved successfully to the database.
+This endpoint lets teacher create a new bacterium object and returns this created object, if object was saved successfully to the database.
 
 ### Response
 |Header|value|
@@ -45,6 +45,9 @@ Not yet implemented:
 `400 Bad Request`: with error message: ""  Given field `name` is empty or the name of the new bacterium is not unique.
 
 ## Not yet implemented `DELETE /api/bacteria/:id`
+
+This endpoint lets teacher to remove bacterium object and retuns a empty body.
+
 ### Response
 |Header|value|
 |Content-Type |application/json|
@@ -57,6 +60,9 @@ Response body is empty.
 `404 Not Found`: with error message: "Bacterium not found" : if no bacterium found with given id.
 
 ## Not yet implemented `PUT /api/bacteria/:id`
+
+This endpoint lets teacher modify bacterium object and retuns modified object.
+
 ### Response
 |Header|value|
 |Content-Type |application/json|
