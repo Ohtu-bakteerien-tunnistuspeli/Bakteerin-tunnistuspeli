@@ -8,7 +8,7 @@ const BacteriaList = () => {
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const deleteBact = bacterium => {
-        console.log("Removing ID", bacterium.id)
+        console.log('Removing ID', bacterium.id)
         dispatch(deleteBacterium(bacterium, user.token))
     }
 

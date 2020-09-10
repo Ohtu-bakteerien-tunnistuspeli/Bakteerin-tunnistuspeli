@@ -19,34 +19,34 @@ const Login = () => {
         } catch (exeption) {
             console.log('Error occured in login')
         }
-  }
-  useEffect(()=> {
-      if(user) {
-          history.push('/bakteeriLista')
-      }
-  }, [user, history])
-      return (
-          <div>
-          <h2>Log in to Bakteeripeli</h2>
+    }
+    useEffect(() => {
+        if(user) {
+            history.push('/bakteeriLista')
+        }
+    }, [user, history])
+    return (
+        <div>
+            <h2>Log in to Bakteeripeli</h2>
 
-          <form onSubmit={handleLogin}>
-              <div>
+            <form onSubmit={handleLogin}>
+                <div>
                     username
                     <input
                         id="username" name="username" />
-              </div>
-              <div>
+                </div>
+                <div>
                     password
                     <input
                         id = "password"
                         type="password"
                         name="password"
                     />
-              </div>
-              <button id="submit" type="submit">login</button>
-          </form>
-          </div>
-  )
+                </div>
+                <button id="submit" type="submit">login</button>
+            </form>
+        </div>
+    )
 }
 
 export default Login

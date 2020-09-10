@@ -2,16 +2,16 @@ import bacteriaService from '../services/bacteria'
 
 const reducer = (state = null, action) => {
     switch (action.type) {
-        case 'GET_BACTERIA': {
-            return action.data
-        }
-        case 'ADD_BACTERIUM': {
-            return [...state, action.data]
-        }
-        case 'DELETE_BACTERIUM': {
-            return state.filter(bacterium => bacterium.id !== action.data.id)
-        }
-        default: return state
+    case 'GET_BACTERIA': {
+        return action.data
+    }
+    case 'ADD_BACTERIUM': {
+        return [...state, action.data]
+    }
+    case 'DELETE_BACTERIUM': {
+        return state.filter(bacterium => bacterium.id !== action.data.id)
+    }
+    default: return state
     }
 }
 
