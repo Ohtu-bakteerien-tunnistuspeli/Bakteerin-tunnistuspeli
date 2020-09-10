@@ -8,10 +8,16 @@ const get = (token) => {
     return request.then(response => response.data)
 }
 
-const add= (name,token) => {
+const add = (name, token) => {
     const config = { headers: { Authorization: token } }
-    const request = axios.post(baseUrl, {name: name}, config)
+    const request = axios.post(baseUrl, { name: name }, config)
     return request.then(response => response.data)
 }
 
-export default { get, add }
+const deleteBacterium = (id, token) => {
+    const config = { headers: { Authorization: token } }
+    const request = axios.delete(`${baseUrl}/${id}`, config)
+    return request
+}
+
+export default { get, add, deleteBacterium }

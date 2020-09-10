@@ -23,7 +23,6 @@ export const getBacteria = (token) => {
             type: 'GET_BACTERIA',
             data: bacteria
         })
-
     }
 }
 
@@ -34,12 +33,13 @@ export const addBacteria = (name, token) => {
             type: 'ADD_BACTERIUM',
             data: bacterium
         })
-
     }
 }
 
 export const deleteBacterium = (bacterium, token) => {
     return async dispatch => {
+        const res = await bacteriaService.deleteBacterium(bacterium.id, token)
+        console.log(res.status)
         dispatch({
             type: 'DELETE_BACTERIUM',
             data: bacterium
