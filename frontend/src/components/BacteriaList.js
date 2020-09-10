@@ -10,11 +10,11 @@ const BacteriaList = () => {
         <div>
             <h2>Bakteerit</h2>
             {bacteria ?
-                <li>
+                <ul>
                     {bacteria.map(bacterium =>
-                        <ul key={bacterium.id}>{bacterium.name} <button onClick='tee jotain'>Muokkaa</button></ul>
+                        <li key={bacterium.id}>{bacterium.name} <button onClick='tee jotain'>Muokkaa</button></li>
                     )}
-                </li>
+                </ul>
                 :
                 <div>Bakteereja haetaan</div>
             }
