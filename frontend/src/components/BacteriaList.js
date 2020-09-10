@@ -12,7 +12,7 @@ const BacteriaList = () => {
             {bacteria ?
                 <li>
                     {bacteria.map(bacterium =>
-                        <ul key={bacterium.id}>{bacterium.name}</ul>
+                        <ul key={bacterium.id}>{bacterium.name} <button onClick='tee jotain'>Muokkaa</button></ul>
                     )}
                 </li>
                 :
