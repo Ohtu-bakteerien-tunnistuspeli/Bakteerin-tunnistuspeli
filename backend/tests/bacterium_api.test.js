@@ -13,8 +13,8 @@ test('bacteria are returned as json', async () => {
         })
         .expect(200)
 
-    await api
-        .get('(/api/bacteria')
+    const result = await api
+        .get('/api/bacteria')
         .set('Authorization', `bearer ${user.body.token}`)
         .expect(200)
         .expect('Content-Type', /application\/json/)
