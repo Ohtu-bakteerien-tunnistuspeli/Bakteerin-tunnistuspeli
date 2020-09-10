@@ -6,6 +6,7 @@ import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
 import BacteriaList from './components/BacteriaList'
 import { getBacteria } from './reducers/bacteriaReducer'
+import Notification from './components/Notification'
 const App = () => {
     //const match = useRouteMatch('/hello/:name')
     //const name = match ? match.params.name : ''
@@ -38,6 +39,7 @@ const App = () => {
             }
             <Switch>
                 <Route path='/bakteeriLista'>
+                    <Notification></Notification>
                     <BacteriaList></BacteriaList>
                 </Route>
                 <Route path='/'>
