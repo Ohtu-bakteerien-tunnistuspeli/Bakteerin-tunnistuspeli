@@ -8,6 +8,9 @@ const reducer = (state = null, action) => {
         case 'ADD_BACTERIUM': {
             return [...state, action.data]
         }
+        case 'DELETE_BACTERIUM': {
+            return state.filter(bacterium => bacterium.id !== action.data.id)
+        }
         default: return state
     }
 }
@@ -24,7 +27,7 @@ export const getBacteria = (token) => {
     }
 }
 
-export const addBacteria= (name, token) => {
+export const addBacteria = (name, token) => {
     return async dispatch => {
         const bacterium = await bacteriaService.add(name, token)
         dispatch({
@@ -35,5 +38,13 @@ export const addBacteria= (name, token) => {
     }
 }
 
+export const deleteBacterium = (bacterium, token) => {
+    return async dispatch => {
+        dispatch({
+            type: 'DELETE_BACTERIUM',
+            data: bacterium
+        })
+    }
+}
 
 export default reducer

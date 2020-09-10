@@ -1,10 +1,16 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import BacteriumForm from './BacteriumForm'
+import { deleteBacterium } from '../reducers/bacteriaReducer'
 
 const BacteriaList = () => {
     const bacteria = useSelector(state => state.bacteria)
-
+    const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
+    const deleteBact = bacterium => {
+        console.log("Removing ID", bacterium.id)
+        dispatch(deleteBacterium(bacterium, user.token))
+    }
 
     return (
         <div>
@@ -12,7 +18,10 @@ const BacteriaList = () => {
             {bacteria ?
                 <li>
                     {bacteria.map(bacterium =>
-                        <ul key={bacterium.id}>{bacterium.name}</ul>
+                        <ul key={bacterium.id}>
+                            {bacterium.name}
+                            <button onClick={() => deleteBact(bacterium)}>Poista</button>
+                        </ul>
                     )}
                 </li>
                 :
