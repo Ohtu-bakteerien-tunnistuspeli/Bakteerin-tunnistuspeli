@@ -19,6 +19,7 @@ describe('Game', function() {
         cy.get('#submit').click()
 
         cy.get('div').should('not.contain', 'Log in to Bakteeripeli')
+        cy.contains('You Logged In succesfully')
     })
 
     it('User cannot log in with invalid credentials', function() {
