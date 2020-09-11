@@ -4,7 +4,7 @@
 
 Software Engineering Lab, Fall 2020, University of Helsinki
 
-"Bakteerien tunnistuspeli" is a web game designed for second-year university students of veterinary medicine and veterinary science. The purpose of the game is to help students to learn to recognize various bacteria, because some bacteria are to dangerous to inspect in laboratory courses and because there is less and less time available for laboratory experiments.
+"Bakteerien tunnistuspeli" is a web game designed for second-year university students of veterinary medicine and veterinary science. The purpose of the game is to help students learn to recognize various bacteria, because some bacteria are too dangerous to inspect in laboratory courses and because there is less and less time available for laboratory experiments.
 
 ## Documentation
 * Frontend
