@@ -1,20 +1,30 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import BacteriumForm from './BacteriumForm'
+import { deleteBacterium } from '../reducers/bacteriaReducer'
 
 const BacteriaList = () => {
     const bacteria = useSelector(state => state.bacteria)
+    const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
+    const deleteBact = bacterium => {
+        console.log('Removing ID', bacterium.id)
+        dispatch(deleteBacterium(bacterium, user.token))
+    }
 
-    
     return (
         <div>
             <h2>Bakteerit</h2>
             {bacteria ?
-                <li>
+                <ul>
                     {bacteria.map(bacterium =>
-                        <ul key={bacterium.id}>{bacterium.name}</ul>
+                        <li key={bacterium.id}>
+                            {bacterium.name}
+                            <button id='edit' onClick='tee jotain'>Muokkaa</button>
+                            <button id='delete' onClick={() => deleteBact(bacterium)}>Poista</button>
+                        </li>
                     )}
-                </li>
+                </ul>
                 :
                 <div>Bakteereja haetaan</div>
             }

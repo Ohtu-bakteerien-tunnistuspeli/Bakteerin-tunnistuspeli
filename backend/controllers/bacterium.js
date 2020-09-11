@@ -54,4 +54,25 @@ bacteriumRouter.post('/', async (request, response) => {
     }
 })
 
+bacteriumRouter.delete('/:id', async (request, response) => {
+    const isSecured = security.verifyToken(request, response)
+    if (isSecured) {
+        /*
+        try {
+          await Bacterium.findByIdAndRemove(request.params.id)
+          response.status(204).end()
+        } catch (error) {
+          return response.status(400).json({ error: error.message })
+        }
+        */
+        /* When database is ready remove from here*/
+        const id = Number(request.params.id)
+        bacteria = bacteria.filter(b => b.id !== id)
+        response.status(204).end()
+        /*  until here */
+    } else {
+        throw Error('JsonWebTokenError' )
+    }
+})
+
 module.exports = bacteriumRouter

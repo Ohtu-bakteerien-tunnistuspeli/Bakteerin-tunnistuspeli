@@ -15,7 +15,7 @@ Cypress.Commands.add('addBacterium', ( { name } ) => {
         body: { name },
         headers: {
             'Authorization': `${JSON.parse(window.localStorage.getItem('loggedUser')).token}`
-          }
+        }
     })
 
     cy.visit('http://localhost:3000')

@@ -2,7 +2,7 @@ describe('Game', function() {
     beforeEach(function() {
         cy.visit('http://localhost:3000')
     })
-    
+
     it('Login page can be opened', function() {
         cy.contains('Log in to Bakteeripeli')
     })
@@ -53,6 +53,13 @@ describe('Game', function() {
 
             it('it can be found on the list', function() {
                 cy.contains('pneumokokki')
+            })
+
+            it('it can be deleted from the list', function() {
+                cy.addBacterium({ name: 'testdelete' })
+
+                cy.contains('testdelete').find('#delete').click()
+                cy.get('div').should('not.contain', 'testdelete')
             })
         })
     })
