@@ -1,5 +1,4 @@
 const bacteriumRouter = require('express').Router()
-const security = require('../utils/security')
 /*
 const Bacterium = require('../models/bacterium')
 */
@@ -15,8 +14,7 @@ let bacteria = [{
 ]
 
 bacteriumRouter.get('/', async (request, response) => {
-    const isSecured = security.verifyToken(request, response)
-    if (isSecured) {
+    if(request.token){
         /*
       const backteria = await Bacterium.find({})
       response.json(backteria.map(bacterium => bacterium.toJSON()))
@@ -30,8 +28,7 @@ bacteriumRouter.get('/', async (request, response) => {
 })
 
 bacteriumRouter.post('/', async (request, response) => {
-    const isSecured = security.verifyToken(request, response)
-    if (isSecured) {
+        if(request.token){
         /*
         try {
           const bacterium = new Bacterium(request.body)
@@ -55,8 +52,7 @@ bacteriumRouter.post('/', async (request, response) => {
 })
 
 bacteriumRouter.delete('/:id', async (request, response) => {
-    const isSecured = security.verifyToken(request, response)
-    if (isSecured) {
+        if(request.token){
         /*
         try {
           await Bacterium.findByIdAndRemove(request.params.id)

@@ -5,20 +5,11 @@ const tokenExtractor = (request, response, next) => {
     const authorization = request.get('authorization')
     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
         request.token = authorization.substring(7)
+        request.token = request.token ? jwt.verify(request.token, config.SECRET) : null
     } else {
         request.token = null
     }
     next()
-}
-
-const verifyToken = (request, response) => {
-    const decodedToken = request.token ? jwt.verify(request.token, config.SECRET) : null
-    if (!decodedToken || !decodedToken.iat) {
-        request.isSecured = false
-        return false
-    }
-    return true
-
 }
 
 const authorizationHandler = (error, request, response, next) => {
@@ -30,6 +21,5 @@ const authorizationHandler = (error, request, response, next) => {
 
 module.exports = {
     tokenExtractor,
-    verifyToken,
     authorizationHandler
 }
