@@ -6,23 +6,29 @@ const app = require('../app')
 
 const api = supertest(app)
 
-test('login successful', async () => {
+test('login successfull', async () => {
     const user = await api
-        .post('api/user/login')
+        .post('/api/user/login')
         .send({
             username: 'username',
             password: 'password'
         })
         .expect(200)
 
-    await api
-        .get('(api/login)')
-        .set('Authorization', `bearer ${user.body.token}`)
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
+})
 
+test('failed login', async () => {
+    const user = await api
+        .post('/api/user/login')
+        .send({
+            username: 'user',
+            password: 'pass'
+        })
+        .expect(400)
 })
 
 //afterAll(() => {
 //  mongoose.connection.close()
 //})
+
+// "error": "Invalid username or password"
