@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { login } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { setNotification } from '../reducers/notificationReducer'
+import Notification from './Notification'
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -15,7 +16,7 @@ const Login = () => {
         console.log('logging in with', username, password)
         try {
             dispatch(login(username, password))
-            dispatch(setNotification({ message: `You Logged In succesfully, ${username}`}))
+            dispatch(setNotification({ message: `You Logged In succesfully, ${username}` }))
         } catch (exeption) {
             console.log('Error occured in login')
         }
@@ -27,6 +28,7 @@ const Login = () => {
     }, [user, history])
     return (
         <div>
+            <Notification></Notification>
             <h2>Log in to Bakteeripeli</h2>
 
             <form onSubmit={handleLogin}>
