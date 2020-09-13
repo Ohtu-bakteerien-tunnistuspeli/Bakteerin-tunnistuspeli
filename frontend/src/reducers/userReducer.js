@@ -1,4 +1,5 @@
 import userService from '../services/user'
+import { setNotification } from './notificationReducer'
 
 const reducer = (state = null, action) => {
     switch (action.type) {
@@ -31,6 +32,7 @@ export const login = (username, password) => {
                 type: 'LOGIN',
                 data: null
             })
+            dispatch(setNotification({ message: 'Login Failed' }))
         }
     }
 }

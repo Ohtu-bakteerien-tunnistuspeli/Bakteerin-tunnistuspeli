@@ -12,7 +12,7 @@ const Notification = ( ) => {
     }
 
     return (
-    <Alert variant="success" className='message'>{notification.message}</Alert>
+        <Alert variant="success" className='message'>{notification.message}</Alert>
     )
 }
 
