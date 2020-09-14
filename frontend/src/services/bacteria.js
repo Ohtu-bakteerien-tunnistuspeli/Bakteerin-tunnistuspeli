@@ -14,10 +14,16 @@ const add = (name, token) => {
     return request.then(response => response.data)
 }
 
+const update = (id, name, token) => {
+    const config = { headers: { Authorization: token } }
+    const request = axios.put(`${baseUrl}/${id}`, { name: name }, config)
+    return request.then(response => response.data)
+}
+
 const deleteBacterium = (id, token) => {
     const config = { headers: { Authorization: token } }
     const request = axios.delete(`${baseUrl}/${id}`, config)
     return request
 }
 
-export default { get, add, deleteBacterium }
+export default { get, add, deleteBacterium, update}
