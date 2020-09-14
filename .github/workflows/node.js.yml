@@ -49,4 +49,4 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
 # no tests yet
-    - run: npm test
+    - run: npm run test
