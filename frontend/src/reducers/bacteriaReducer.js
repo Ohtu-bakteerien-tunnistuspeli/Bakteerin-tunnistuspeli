@@ -50,7 +50,7 @@ export const deleteBacterium = (bacterium, token) => {
     }
 }
 
-export const updateBacteria = (id, name, token) => {
+export const updateBacterium = (id, name, token) => {
     return async dispatch => {
         const bacterium = await bacteriaService.update(id, name, token)
         dispatch({
