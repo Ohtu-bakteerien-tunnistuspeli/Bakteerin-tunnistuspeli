@@ -1,15 +1,20 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import BacteriumForm from './BacteriumForm'
-import { deleteBacterium } from '../reducers/bacteriaReducer'
+import BacteriumListing from './BacteriumListing'
+import { deleteBacterium, updateBacterium } from '../reducers/bacteriaReducer'
 
 const BacteriaList = () => {
-    const bacteria = useSelector(state => state.bacteria)
+    const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const deleteBact = bacterium => {
         console.log('Removing ID', bacterium.id)
         dispatch(deleteBacterium(bacterium, user.token))
+    }
+    const updateBact = (newName, id) => {
+        console.log('Updating ID', id)
+        dispatch(updateBacterium(id, newName, user.token))
     }
 
     return (
@@ -18,11 +23,7 @@ const BacteriaList = () => {
             {bacteria ?
                 <ul>
                     {bacteria.map(bacterium =>
-                        <li key={bacterium.id}>
-                            {bacterium.name}
-                            <button id='edit' onClick='tee jotain'>Muokkaa</button>
-                            <button id='delete' onClick={() => deleteBact(bacterium)}>Poista</button>
-                        </li>
+                        <BacteriumListing key={bacterium.id} bacterium={bacterium} deleteBact={deleteBact} updateBact={updateBact}></BacteriumListing>
                     )}
                 </ul>
                 :

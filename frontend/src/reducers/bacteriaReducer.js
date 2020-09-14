@@ -11,6 +11,9 @@ const reducer = (state = null, action) => {
     case 'DELETE_BACTERIUM': {
         return state.filter(bacterium => bacterium.id !== action.data.id)
     }
+    case 'UPDATE_BACTERIUM': {
+        return state.map(bacterium => (bacterium.id === action.data.id) ? {...bacterium, name: action.data.name} : bacterium)
+    }
     default: return state
     }
 }
@@ -42,6 +45,16 @@ export const deleteBacterium = (bacterium, token) => {
         console.log(res.status)
         dispatch({
             type: 'DELETE_BACTERIUM',
+            data: bacterium
+        })
+    }
+}
+
+export const updateBacterium = (id, name, token) => {
+    return async dispatch => {
+        const bacterium = await bacteriaService.update(id, name, token)
+        dispatch({
+            type: 'UPDATE_BACTERIUM',
             data: bacterium
         })
     }
