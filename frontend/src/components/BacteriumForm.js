@@ -8,7 +8,6 @@ const BacteriumForm = () => {
     const addBacterium = (event) => {
         event.preventDefault()
         dispatch(addBacteria(newBacterium, user.token))
-        console.log('Adding new bacterium:', newBacterium)
         setNewBacterium('')
     }
 

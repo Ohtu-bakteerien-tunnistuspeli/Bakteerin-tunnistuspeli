@@ -3,6 +3,9 @@ const reducer = (state = '', action) => {
     case 'SET NOTIFICATION' : {
         return action.notification
     }
+    case 'CLEAR NOTIFICATION' : {
+        return action.notification
+    }
     default: return state
     }
 }
