@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { ListGroup, Button } from 'react-bootstrap'
 
 const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
     const [isModified, setIsModified] = useState(false)
@@ -15,27 +16,29 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
         setNewName('')
     }
     return (
-        <li key={bacterium.id}>
-            {bacterium.name}
-            {isModified ?
-                <>
-                    <input value={newName} onChange={({ target }) => setNewName(target.value)} />
-                    <button onClick={modify}>Muuta nimi</button>
-                    <button onClick={stopModify}>Lopeta muokkaus</button>
-                </>
-                :
-                <>
-                    {isAdmin ?
-                        <>
-                            <button id='edit' onClick={() => setIsModified(true)}>Muokkaa</button>
-                            <button id='delete' onClick={() => deleteBact(bacterium)}>Poista</button>
-                        </>
+        <ListGroup>
+            <ListGroup.Item key={bacterium.id}>
+                {bacterium.name}
+                {isModified ?
+                    <>
+                        <input value={newName} onChange={({ target }) => setNewName(target.value)} />
+                        <Button variant='secondary' style={{ float: 'right' }} onClick={stopModify}>Lopeta muokkaus</Button>
+                        <Button variant='primary' style={{ float: 'center' }} onClick={modify}>Muuta nimi</Button>
+                    </>
+                    :
+                    <>
+                        {isAdmin ?
+                            <>
+                                <Button variant='danger' style={{ float: 'right' }} id='delete' onClick={() => deleteBact(bacterium)}>Poista</Button>
+                                <Button variant='primary' style={{ float: 'right' }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
+                            </>
                         :
-                        <></>
-                    }
-                </>
-            }
-        </li>
+                            <></>
+                        }  
+                    </>
+                }
+            </ListGroup.Item>
+        </ListGroup>
     )
 }
 

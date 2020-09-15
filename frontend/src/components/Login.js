@@ -4,7 +4,7 @@ import { login } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { setNotification } from '../reducers/notificationReducer'
 import Notification from './Notification'
-
+import { Form, Button } from 'react-bootstrap'
 const Login = () => {
     const dispatch = useDispatch()
     const history = useHistory()
@@ -27,26 +27,27 @@ const Login = () => {
         }
     }, [user, history])
     return (
-        <div>
-            <Notification></Notification>
+        <div >
             <h2>Log in to Bakteeripeli</h2>
-
-            <form onSubmit={handleLogin}>
-                <div>
-                    username
-                    <input
-                        id="username" name="username" />
-                </div>
-                <div>
-                    password
-                    <input
-                        id = "password"
-                        type="password"
-                        name="password"
+            <Notification></Notification>
+            <Form onSubmit={handleLogin}>
+                <Form.Group>
+                    <Form.Label>username:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="username"
+                        name="username"
                     />
-                </div>
-                <button id="submit" type="submit">login</button>
-            </form>
+                    <Form.Label>password:</Form.Label>
+                    <Form.Control
+                        type="password"
+                        id="password"
+                    />
+                    <Button variant="primary" type="submit">
+                        login
+                    </Button>
+                </Form.Group>
+            </Form>
         </div>
     )
 }
