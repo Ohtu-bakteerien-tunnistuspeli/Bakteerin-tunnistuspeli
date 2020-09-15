@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "jest --verbose",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose",
     "build:ui": "rm -rf build && cd ../frontend && npm run build --prod && cp -r build ../backend",
     "lint": "eslint .",
     "start:test": "cross-env NODE_ENV=test node index.js"
@@ -23,12 +23,19 @@
     "mongoose": "^5.10.3"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "eslint": "^7.8.1",
     "jest": "^26.4.2",
+    "mongodb-memory-server": "^6.7.5",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   },
   "jest": {
     "testEnvironment": "node"
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "4.4.1"
+    }
   }
 }
