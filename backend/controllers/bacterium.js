@@ -2,7 +2,7 @@ const bacteriumRouter = require('express').Router()
 const Bacterium = require('../models/bacterium')
 
 bacteriumRouter.get('/', async (request, response) => {
-    if (request.token) {
+    if (request.user) {
         const backteria = await Bacterium.find({})
         response.json(backteria.map(bacterium => bacterium.toJSON()))
     } else {
@@ -11,7 +11,7 @@ bacteriumRouter.get('/', async (request, response) => {
 })
 
 bacteriumRouter.post('/', async (request, response) => {
-    if (request.token) {
+    if (request.user.admin) {
         try {
             const bacterium = new Bacterium(request.body)
             const savedBacterium = await bacterium.save()
@@ -25,7 +25,7 @@ bacteriumRouter.post('/', async (request, response) => {
 })
 
 bacteriumRouter.delete('/:id', async (request, response) => {
-    if (request.token) {
+    if (request.user.admin) {
         try {
             await Bacterium.findByIdAndRemove(request.params.id)
             response.status(204).end()
@@ -39,7 +39,7 @@ bacteriumRouter.delete('/:id', async (request, response) => {
 
 
 bacteriumRouter.put('/:id', async (request, response) => {
-    if (request.token) {
+    if (request.user.admin) {
         try {
             const updatedBacterium = await Bacterium.findByIdAndUpdate(request.params.id, { name: request.body.name }, { new: true })
             return response.status(200).json(updatedBacterium)

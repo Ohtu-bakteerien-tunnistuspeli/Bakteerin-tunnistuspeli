@@ -1,15 +1,21 @@
 const config = require('./config')
 const jwt = require('jsonwebtoken')
+const User = require('../models/user')
 
-const tokenExtractor = (request, response, next) => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        request.token = authorization.substring(7)
-        request.token = request.token ? jwt.verify(request.token, config.SECRET) : null
-    } else {
-        request.token = null
+const tokenExtractor = async (request, response, next) => {
+    try {
+        const authorization = request.get('authorization')
+        if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+            let token = authorization.substring(7)
+            token = token ? jwt.verify(token, config.SECRET) : null
+            request.user = await User.findById(token.id)
+        } else {
+            request.user = null
+        }
+        next()
+    } catch (error) {
+        next()
     }
-    next()
 }
 
 const authorizationHandler = (error, request, response, next) => {

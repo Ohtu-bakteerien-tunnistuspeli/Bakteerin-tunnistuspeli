@@ -7,6 +7,8 @@ const mongoose = require('mongoose')
 if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     const { MongoMemoryServer } = require('mongodb-memory-server')
     const mongoServer = new MongoMemoryServer()
+    const User = require('./models/user')
+    const bcrypt = require('bcrypt')
     mongoose.Promise = Promise
     mongoServer.getUri().then((mongoUri) => {
         const mongooseOpts = {
@@ -23,8 +25,23 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             }
             console.log(e)
         })
-        mongoose.connection.once('open', () => {
+        mongoose.connection.once('open', async () => {
             console.log(`MongoDB successfully connected to ${mongoUri}`)
+            const saltRounds = 10
+            let passwordHash = await bcrypt.hash('user', saltRounds)
+            const user = new User({
+                username: 'user',
+                admin: false,
+                passwordHash
+            })
+            await user.save()
+            passwordHash = await bcrypt.hash('admin', saltRounds)
+            const admin = new User({
+                username: 'admin',
+                admin: true,
+                passwordHash
+            })
+            await admin.save()
         })
     })
 

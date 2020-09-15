@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ListGroup, Button } from 'react-bootstrap'
 
-const BacteriumListing = ({ bacterium, deleteBact, updateBact }) => {
+const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
     const [isModified, setIsModified] = useState(false)
     const [newName, setNewName] = useState('')
     const modify = () => {
@@ -27,8 +27,14 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact }) => {
                     </>
                     :
                     <>
-                        <Button variant='danger' style={{ float: 'right' }} id='delete' onClick={() => deleteBact(bacterium)}>Poista</Button>
-                        <Button variant='primary' style={{ float: 'right' }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
+                        {isAdmin ?
+                            <>
+                                <Button variant='danger' style={{ float: 'right' }} id='delete' onClick={() => deleteBact(bacterium)}>Poista</Button>
+                                <Button variant='primary' style={{ float: 'right' }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
+                            </>
+                        :
+                            <></>
+                        }  
                     </>
                 }
             </ListGroup.Item>
