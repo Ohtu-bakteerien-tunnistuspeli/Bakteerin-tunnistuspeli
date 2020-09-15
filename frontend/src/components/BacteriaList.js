@@ -23,13 +23,18 @@ const BacteriaList = () => {
             {bacteria ?
                 <ul>
                     {bacteria.map(bacterium =>
-                        <BacteriumListing key={bacterium.id} bacterium={bacterium} deleteBact={deleteBact} updateBact={updateBact}></BacteriumListing>
+                        <BacteriumListing key={bacterium.id} bacterium={bacterium} deleteBact={deleteBact} updateBact={updateBact} isAdmin={user?.admin}></BacteriumListing>
                     )}
                 </ul>
                 :
                 <div>Bakteereja haetaan</div>
             }
-            <BacteriumForm></BacteriumForm>
+            {user?.admin ?
+                <BacteriumForm></BacteriumForm>
+                :
+                <></>
+            }
+
         </div>
     )
 }

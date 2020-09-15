@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const BacteriumListing = ({ bacterium, deleteBact, updateBact }) => {
+const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
     const [isModified, setIsModified] = useState(false)
     const [newName, setNewName] = useState('')
     const modify = () => {
@@ -25,8 +25,14 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact }) => {
                 </>
                 :
                 <>
-                    <button id='edit' onClick={() => setIsModified(true)}>Muokkaa</button>
-                    <button id='delete' onClick={() => deleteBact(bacterium)}>Poista</button>
+                    {isAdmin ?
+                        <>
+                            <button id='edit' onClick={() => setIsModified(true)}>Muokkaa</button>
+                            <button id='delete' onClick={() => deleteBact(bacterium)}>Poista</button>
+                        </>
+                        :
+                        <></>
+                    }
                 </>
             }
         </li>
