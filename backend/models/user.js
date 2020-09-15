@@ -1,9 +1,21 @@
 const mongoose = require('mongoose')
-
+const uniqueValidator = require('mongoose-unique-validator')
 const userSchema = mongoose.Schema({
-    username: String,
-    passwordHash: String,
-    admin: Boolean
+    username: {
+        type: String,
+        minlength: [2, 'Käyttäjänimen tulee olla vähintään 2 merkkiä pitkä.'],
+        maxlength: [100, 'Käyttäjänimen tulee olla enintään 100 merkkiä pitkä.'],
+        required: true,
+        unique: true
+    },
+    passwordHash: {
+        type: String,
+        required: true
+    },
+    admin: {
+        type: Boolean,
+        required: true
+    }
 })
 
 userSchema.set('toJSON', {
@@ -14,7 +26,7 @@ userSchema.set('toJSON', {
         delete returnedObject.passwordHash
     }
 })
-
+userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimen tulee olla uniikki.' })
 const User = mongoose.model('User', userSchema)
 
 module.exports = User

@@ -4,20 +4,29 @@ const baseUrl = '/api/bacteria'
 
 const get = (token) => {
     const config = { headers: { Authorization: token } }
-    const request = axios.get(baseUrl, config)
-    return request.then(response => response.data)
+    return axios.get(baseUrl, config).then(response => {
+        return { data: response.data, error: false }
+    }).catch(error => {
+        return { data: error.response.data.error, error: true }
+    })
 }
 
-const add = (name, token) => {
+const add = async (name, token) => {
     const config = { headers: { Authorization: token } }
-    const request = axios.post(baseUrl, { name: name }, config)
-    return request.then(response => response.data)
+    return axios.post(baseUrl, { name: name }, config).then(response => {
+        return { data: response.data, error: false }
+    }).catch(error => {
+        return { data: error.response.data.error.substring(error.response.data.error.indexOf('name: ') + 6), error: true }
+    })
 }
 
 const update = (id, name, token) => {
     const config = { headers: { Authorization: token } }
-    const request = axios.put(`${baseUrl}/${id}`, { name: name }, config)
-    return request.then(response => response.data)
+    return axios.put(`${baseUrl}/${id}`, { name: name }, config).then(response => {
+        return { data: response.data, error: false }
+    }).catch(error => {
+        return { data: error.response.data.error.substring(error.response.data.error.indexOf('name: ') + 6), error: true }
+    })
 }
 
 const deleteBacterium = (id, token) => {
@@ -26,4 +35,4 @@ const deleteBacterium = (id, token) => {
     return request
 }
 
-export default { get, add, deleteBacterium, update}
+export default { get, add, deleteBacterium, update }

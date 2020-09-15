@@ -3,19 +3,15 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
 const tokenExtractor = async (request, response, next) => {
-    try {
-        const authorization = request.get('authorization')
-        if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-            let token = authorization.substring(7)
-            token = token ? jwt.verify(token, config.SECRET) : null
-            request.user = await User.findById(token.id)
-        } else {
-            request.user = null
-        }
-        next()
-    } catch (error) {
-        next()
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        let token = authorization.substring(7)
+        token = token ? jwt.verify(token, config.SECRET) : null
+        request.user = await User.findById(token.id)
+    } else {
+        request.user = null
     }
+    next()
 }
 
 const authorizationHandler = (error, request, response, next) => {

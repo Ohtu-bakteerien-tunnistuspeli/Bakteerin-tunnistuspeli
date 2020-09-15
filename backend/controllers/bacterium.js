@@ -41,7 +41,7 @@ bacteriumRouter.delete('/:id', async (request, response) => {
 bacteriumRouter.put('/:id', async (request, response) => {
     if (request.user.admin) {
         try {
-            const updatedBacterium = await Bacterium.findByIdAndUpdate(request.params.id, { name: request.body.name }, { new: true })
+            const updatedBacterium = await Bacterium.findByIdAndUpdate(request.params.id, { name: request.body.name }, { new: true, runValidators: true, context: 'query' })
             return response.status(200).json(updatedBacterium)
         } catch (error) {
             return response.status(400).json({ error: error.message })
