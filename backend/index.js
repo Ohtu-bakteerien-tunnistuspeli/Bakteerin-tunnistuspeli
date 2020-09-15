@@ -1,4 +1,4 @@
-const http = require('http')
+const http = require('http') //eslint-disable-line
 const app = require('./app')
 const config = require('./utils/config')
 const PORT = config.PORT

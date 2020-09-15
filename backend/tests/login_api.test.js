@@ -7,7 +7,7 @@ const app = require('../app')
 const api = supertest(app)
 
 test('login successfull', async () => {
-    const user = await api
+    const user = await api //eslint-disable-line
         .post('/api/user/login')
         .send({
             username: 'username',
@@ -18,7 +18,7 @@ test('login successfull', async () => {
 })
 
 test('failed login', async () => {
-    const user = await api
+    const user = await api //eslint-disable-line
         .post('/api/user/login')
         .send({
             username: 'user',

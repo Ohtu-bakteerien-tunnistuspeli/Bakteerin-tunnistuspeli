@@ -1,7 +1,38 @@
 const express = require('express')
 const cors = require('cors')
 const app = express()
+const config = require('./utils/config')
 require('express-async-errors')
+const mongoose = require('mongoose')
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+    const { MongoMemoryServer } = require('mongodb-memory-server')
+    const mongoServer = new MongoMemoryServer()
+    mongoose.Promise = Promise
+    mongoServer.getUri().then((mongoUri) => {
+        const mongooseOpts = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+        mongoose.set('useFindAndModify', false)
+        mongoose.set('useCreateIndex', true)
+        mongoose.connect(mongoUri, mongooseOpts)
+        mongoose.connection.on('error', (e) => {
+            if (e.message.code === 'ETIMEDOUT') {
+                console.log(e)
+                mongoose.connect(mongoUri, mongooseOpts)
+            }
+            console.log(e)
+        })
+        mongoose.connection.once('open', () => {
+            console.log(`MongoDB successfully connected to ${mongoUri}`)
+        })
+    })
+
+} else if (process.env.NODE_ENV === 'production' ){
+    mongoose.set('useFindAndModify', false)
+    mongoose.set('useCreateIndex', true)
+    mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+}
 app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
