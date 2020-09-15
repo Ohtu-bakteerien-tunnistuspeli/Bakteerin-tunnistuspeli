@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema({
         minlength: [2, 'Käyttäjänimen tulee olla vähintään 2 merkkiä pitkä.'],
         maxlength: [100, 'Käyttäjänimen tulee olla enintään 100 merkkiä pitkä.'],
         required: true,
-        unique: true
+        unique: [true, 'Käyttäjänimen tulee olla uniikki.']
     },
     passwordHash: {
         type: String,
