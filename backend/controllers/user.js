@@ -6,13 +6,7 @@ const config = require('../utils/config')
 
 loginRouter.post('/login', async (request, response) => {
     const body = request.body
-    let user = null
-    try {
-        user = await User.findOne({ username: body.username })
-
-    } catch (error) {
-        console.log(error)
-    }
+    const user = await User.findOne({ username: body.username })
     const passwordCorrect = user === null
         ? false
         : await bcrypt.compare(body.password, user.passwordHash)
@@ -28,6 +22,6 @@ loginRouter.post('/login', async (request, response) => {
     const token = jwt.sign(userForToken, config.SECRET)
     response
         .status(200)
-        .send({ token, username: user.username })
+        .send({ token, username: user.username, admin: user.admin })
 })
 module.exports = loginRouter
