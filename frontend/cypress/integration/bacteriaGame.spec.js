@@ -14,8 +14,8 @@ describe('Game', function() {
     })
 
     it('User can log in', function() {
-        cy.get('#username').type('username')
-        cy.get('#password').type('password')
+        cy.get('#username').type('admin')
+        cy.get('#password').type('admin')
         cy.get('#submit').click()
 
         cy.get('div').should('not.contain', 'Log in to Bakteeripeli')
@@ -30,9 +30,43 @@ describe('Game', function() {
         cy.contains('Log in to Bakteeripeli')
     })
 
-    describe('After logging in', function() {
+    describe('After logging in as a normal user', function() {
         beforeEach(function() {
-            cy.login({ username: 'username', password: 'password' })
+            cy.login({ username: 'user', password: 'user' })
+        })
+
+        it('a new bacterium cannot be added', function() {
+            cy.get('div').should('not.contain', 'Lisää')
+        })
+
+        it('user can log out', function() {
+            cy.contains('Logout').click()
+            cy.contains('Log in to Bakteeripeli')
+        })
+
+        describe('and there is a bacterium', function() {
+            var i = false
+            beforeEach(function() {
+                cy.login({ username: 'admin', password: 'admin' })
+                if (i === false)
+                    cy.addBacterium({ name: 'pneumokokki' })
+                i = true
+                cy.login({ username: 'user', password: 'user' })
+            })
+
+            it('it can be found on the list', function() {
+                cy.contains('pneumokokki')
+            })
+
+            it('it cannot be deleted from the list', function() {
+                cy.get('div').should('not.contain', '#delete')
+            })
+        })
+    })
+
+    describe('After logging in as admin', function() {
+        beforeEach(function() {
+            cy.login({ username: 'admin', password: 'admin' })
         })
 
         it('a new bacterium can be added', function() {
@@ -48,12 +82,16 @@ describe('Game', function() {
         })
 
         describe('and there is a bacterium', function() {
+            var i = false
             beforeEach(function() {
-                cy.addBacterium({ name: 'pneumokokki' })
+                if (i)
+                    cy.contains('pneumokokki2').find('#delete').click()
+                cy.addBacterium({ name: 'pneumokokki2' })
+                i = true
             })
 
             it('it can be found on the list', function() {
-                cy.contains('pneumokokki')
+                cy.contains('pneumokokki2')
             })
 
             it('it can be deleted from the list', function() {
@@ -61,6 +99,12 @@ describe('Game', function() {
 
                 cy.contains('testdelete').find('#delete').click()
                 cy.get('div').should('not.contain', 'testdelete')
+            })
+
+            after(function() {
+                cy.contains('pneumokokki2').find('#delete').click()
+                cy.contains('testibakteeri').find('#delete').click()
+                cy.contains('pneumokokki').find('#delete').click()
             })
         })
     })
