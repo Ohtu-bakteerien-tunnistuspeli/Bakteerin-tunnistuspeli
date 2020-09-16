@@ -43,7 +43,7 @@ const Login = () => {
                         type="password"
                         id="password"
                     />
-                    <Button variant="primary" type="submit">
+                    <Button id="submit" variant="primary" type="submit">
                         login
                     </Button>
                 </Form.Group>
