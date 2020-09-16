@@ -35,7 +35,7 @@ export const login = (username, password, history) => {
                 type: 'LOGIN',
                 data: null
             })
-            dispatch(setNotification({ message: 'Login Failed', success: false }))
+            dispatch(setNotification({ message: 'Kirjautuminen epäonnistui', success: false }))
         }
     }
 }
