@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { login } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
-import { setNotification } from '../reducers/notificationReducer'
 import { Form, Button } from 'react-bootstrap'
 const Login = () => {
     const dispatch = useDispatch()
@@ -14,7 +13,6 @@ const Login = () => {
         const password = event.target.password.value
         try {
             dispatch(login(username, password))
-            dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}` }))
         } catch (exeption) {
             console.log('Kirjautuessa tapahtui virhe')
         }

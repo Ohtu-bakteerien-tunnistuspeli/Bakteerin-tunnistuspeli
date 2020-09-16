@@ -23,6 +23,7 @@ export const login = (username, password) => {
         if (user && !user.error) {
             user.token = `bearer ${user.token}`
             window.localStorage.setItem('loggedUser', JSON.stringify(user))
+            dispatch(setNotification({ message: `You Logged In succesfully, ${username}`, success: true }))
             dispatch({
                 type: 'LOGIN',
                 data: user
@@ -32,7 +33,7 @@ export const login = (username, password) => {
                 type: 'LOGIN',
                 data: null
             })
-            dispatch(setNotification({ message: 'Login Failed' }))
+            dispatch(setNotification({ message: 'Login Failed', success: false }))
         }
     }
 }
