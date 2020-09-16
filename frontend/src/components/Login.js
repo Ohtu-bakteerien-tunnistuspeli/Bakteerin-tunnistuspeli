@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { login } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { setNotification } from '../reducers/notificationReducer'
-import Notification from './Notification'
 import { Form, Button } from 'react-bootstrap'
 const Login = () => {
     const dispatch = useDispatch()
