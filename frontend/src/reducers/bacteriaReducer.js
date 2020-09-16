@@ -14,6 +14,9 @@ const reducer = (state = null, action) => {
         case 'UPDATE_BACTERIUM': {
             return state.map(bacterium => (bacterium.id === action.data.id) ? { ...bacterium, name: action.data.name } : bacterium)
         }
+        case 'ZERO_BACTERIUM': {
+            return action.data
+        }
         default: return state
     }
 }
@@ -72,6 +75,15 @@ export const updateBacterium = (id, name, token) => {
                 data: bacterium
             })
         }
+    }
+}
+
+export const zeroBacteria = () => {
+    return async dispatch => {
+        dispatch({
+            type: 'GET_BACTERIA',
+            data: []
+        })
     }
 }
 

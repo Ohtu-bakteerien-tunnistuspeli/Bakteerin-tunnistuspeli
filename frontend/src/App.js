@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'
-import { Switch, Route, /*Redirect, Link, useRouteMatch,*/ useHistory } from 'react-router-dom'
+import { Switch, Route, Redirect,/* Link, useRouteMatch,*/ useHistory } from 'react-router-dom'
 //import SkeletonComponent from './components/Skeleton'
 import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
 import BacteriaList from './components/BacteriaList'
-import { getBacteria } from './reducers/bacteriaReducer'
 import Notification from './components/Notification'
 import { Button } from 'react-bootstrap'
 const App = () => {
@@ -13,40 +12,27 @@ const App = () => {
     //const name = match ? match.params.name : ''
     const history = useHistory()
     const dispatch = useDispatch()
-    const bacteria = useSelector(state => state.bacteria)
     const user = useSelector(state => state.user)
     useEffect(() => {
         dispatch(returnUser())
     }, [dispatch])
     const logoutButton = async () => {
-        dispatch(logout())
+        dispatch(logout(history))
     }
-    useEffect(() => {
-        if (!user) {
-            history.push('/')
-        } else {
-            if (!bacteria) {
-                dispatch(getBacteria(user.token))
-            }
-        }
-    }, [user]) //eslint-disable-line
-
     return (
         <div className="container">
             <Notification></Notification>
             {user ?
-                <Button id="submit" variant="primary" type="button" onClick={logoutButton}>Kirjaudu ulos</Button>
-                :
-                <></>
-            }
-            <Switch>
-                <Route path='/bakteeriLista'>
-                    <BacteriaList></BacteriaList>
-                </Route>
-                <Route path='/'>
-                    <Login></Login>
-                </Route>
-                {/*<Route path='/skeleton'>
+                <>
+                    <Button id="submit" variant="primary" type="button" onClick={logoutButton}>Kirjaudu ulos</Button>
+                    <Switch>
+                        <Route path='/bakteeriLista'>
+                            <BacteriaList></BacteriaList>
+                        </Route>
+                        <Route path='/'>
+                            <Redirect to='/bakteeriLista'></Redirect>
+                        </Route>
+                        {/*<Route path='/skeleton'>
                     <SkeletonComponent></SkeletonComponent>
                     <button onClick={() => history.push('/hello')}>to hello</button>
                 </Route>
@@ -62,7 +48,21 @@ const App = () => {
                 <Route path='/'>
                     <Redirect to='/skeleton'></Redirect>
     </Route>*/}
-            </Switch>
+                    </Switch>
+                </>
+                :
+                <>
+                    <Switch>
+                        <Route path='/login'>
+                            <Login></Login>
+                        </Route>
+                        <Route path='/'>
+                            <Redirect to='/login'></Redirect>
+                        </Route>
+                    </Switch>
+                </>
+            }
+
         </div>
     )
 }
