@@ -17,26 +17,30 @@ beforeEach(async () => {
     await user.save()
 })
 
-test('login successfull', async () => {
-    const user = await api //eslint-disable-line
-        .post('/api/user/login')
-        .send({
-            username: 'usernameNew',
-            password: 'password'
-        })
-        .expect(200)
+describe('login', () => {
+    test('login successfull', async () => {
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+
+    })
+
+    test('failed login', async () => {
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'user',
+                password: 'pass'
+            })
+            .expect(400)
+    })
 
 })
 
-test('failed login', async () => {
-    const user = await api //eslint-disable-line
-        .post('/api/user/login')
-        .send({
-            username: 'user',
-            password: 'pass'
-        })
-        .expect(400)
-})
 
 afterAll(() => {
     mongoose.connection.close()

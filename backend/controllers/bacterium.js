@@ -27,7 +27,7 @@ bacteriumRouter.post('/', async (request, response) => {
 bacteriumRouter.delete('/:id', async (request, response) => {
     if (request.user.admin) {
         try {
-            await Bacterium.findByIdAndRemove(request.params.id)
+            await Bacterium.findByIdAndDelete(request.params.id)
             response.status(204).end()
         } catch (error) {
             return response.status(400).json({ error: error.message })
