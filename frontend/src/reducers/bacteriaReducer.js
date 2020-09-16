@@ -21,54 +21,57 @@ const reducer = (state = null, action) => {
 
 export const getBacteria = (token) => {
     return async dispatch => {
-        const response = await bacteriaService.get(token)
-        if (response.error) {
-            dispatch(setNotification({ message: response.data }))
-            return
+        const bacteria = await bacteriaService.get(token)
+        if (bacteria.error) {
+            dispatch(setNotification({ message: bacteria.error, success: false }))
+        } else {
+            dispatch({
+                type: 'GET_BACTERIA',
+                data: bacteria
+            })
         }
-        dispatch({
-            type: 'GET_BACTERIA',
-            data: response.data
-        })
     }
 }
 
 export const addBacteria = (name, token) => {
     return async dispatch => {
-        const response = await bacteriaService.add(name, token)
-        if (response.error) {
-            dispatch(setNotification({ message: response.data }))
-            return
+        const bacterium = await bacteriaService.add(name, token)
+        if (bacterium.error) {
+            dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false }))
+        } else {
+            dispatch({
+                type: 'ADD_BACTERIUM',
+                data: bacterium
+            })
         }
-        dispatch({
-            type: 'ADD_BACTERIUM',
-            data: response.data
-        })
     }
 }
 
 export const deleteBacterium = (bacterium, token) => {
     return async dispatch => {
         const res = await bacteriaService.deleteBacterium(bacterium.id, token)
-        console.log(res.status)
-        dispatch({
-            type: 'DELETE_BACTERIUM',
-            data: bacterium
-        })
+        if (res.status !== 204) {
+            dispatch(setNotification({ message: res.error, success: false }))
+        } else {
+            dispatch({
+                type: 'DELETE_BACTERIUM',
+                data: bacterium
+            })
+        }
     }
 }
 
 export const updateBacterium = (id, name, token) => {
     return async dispatch => {
-        const response = await bacteriaService.update(id, name, token)
-        if (response.error) {
-            dispatch(setNotification({ message: response.data }))
-            return
+        const bacterium = await bacteriaService.update(id, name, token)
+        if (bacterium.error) {
+            dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false }))
+        } else {
+            dispatch({
+                type: 'UPDATE_BACTERIUM',
+                data: bacterium
+            })
         }
-        dispatch({
-            type: 'UPDATE_BACTERIUM',
-            data: response.data
-        })
     }
 }
 
