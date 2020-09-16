@@ -7,7 +7,7 @@ import Login from './components/Login'
 import BacteriaList from './components/BacteriaList'
 import { getBacteria } from './reducers/bacteriaReducer'
 import Notification from './components/Notification'
-
+import { Button } from 'react-bootstrap'
 const App = () => {
     //const match = useRouteMatch('/hello/:name')
     //const name = match ? match.params.name : ''
@@ -25,7 +25,7 @@ const App = () => {
         if (!user) {
             history.push('/')
         } else {
-            if(!bacteria) {
+            if (!bacteria) {
                 dispatch(getBacteria(user.token))
             }
         }
@@ -33,14 +33,14 @@ const App = () => {
 
     return (
         <div className="container">
+            <Notification></Notification>
             {user ?
-                <button onClick={logoutButton}>Logout</button>
+                <Button id="submit" variant="primary" type="button" onClick={logoutButton}>Kirjaudu ulos</Button>
                 :
                 <></>
             }
             <Switch>
                 <Route path='/bakteeriLista'>
-                    <Notification></Notification>
                     <BacteriaList></BacteriaList>
                 </Route>
                 <Route path='/'>

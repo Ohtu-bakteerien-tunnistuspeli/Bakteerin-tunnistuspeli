@@ -13,12 +13,11 @@ const Login = () => {
         event.preventDefault()
         const username = event.target.username.value
         const password = event.target.password.value
-        console.log('logging in with', username, password)
         try {
             dispatch(login(username, password))
-            dispatch(setNotification({ message: `You Logged In succesfully, ${username}` }))
+            dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}` }))
         } catch (exeption) {
-            console.log('Error occured in login')
+            console.log('Kirjautuessa tapahtui virhe')
         }
     }
     useEffect(() => {
@@ -28,23 +27,22 @@ const Login = () => {
     }, [user, history])
     return (
         <div >
-            <h2>Log in to Bakteeripeli</h2>
-            <Notification></Notification>
+            <h2>Kirjaudu Bakteeripeliin</h2>
             <Form onSubmit={handleLogin}>
                 <Form.Group>
-                    <Form.Label>username:</Form.Label>
+                    <Form.Label>Käyttäjänimi:</Form.Label>
                     <Form.Control
                         type="text"
                         id="username"
                         name="username"
                     />
-                    <Form.Label>password:</Form.Label>
+                    <Form.Label>Salasana:</Form.Label>
                     <Form.Control
                         type="password"
                         id="password"
                     />
                     <Button id="submit" variant="primary" type="submit">
-                        login
+                        Kirjaudu
                     </Button>
                 </Form.Group>
             </Form>
