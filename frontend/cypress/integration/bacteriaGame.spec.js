@@ -95,8 +95,27 @@ describe('Game', function() {
                 cy.get('div').should('not.contain', 'testdelete')
             })
 
+            it('it can be edited', function() {
+                cy.contains('pneumokokki2').find('#edit').click()
+
+                cy.contains('pneumokokki2').find('#editField').type('pneumokokki3')
+                cy.contains('pneumokokki2').find('#saveEdit').click()
+
+                cy.contains('pneumokokki3')
+            })
+
+            it('its edit field can be exited without saving changes', function() {
+                cy.contains('pneumokokki2').find('#edit').click()
+                cy.contains('pneumokokki2').find('#editField').type('pneumokokki3')
+                cy.contains('pneumokokki2').find('#stopEdit').click()
+
+                cy.get('div').should('not.contain', 'pneumokokki3')
+                cy.contains('pneumokokki2')
+            })
+
         })
     })
+
     after(function() {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
     })

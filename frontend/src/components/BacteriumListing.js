@@ -21,9 +21,9 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
                 {bacterium.name}
                 {isModified ?
                     <>
-                        <input value={newName} onChange={({ target }) => setNewName(target.value)} />
-                        <Button variant='secondary' style={{ float: 'right' }} onClick={stopModify}>Lopeta muokkaus</Button>
-                        <Button variant='primary' style={{ float: 'center' }} onClick={modify}>Muuta nimi</Button>
+                        <input value={newName} id='editField' onChange={({ target }) => setNewName(target.value)} />
+                        <Button variant='secondary' id='stopEdit' style={{ float: 'right' }} onClick={stopModify}>Lopeta muokkaus</Button>
+                        <Button variant='primary' id='saveEdit' style={{ float: 'center' }} onClick={modify}>Muuta nimi</Button>
                     </>
                     :
                     <>
@@ -32,9 +32,9 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
                                 <Button variant='danger' style={{ float: 'right' }} id='delete' onClick={() => deleteBact(bacterium)}>Poista</Button>
                                 <Button variant='primary' style={{ float: 'right' }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
                             </>
-                        :
+                            :
                             <></>
-                        }  
+                        }
                     </>
                 }
             </ListGroup.Item>
