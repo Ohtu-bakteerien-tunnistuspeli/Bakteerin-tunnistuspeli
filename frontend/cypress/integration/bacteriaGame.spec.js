@@ -5,13 +5,13 @@ describe('Game', function() {
     })
 
     it('Login page can be opened', function() {
-        cy.contains('Log in to Bakteeripeli')
+        cy.contains('Kirjaudu Bakteeripeliin')
     })
 
     it('Login page contains login fields and button', function() {
         cy.get('#username').should('be.visible')
         cy.get('#password').should('be.visible')
-        cy.get('#submit').should('contain', 'login')
+        cy.get('#submit').should('contain', 'Kirjaudu')
     })
 
     it('User can log in', function() {
@@ -19,8 +19,8 @@ describe('Game', function() {
         cy.get('#password').type('admin')
         cy.get('#submit').click()
 
-        cy.get('div').should('not.contain', 'Log in to Bakteeripeli')
-        cy.contains('You Logged In succesfully')
+        cy.get('div').should('not.contain', 'Kirjaudu Bakteeripeliin')
+        cy.contains('Kirjauduit sisään onnistuneesti')
     })
 
     it('User cannot log in with invalid credentials', function() {
@@ -28,7 +28,7 @@ describe('Game', function() {
         cy.get('#password').type('pass')
         cy.get('#submit').click()
 
-        cy.contains('Log in to Bakteeripeli')
+        cy.contains('Kirjaudu Bakteeripeliin')
     })
 
     describe('After logging in as a normal user', function() {
@@ -41,8 +41,8 @@ describe('Game', function() {
         })
 
         it('user can log out', function() {
-            cy.contains('Logout').click()
-            cy.contains('Log in to Bakteeripeli')
+            cy.contains('Kirjaudu ulos').click()
+            cy.contains('Kirjaudu Bakteeripeliin')
         })
 
         describe('and there is a bacterium', function() {
@@ -75,8 +75,8 @@ describe('Game', function() {
         })
 
         it('user can log out', function() {
-            cy.contains('Logout').click()
-            cy.contains('Log in to Bakteeripeli')
+            cy.contains('Kirjaudu ulos').click()
+            cy.contains('Kirjaudu Bakteeripeliin')
         })
 
         describe('and there is a bacterium', function() {
