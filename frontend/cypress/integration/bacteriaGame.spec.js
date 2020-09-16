@@ -1,5 +1,6 @@
 describe('Game', function() {
     beforeEach(function() {
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
         cy.visit('http://localhost:3000')
     })
 
@@ -45,12 +46,9 @@ describe('Game', function() {
         })
 
         describe('and there is a bacterium', function() {
-            var i = false
             beforeEach(function() {
                 cy.login({ username: 'admin', password: 'admin' })
-                if (i === false)
-                    cy.addBacterium({ name: 'pneumokokki' })
-                i = true
+                cy.addBacterium({ name: 'pneumokokki' })
                 cy.login({ username: 'user', password: 'user' })
             })
 
@@ -82,12 +80,8 @@ describe('Game', function() {
         })
 
         describe('and there is a bacterium', function() {
-            var i = false
             beforeEach(function() {
-                if (i)
-                    cy.contains('pneumokokki2').find('#delete').click()
                 cy.addBacterium({ name: 'pneumokokki2' })
-                i = true
             })
 
             it('it can be found on the list', function() {
@@ -101,11 +95,9 @@ describe('Game', function() {
                 cy.get('div').should('not.contain', 'testdelete')
             })
 
-            after(function() {
-                cy.contains('pneumokokki2').find('#delete').click()
-                cy.contains('testibakteeri').find('#delete').click()
-                cy.contains('pneumokokki').find('#delete').click()
-            })
         })
+    })
+    after(function() {
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
     })
 })
