@@ -27,7 +27,6 @@ const Login = () => {
     return (
         <div >
             <h2>Log in to Bakteeripeli</h2>
-            <Notification></Notification>
             <Form onSubmit={handleLogin}>
                 <Form.Group>
                     <Form.Label>username:</Form.Label>

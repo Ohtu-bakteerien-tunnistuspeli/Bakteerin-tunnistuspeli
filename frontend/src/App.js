@@ -33,14 +33,14 @@ const App = () => {
 
     return (
         <div className="container">
+            <Notification></Notification>
             {user ?
                 <button onClick={logoutButton}>Logout</button>
                 :
                 <></>
             }
             <Switch>
-                <Route path='/bakteeriLista'>
-                    <Notification></Notification>
+                <Route path='/bakteeriLista'>        
                     <BacteriaList></BacteriaList>
                 </Route>
                 <Route path='/'>
