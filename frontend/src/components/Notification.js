@@ -11,7 +11,7 @@ const Notification = ( ) => {
         )
     }
 
-    if(notification.message.includes('Failed')) {
+    if(!notification.success) {
         return (
             <Alert variant="warning" className='message'>{notification.message}</Alert>
         )
