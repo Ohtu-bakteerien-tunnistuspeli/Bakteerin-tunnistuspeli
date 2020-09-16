@@ -32,9 +32,9 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
                                 <Button variant='danger' style={{ float: 'right' }} id='delete' onClick={() => deleteBact(bacterium)}>Poista</Button>
                                 <Button variant='primary' style={{ float: 'right' }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
                             </>
-                        :
+                            :
                             <></>
-                        }  
+                        }
                     </>
                 }
             </ListGroup.Item>
