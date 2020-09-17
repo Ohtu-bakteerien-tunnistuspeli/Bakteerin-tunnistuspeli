@@ -293,6 +293,7 @@ describe('modify a bacterium', () => {
         expect(updatetBacterium.body.error).toContain('Bakteerin nimen tulee olla uniikki.')
     })
 })
-afterAll(() => {
-    mongoose.connection.close()
+afterAll(async () => {
+    await mongoose.connection.close()
+    await mongoose.disconnect()
 })

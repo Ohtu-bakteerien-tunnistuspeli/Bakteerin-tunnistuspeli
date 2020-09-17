@@ -1,10 +1,16 @@
 
-/*//const mongoose = require('mongoose')
+//const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-// const { TestScheduler } = require('jest')
-
 const api = supertest(app)
+/*// const { TestScheduler } = require('jest')
+
+
+
+*/
+test('login here', async () => {
+    console.log('im just hello world')
+})
 
 /*test('login successfull', async () => {
     const user = await api //eslint-disable-line
