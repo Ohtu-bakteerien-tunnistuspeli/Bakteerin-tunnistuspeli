@@ -1,27 +1,21 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React from 'react'
+import { useDispatch } from 'react-redux'
 import { login } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 const Login = () => {
     const dispatch = useDispatch()
     const history = useHistory()
-    const user = useSelector(state => state.user)
     const handleLogin = async (event) => {
         event.preventDefault()
         const username = event.target.username.value
         const password = event.target.password.value
         try {
-            dispatch(login(username, password))
+            dispatch(login(username, password, history))
         } catch (exeption) {
             console.log('Kirjautuessa tapahtui virhe')
         }
     }
-    useEffect(() => {
-        if(user) {
-            history.push('/bakteeriLista')
-        }
-    }, [user, history])
     return (
         <div >
             <h2>Kirjaudu Bakteeripeliin</h2>

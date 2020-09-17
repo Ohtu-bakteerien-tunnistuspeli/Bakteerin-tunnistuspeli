@@ -2,19 +2,22 @@ import bacteriaService from '../services/bacteria'
 import { setNotification } from '../reducers/notificationReducer'
 const reducer = (state = null, action) => {
     switch (action.type) {
-    case 'GET_BACTERIA': {
-        return action.data
-    }
-    case 'ADD_BACTERIUM': {
-        return [...state, action.data]
-    }
-    case 'DELETE_BACTERIUM': {
-        return state.filter(bacterium => bacterium.id !== action.data.id)
-    }
-    case 'UPDATE_BACTERIUM': {
-        return state.map(bacterium => (bacterium.id === action.data.id) ? { ...bacterium, name: action.data.name } : bacterium)
-    }
-    default: return state
+        case 'GET_BACTERIA': {
+            return action.data
+        }
+        case 'ADD_BACTERIUM': {
+            return [...state, action.data]
+        }
+        case 'DELETE_BACTERIUM': {
+            return state.filter(bacterium => bacterium.id !== action.data.id)
+        }
+        case 'UPDATE_BACTERIUM': {
+            return state.map(bacterium => (bacterium.id === action.data.id) ? { ...bacterium, name: action.data.name } : bacterium)
+        }
+        case 'ZERO_BACTERIUM': {
+            return action.data
+        }
+        default: return state
     }
 }
 
@@ -72,6 +75,15 @@ export const updateBacterium = (id, name, token) => {
                 data: bacterium
             })
         }
+    }
+}
+
+export const zeroBacteria = () => {
+    return async dispatch => {
+        dispatch({
+            type: 'GET_BACTERIA',
+            data: []
+        })
     }
 }
 
