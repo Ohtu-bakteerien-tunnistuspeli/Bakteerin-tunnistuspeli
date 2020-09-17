@@ -1,12 +1,12 @@
 
-//const mongoose = require('mongoose')
+/*//const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 // const { TestScheduler } = require('jest')
 
 const api = supertest(app)
 
-test('login successfull', async () => {
+/*test('login successfull', async () => {
     const user = await api //eslint-disable-line
         .post('/api/user/login')
         .send({
@@ -31,4 +31,4 @@ test('failed login', async () => {
 //  mongoose.connection.close()
 //})
 
-// "error": "Invalid username or password"
+// "error": "Invalid username or password"*/
