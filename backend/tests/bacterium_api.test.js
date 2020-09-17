@@ -15,8 +15,8 @@ const initialBacteria = [{
 }]
 
 beforeEach(async () => {
-    await Bacterium.remove({})
-    await User.remove({})
+    await Bacterium.deleteMany({})
+    await User.deleteMany({})
     const bacteriaObjects = initialBacteria.map(bacterium => new Bacterium(bacterium))
     const promiseArray = bacteriaObjects.map(backterium => backterium.save())
     await Promise.all(promiseArray)
@@ -43,7 +43,9 @@ describe('bacteria format', () => {
             .expect(200)
             .expect('Content-Type', /application\/json/)
     })
+})
 
+describe('addition of a bacterium ', () => {
     test('admin can add a bacterium', async () => {
         const user = await api
             .post('/api/user/login')
@@ -152,7 +154,8 @@ describe('bacteria format', () => {
             .set('Authorization', `bearer ${user.body.token}`)
         expect(resAfterAdding.body).toHaveLength(initialLength)
     })
-
+})
+describe('deletion of a bacterium', () => {
     test('admin can delete a bacterium', async () => {
         const user = await api
             .post('/api/user/login')
@@ -213,6 +216,81 @@ describe('bacteria format', () => {
             .get('/api/bacteria')
             .set('Authorization', `bearer ${user.body.token}`)
         expect(resAfterDelete.body).toHaveLength(initialLength)
+    })
+})
+
+describe('modify a bacterium', () => {
+    test('admin can modify an existing bacterium', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+
+        const res = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+
+        const bacteriumToUpdate = res.body[0]
+        bacteriumToUpdate.name = 'Bakteeri'
+        const updatetBacterium = await api
+            .put(`/api/bacteria/${ bacteriumToUpdate.id }`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacteriumToUpdate)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        console.log(updatetBacterium.body)
+
+        expect(bacteriumToUpdate.id).toEqual(updatetBacterium.body.id)
+        expect(updatetBacterium.body.name).toEqual('Bakteeri')
+
+    })
+    test('user can not modify an existing bacterium', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+
+        const res = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+
+        const bacteriumToUpdate = res.body[0]
+        bacteriumToUpdate.name = 'Bakteeri'
+        const updatetBacterium = await api
+            .put(`/api/bacteria/${ bacteriumToUpdate.id }`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacteriumToUpdate)
+            .expect(401)
+            .expect('Content-Type', /application\/json/)
+
+        expect(updatetBacterium.body.error).toEqual('token missing or invalid')
+    })
+    test('if name is not unique, error is returned', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+
+        const bacteriaList = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+
+        const bacteriumToUpdate = bacteriaList.body[0]
+        bacteriumToUpdate.name = 'tetanus'
+        const updatetBacterium = await api
+            .put(`/api/bacteria/${ bacteriumToUpdate.id }`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacteriumToUpdate)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        expect(updatetBacterium.body.error).toContain('Bakteerin nimen tulee olla uniikki.')
     })
 })
 afterAll(() => {
