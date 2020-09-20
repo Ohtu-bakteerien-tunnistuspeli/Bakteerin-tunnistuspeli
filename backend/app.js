@@ -64,5 +64,9 @@ const userRouter = require('./controllers/user')
 app.use('/api/user', userRouter)
 const bacteriumRouter = require('./controllers/bacterium')
 app.use('/api/bacteria', bacteriumRouter)
+
+const testRouter = require('./controllers/test')
+app.use('/api/test', testRouter)
+
 app.use(security.authorizationHandler)
 module.exports = app

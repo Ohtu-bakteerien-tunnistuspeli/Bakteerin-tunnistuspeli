@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
 import BacteriaList from './components/BacteriaList'
+import TestList from './components/TestList'
 import Notification from './components/Notification'
 import { Button } from 'react-bootstrap'
 const App = () => {
@@ -31,6 +32,9 @@ const App = () => {
                         </Route>
                         <Route path='/'>
                             <Redirect to='/bakteeriLista'></Redirect>
+                        </Route>
+                        <Route path='/testiLista'>
+                            <TestList></TestList>
                         </Route>
                         {/*<Route path='/skeleton'>
                     <SkeletonComponent></SkeletonComponent>
