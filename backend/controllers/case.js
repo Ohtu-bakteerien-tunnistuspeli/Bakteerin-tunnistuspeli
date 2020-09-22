@@ -11,11 +11,11 @@ const isComplete = (caseToCheck) => {
 
 caseRouter.get('/', async (request, response) => {
     if (request.user.admin) {
-        const cases = await Case.find({}).populate('Bacterium', { name: 1 }).populate({
-            path: 'test',
+        const cases = await Case.find({}).populate('bacterium', { name: 1 }).populate({
+            path: 'testGroups.test',
             model: 'Test',
             populate: {
-                path: 'bacterium',
+                path: 'bacteriaSpecificImages.bacterium',
                 model: 'Bacterium'
             }
         })
@@ -53,9 +53,10 @@ caseRouter.post('/', async (request, response) => {
                     const newTestGroup = []
                     for (let k = 0; k < request.body.testGroups[i].length; k++) {
                         const test = request.body.testGroups[i][k]
+                        const testFromDb = await Test.findById(test.testId)
                         const testToAdd = {
-                            test: await Test.findById(test.testId),
-                            requred: test.required,
+                            test: testFromDb,
+                            isRequired: test.isRequired,
                             positive: test.positive,
                             alternativeTests: test.alternativeTests
                         }

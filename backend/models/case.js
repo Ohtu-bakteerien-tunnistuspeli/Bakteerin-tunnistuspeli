@@ -34,7 +34,7 @@ const caseSchema = mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Test'
             },
-            required: {
+            isRequired: {
                 type: Boolean
             },
             positive: {
