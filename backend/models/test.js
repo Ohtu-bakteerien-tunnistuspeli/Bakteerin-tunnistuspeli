@@ -33,7 +33,7 @@ const testSchema = mongoose.Schema({
     bacteriaSpecificImages: [{
         bacterium: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Bacterium',
+            ref: 'Bacterium'
         },
         data: {
             type: Buffer
