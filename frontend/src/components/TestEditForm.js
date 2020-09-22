@@ -3,17 +3,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import { deleteTest, updateTest } from '../reducers/testReducer'
 
 const TestEditForm = (test) => {
-    const [newName, setNewName] = useState('')
-    const [newType, setNewType] = useState('')
-    const [photoPos, setPhotoPos] = useState([])
-    const [photoNeg, setPhotoNeg] = useState([])
+    // Get info of this test from parameter 'test'
+    // and set that info as staring value for fields
+    const [newName, setNewName] = useState(test.name)
+    const [newType, setNewType] = useState(test.type)
+    const [photoPos, setPhotoPos] = useState(positiveResultImage)
+    const [photoNeg, setPhotoNeg] = useState(negativeResultImage)
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
-    // Get info of this test from parameter 'test'
-    // and set that info as staring value for fields
+    
     // Get test.id from parameter 'test'
-
     const removeTest = () => {
         dispatch(deleteTest(test.id, user.token))
     }
