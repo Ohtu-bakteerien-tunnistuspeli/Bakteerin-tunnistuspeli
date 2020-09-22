@@ -28,9 +28,9 @@ export const getTests = (token) => {
     }
 }
 
-export const addTest = (name, token) => {
+export const addTest = (name, type, contImg, posImg, negImg, token) => {
     return async dispatch => {
-        const test = await testService.add(name, token)
+        const test = await testService.add(name, type, contImg, posImg, negImg, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {

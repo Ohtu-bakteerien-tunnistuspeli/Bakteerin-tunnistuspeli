@@ -30,11 +30,11 @@ const App = () => {
                         <Route path='/bakteeriLista'>
                             <BacteriaList></BacteriaList>
                         </Route>
-                        <Route path='/'>
-                            <Redirect to='/bakteeriLista'></Redirect>
-                        </Route>
                         <Route path='/testiLista'>
                             <TestList></TestList>
+                        </Route>
+                        <Route path='/'>
+                            <Redirect to='/bakteeriLista'></Redirect>
                         </Route>
                         {/*<Route path='/skeleton'>
                     <SkeletonComponent></SkeletonComponent>
