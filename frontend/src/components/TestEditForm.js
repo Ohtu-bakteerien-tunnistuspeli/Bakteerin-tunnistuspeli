@@ -2,20 +2,23 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteTest, updateTest } from '../reducers/testReducer'
 
-const TestEditForm = () => {
+const TestEditForm = (test) => {
     const [newName, setNewName] = useState('')
     const [newType, setNewType] = useState('')
+    const [photoPos, setPhotoPos] = useState([])
+    const [photoNeg, setPhotoNeg] = useState([])
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
-    // Add function to get previous info of this test
-    // and fill fields with that info
+    // Get info of this test from parameter 'test'
+    // and set that info as staring value for fields
+    // Get test.id from parameter 'test'
 
-    const removeTest = test => {
-        dispatch(deleteTest(test, user.token))
+    const removeTest = () => {
+        dispatch(deleteTest(test.id, user.token))
     }
-    const editTest = test => {
-        dispatch(updateTest(test, user.token))
+    const editTest = () => {
+        dispatch(updateTest(newName, newType, photoPos, PhotoNeg, user.token))
     }
 
     return (
@@ -38,6 +41,20 @@ const TestEditForm = () => {
                     <option value='viljely'>Viljely</option>
                     <option value="testi">Testi</option>
                 </select>
+                <p>Positiivinen oletuskuva</p>
+                <input
+                    id='editTestPosImg'
+                    value= { photoPos }
+                    type='file'
+                    onChange={ ({ target }) => setPhotoPos(target.value.posImage) }
+                />
+                <p>Negatiivinen oletuskuva</p>
+                <input
+                    id='editTestNegImg'
+                    value= { photoNeg }
+                    type='file'
+                    onChange={ ({ target }) => setPhotoNeg(target.value.negImage) }
+                />
                 <button type='submit'>Tallenna muutokset</button>
             </Form>
         </div>
