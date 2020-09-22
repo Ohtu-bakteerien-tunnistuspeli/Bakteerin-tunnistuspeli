@@ -21,7 +21,7 @@ testRouter.get('/', async (request, response) => {
     }
 })
 
-testRouter.post('/', upload.fields([{ name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImage', maxCount: 100 }]), async (request, response) => {
+testRouter.post('/', upload.fields([{ name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
     if (request.user.admin) {
         try {
             const test = new Test({
@@ -32,10 +32,11 @@ testRouter.post('/', upload.fields([{ name: 'positiveResultImage', maxCount: 1 }
                 bacteriaSpecificImages: []
             })
             if (request.files.bacteriaSpecificImages) {
-                request.files.bacteriaSpecificImages.forEach(async (file) => {
-                    const bacterium = await Bacterium.findById(file.fieldname)
+                for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
+                    const file = request.files.bacteriaSpecificImages[i]
+                    const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
                     test.bacteriaSpecificImages.push({ data: Buffer.from(file.buffer).toString('base64'), contentType: file.mimetype, bacterium })
-                })
+                }
             }
             const savedTest = await test.save()
             return response.status(201).json(savedTest)
