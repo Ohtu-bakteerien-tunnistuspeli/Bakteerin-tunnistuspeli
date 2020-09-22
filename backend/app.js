@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
         })
     })
 
-} else if (process.env.NODE_ENV === 'production' ){
+} else if (process.env.NODE_ENV === 'production') {
     mongoose.set('useFindAndModify', false)
     mongoose.set('useCreateIndex', true)
     mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -64,5 +64,7 @@ const userRouter = require('./controllers/user')
 app.use('/api/user', userRouter)
 const bacteriumRouter = require('./controllers/bacterium')
 app.use('/api/bacteria', bacteriumRouter)
+const testRouter = require('./controllers/test')
+app.use('/api/test', testRouter)
 app.use(security.authorizationHandler)
 module.exports = app
