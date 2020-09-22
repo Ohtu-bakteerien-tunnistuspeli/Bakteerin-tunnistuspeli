@@ -7,25 +7,25 @@ const TestEditForm = (test) => {
     // and set that info as staring value for fields
     const [newName, setNewName] = useState(test.name)
     const [newType, setNewType] = useState(test.type)
-    const [photoPos, setPhotoPos] = useState(positiveResultImage)
-    const [photoNeg, setPhotoNeg] = useState(negativeResultImage)
+    const [photoPos, setPhotoPos] = useState(test.positiveResultImage)
+    const [photoNeg, setPhotoNeg] = useState(test.negativeResultImage)
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
-    
+
     // Get test.id from parameter 'test'
     const removeTest = () => {
         dispatch(deleteTest(test.id, user.token))
     }
     const editTest = () => {
-        dispatch(updateTest(newName, newType, photoPos, PhotoNeg, user.token))
+        dispatch(updateTest(newName, newType, photoPos, photoNeg, user.token))
     }
 
     return (
         <div>
             <button id='deleteTest' onClick={ removeTest }>POISTA testi</button>
             <p></p>
-            <Form onSubmit={ editTest }>
+            <form onSubmit={ editTest }>
                 <p>Uusi nimi</p>
                 <input
                     id='editTestName'
@@ -56,7 +56,7 @@ const TestEditForm = (test) => {
                     onChange={ ({ target }) => setPhotoNeg(target.value.negImage) }
                 />
                 <button type='submit'>Tallenna muutokset</button>
-            </Form>
+            </form>
         </div>
     )
 }
