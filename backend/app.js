@@ -66,5 +66,7 @@ const bacteriumRouter = require('./controllers/bacterium')
 app.use('/api/bacteria', bacteriumRouter)
 const testRouter = require('./controllers/test')
 app.use('/api/test', testRouter)
+const caseRouter = require('./controllers/case')
+app.use('/api/case', caseRouter)
 app.use(security.authorizationHandler)
 module.exports = app
