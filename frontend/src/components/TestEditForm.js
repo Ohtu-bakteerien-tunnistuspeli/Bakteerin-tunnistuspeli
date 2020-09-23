@@ -19,7 +19,7 @@ const TestEditForm = (test) => {
         dispatch(deleteTest(test.id, user.token))
     }
     const editTest = () => {
-        dispatch(updateTest(newName, newType, photoPos, photoNeg, user.token))
+        dispatch(updateTest(test.id, newName, newType, photoPos, photoNeg, user.token))
     }
 
     return (
