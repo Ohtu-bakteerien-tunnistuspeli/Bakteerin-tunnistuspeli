@@ -65,32 +65,30 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
 testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
     if (request.user.admin) {
         try {
-            const testToUpdate = {
-                id: request.params.id,
+            let testToUpdate = {
                 name: request.body.name,
                 type: request.body.type,
                 bacteriaSpecificImages: []
             }
             if (request.files) {
                 if (request.files.controlImage) {
-                    test.controlImage = { data: Buffer.from(request.files.controlImage[0].buffer).toString('base64'), contentType: request.files.controlImage[0].mimetype }
+                    testToUpdate.controlImage = { data: Buffer.from(request.files.controlImage[0].buffer).toString('base64'), contentType: request.files.controlImage[0].mimetype }
                 }
                 if (request.files.positiveResultImage) {
-                    test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
+                    testToUpdate.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
                 }
                 if (request.files.negativeResultImage) {
-                    test.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
+                    testToUpdate.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
                 }
                 if (request.files.bacteriaSpecificImages) {
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
                         const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
-                        test.bacteriaSpecificImages.push({ data: Buffer.from(file.buffer).toString('base64'), contentType: file.mimetype, bacterium })
+                        testToUpdate.bacteriaSpecificImages.push({ data: Buffer.from(file.buffer).toString('base64'), contentType: file.mimetype, bacterium })
                     }
                 }
             }
-            await Test.findOneAndUpdate(request.params.id, testToUpdate, { new: true, context: 'query' })
-            const updatetTest = await Test.findById(request.params.id).populate('Bacterium', { name: 1 })
+            const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
             return response.status(200).json(updatetTest)
         } catch (error) {
             return response.status(400).json({ error: error.message })
