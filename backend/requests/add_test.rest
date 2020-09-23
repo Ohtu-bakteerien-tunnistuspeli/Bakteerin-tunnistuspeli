@@ -1,0 +1,8 @@
+POST http://localhost:3001/api/test
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI1ZjZiNTZlMDA3NzRhODQ4NTg3ZDE1YmIiLCJpYXQiOjE2MDA4NzAxNDJ9.TG_5T-D8T8EEzoTbvWk75XxBR1LFxmK7g4vCpvlnQWQ
+
+{
+    "name": "test",
+    "type": "type"
+}

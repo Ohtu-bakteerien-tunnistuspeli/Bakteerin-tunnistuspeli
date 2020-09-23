@@ -32,17 +32,19 @@ testRouter.post('/', upload.fields([{ name: 'positiveResultImage', maxCount: 1 }
                 type: request.body.type,
                 bacteriaSpecificImages: []
             })
-            if (request.files.positiveResultImage) {
-                test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
-            }
-            if (request.files.negativeResultImage) {
-                test.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
-            }
-            if (request.files.bacteriaSpecificImages) {
-                for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
-                    const file = request.files.bacteriaSpecificImages[i]
-                    const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
-                    test.bacteriaSpecificImages.push({ data: Buffer.from(file.buffer).toString('base64'), contentType: file.mimetype, bacterium })
+            if (request.files) {
+                if (request.files.positiveResultImage) {
+                    test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
+                }
+                if (request.files.negativeResultImage) {
+                    test.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
+                }
+                if (request.files.bacteriaSpecificImages) {
+                    for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
+                        const file = request.files.bacteriaSpecificImages[i]
+                        const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
+                        test.bacteriaSpecificImages.push({ data: Buffer.from(file.buffer).toString('base64'), contentType: file.mimetype, bacterium })
+                    }
                 }
             }
             const savedTest = await test.save()
