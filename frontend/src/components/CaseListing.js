@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 
-const CaseListing = ({ c, admin, deleteCase, }) => {
+const CaseListing = ({ c, admin, deleteCase }) => {
     return (
         <ListGroup>
             <ListGroup.Item key={ c.id } >

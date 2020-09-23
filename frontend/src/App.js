@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
 import BacteriaList from './components/BacteriaList'
+import CaseList from './components/CaseList'
 import Notification from './components/Notification'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 const App = () => {
@@ -43,13 +44,12 @@ const App = () => {
                                 :   null
                             }
                         </Nav.Link>
-                        {/* HUOM Tarkista polku ennen käyttöön ottoa <Nav.Link href="#" as="span">
+                        <Nav.Link href="#" as="span">
                             { user?.admin
-                                ? <Link style={padding} path="/tapausLista" >Tapausten hallinta</Link>
+                                ? <Link style={padding} to="/tapausLista" >Tapausten hallinta</Link>
                                 :   null
                             }
                         </Nav.Link>
-                        */}
                         <Nav.Link href="#" as="span">
                             { user?.admin
                                 ? <Link style={padding} to="/testiLista">Testien hallinta</Link>
@@ -84,6 +84,9 @@ const App = () => {
                     <Switch>
                         <Route path='/bakteeriLista'>
                             <BacteriaList></BacteriaList>
+                        </Route>
+                        <Route path='/tapausLista'>
+                            <CaseList />
                         </Route>
                         <Route path='/'>
                             <Redirect to='/bakteeriLista'></Redirect>

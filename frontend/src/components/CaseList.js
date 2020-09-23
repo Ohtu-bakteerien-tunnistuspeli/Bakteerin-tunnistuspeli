@@ -16,7 +16,7 @@ const CaseList = () => {
                     )}
                 </ul>
                 :
-                <div>Tapauksia haetaan</div>
+                <div>Ei tapauksia</div>
             }
         </div>
     )
