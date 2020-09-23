@@ -55,4 +55,4 @@ jobs:
     - run: npm install
 ## vaatii mongodb:n käyttöa lokaalisti https://www.digitalocean.com/community/tutorials/how-to-integrate-mongodb-with-your-node-application
 # https://www.mongodb.com/blog/post/quick-start-nodejs-mongodb--how-to-get-connected-to-your-database
-#    - run: npm run test2
+    - run: npm run test2
