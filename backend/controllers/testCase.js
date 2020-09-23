@@ -27,10 +27,14 @@ testRouter.post('/', upload.fields([{ name: 'positiveResultImage', maxCount: 1 }
             const test = new Test({
                 name: request.body.name,
                 type: request.body.type,
-                positiveResultImage: { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype },
-                negativeResultImage: { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype },
                 bacteriaSpecificImages: []
             })
+            if(request.files.positiveResultImage) {
+                test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
+            }
+            if(request.files.negativeResultImage) {
+                test.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
+            }
             if (request.files.bacteriaSpecificImages) {
                 for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                     const file = request.files.bacteriaSpecificImages[i]
