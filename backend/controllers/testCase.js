@@ -1,5 +1,5 @@
 const testRouter = require('express').Router()
-const Test = require('../models/test')
+const Test = require('../models/testCase')
 const Bacterium = require('../models/bacterium')
 const multer = require('multer')
 const fileFilter = (req, file, cb) => {
@@ -14,28 +14,36 @@ const upload = multer({ storage, fileFilter })
 
 testRouter.get('/', async (request, response) => {
     if (request.user) {
-        const tests = await Test.find({}).populate('Bacterium', { name: 1 })
+        const tests = await Test.find({}).populate({
+            path: 'bacteriaSpecificImages.bacterium',
+            model: 'Bacterium'
+        })
         response.json(tests.map(test => test.toJSON()))
     } else {
         throw Error('JsonWebTokenError')
     }
 })
 
-testRouter.post('/', upload.fields([{ name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImage', maxCount: 100 }]), async (request, response) => {
+testRouter.post('/', upload.fields([{ name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
     if (request.user.admin) {
         try {
             const test = new Test({
                 name: request.body.name,
                 type: request.body.type,
-                positiveResultImage: { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype },
-                negativeResultImage: { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype },
                 bacteriaSpecificImages: []
             })
+            if (request.files.positiveResultImage) {
+                test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
+            }
+            if (request.files.negativeResultImage) {
+                test.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
+            }
             if (request.files.bacteriaSpecificImages) {
-                request.files.bacteriaSpecificImages.forEach(async (file) => {
-                    const bacterium = await Bacterium.findById(file.fieldname)
+                for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
+                    const file = request.files.bacteriaSpecificImages[i]
+                    const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
                     test.bacteriaSpecificImages.push({ data: Buffer.from(file.buffer).toString('base64'), contentType: file.mimetype, bacterium })
-                })
+                }
             }
             const savedTest = await test.save()
             return response.status(201).json(savedTest)
