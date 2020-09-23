@@ -1,15 +1,15 @@
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 
-const CaseListing = ({ case, admin, deleteCase, }) => {
+const CaseListing = ({ c, admin, deleteCase, }) => {
     return (
         <ListGroup>
-            <ListGroup.Item key={ case.id } >
+            <ListGroup.Item key={ c.id } >
                 {admin ?
                     <div>
-                        { case.name }
+                        { c.name }
                         <div>
-                        <Button variant='danger' style={{ float: 'right' }} id='deleteCase' onClick={ () => deleteCase(case) }>Poista</Button>
+                        <Button variant='danger' style={{ float: 'right' }} id='deleteCase' onClick={ () => deleteCase(c) }>Poista</Button>
                         <Button variant='primary' style={{ float: 'right' }} id='editCase'>Muokkaa</Button>
                         </div>
                     </div>

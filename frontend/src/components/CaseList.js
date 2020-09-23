@@ -11,8 +11,8 @@ const CaseList = () => {
             <h2>Tapaukset</h2>
             {cases ?
                 <ul>
-                    {cases.map(case =>
-                        <CaseListing key={ case.id } case={ case } admin={user?.admin}/>
+                    {cases.map(c =>
+                        <CaseListing key={ c.id } case={ c } admin={user?.admin}/>
                     )}
                 </ul>
                 :
