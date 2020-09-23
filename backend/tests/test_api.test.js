@@ -96,6 +96,41 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
         expect(testsAfterAdding.body).toHaveLength(testsBeforeAdding.body.length)
     })
+
+    test('cannot add two tests with same name', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const testsBeforeAdding = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const newTest1 = {
+            name: 'newTest',
+            type: 'newType1'
+        }
+        const newTest2 = {
+            name: 'newTest',
+            type: 'newType2'
+        }
+        await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest1)
+            .expect(201)
+        const res2 = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest2)
+            .expect(400)
+        expect(res2.body.error).toEqual('Test validation failed: name: Testin nimen tulee olla uniikki.')
+        const testsAfterAdding = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(testsAfterAdding.body).toHaveLength(testsBeforeAdding.body.length + 1)
+    })
 })
 
 afterAll(async () => {
