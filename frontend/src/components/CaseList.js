@@ -14,7 +14,7 @@ const CaseList = () => {
             {cases ?
                 <ul>
                     {cases.map(case =>
-                        <CaseListing key={ case.id } case={ case } admin={user?.admin}></CaseListing>
+                        <CaseListing key={ case.id } case={ case } admin={user?.admin}/>
                     )}
                 </ul>
                 :
