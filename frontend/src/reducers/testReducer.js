@@ -9,6 +9,9 @@ const reducer = (state = null, action) => {
     case 'ADD_TEST': {
         return [...state, action.data]
     }
+    case 'DELETE_TEST': {
+        return state.filter(test => test.id !== action.id)
+    }
     default: return state
     }
 }
@@ -40,6 +43,21 @@ export const addTest = (name, type, contImg, posImg, negImg, token) => {
             })
         }
     }
+}
+
+export const deleteTest = (id, token) => {
+    return async dispatch => {
+        await testService.deleteTest(id, token)
+        dispatch(setNotification({ message: 'Test successfully deleted', success: true }))
+        dispatch({
+            type: 'DELETE_TEST',
+            data: id
+        })
+    }
+}
+
+export const updateTest = (name, type, contImg, photoPos, photoNeg, token) => {
+
 }
 
 export default reducer
