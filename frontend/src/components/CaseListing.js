@@ -7,7 +7,7 @@ const CaseListing = ({ case, admin }) => {
             <ListGroup.Item key={ case.id }>
                 {admin ?
                     <div>
-                        { case.name } {  }
+                        { case.name }
                         <Button variant='danger' style={{ float: 'right' }} id='delete' onClick={() => deleteBact(bacterium)}>Poista</Button>
                         <Button variant='primary' style={{ float: 'right' }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
                     </div>
@@ -19,4 +19,4 @@ const CaseListing = ({ case, admin }) => {
     )
 }
 
-export default BacteriumListing
+export default CaseListing
