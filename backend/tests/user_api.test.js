@@ -118,8 +118,9 @@ describe('register ', () => {
     })
 })
 
-afterAll(() => {
-    mongoose.connection.close()
+afterAll(async () => {
+    await mongoose.connection.close()
+    await mongoose.disconnect()
 })
 
 // "error": "Invalid username or password"
