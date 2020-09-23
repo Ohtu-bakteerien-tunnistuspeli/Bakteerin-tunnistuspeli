@@ -6,6 +6,8 @@ const api = supertest(app)
 
 const Bacterium = require('../models/bacterium')
 const User = require('../models/user')
+const Test = require('../models/testCase')
+const Case = require('../models/case')
 
 const initialBacteria = [{
     name: 'koli'
@@ -212,6 +214,90 @@ describe('deletion of a bacterium', () => {
             .set('Authorization', `bearer ${user.body.token}`)
         expect(resAfterDelete.body).toHaveLength(initialLength)
     })
+
+    test('admin cannot delete a bacterium if it is used in test', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const res = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const initialLength = res.body.length
+        const newBacterium = {
+            name: 'testing bacterium'
+        }
+        await api
+            .post('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newBacterium)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        const resAfterAdding = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(resAfterAdding.body).toHaveLength(initialLength + 1)
+        await Test({
+            name: 'testTest',
+            type: 'testType',
+            bacteriaSpecificImages: [{ bacterium: resAfterAdding.body[0].id, contentType: 'image' }]
+        }).save()
+        const deletionRes = await api
+            .delete(`/api/bacteria/${resAfterAdding.body[0].id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(deletionRes.body.error).toContain('Bakteeri on käytössä testissä eikä sitä voi poistaa.')
+        const resAfterDelete = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(resAfterDelete.body).toHaveLength(initialLength + 1)
+    })
+
+    test('admin cannot delete a bacterium if it is used in case', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const res = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const initialLength = res.body.length
+        const newBacterium = {
+            name: 'testing bacterium'
+        }
+        await api
+            .post('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newBacterium)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        const resAfterAdding = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(resAfterAdding.body).toHaveLength(initialLength + 1)
+        await Case({
+            name: 'testCase',
+            type: 'testType',
+            anamnesis: 'test anamnesis',
+            completitionText: 'test completitionText',
+            bacterium: resAfterAdding.body[0].id
+        }).save()
+        const deletionRes = await api
+            .delete(`/api/bacteria/${resAfterAdding.body[0].id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(deletionRes.body.error).toContain('Bakteeri on käytössä tapauksessa eikä sitä voi poistaa.')
+        const resAfterDelete = await api
+            .get('/api/bacteria')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(resAfterDelete.body).toHaveLength(initialLength + 1)
+    })
 })
 
 describe('modify a bacterium', () => {
@@ -230,7 +316,7 @@ describe('modify a bacterium', () => {
         const bacteriumToUpdate = res.body[0]
         bacteriumToUpdate.name = 'Bakteeri'
         const updatedBacterium = await api
-            .put(`/api/bacteria/${ bacteriumToUpdate.id }`)
+            .put(`/api/bacteria/${bacteriumToUpdate.id}`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacteriumToUpdate)
             .expect(200)
@@ -255,7 +341,7 @@ describe('modify a bacterium', () => {
         const bacteriumToUpdate = res.body[0]
         bacteriumToUpdate.name = 'Bakteeri'
         const updatetBacterium = await api
-            .put(`/api/bacteria/${ bacteriumToUpdate.id }`)
+            .put(`/api/bacteria/${bacteriumToUpdate.id}`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacteriumToUpdate)
             .expect(401)
@@ -278,7 +364,7 @@ describe('modify a bacterium', () => {
         const bacteriumToUpdate = bacteriaList.body[0]
         bacteriumToUpdate.name = 'tetanus'
         const updatedBacterium = await api
-            .put(`/api/bacteria/${ bacteriumToUpdate.id }`)
+            .put(`/api/bacteria/${bacteriumToUpdate.id}`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacteriumToUpdate)
             .expect(400)
