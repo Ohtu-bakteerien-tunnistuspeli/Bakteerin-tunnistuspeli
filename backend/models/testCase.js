@@ -14,6 +14,14 @@ const testSchema = mongoose.Schema({
         maxlength: [100, 'Testin tyypin tulee olla enintään 100 merkkiä pitkä.'],
         required: true,
     },
+    controlImage: {
+        data: {
+            type: Buffer
+        },
+        contentType: {
+            type: String
+        }
+    },
     positiveResultImage: {
         data: {
             type: Buffer
