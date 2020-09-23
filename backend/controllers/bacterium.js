@@ -1,5 +1,7 @@
 const bacteriumRouter = require('express').Router()
 const Bacterium = require('../models/bacterium')
+const Test = require('../models/testCase')
+const Case = require('../models/case')
 
 bacteriumRouter.get('/', async (request, response) => {
     if (request.user) {
@@ -27,6 +29,21 @@ bacteriumRouter.post('/', async (request, response) => {
 bacteriumRouter.delete('/:id', async (request, response) => {
     if (request.user.admin) {
         try {
+            const bacteriumToDelete = await Bacterium.findById(request.params.id)
+            const testsUsingBacterium = await Test.find({ 'bacteriaSpecificImages.bacterium': bacteriumToDelete }).populate({
+                path: 'bacteriaSpecificImages.bacterium',
+                model: 'Bacterium'
+            })
+            const casesUsingBacterium = await Case.find({ bacterium: bacteriumToDelete }).populate({
+                path: 'bacterium',
+                model: 'Bacterium'
+            })
+            if (testsUsingBacterium.length > 0) {
+                return response.status(400).json({ error: 'Bakteeri on käytössä testissä eikä sitä voi poistaa.' })
+            }
+            if (casesUsingBacterium.length > 0) {
+                return response.status(400).json({ error: 'Bakteeri on käytössä tapauksessa eikä sitä voi poistaa.' })
+            }
             await Bacterium.findByIdAndRemove(request.params.id)
             response.status(204).end()
         } catch (error) {

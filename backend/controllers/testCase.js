@@ -14,7 +14,10 @@ const upload = multer({ storage, fileFilter })
 
 testRouter.get('/', async (request, response) => {
     if (request.user) {
-        const tests = await Test.find({}).populate('Bacterium', { name: 1 })
+        const tests = await Test.find({}).populate({
+            path: 'bacteriaSpecificImages.bacterium',
+            model: 'Bacterium'
+        })
         response.json(tests.map(test => test.toJSON()))
     } else {
         throw Error('JsonWebTokenError')
@@ -29,10 +32,10 @@ testRouter.post('/', upload.fields([{ name: 'positiveResultImage', maxCount: 1 }
                 type: request.body.type,
                 bacteriaSpecificImages: []
             })
-            if(request.files.positiveResultImage) {
+            if (request.files.positiveResultImage) {
                 test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
             }
-            if(request.files.negativeResultImage) {
+            if (request.files.negativeResultImage) {
                 test.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
             }
             if (request.files.bacteriaSpecificImages) {
