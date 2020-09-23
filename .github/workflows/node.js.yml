@@ -55,6 +55,9 @@ jobs:
     - run: npm install
       env: 
         MONGODB_URI: mongodb://localhost:27017/test
-        SECRET: salainen
+        SECRET: 'salainen'
     - run: echo 'heck'
     - run: npm run test2
+      env: 
+        MONGODB_URI: mongodb://localhost:27017/test
+        SECRET: 'salainen'
