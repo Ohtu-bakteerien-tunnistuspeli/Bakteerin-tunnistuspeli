@@ -9,6 +9,7 @@ const TestEditForm = (test) => {
     const [newType, setNewType] = useState(test.type)
     const [photoPos, setPhotoPos] = useState(test.positiveResultImage)
     const [photoNeg, setPhotoNeg] = useState(test.negativeResultImage)
+    const [photoControl, setPhotoControl] = useState()
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
@@ -41,6 +42,13 @@ const TestEditForm = (test) => {
                     <option value='viljely'>Viljely</option>
                     <option value="testi">Testi</option>
                 </select>
+                <p>Kontrollikuva</p>
+                <input
+                    id='editCtrlImg'
+                    value= { photoControl }
+                    type='file'
+                    onChange={ ({ target }) => setPhotoControl(target.value.controlImage) }
+                />
                 <p>Positiivinen oletuskuva</p>
                 <input
                     id='editTestPosImg'
