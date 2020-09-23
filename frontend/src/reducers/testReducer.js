@@ -50,12 +50,16 @@ export const addTest = (name, type, contImg, posImg, negImg, token) => {
 
 export const deleteTest = (id, token) => {
     return async dispatch => {
-        await testService.deleteTest(id, token)
-        dispatch(setNotification({ message: 'Test successfully deleted', success: true }))
-        dispatch({
-            type: 'DELETE_TEST',
-            data: id
-        })
+        const response = await testService.deleteTest(id, token)
+        if (response.status !== 204) {
+            dispatch(setNotification({ message: response.error, success: false }))
+        } else {
+            dispatch(setNotification({ message: 'Test successfully deleted', success: true }))
+            dispatch({
+                type: 'DELETE_TEST',
+                data: id
+            })
+        }
     }
 }
 
