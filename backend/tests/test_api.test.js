@@ -131,6 +131,86 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
         expect(testsAfterAdding.body).toHaveLength(testsBeforeAdding.body.length + 1)
     })
+
+    test('multiple tests with same type can be added', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const newTest1 = {
+            name: 'newTest1',
+            type: 'sameType'
+        }
+        const newTest2 = {
+            name: 'newTest2',
+            type: 'sameType'
+        }
+        await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest1)
+            .expect(201)
+        await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest2)
+            .expect(201)
+    })
+
+    test('test name is required', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const newTest = {
+            type: 'newType'
+        }
+        const res = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest)
+            .expect(400)
+        expect(res.body.error).toEqual('Test validation failed: name: Path `name` is required.')
+    })
+
+    test('test name is required length is at least two', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const testsBeforeAdding = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const newTest1 = {
+            name: 't',
+            type: 'newType'
+        }
+        const newTest2 = {
+            name: 'tt',
+            type: 'newType'
+        }
+        const res1 = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest1)
+            .expect(400)
+        expect(res1.body.error).toEqual('Test validation failed: name: Testin nimen tulee olla vähintään 2 merkkiä pitkä.')
+        await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest2)
+            .expect(201)
+        const testsAfterAdding = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(testsAfterAdding.body).toHaveLength(testsBeforeAdding.body.length + 1)
+    })
 })
 
 afterAll(async () => {
