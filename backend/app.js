@@ -53,7 +53,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     mongoose.set('useCreateIndex', true)
     mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 } else {
-    var mongoDB = 'mongodb://127.0.0.1/27017/my_database'
+    var mongoDB = 'mongodb://localhost:27017/test'
     mongoose.connect(mongoDB, { useNewUrlParser: true })
     var db = mongoose.connection
     db.on('error', console.error.bind(console, 'MongoDB connection error:'))
