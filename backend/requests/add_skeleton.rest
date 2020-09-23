@@ -1,0 +1,6 @@
+POST http://localhost:3001/api/skeleton/add_skel
+Content-Type: application/json
+
+{
+    "name": "tester"
+}
