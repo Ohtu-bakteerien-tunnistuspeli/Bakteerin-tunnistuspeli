@@ -264,6 +264,62 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
         expect(testsAfterAdding.body).toHaveLength(testsBeforeAdding.body.length + 1)
     })
+
+    test('test name cannot be longer than 100 characters', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const newTest1 = {
+            name: new Array(101).join('a'),
+            type: 'newType'
+        }
+        const newTest2 = {
+            name: new Array(102).join('a'),
+            type: 'newType'
+        }
+        await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest1)
+            .expect(201)
+        const res = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest2)
+            .expect(400)
+        expect(res.body.error).toEqual('Test validation failed: name: Testin nimen tulee olla enintään 100 merkkiä pitkä.')
+    })
+
+    test('test type cannot be longer than 100 characters', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const newTest1 = {
+            name: 'newTest1',
+            type: new Array(101).join('a')
+        }
+        const newTest2 = {
+            name: 'newTest2',
+            type: new Array(102).join('a')
+        }
+        await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest1)
+            .expect(201)
+        const res = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest2)
+            .expect(400)
+        expect(res.body.error).toEqual('Test validation failed: type: Testin tyypin tulee olla enintään 100 merkkiä pitkä.')
+    })
 })
 
 afterAll(async () => {
