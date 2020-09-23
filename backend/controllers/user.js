@@ -7,14 +7,21 @@ const config = require('../utils/config')
 userRouter.post('/login', async (request, response) => {
     const body = request.body
     const user = await User.findOne({ username: body.username })
-    const passwordCorrect = user === null
-        ? false
-        : await bcrypt.compare(body.password, user.passwordHash)
-    if (!(user && passwordCorrect)) {
+    try {
+        const passwordCorrect = user === null
+            ? false
+            : await bcrypt.compare(body.password, user.passwordHash)
+        if (!(user && passwordCorrect)) {
+            return response.status(400).json({
+                error: 'Invalid username or password'
+            })
+        }
+    } catch (error) {
         return response.status(400).json({
             error: 'Invalid username or password'
         })
     }
+
     const userForToken = {
         username: user.username,
         id: user._id,

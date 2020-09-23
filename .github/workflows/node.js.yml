@@ -38,7 +38,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12.x, 14.x]
         mongodb-version: [4.0, 4.2]
 
     steps:
@@ -53,8 +53,8 @@ jobs:
         mongodb-version: ${{ matrix.mongodb-version }}
     - run: mongo --version
     - run: npm install
+    - run: echo 'heck'
+    - run: npm run test2
       env: 
         MONGODB_URI: mongodb://localhost:27017/test
-        SECRET: salainen
-    - run: echo 'heck'
-    - run: npm test
+        SECRET: 'salainen'
