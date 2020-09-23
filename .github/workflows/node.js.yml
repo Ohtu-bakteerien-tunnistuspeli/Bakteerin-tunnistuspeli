@@ -57,4 +57,4 @@ jobs:
         MONGODB_URI: mongodb://localhost:27017/test
         SECRET: salainen
     - run: echo 'heck'
-    - run: npm test
+    - run: npm run test2
