@@ -53,6 +53,7 @@ jobs:
         mongodb-version: ${{ matrix.mongodb-version }}
     - run: mongo --version
     - run: npm install
-      env: MONGODB_URI=mongodb://localhost:27017/test
+      env: 
+        MONGODB_URI: mongodb://localhost:27017/test
     - run: echo 'heck'
     - run: npm test
