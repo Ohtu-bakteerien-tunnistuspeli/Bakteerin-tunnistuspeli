@@ -240,7 +240,6 @@ describe('modify a bacterium', () => {
             .send(bacteriumToUpdate)
             .expect(200)
             .expect('Content-Type', /application\/json/)
-        console.log(updatetBacterium.body)
 
         expect(bacteriumToUpdate.id).toEqual(updatetBacterium.body.id)
         expect(updatetBacterium.body.name).toEqual('Bakteeri')

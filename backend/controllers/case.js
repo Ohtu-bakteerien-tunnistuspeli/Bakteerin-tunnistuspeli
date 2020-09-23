@@ -32,7 +32,12 @@ caseRouter.post('/', async (request, response) => {
                 name: request.body.name,
             })
             if (request.body.bacterium) {
-                const bacterium = await Bacterium.findById(request.body.bacterium)
+                let bacterium
+                try {
+                    bacterium = await Bacterium.findById(request.body.bacterium)
+                } catch (e) {
+                    return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
+                }
                 if (!bacterium) {
                     return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
                 }
@@ -53,7 +58,15 @@ caseRouter.post('/', async (request, response) => {
                     const newTestGroup = []
                     for (let k = 0; k < request.body.testGroups[i].length; k++) {
                         const test = request.body.testGroups[i][k]
-                        const testFromDb = await Test.findById(test.testId)
+                        let testFromDb
+                        try {
+                            testFromDb = await Test.findById(test.testId)
+                        } catch (e) {
+                            return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                        }
+                        if(!testFromDb) {
+                            return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                        }
                         const testToAdd = {
                             test: testFromDb,
                             isRequired: test.isRequired,
