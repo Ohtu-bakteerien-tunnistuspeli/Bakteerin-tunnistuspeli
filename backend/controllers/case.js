@@ -1,7 +1,7 @@
 const caseRouter = require('express').Router()
 const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
-const Test = require('../models/test')
+const Test = require('../models/testCase')
 const isComplete = (caseToCheck) => {
     if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completitionText && caseToCheck.samples && caseToCheck.testGroups) {
         return true

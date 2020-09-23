@@ -1,5 +1,5 @@
 const testRouter = require('express').Router()
-const Test = require('../models/test')
+const Test = require('../models/testCase')
 const Bacterium = require('../models/bacterium')
 const multer = require('multer')
 const fileFilter = (req, file, cb) => {
