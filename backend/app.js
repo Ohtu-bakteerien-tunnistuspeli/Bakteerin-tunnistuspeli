@@ -52,8 +52,6 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     mongoose.set('useFindAndModify', false)
     mongoose.set('useCreateIndex', true)
     mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-} else if (process.env.NODE_ENV === 'test2') {
-    console.log('im here for the gh actions')
 }
 app.use(cors())
 app.use(express.json())
