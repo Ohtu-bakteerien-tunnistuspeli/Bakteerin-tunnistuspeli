@@ -33,7 +33,7 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
             if (request.files) {
                 if (request.files.controlImage) {
                     test.controlImage = { data: Buffer.from(request.files.controlImage[0].buffer).toString('base64'), contentType: request.files.controlImage[0].mimetype }
-                }          
+                }
                 if (request.files.positiveResultImage) {
                     test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
                 }
@@ -58,7 +58,7 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
     }
 })
 
-testRouter.put('/:id', upload.fields([{name: 'controlImage', maxCount: 1 },{name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
+testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
     if (request.user.admin) {
         try {
             const testToUpdate = {
@@ -70,7 +70,7 @@ testRouter.put('/:id', upload.fields([{name: 'controlImage', maxCount: 1 },{name
             if (request.files) {
                 if (request.files.controlImage) {
                     test.controlImage = { data: Buffer.from(request.files.controlImage[0].buffer).toString('base64'), contentType: request.files.controlImage[0].mimetype }
-                }                
+                }
                 if (request.files.positiveResultImage) {
                     test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
                 }
