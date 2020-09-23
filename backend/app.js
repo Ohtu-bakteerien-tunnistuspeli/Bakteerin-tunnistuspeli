@@ -54,10 +54,6 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 } else if (process.env.NODE_ENV === 'test2') {
     console.log('im here for the gh actions')
-    var mongoDB = 'mongodb://127.0.0.1/my_database'
-    mongoose.connect(mongoDB, { useNewUrlParser: true })
-    var db = mongoose.connection
-    db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 }
 app.use(cors())
 app.use(express.json())
