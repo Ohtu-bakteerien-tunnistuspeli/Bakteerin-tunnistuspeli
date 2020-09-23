@@ -74,4 +74,13 @@ app.use('/api/test', testRouter)
 const caseRouter = require('./controllers/case')
 app.use('/api/case', caseRouter)
 app.use(security.authorizationHandler)
+if (process.env.NODE_ENV === 'production') {
+    app.get('*', (req, res) => {
+        res.sendFile(`${__dirname}/build/index.html`, (err) => {
+            if (err) {
+                res.status(500).send(err)
+            }
+        })
+    })
+}
 module.exports = app
