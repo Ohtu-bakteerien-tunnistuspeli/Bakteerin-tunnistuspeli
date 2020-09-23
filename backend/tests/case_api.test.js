@@ -71,7 +71,7 @@ describe('addition of a case ', () => {
                 alternativeTests: false
             }]]
         }
-        const resp = await api
+        await api
             .post('/api/case')
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newCase)
