@@ -12,6 +12,9 @@ const reducer = (state = null, action) => {
     case 'DELETE_TEST': {
         return state.filter(test => test.id !== action.id)
     }
+    case 'UPDATE_TEST': {
+        return state.map(test => test.id !== action.data.id)
+    }
     default: return state
     }
 }
@@ -56,8 +59,18 @@ export const deleteTest = (id, token) => {
     }
 }
 
-export const updateTest = (name, type, contImg, photoPos, photoNeg, token) => {
-
+export const updateTest = (id, name, type, contImg, photoPos, photoNeg, token) => {
+    return async dispatch => {
+        const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, token)
+        if (test.error) {
+            dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
+        } else {
+            dispatch({
+                type: 'UPDATE_TEST',
+                data: test
+            })
+        }
+    }
 }
 
 export default reducer
