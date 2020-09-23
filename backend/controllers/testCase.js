@@ -110,7 +110,7 @@ testRouter.delete('/:id', async (request, response) => {
                     }
                 })
                 console.log('cases',cases)
-                if (cases) {
+                if (cases > 0) {
                     return response.status(400).json({ error: 'Testiä ei voida poistaa, koska se on jo käytössä tapauksessa' })
                 }
             } catch (error){
