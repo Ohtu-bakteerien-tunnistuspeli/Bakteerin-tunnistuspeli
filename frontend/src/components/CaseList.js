@@ -1,6 +1,6 @@
 import React from 'react'
-import CaseListing from './CaseListing'
 import { useSelector } from 'react-redux'
+import CaseListing from './CaseListing'
 
 const CaseList = () => {
     const cases = useSelector(state => state.case)?.sort((case1, case2) => case1.name.localeCompare(case2.name))
@@ -18,7 +18,7 @@ const CaseList = () => {
                     )}
                 </ul>
                 :
-                <div>Bakteereja haetaan</div>
+                <div>Tapauksia haetaan</div>
             }
         </div>
     )
