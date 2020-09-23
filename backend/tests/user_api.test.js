@@ -54,7 +54,7 @@ describe('register ', () => {
             })
             .expect(200)
     })
-    test('in valid user cannot register', async () => {
+    test('invalid user cannot register', async () => {
         const invalidUsers = [{
             username: 'usernameNew',
             password: 'testPassword'

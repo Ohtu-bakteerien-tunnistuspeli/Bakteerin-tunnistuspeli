@@ -188,7 +188,6 @@ describe('deletion of a bacterium', () => {
             .get('/api/bacteria')
             .set('Authorization', `bearer ${user.body.token}`)
         expect(resAfterDelete.body).toHaveLength(initialLength)
-        expect(resAfterAdding.body).toHaveLength(initialLength + 1)
     })
 
     test('user cannot delete a bacterium', async () => {
@@ -202,13 +201,9 @@ describe('deletion of a bacterium', () => {
             .get('/api/bacteria')
             .set('Authorization', `bearer ${user.body.token}`)
         const initialLength = res.body.length
-        const newBacterium = {
-            name: 'testing bacterium'
-        }
         const deleteResponse = await api
             .delete(`/api/bacteria/${res.body[0].id}`)
             .set('Authorization', `bearer ${user.body.token}`)
-            .send(newBacterium)
             .expect(401)
             .expect('Content-Type', /application\/json/)
         expect(deleteResponse.body.error).toEqual('token missing or invalid')
@@ -234,18 +229,18 @@ describe('modify a bacterium', () => {
 
         const bacteriumToUpdate = res.body[0]
         bacteriumToUpdate.name = 'Bakteeri'
-        const updatetBacterium = await api
+        const updatedBacterium = await api
             .put(`/api/bacteria/${ bacteriumToUpdate.id }`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacteriumToUpdate)
             .expect(200)
             .expect('Content-Type', /application\/json/)
 
-        expect(bacteriumToUpdate.id).toEqual(updatetBacterium.body.id)
-        expect(updatetBacterium.body.name).toEqual('Bakteeri')
+        expect(bacteriumToUpdate.id).toEqual(updatedBacterium.body.id)
+        expect(updatedBacterium.body.name).toEqual('Bakteeri')
 
     })
-    test('user can not modify an existing bacterium', async () => {
+    test('user cannot modify an existing bacterium', async () => {
         const user = await api
             .post('/api/user/login')
             .send({
@@ -282,14 +277,14 @@ describe('modify a bacterium', () => {
 
         const bacteriumToUpdate = bacteriaList.body[0]
         bacteriumToUpdate.name = 'tetanus'
-        const updatetBacterium = await api
+        const updatedBacterium = await api
             .put(`/api/bacteria/${ bacteriumToUpdate.id }`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacteriumToUpdate)
             .expect(400)
             .expect('Content-Type', /application\/json/)
 
-        expect(updatetBacterium.body.error).toContain('Bakteerin nimen tulee olla uniikki.')
+        expect(updatedBacterium.body.error).toContain('Bakteerin nimen tulee olla uniikki.')
     })
 })
 afterAll(async () => {
