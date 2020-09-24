@@ -65,7 +65,7 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
 testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
     if (request.user.admin) {
         try {
-            const testToUpdate = {
+            let testToUpdate = {
                 name: request.body.name,
                 type: request.body.type,
                 bacteriaSpecificImages: []
