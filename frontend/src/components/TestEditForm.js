@@ -45,6 +45,7 @@ const TestEditForm = (test) => {
                 <p>Kontrollikuva</p>
                 <input
                     id='editCtrlImg'
+                    encType="multipart/form-data"
                     value= { photoControl }
                     type='file'
                     onChange={ ({ target }) => setPhotoControl(target.value.controlImage) }
@@ -52,6 +53,7 @@ const TestEditForm = (test) => {
                 <p>Positiivinen oletuskuva</p>
                 <input
                     id='editTestPosImg'
+                    encType="multipart/form-data"
                     value= { photoPos }
                     type='file'
                     onChange={ ({ target }) => setPhotoPos(target.value.posImage) }
@@ -59,6 +61,7 @@ const TestEditForm = (test) => {
                 <p>Negatiivinen oletuskuva</p>
                 <input
                     id='editTestNegImg'
+                    encType="multipart/form-data"
                     value= { photoNeg }
                     type='file'
                     onChange={ ({ target }) => setPhotoNeg(target.value.negImage) }
