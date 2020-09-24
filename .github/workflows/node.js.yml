@@ -54,7 +54,6 @@ jobs:
     - run: mongo --version
     - run: npm install
     - run: echo 'heck'
-    - run: npm run test2
+    - run: npm run test-githubactions
       env: 
-        MONGODB_URI: mongodb://localhost:27017/test
         SECRET: 'salainen'
