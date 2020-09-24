@@ -50,7 +50,7 @@ export const addTest = (name, type, contImg, posImg, negImg, token) => {
 
 export const deleteTest = (id, token) => {
     return async dispatch => {
-        const response = await testService.delete(id, token)
+        const response = await testService.deleteTest(id, token)
         if (response.status !== 204) {
             dispatch(setNotification({ message: response.error, success: false }))
         } else {

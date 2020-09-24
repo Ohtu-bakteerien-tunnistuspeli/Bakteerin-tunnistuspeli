@@ -48,10 +48,15 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
         })
     })
 
-} else if (process.env.NODE_ENV === 'production' ){
+} else if (process.env.NODE_ENV === 'production') {
     mongoose.set('useFindAndModify', false)
     mongoose.set('useCreateIndex', true)
     mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+} else {
+    var mongoDB = 'mongodb://localhost:27017/test'
+    mongoose.connect(mongoDB, { useNewUrlParser: true })
+    var db = mongoose.connection
+    db.on('error', console.error.bind(console, 'MongoDB connection error:'))
 }
 app.use(cors())
 app.use(express.json())
@@ -64,5 +69,18 @@ const userRouter = require('./controllers/user')
 app.use('/api/user', userRouter)
 const bacteriumRouter = require('./controllers/bacterium')
 app.use('/api/bacteria', bacteriumRouter)
+const testRouter = require('./controllers/testCase')
+app.use('/api/test', testRouter)
+const caseRouter = require('./controllers/case')
+app.use('/api/case', caseRouter)
 app.use(security.authorizationHandler)
+if (process.env.NODE_ENV === 'production') {
+    app.get('*', (req, res) => {
+        res.sendFile(`${__dirname}/build/index.html`, (err) => {
+            if (err) {
+                res.status(500).send(err)
+            }
+        })
+    })
+}
 module.exports = app
