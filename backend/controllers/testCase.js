@@ -101,22 +101,31 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
 testRouter.delete('/:id', async (request, response) => {
     if (request.user.admin) {
         try {
-            const testToDelete = await Test.findById(request.params.id)
-            try {
-                const cases = await Case.find({ 'testGroups.test': testToDelete }).populate({
-                    path: 'testGroups.test',
-                    model: 'Test',
-                    populate: {
-                        path: 'bacteriaSpecificImages.bacterium',
-                        model: 'Bacterium'
-                    }
-                })
-                console.log('cases',cases)
-                if (cases > 0) {
-                    return response.status(400).json({ error: 'Testiä ei voida poistaa, koska se on jo käytössä tapauksessa' })
+            const testToDelete = await Test.findById(request.params.id).populate({
+                path: 'bacteriaSpecificImages.bacterium',
+                model: 'Bacterium'
+            })
+
+            const cases = await Case.find({ }).populate({
+                path: 'testGroups.test',
+                model: 'Test',
+                populate: {
+                    path: 'bacteriaSpecificImages.bacterium',
+                    model: 'Bacterium'
                 }
-            } catch (error){
-                return response.status(400).json({ error: error.message })
+            })
+            let testIsInUse = false
+            cases.forEach(element => {
+                for (let i = 0; i < element.testGroups.length; i++) {
+                    for (let j = 0; j < element.testGroups[i].length; j++) {
+                        if (element.testGroups[i][j].test.name === testToDelete.name) {
+                            testIsInUse = true
+                        }
+                    }
+                }
+            })
+            if (testIsInUse) {
+                return response.status(400).json({ error: 'Testi on käytössä ainakin yhdessä taupaksessa, eikä sitä voida poistaa' })
             }
 
             await Test.findByIdAndRemove(request.params.id)
