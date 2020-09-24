@@ -6,6 +6,7 @@ import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
 import BacteriaList from './components/BacteriaList'
 import CaseList from './components/CaseList'
+import TestList from './components/TestList'
 import Notification from './components/Notification'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 const App = () => {
@@ -87,6 +88,9 @@ const App = () => {
                         </Route>
                         <Route path='/tapausLista'>
                             <CaseList />
+                        </Route>
+                        <Route path='/testiLista'>
+                            <TestList />
                         </Route>
                         <Route path='/'>
                             <Redirect to='/bakteeriLista'></Redirect>
