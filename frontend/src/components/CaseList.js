@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import CaseListing from './CaseListing'
+import CaseForm from './CaseForm'
 
 const CaseList = () => {
     const cases = useSelector(state => state.case)?.sort((case1, case2) => case1.name.localeCompare(case2.name))
@@ -17,6 +18,11 @@ const CaseList = () => {
                 </ul>
                 :
                 <div>Ei tapauksia</div>
+            }
+            {user?.admin ?
+                <CaseForm></CaseForm>
+                :
+                <></>
             }
         </div>
     )
