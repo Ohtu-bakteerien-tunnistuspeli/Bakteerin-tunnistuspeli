@@ -300,7 +300,7 @@ describe('deletion of a bacterium', () => {
     })
 })
 
-describe('modify a bacterium', () => {
+describe('modifying a bacterium', () => {
     test('admin can modify an existing bacterium', async () => {
         const user = await api
             .post('/api/user/login')
@@ -309,11 +309,7 @@ describe('modify a bacterium', () => {
                 password: 'admin'
             })
 
-        const res = await api
-            .get('/api/bacteria')
-            .set('Authorization', `bearer ${user.body.token}`)
-
-        const bacteriumToUpdate = res.body[0]
+        const bacteriumToUpdate = await Bacterium.findOne({ name: 'koli' })
         bacteriumToUpdate.name = 'Bakteeri'
         const updatedBacterium = await api
             .put(`/api/bacteria/${bacteriumToUpdate.id}`)
@@ -334,11 +330,7 @@ describe('modify a bacterium', () => {
                 password: 'password'
             })
 
-        const res = await api
-            .get('/api/bacteria')
-            .set('Authorization', `bearer ${user.body.token}`)
-
-        const bacteriumToUpdate = res.body[0]
+        const bacteriumToUpdate = await Bacterium.findOne({ name: 'koli' })
         bacteriumToUpdate.name = 'Bakteeri'
         const updatetBacterium = await api
             .put(`/api/bacteria/${bacteriumToUpdate.id}`)
@@ -357,11 +349,7 @@ describe('modify a bacterium', () => {
                 password: 'admin'
             })
 
-        const bacteriaList = await api
-            .get('/api/bacteria')
-            .set('Authorization', `bearer ${user.body.token}`)
-
-        const bacteriumToUpdate = bacteriaList.body[0]
+        const bacteriumToUpdate =  await Bacterium.findOne({ name: 'koli' })
         bacteriumToUpdate.name = 'tetanus'
         const updatedBacterium = await api
             .put(`/api/bacteria/${bacteriumToUpdate.id}`)
