@@ -4,9 +4,9 @@ import thunk from 'redux-thunk'
 import skeletonReducer from './reducers/skeletonReducer'
 import userReducer from './reducers/userReducer'
 import bacteriaReducer from './reducers/bacteriaReducer'
-
+import testReducer from './reducers/testReducer'
 import notificationReducer from './reducers/notificationReducer'
-const reducer = combineReducers({ message: skeletonReducer, user: userReducer, bacteria: bacteriaReducer, notification: notificationReducer })
+const reducer = combineReducers({ message: skeletonReducer, user: userReducer, bacteria: bacteriaReducer, notification: notificationReducer, test: testReducer })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 
