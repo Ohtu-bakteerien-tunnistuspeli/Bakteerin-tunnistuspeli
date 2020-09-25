@@ -6,6 +6,7 @@ const api = supertest(app)
 
 const Test = require('../models/testCase')
 const User = require('../models/user')
+const { put } = require('../app')
 
 const initialTestCases = [
     { name: 'test1', type: 'type1' },
@@ -319,6 +320,133 @@ describe('addition of a test', () => {
             .send(newTest2)
             .expect(400)
         expect(res.body.error).toEqual('Test validation failed: type: Testin tyypin tulee olla enintään 100 merkkiä pitkä.')
+    })
+})
+
+describe('modifying of a test', () => {
+    test('admin can modify existing test', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const newTest = {
+            name: 'newTest',
+            type: 'newType'
+        }
+        const res = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest)
+        const resTest = {
+            ...res.body,
+            name: 'modified name'
+        }
+        await api
+            .put(`/api/test/${resTest.id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(resTest)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const allTests = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const testNames = allTests.body.map(test => test.name)
+        expect(testNames).toContain('modified name')
+    })
+
+    test('user cannot modify existing test', async () => {
+        const adminUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const userUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'userNew',
+                password: 'user'
+            })
+        const newTest = {
+            name: 'newTest',
+            type: 'newType'
+        }
+        const res = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${adminUser.body.token}`)
+            .send(newTest)
+        const resTest = {
+            ...res.body,
+            name: 'modified name'
+        }
+        await api
+            .put(`/api/test/${resTest.id}`)
+            .set('Authorization', `bearer ${userUser.body.token}`)
+            .send(resTest)
+            .expect(401)
+        const allTests = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${adminUser.body.token}`)
+        const testNames = allTests.body.map(test => test.name)
+        expect(testNames).toContain('newTest')
+    })
+
+    /*
+    test('cannot modify test that does not exist', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const newTest = {
+            id: 'doesnotexist',
+            name: 'testThatDoesNotExist',
+            type: 'type'
+        }
+        await api
+            .put(`/api/test/${newTest.id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest)
+            .expect(400)
+    })
+    */
+
+    test('modified name needs to be unique', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const newTest1 = {
+            name: 'uniqueName',
+            type: 'type'
+        }
+        const newTest2 = {
+            name: 'newTest',
+            type: 'type'
+        }
+        await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest1)
+        const res = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest2)
+        const modifiedTest = {
+            ...res.body,
+            name: 'uniqueName'
+        }
+        const modifyRes = await api
+            .put(`/api/test/${modifiedTest.id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(modifiedTest)
+            .expect(400)
+        expect(modifyRes.body.error).toEqual('Validation failed: name: Testin nimen tulee olla uniikki.')
     })
 })
 
