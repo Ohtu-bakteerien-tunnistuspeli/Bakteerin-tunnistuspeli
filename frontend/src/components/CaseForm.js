@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCase } from '../reducers/caseReducer'
+import { addCase2 } from '../reducers/caseReducer'
 import { Modal, Button, ButtonGroup, Form } from 'react-bootstrap'
 
 const useField = (type) => {
@@ -16,7 +16,6 @@ const useField = (type) => {
 }
 
 const CaseForm = () => {
-
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     //const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const tests = [{ id: '1a2b', name: 'testi1' }, { id: '3c4d', name: 'testi2' }]
@@ -37,7 +36,7 @@ const CaseForm = () => {
 
     const addCase = (event) => {
         event.preventDefault()
-        dispatch(addCase(caseName, bacterium, anamnesis, compText, samples, testGroups, user.token))
+        dispatch(addCase2(caseName, bacterium, anamnesis, compText, samples, testGroups, user.token))
     }
 
     const [show, setShow] = useState(false)
@@ -66,7 +65,7 @@ const CaseForm = () => {
             <Modal show={show} size="lg" onHide={handleClose} >
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={addCase}>
+                    <form onSubmit={addCase}>
                         <Form.Group controlId="name">
                             <Form.Label>Nimi</Form.Label>
                             <Form.Control type={caseName.type} value={caseName.value} onChange={caseName.onChange} />
@@ -120,10 +119,11 @@ const CaseForm = () => {
                                 <p>{JSON.stringify(testGroups)}</p>
                             </ButtonGroup>
                         </Form.Group>
-                    </Form>
+                    
                     <Button variant="primary" type="submit">
                         Lisää
                     </Button>
+                    </form>
                 </Modal.Body>
             </Modal>
         </div>

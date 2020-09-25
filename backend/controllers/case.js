@@ -80,7 +80,10 @@ caseRouter.post('/', async (request, response) => {
                     testGroups.push(newTestGroup)
                 }
                 newCase.testGroups = testGroups
+            }else {
+                newCase.testGroups = null
             }
+
             newCase.complete = isComplete(newCase)
             const savedCase = await newCase.save()
             return response.status(201).json(savedCase)
