@@ -450,6 +450,50 @@ describe('modifying of a test', () => {
     })
 })
 
+describe('deleting of a test', () => {
+    test('admin can delete a test', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const testsBeforeDelete = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        await api
+            .delete(`/api/test/${testsBeforeDelete.body[0].id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect(204)
+        const testsAfterDelete = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(testsAfterDelete.body.length).toEqual(testsBeforeDelete.body.length - 1)
+    })
+
+    test('user cannot delete a test', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'userNew',
+                password: 'user'
+            })
+        const testsBeforeDelete = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const res = await api
+            .delete(`/api/test/${testsBeforeDelete.body[0].id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect(401)
+        expect(res.body.error).toContain('token missing or invalid')
+        const testsAfterDelete = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(testsAfterDelete.body.length).toEqual(testsBeforeDelete.body.length)
+    })
+
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
     await mongoose.disconnect()

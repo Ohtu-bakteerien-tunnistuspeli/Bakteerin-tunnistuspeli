@@ -129,7 +129,7 @@ testRouter.delete('/:id', async (request, response) => {
             }
 
             await Test.findByIdAndRemove(request.params.id)
-            return response.status(200).end()
+            return response.status(204).end()
         } catch (error) {
             return response.status(400).json({ error: 'Annettua testiä ei löydy tietokannasta' })
         }
