@@ -97,11 +97,9 @@ const CaseForm = () => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Testiryhmät</Form.Label>
-                            <Form.Control as="select" value={testForCase.test} onChange={(event) => setTestForCase({...testForCase, test: event.target.value})}>
-                                {console.log(testForCase)}
-                                {/*tests.forEach( test => console.log(test))*/}
+                            <Form.Control as="select" onChange={(event) => setTestForCase({...testForCase, test: JSON.parse(event.target.value)})}>
                                 {tests.map(test => 
-                                    <option key={test.id} value={test}>{test.name}</option>
+                                    <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
                                 )}
                             </Form.Control>
                             <Form.Check type="checkbox" label="Pakollinen" onChange={({ target }) => setTestForCase({ ...testForCase, required: !testForCase.required })} />
@@ -112,12 +110,14 @@ const CaseForm = () => {
                                 {/* Should be improved. Currently used for debugging/sanity check */}
                                 {testGroup.map(testForCase =>
                                     <p key={testForCase.test.id}>
-                                        Nimi:{testForCase.test.name}
-                                        Pakollinen: {testForCase.required.toString()}
-                                        Positiivinen: {testForCase.positive.toString()}
-                                        Vaihtoehtoinen: {testForCase.alternativeTests.toString()}
+                                        Nimi:{testForCase.test.name} 
+                                        Pakollinen: {testForCase.required.toString()} 
+                                        Positiivinen: {testForCase.positive.toString()} 
+                                        Vaihtoehtoinen: {testForCase.alternativeTests.toString()} 
                                     </p>)}
                                 <Button type="button" onClick={() => addTestGroup()}>Lisää testiryhmä</Button>
+                                {/* Should be improved. Currently used for debugging/sanity check */}
+                                <p>{JSON.stringify(testGroups)}</p>
                             </ButtonGroup>
                         </Form.Group>
                     </Form>
