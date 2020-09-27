@@ -6,7 +6,6 @@ const api = supertest(app)
 
 const Test = require('../models/testCase')
 const User = require('../models/user')
-const { put } = require('../app')
 
 const initialTestCases = [
     { name: 'test1', type: 'type1' },
@@ -492,6 +491,51 @@ describe('deleting of a test', () => {
         expect(testsAfterDelete.body.length).toEqual(testsBeforeDelete.body.length)
     })
 
+    test('test cannot be deleted if it is used in a case', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const newTest = {
+            name: 'newTest',
+            type: 'newType'
+        }
+        const res = await api
+            .post('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newTest)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        const testsBeforeDelete = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const newCase = {
+            name: 'testCase',
+            type: 'testType',
+            anamnesis: 'test anamnesis',
+            completitionText: 'test completitionText',
+            testGroups: [
+                [{ testId: res.body.id }]
+            ]
+        }
+        await api
+            .post('/api/case')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newCase)
+            .expect(201)
+        const deletionRes = await api
+            .delete(`/api/test/${res.body.id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(deletionRes.body.error).toContain('Testi on käytössä ainakin yhdessä taupaksessa, eikä sitä voida poistaa')
+        const testsAfterDelete = await api
+            .get('/api/test')
+            .set('Authorization', `bearer ${user.body.token}`)
+        expect(testsBeforeDelete.body.length).toEqual(testsAfterDelete.body.length)
+    })
 })
 
 afterAll(async () => {
