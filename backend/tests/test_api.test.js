@@ -392,7 +392,6 @@ describe('modifying of a test', () => {
         expect(testNames).toContain('newTest')
     })
 
-    /*
     test('cannot modify test that does not exist', async () => {
         const user = await api
             .post('/api/user/login')
@@ -405,13 +404,13 @@ describe('modifying of a test', () => {
             name: 'testThatDoesNotExist',
             type: 'type'
         }
-        await api
+        const res = await api
             .put(`/api/test/${newTest.id}`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest)
             .expect(400)
+        expect(res.body.error).toContain('Annettua testiä ei löydy tietokannasta')
     })
-    */
 
     test('modified name needs to be unique', async () => {
         const user = await api
