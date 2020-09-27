@@ -45,26 +45,29 @@ const TestEditForm = (test) => {
                 <p>Kontrollikuva</p>
                 <input
                     id='editCtrlImg'
+                    name='editCtrlImg'
                     encType="multipart/form-data"
                     value= { photoControl }
                     type='file'
-                    onChange={ ({ target }) => setPhotoControl(target.value.controlImage) }
+                    onChange={ ({ target }) => setPhotoControl(target.value.image) }
                 />
                 <p>Positiivinen oletuskuva</p>
                 <input
                     id='editTestPosImg'
+                    name='editTestPosImg'
                     encType="multipart/form-data"
                     value= { photoPos }
                     type='file'
-                    onChange={ ({ target }) => setPhotoPos(target.value.posImage) }
+                    onChange={ ({ target }) => setPhotoPos(target.value.image) }
                 />
                 <p>Negatiivinen oletuskuva</p>
                 <input
                     id='editTestNegImg'
+                    name='editTestNegImg'
                     encType="multipart/form-data"
                     value= { photoNeg }
                     type='file'
-                    onChange={ ({ target }) => setPhotoNeg(target.value.negImage) }
+                    onChange={ ({ target }) => setPhotoNeg(target.value.image) }
                 />
                 <button type='submit'>Tallenna muutokset</button>
             </form>
