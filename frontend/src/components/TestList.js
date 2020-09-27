@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import TestForm from './TestForm'
+import TestForm from './TestForm'
 import TestListing from './TestListing'
 import { deleteTest, updateTest } from '../reducers/testReducer'
 
@@ -12,8 +12,8 @@ const TestList = () => {
     const deleteTests = test => {
         dispatch(deleteTest(test, user.token))
     }
-    const updateTests = (id, name, type, contImg, photoPos, photoNeg, token) => {
-        dispatch(updateTest(id, name, type, contImg, photoPos, photoNeg, user.token))
+    const updateTests = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpecificImg,  token) => {
+        dispatch(updateTest(id, name, type, contImg, photoPos, photoNeg, bacteriaSpecificImg, user.token))
     }
 
     return (
@@ -26,13 +26,13 @@ const TestList = () => {
                     )}
                 </ul>
                 :
-                <div>Testejä haetaan</div>
+                <div>Ei testejä</div>
                 }
-        {/*    {user?.admin ?
+           {user?.admin ?
                 <TestForm></TestForm>
                 :
                 <></>
-            } */}
+            } 
 
         </div>
     )

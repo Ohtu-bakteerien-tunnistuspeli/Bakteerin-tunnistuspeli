@@ -19,6 +19,7 @@ const TestListing = ({ test, deleteTest, updateTest, isAdmin }) => {
         <ListGroup>
             <ListGroup.Item key={test.id}>
                 {test.name}
+                { console.log(test) }
                 {isModified ?
                     <>
                         {/* tähän varmaan tulisi sitten tilalle, että avaa TestEditFormin,

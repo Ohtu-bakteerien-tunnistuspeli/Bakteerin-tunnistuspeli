@@ -1,5 +1,6 @@
 import testService from '../services/test'
 import { setNotification } from '../reducers/notificationReducer'
+import bacteria from '../services/bacteria'
 
 const reducer = (state = null, action) => {
     switch (action.type) {
@@ -34,9 +35,9 @@ export const getTests = (token) => {
     }
 }
 
-export const addTest = (name, type, contImg, posImg, negImg, token) => {
+export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpeficicImg, token) => {
     return async dispatch => {
-        const test = await testService.add(name, type, contImg, posImg, negImg, token)
+        const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpeficicImg, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {
