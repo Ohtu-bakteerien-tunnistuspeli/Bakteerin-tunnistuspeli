@@ -57,7 +57,7 @@ Response body is empty.
 
 ### Errors
 `401 Unauthorized`: with error message: "token missing or invalid" if current user is unauthorized.\
-`204 Not Found`: with error message: "Annettua bakteeria ei löydy tietokannasta" : if no bacterium found with given id.\
+`204 No Content`: with error message: "Annettua bakteeria ei löydy tietokannasta" : if no bacterium found with given id.\
 `400 Bad request`: with error message: "Bakteeri on käytössä testissä eikä sitä voi poistaa." : if no bacterium found with given id.
 
 ## `PUT /api/bacteria/:id`
