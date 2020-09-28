@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../reducers/caseReducer'
-import { Modal, Button, ButtonGroup, Form } from 'react-bootstrap'
+import { Modal, Button, ButtonGroup, Form, ListGroup } from 'react-bootstrap'
 
 const useField = (type) => {
     const [value, setValue] = useState('')
@@ -51,7 +51,7 @@ const CaseForm = () => {
     }
 
     const addTestGroup = () => {
-        setTestGroups(testGroups.concat(testGroup))
+        setTestGroups([...testGroups, testGroup])
         setTestGroup([])
     }
     // caseName, bacterium, anamnesis, compText, samples, testGroups
@@ -90,8 +90,14 @@ const CaseForm = () => {
                             <Form.Control value={sample.name} onChange={({ target }) => setSample({ ...sample, name: target.value })} />
                             <Form.Check type="checkbox" label="Oikea vastaus" onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
                             <Button type="button" onClick={() => addSample(sample.name, sample.rightAnswer)}>+</Button>
+                            <ListGroup>
+                                {samples.map(sample => sample.rightAnswer ?
+                                    <ListGroup.Item variant="success" key={sample.name}>{sample.name}</ListGroup.Item> :
+                                    <ListGroup.Item variant="danger" key={sample.name}>{sample.name}</ListGroup.Item>
+                                )}
+                            </ListGroup>
                             {/* Should be improved. Currently used for debugging/sanity check */}
-                            {samples.map(sample => <p key={sample.name}>{sample.name} oikeaVastaus {sample.rightAnswer.toString()}</p>)}
+                            {/* samples.map(sample => <p key={sample.name}>{sample.name} oikeaVastaus {sample.rightAnswer.toString()}</p>) */}
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Testiryhmät</Form.Label>
@@ -104,7 +110,7 @@ const CaseForm = () => {
                             <Form.Check type="checkbox" label="Positiivinen" onChange={() => setTestForCase({ ...testForCase, positive: !testForCase.positive })} />
                             <Form.Check type="checkbox" label="Vaihtoehtoinen testi" onChange={() => setTestForCase({ ...testForCase, alternativeTests: !testForCase.alternativeTests })} />
                             <ButtonGroup vertical>
-                                <Button type="button" onClick={() => setTestGroup(testGroup.concat(testForCase))}>Lisää testi</Button>
+                                <Button type="button" onClick={() => setTestGroup([...testGroup, testForCase])}>Lisää testi</Button>
                                 {/* Should be improved. Currently used for debugging/sanity check */}
                                 {testGroup.map(testForCase =>
                                     <p key={testForCase.test.id}>
