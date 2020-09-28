@@ -33,6 +33,7 @@ const TestListing = ({ test, deleteTest, updateTest, isAdmin }) => {
             <ListGroup.Item key={test.id}>
                 {test.name} {test.type} {test.positiveResultImage ? <img src={`data:${test.positiveResultImage.contentType};base64,${positiveUrl}`}/> : <></>}
                 {test.negativeResultImage ? <img src={`data:${test.negativeResultImage.contentType};base64,${negativeUrl}`}/> : <></>}
+                {test.controlResultImage ? <img src={`data:${test.controlResultImage.contentType};base64,${controlUrl}`}/> : <></>}
                 { console.log(test) }
                 {isModified ?
                     <>
