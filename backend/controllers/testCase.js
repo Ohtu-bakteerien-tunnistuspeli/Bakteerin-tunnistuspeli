@@ -35,20 +35,21 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
             })
 
             if (request.files) {
+                console.log(request.files)
                 if (request.files.controlImage) {
-                    test.controlImage = { data: Buffer.from(request.files.controlImage[0].buffer).toString('base64'), contentType: request.files.controlImage[0].mimetype }
+                    test.controlImage = { data: request.files.controlImage[0].buffer, contentType: request.files.controlImage[0].mimetype }
                 }
                 if (request.files.positiveResultImage) {
-                    test.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
+                    test.positiveResultImage = { data: request.files.positiveResultImage[0].buffer, contentType: request.files.positiveResultImage[0].mimetype }
                 }
                 if (request.files.negativeResultImage) {
-                    test.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
+                    test.negativeResultImage = { data: request.files.negativeResultImage[0].buffer, contentType: request.files.negativeResultImage[0].mimetype }
                 }
                 if (request.files.bacteriaSpecificImages) {
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
                         const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
-                        test.bacteriaSpecificImages.push({ data: Buffer.from(file.buffer).toString('base64'), contentType: file.mimetype, bacterium })
+                        test.bacteriaSpecificImages.push({ data: file.buffer, contentType: file.mimetype, bacterium })
                     }
                 }
             }

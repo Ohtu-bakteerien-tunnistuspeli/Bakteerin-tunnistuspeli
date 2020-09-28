@@ -15,10 +15,26 @@ const TestListing = ({ test, deleteTest, updateTest, isAdmin }) => {
         setIsModified(false)
         setNewName('')
     }
+    let positiveUrl
+    if(test.positiveResultImage) {
+        positiveUrl = btoa(String.fromCharCode.apply(null, test.positiveResultImage.data.data))
+    }
+    let negativeUrl
+    if(test.negativeResultImage) {
+        negativeUrl = btoa(String.fromCharCode.apply(null, test.negativeResultImage.data.data))
+    }
+    let controlUrl
+    if(test.controlImage) {
+        controlUrl = btoa(String.fromCharCode.apply(null, test.controlImage.data.data))
+    }
+    
     return (
         <ListGroup>
             <ListGroup.Item key={test.id}>
-                {test.name}
+                {test.name} {test.type} {test.positiveResultImage ? <img src={`data:${test.positiveResultImage.contentType};base64,${positiveUrl}`} alt='positive result'/> : <></>}
+                {test.negativeResultImage ? <img src={`data:${test.negativeResultImage.contentType};base64,${negativeUrl}`} alt='negative result'/> : <></>}
+                {test.controlResultImage ? <img src={`data:${test.controlResultImage.contentType};base64,${controlUrl}`} alt='control'/> : <></>}
+                { console.log(test) }
                 {isModified ?
                     <>
                         {/* tähän varmaan tulisi sitten tilalle, että avaa TestEditFormin,
