@@ -19,6 +19,8 @@ const initialBacteria = [{
 beforeEach(async () => {
     await Bacterium.deleteMany({})
     await User.deleteMany({})
+    await Test.deleteMany({})
+    await Case.deleteMany({})
     const bacteriaObjects = initialBacteria.map(bacterium => new Bacterium(bacterium))
     const promiseArray = bacteriaObjects.map(backterium => backterium.save())
     await Promise.all(promiseArray)
@@ -349,7 +351,7 @@ describe('modifying a bacterium', () => {
                 password: 'admin'
             })
 
-        const bacteriumToUpdate =  await Bacterium.findOne({ name: 'koli' })
+        const bacteriumToUpdate = await Bacterium.findOne({ name: 'koli' })
         bacteriumToUpdate.name = 'tetanus'
         const updatedBacterium = await api
             .put(`/api/bacteria/${bacteriumToUpdate.id}`)
