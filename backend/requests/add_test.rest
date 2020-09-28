@@ -1,8 +1,7 @@
-POST http://localhost:3001/api/test
+POST http://localhost:3001/api/bacteria
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI1ZjZiNTZlMDA3NzRhODQ4NTg3ZDE1YmIiLCJpYXQiOjE2MDA4NzAxNDJ9.TG_5T-D8T8EEzoTbvWk75XxBR1LFxmK7g4vCpvlnQWQ
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI1ZjYwOWRiYTYxYjQwYTNmNDRhNzdlMmQiLCJpYXQiOjE2MDAxNjczNjR9.nl9xZV51D9tSR12WzBTZH2pCsymHI1-rFstAF8Nzafk
 
 {
-    "name": "test",
-    "type": "type"
+    "name": "koli"
 }
