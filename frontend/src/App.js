@@ -4,6 +4,7 @@ import { Switch, Route, Redirect,/* Link, useRouteMatch,*/ useHistory, Link } fr
 import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
+import Register from './components/Register'
 import BacteriaList from './components/BacteriaList'
 import CaseList from './components/CaseList'
 import TestList from './components/TestList'
@@ -40,44 +41,43 @@ const App = () => {
                         </Nav.Link>
                         */}
                         <Nav.Link href="#" as="span">
-                            { user?.admin
+                            {user?.admin
                                 ? <Link style={padding} to="/bakteeriLista">Bakteerien hallinta</Link>
-                                :   null
+                                : null
                             }
                         </Nav.Link>
                         <Nav.Link href="#" as="span">
-                            { user?.admin
+                            {user?.admin
                                 ? <Link style={padding} to="/tapausLista" >Tapausten hallinta</Link>
-                                :   null
+                                : null
                             }
                         </Nav.Link>
                         <Nav.Link href="#" as="span">
-                            { user?.admin
+                            {user?.admin
                                 ? <Link style={padding} to="/testiLista">Testien hallinta</Link>
-                                :   null
+                                : null
                             }
                         </Nav.Link>
-                    </Nav>                                   
+                    </Nav>
                     <Nav.Link href="#" as="span">
                         {user
-                            ? <em><p>Tervetuloa {user.username}</p></em> 
-                            : <Link style={padding} to="/login">Kirjaudu sisään</Link>
+                            ? <em><p>Tervetuloa {user.username}</p></em>
+                            : <Link style={padding} to="/kirjautuminen">Kirjaudu sisään</Link>
                         }
                     </Nav.Link>
-                    {/* HUOM Tarkista polku ennen käyttöön ottoa <Nav.Link href="#" as="span">
+                    <Nav.Link href="#" as="span">
                         {user
-                            ? null 
-                            : <Link style={padding} to="/signup">Rekisteröidy</Link>
+                            ? null
+                            : <Link style={padding} to="/rekisteröityminen">Rekisteröidy</Link>
                         }
                     </Nav.Link>
-                    */}
                     <Nav.Item>
-                        {user 
+                        {user
                             ? <Button id="submit" variant="primary" type="button" onClick={logoutButton}>Kirjaudu ulos</Button>
                             : null
-                        }    
+                        }
                     </Nav.Item>
-                </Navbar.Collapse>    
+                </Navbar.Collapse>
             </Navbar>
             <Notification></Notification>
             {user ?
@@ -116,11 +116,14 @@ const App = () => {
                 :
                 <>
                     <Switch>
-                        <Route path='/login'>
+                        <Route path='/kirjautuminen'>
                             <Login></Login>
                         </Route>
+                        <Route path='/rekisteröityminen'>
+                            <Register></Register>
+                        </Route>
                         <Route path='/'>
-                            <Redirect to='/login'></Redirect>
+                            <Redirect to='/kirjautuminen'></Redirect>
                         </Route>
                     </Switch>
                 </>

@@ -13,6 +13,9 @@ const reducer = (state = null, action) => {
     case 'RETURN_USER': {
         return action.data
     }
+    case 'REGISTER': {
+        return action.data
+    }
     default: return state
     }
 }
@@ -49,7 +52,7 @@ export const logout = (history) => {
             type: 'LOGOUT',
             data: null
         })
-        history.push('/login')
+        history.push('/kirjautuminen')
         dispatch(zeroBacteria())
     }
 }
@@ -66,6 +69,26 @@ export const returnUser = () => {
             type: 'RETURN_USER',
             data: user
         })
+    }
+}
+
+export const register = (username, password, history) => {
+    return async dispatch => {
+        let response = await userService.register({ username, password })
+        if (response && !response.error) {
+            dispatch(setNotification({ message: `Rekisteröidyit onnistuneesti, ${username}`, success: true }))
+            history.push('/kirjautuminen')
+        } else {
+            dispatch({
+                type: 'REGISTER',
+                data: null
+            })
+            if(response.error.includes("User validation failed")) {
+                dispatch(setNotification({ message: response.error.substring(response.error.indexOf('name: ') + 6), success: false }))
+            } else {
+                dispatch(setNotification({ message: response.error, success: false }))
+            }   
+        }
     }
 }
 
