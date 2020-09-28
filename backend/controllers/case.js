@@ -80,7 +80,7 @@ caseRouter.post('/', async (request, response) => {
                     testGroups.push(newTestGroup)
                 }
                 newCase.testGroups = testGroups
-            }else {
+            } else {
                 newCase.testGroups = null
             }
 
@@ -166,6 +166,9 @@ caseRouter.put('/:id', async (request, response) => {
             }
             changes.complete = isComplete(changes)
             const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
+            if (!updatedCase) {
+                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
+            }
             return response.status(200).json(updatedCase)
         } catch (error) {
             return response.status(400).json({ error: error.message })
