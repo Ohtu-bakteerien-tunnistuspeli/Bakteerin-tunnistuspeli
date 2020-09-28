@@ -57,7 +57,7 @@ Response body is empty.
 
 ### Errors
 `401 Unauthorized`: with error message: "token missing or invalid" if current user is unauthorized.\
-`404 Not Found`: with error message: "Annettua bakteeria ei löydy tietokannasta" : if no bacterium found with given id.\
+`204 Not Found`: with error message: "Annettua bakteeria ei löydy tietokannasta" : if no bacterium found with given id.\
 `400 Bad request`: with error message: "Bakteeri on käytössä testissä eikä sitä voi poistaa." : if no bacterium found with given id.
 
 ## `PUT /api/bacteria/:id`
@@ -76,7 +76,7 @@ Response body is modified bacterium object:
 }` 
 
 ### Errors
-`404 Not Found`: with error message: "Annettua bakteeria ei löydy tietokannasta" : if no bacterium found with given id.\
+`204 No Content`: with error message: "Annettua bakteeria ei löydy tietokannasta" : if no bacterium found with given id.\
 `401 Unauthorized`: with error message: "token missing or invalid" if current user unauthorized.\
 `400 Bad Request`: with error messages: "Bakteerin nimen tulee olla vähintään 2 merkkiä pitkä.",  if given field `name` is under 2 characters long.\
 `400 Bad Request`: with error messages: "Bakteerin nimen tulee olla enintään 100 merkkiä pitkä.",  if given field `name` is over 100 characters long.\
