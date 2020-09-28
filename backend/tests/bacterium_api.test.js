@@ -19,6 +19,8 @@ const initialBacteria = [{
 beforeEach(async () => {
     await Bacterium.deleteMany({})
     await User.deleteMany({})
+    await Test.deleteMany({})
+    await Case.deleteMany({})
     const bacteriaObjects = initialBacteria.map(bacterium => new Bacterium(bacterium))
     const promiseArray = bacteriaObjects.map(backterium => backterium.save())
     await Promise.all(promiseArray)
@@ -349,7 +351,7 @@ describe('modifying a bacterium', () => {
                 password: 'admin'
             })
 
-        const bacteriumToUpdate =  await Bacterium.findOne({ name: 'koli' })
+        const bacteriumToUpdate = await Bacterium.findOne({ name: 'koli' })
         bacteriumToUpdate.name = 'tetanus'
         const updatedBacterium = await api
             .put(`/api/bacteria/${bacteriumToUpdate.id}`)
@@ -359,6 +361,23 @@ describe('modifying a bacterium', () => {
             .expect('Content-Type', /application\/json/)
 
         expect(updatedBacterium.body.error).toContain('Bakteerin nimen tulee olla uniikki.')
+    })
+
+    test('cannot modify bacterium that does not exist', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const bacteriumToUpdate = { name: 'newBacterium' }
+        const updatedBacterium = await api
+            .put('/api/bacteria/doesnotexist')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacteriumToUpdate)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(updatedBacterium.body.error).toContain('Annettua bakteeria ei löydy tietokannasta.')
     })
 })
 afterAll(async () => {

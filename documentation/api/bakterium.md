@@ -25,7 +25,7 @@ Response body contains array of Backterium objects:
 
 
 ### `POST /api/bacteria/`
-This endpoint lets teacher create a new bacterium object and returns this created object, if object was saved successfully to the database.
+This endpoint lets teacher (admin role) create a new bacterium object and returns this created object, if object was saved successfully to the database.
 
 ### Response
 |Header|value|
@@ -40,13 +40,13 @@ Response body contains the saved Bacterium object:
 
 ### Errors
 `401 Unauthorized`: with error message: "token missing or invalid" if current user unauthorized.
+`400 Bad Request`: with error messages: "Bakteerin nimen tulee olla vähintään 2 merkkiä pitkä.",  if given field `name` is under 2 characters long.\
+`400 Bad Request`: with error messages: "Bakteerin nimen tulee olla enintään 100 merkkiä pitkä.",  if given field `name` is over 100 characters long.\
+`400 Bad Request`: with error messages: "Bakteerin nimen tulee olla uniikki.",  if given name of the new bacterium is not unique.
 
-Not yet implemented:
-`400 Bad Request`: with error message: ""  Given field `name` is empty or the name of the new bacterium is not unique.
+## `DELETE /api/bacteria/:id`
 
-## Not yet implemented `DELETE /api/bacteria/:id`
-
-This endpoint lets teacher to remove bacterium object and retuns a empty body.
+This endpoint lets teacher (admin role) to remove bacterium object and retuns a empty body.
 
 ### Response
 |Header|value|
@@ -56,12 +56,13 @@ This endpoint lets teacher to remove bacterium object and retuns a empty body.
 Response body is empty.
 
 ### Errors
-`401 Unauthorized`: with error message: "token missing or invalid" if current user is unauthorized.
-`404 Not Found`: with error message: "Bacterium not found" : if no bacterium found with given id.
+`401 Unauthorized`: with error message: "token missing or invalid" if current user is unauthorized.\
+`204 No Content`: with error message: "Annettua bakteeria ei löydy tietokannasta" : if no bacterium found with given id.\
+`400 Bad request`: with error message: "Bakteeri on käytössä testissä eikä sitä voi poistaa." : if no bacterium found with given id.
 
-## Not yet implemented `PUT /api/bacteria/:id`
+## `PUT /api/bacteria/:id`
 
-This endpoint lets teacher modify bacterium object and retuns modified object.
+This endpoint lets teacher (admin role) modify bacterium object and retuns modified object.
 
 ### Response
 |Header|value|
@@ -75,6 +76,8 @@ Response body is modified bacterium object:
 }` 
 
 ### Errors
-`401 Unauthorized`: with error message: "token missing or invalid" if current user is unauthorized.
-`404 Not Found`: with error message: "Bacterium not found" : if no bacterium found with given id.
-`400 Bad Request`: with error message: ""  Given field `name` is empty or the given name of the new bacterium is not unique.
+`204 No Content`: with error message: "Annettua bakteeria ei löydy tietokannasta" : if no bacterium found with given id.\
+`401 Unauthorized`: with error message: "token missing or invalid" if current user unauthorized.\
+`400 Bad Request`: with error messages: "Bakteerin nimen tulee olla vähintään 2 merkkiä pitkä.",  if given field `name` is under 2 characters long.\
+`400 Bad Request`: with error messages: "Bakteerin nimen tulee olla enintään 100 merkkiä pitkä.",  if given field `name` is over 100 characters long.\
+`400 Bad Request`: with error messages: "Bakteerin nimen tulee olla uniikki.",  if given name of the new bacterium is not unique.

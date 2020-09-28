@@ -90,7 +90,10 @@ caseRouter.post('/', upload.fields([{ name: 'completitionText', maxCount: 1 }]),
                     testGroups.push(newTestGroup)
                 }
                 newCase.testGroups = testGroups
+            } else {
+                newCase.testGroups = null
             }
+
             newCase.complete = isComplete(newCase)
             const savedCase = await newCase.save()
             return response.status(201).json(savedCase)
@@ -173,6 +176,9 @@ caseRouter.put('/:id', upload.fields([{ name: 'completitionText', maxCount: 1 }]
             }
             changes.complete = isComplete(changes)
             const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
+            if (!updatedCase) {
+                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
+            }
             return response.status(200).json(updatedCase)
         } catch (error) {
             return response.status(400).json({ error: error.message })

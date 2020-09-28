@@ -32,3 +32,5 @@ const GDPRForm = () => {
         </form>
     )
 }
+
+export default GDPRForm
