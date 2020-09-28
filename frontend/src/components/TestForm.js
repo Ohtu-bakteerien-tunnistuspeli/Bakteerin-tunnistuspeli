@@ -27,18 +27,21 @@ const TestForm = () => {
    //  const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const TestName = useField('text')
     const TestType = useField('text')
-    const bacterium = useField('test')
+    const [bacterium, setBacterium] = useState('')
     const [controlImage, setControlImage] = useState(INITIAL_STATE)
     const [positiveResultImage, setPhotoPos] = useState(INITIAL_STATE)
     const [negativeResultImage, setPhotoNeg] = useState(INITIAL_STATE)
-    const [bacteriaSpecificImages, setBacteriaImages] = useState(INITIAL_STATE)
+    const [bacteriaSpecificImages, setBacteriaImages] = useState([])
+    const [bacteriaSpecificImage, setBacteriaImage] = useState(INITIAL_STATE)
    //  const tests = [{ id: '1a3g', name: 'testi3', type: 'Viljely' }, { id: '1a2b', name: 'testi1', type: 'Testi' }, { id: '3c4d', name: 'testi2', type: 'Värjäys' }]
+    
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     const addTests = (event) => {
 
         event.preventDefault()
+        console.log('dispatch')
         dispatch(addTest(TestName, TestType, controlImage, positiveResultImage, negativeResultImage, bacteriaSpecificImages, user.token))
         setPhotoPos([])
         setPhotoNeg([])
@@ -50,20 +53,38 @@ const TestForm = () => {
     const handleClose = () => setShow(false)
 
     const handleChange = (event) => {
-        const { name, value } = event.target
-        setPhotoPos({ ...positiveResultImage, [name]: value })
+        console.log(event.target)
+        setPhotoPos(event.target.files[0])
     }
 
     const handleChange2 = (event) => {
-        const { name, value } = event.target
-        setPhotoNeg({ ...negativeResultImage, [name]: value })
+        console.log(event.target)
+        setPhotoNeg(event.target.files[0])
     }
 
     const handleChange3 = (event) => {
-        const { name, value } = event.target
-        setControlImage({ ...controlImage, [name]: value })
+        console.log(event.target)
+        setControlImage(event.target.files[0])
     }
 
+    const handleChange4 = (event) => {
+        if(event.target.files[0]) {
+            Object.defineProperty(event.target.files[0], 'name', {
+            writable: true,
+            value: bacterium }) 
+            setBacteriaImage(event.target.files[0])
+            console.log(event.target.files[0])
+        } 
+    }
+
+    const addBacteriumSpecificImage = () => {
+        if(bacterium !== '') {
+            setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
+            setBacteriaImage(INITIAL_STATE)
+            setBacterium('')
+        }   
+    }
+    
     return (
         <div>
             <Button variant="primary" onClick={handleShow}>
@@ -72,7 +93,7 @@ const TestForm = () => {
             <Modal show={show} size='lg' onHide={handleClose} >
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body>
-                    <form onSubmit={addTests}>
+                    <Form onSubmit={addTests} encType="multipart/form-data">
                         <Form.Group controlId="name">
                             <Form.Label>Nimi</Form.Label>
                             <Form.Control type={TestName.type} value={TestName.value} onChange={TestName.onChange} />
@@ -88,16 +109,17 @@ const TestForm = () => {
                         </Form.Group>
                         <Form.Group controlId="controlImage">
                             <Form.Label>Kontrollikuva</Form.Label>
-                            <Form.Control encType="multipart/form-data"
+                            <Form.Control 
                                 name='controlImage'
                                 type="file"
                                 value={controlImage.image}
                                 onChange={handleChange3}
+                                onClick={(event) => event.target.value = ''}
                             />
                         </Form.Group>
                         <Form.Group controlId="positiveResultImage">
                             <Form.Label>Positiivinen oletus</Form.Label>
-                            <Form.Control encType="multipart/form-data"
+                            <Form.Control
                                 name='positiveResultImage'
                                 type="file"
                                 value={positiveResultImage.image}
@@ -106,40 +128,50 @@ const TestForm = () => {
                         </Form.Group>
                         <Form.Group controlId="negativeResultImage">
                             <Form.Label>Negatiivinen Oletus</Form.Label>
-                            <Form.Control encType="multipart/form-data"
+                            <Form.Control 
                                 name="negativeResultImage"
                                 type="file"
                                 value={negativeResultImage.image}
                                 onChange={handleChange2}
                             />
                         </Form.Group>
-                        <Form.Group controlId="bacteriaSpecificImages">
+                      <Form.Group controlId="bacteriaSpecificImages">
                         <Form.Label>BakteeriKohtaiset Tulokset</Form.Label>
                         <div></div>
+                        <ul>
+                        {bacteriaSpecificImages.map((image, i) => 
+                            <li key={i}>{image.name}</li>
+                        )}
+                        </ul>
                         <Form.Label>Bakteeri</Form.Label>
-                            <Form.Control as="select" type={bacterium.type} value={bacterium.value} onChange={bacterium.onChange}>
-                                {bacteria.map(bacterium =>
-                                    <option key={bacterium.id} value={bacterium.id}>{bacterium.name}</option>
+                            <Form.Control as="select" value={bacterium} onClick={({target})=>setBacterium(target.value)} onChange={({target})=>setBacterium(target.value)}>
+                                {bacteria.map(bact =>
+                                    <option key={bact.id} value={bact.name}>{bact.name}</option>
                                 )}
-                            </Form.Control>
-                            <Form.Label>BakteeriKohtainen Positiivinen oletus </Form.Label>
-                            <Form.Control encType="multipart/form-data"
+                                </Form.Control> 
+                     {/*   <Form.Group controlId="bakteeri">
+                            <Form.Label>Bakteeri</Form.Label>
+                            <Form.Control type={bacterium.type} value={bacterium.value} onChange={({target})=>setBacterium(target.value)} />
+                            </Form.Group> */}
+                            <Form.Label>BakteeriKohtaiset Kuvat </Form.Label>
+                            <Form.Control 
                                 name='positiveResultImage'
                                 type="file"
-                                value={positiveResultImage.image}
-                                onChange={handleChange}
+                                value={bacteriaSpecificImage.image}
+                                onChange={handleChange4}
                             />
-                            <Form.Label>BakteerKohtainen Negatiivinen Oletus</Form.Label>
-                            <Form.Control encType="multipart/form-data"
+                            <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohatinen kuva</Button>
+                     {/*       <Form.Label>BakteeriKohtainen Negatiivinen Oletus</Form.Label>
+                            <Form.Control 
                                 name="negativeResultImage"
                                 type="file"
                                 value={negativeResultImage.image}
-                                onChange={handleChange2}
-                            />
-                        </Form.Group>
+                                onChange={handleChange4}
+                     /> */}
+                        </Form.Group> 
                         <div></div>
                         <button type="submit">Lisää</button>
-                    </form>
+                    </Form>
                 </Modal.Body>
             </Modal>
         </div>
@@ -147,4 +179,6 @@ const TestForm = () => {
 }
 
 export default TestForm
+
+
 

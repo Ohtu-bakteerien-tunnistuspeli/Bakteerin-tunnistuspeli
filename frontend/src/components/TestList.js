@@ -6,7 +6,7 @@ import { deleteTest, updateTest } from '../reducers/testReducer'
 
 const TestList = () => {
     const style = {margin: '10px', fontSize: '40px'}
-    const test = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const deleteTests = test => {
@@ -19,21 +19,20 @@ const TestList = () => {
     return (
         <div>
             <h2 style={style}>Testit</h2>
-            {test ?
+            {user?.admin ?
+                <TestForm></TestForm>
+                :
+                <></>
+            } 
+            {tests ?
                 <ul>
-                    {test.map(t =>
-                        <TestListing key={t.id} test={test} deleteTest={deleteTests} updateTest={updateTests} isAdmin={user?.admin}></TestListing>
+                    {tests.map(test =>
+                        <TestListing key={test.id} test={test} deleteTest={deleteTests} updateTest={updateTests} isAdmin={user?.admin}></TestListing>
                     )}
                 </ul>
                 :
                 <div>Ei testejä</div>
                 }
-           {user?.admin ?
-                <TestForm></TestForm>
-                :
-                <></>
-            } 
-
         </div>
     )
 }

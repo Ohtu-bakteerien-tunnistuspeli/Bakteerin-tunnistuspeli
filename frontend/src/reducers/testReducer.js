@@ -35,9 +35,9 @@ export const getTests = (token) => {
     }
 }
 
-export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpeficicImg, token) => {
+export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token) => {
     return async dispatch => {
-        const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpeficicImg, token)
+        const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpesif, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {

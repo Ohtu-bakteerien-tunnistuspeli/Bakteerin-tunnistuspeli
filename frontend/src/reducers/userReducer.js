@@ -61,6 +61,7 @@ export const returnUser = () => {
         if (userText) {
             user = JSON.parse(userText)
             dispatch(getBacteria(user.token))
+            dispatch(getTests(user.token))
         }
         dispatch({
             type: 'RETURN_USER',

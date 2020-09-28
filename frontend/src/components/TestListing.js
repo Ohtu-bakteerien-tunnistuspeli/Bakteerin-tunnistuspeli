@@ -15,10 +15,24 @@ const TestListing = ({ test, deleteTest, updateTest, isAdmin }) => {
         setIsModified(false)
         setNewName('')
     }
+    let positiveUrl
+    if(test.positiveResultImage) {
+        positiveUrl = btoa(String.fromCharCode.apply(null, test.positiveResultImage.data.data))
+    }
+    let negativeUrl
+    if(test.negativeResultImage) {
+        negativeUrl = btoa(String.fromCharCode.apply(null, test.negativeResultImage.data.data))
+    }
+    let controlUrl
+    if(test.controlImage) {
+        controlUrl = btoa(String.fromCharCode.apply(null, test.controlImage.data.data))
+    }
+    
     return (
         <ListGroup>
             <ListGroup.Item key={test.id}>
-                {test.name}
+                {test.name} {test.type} {test.positiveResultImage ? <img src={`data:${test.positiveResultImage.contentType};base64,${positiveUrl}`}/> : <></>}
+                {test.negativeResultImage ? <img src={`data:${test.negativeResultImage.contentType};base64,${negativeUrl}`}/> : <></>}
                 { console.log(test) }
                 {isModified ?
                     <>
