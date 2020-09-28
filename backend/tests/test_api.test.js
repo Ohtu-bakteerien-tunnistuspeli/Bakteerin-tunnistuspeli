@@ -4,8 +4,10 @@ const app = require('../app')
 const bcrypt = require('bcrypt')
 const api = supertest(app)
 
-const Test = require('../models/testCase')
+const Bacterium = require('../models/bacterium')
 const User = require('../models/user')
+const Test = require('../models/testCase')
+const Case = require('../models/case')
 
 const initialTestCases = [
     { name: 'test1', type: 'type1' },
@@ -13,8 +15,10 @@ const initialTestCases = [
 ]
 
 beforeEach(async () => {
+    await Bacterium.deleteMany({})
     await User.deleteMany({})
     await Test.deleteMany({})
+    await Case.deleteMany({})
     const testObjects = initialTestCases.map(test => new Test(test))
     const promiseArray = testObjects.map(test => test.save())
     await Promise.all(promiseArray)
