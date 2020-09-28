@@ -38,7 +38,7 @@ Response body contains array of Test objects, each returned object contains at l
         bacteriaSpecificImages: [{
             bacterium: {
                 name: String,
-                id: String
+                id: ObjectId
             },
             data: Buffer,
             contentType: String
