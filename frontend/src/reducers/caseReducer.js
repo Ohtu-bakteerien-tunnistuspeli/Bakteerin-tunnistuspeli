@@ -27,7 +27,7 @@ export const getCases = (token) => {
     }
 }
 
-export const addCase2 = (name, bacterium, anamnesis, compText, samples, testGroups, token) => {
+export const addCase = (name, bacterium, anamnesis, compText, samples, testGroups, token) => {
     return async dispatch => {
         const caseToSave = await caseService.add(name, bacterium, anamnesis, compText, samples, testGroups, token)
         if (test.error) {
