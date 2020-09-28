@@ -8,4 +8,10 @@ const login = (credentials) => {
     return request.then(response => response.data).catch(error => { return })
 }
 
-export default { login }
+const register = (credentials) => {
+    const request = axios.post(`${baseUrl}/register`, credentials)
+    // eslint-disable-next-line no-unused-vars
+    return request.then(response => response).catch(error => error.response.data)
+}
+
+export default { login, register }
