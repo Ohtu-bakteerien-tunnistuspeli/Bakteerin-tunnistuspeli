@@ -21,6 +21,8 @@ const TestListing = ({ test, deleteTest, updateTest, isAdmin }) => {
                 {test.name}
                 {isModified ?
                     <>
+                        {/* tähän varmaan tulisi sitten tilalle, että avaa TestEditFormin,
+                        eli jtn <TestEditForm test={test} /> */}
                         <input value={newName} id='editField' onChange={({ target }) => setNewName(target.value)} />
                         <Button variant='secondary' id='stopEdit' style={{ float: 'right' }} onClick={stopModify}>Lopeta muokkaus</Button>
                         <Button variant='primary' id='saveEdit' style={{ float: 'center' }} onClick={modify}>Muuta nimi</Button>

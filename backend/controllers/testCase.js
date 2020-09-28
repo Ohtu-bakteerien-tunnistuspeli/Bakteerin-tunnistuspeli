@@ -89,6 +89,9 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 }
             }
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
+            if (!updatetTest) {
+                return response.status(400).json({ error: 'Annettua testiä ei löydy tietokannasta' })
+            }
             return response.status(200).json(updatetTest)
         } catch (error) {
             return response.status(400).json({ error: error.message })
@@ -106,7 +109,7 @@ testRouter.delete('/:id', async (request, response) => {
                 model: 'Bacterium'
             })
 
-            const cases = await Case.find({ }).populate({
+            const cases = await Case.find({}).populate({
                 path: 'testGroups.test',
                 model: 'Test',
                 populate: {
@@ -129,7 +132,7 @@ testRouter.delete('/:id', async (request, response) => {
             }
 
             await Test.findByIdAndRemove(request.params.id)
-            return response.status(200).end()
+            return response.status(204).end()
         } catch (error) {
             return response.status(400).json({ error: 'Annettua testiä ei löydy tietokannasta' })
         }

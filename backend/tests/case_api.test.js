@@ -638,6 +638,43 @@ describe('modify a case', () => {
             .expect('Content-Type', /application\/json/)
         expect(updatetCase.body.error).toContain('Annettua testiä ei löydy.')
     })
+
+    test('cannot modify case that does not exist', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const bacterium = await Bacterium.findOne({ name: 'koli' })
+        const testCase = await Test.findOne({ name: 'testName' })
+        let newCase = {
+            name: 'testing case',
+            bacterium: bacterium.id,
+            anamnesis: 'test anamnesis',
+            completitionText: 'test completitionText',
+            samples: [{
+                description: 'desc 1',
+                rightAnswer: true
+            }, {
+                description: 'desc 2',
+                rightAnswer: false
+            }],
+            testGroups: [[{
+                testId: testCase.id,
+                isRequired: true,
+                positive: true,
+                alternativeTests: false
+            }]]
+        }
+        const res = await api
+            .put('/api/case/doesnotexist')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newCase)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(res.body.error).toContain('Annettua tapausta ei löydy tietokannasta.')
+    })
 })
 
 afterAll(async () => {
