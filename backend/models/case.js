@@ -16,7 +16,12 @@ const caseSchema = mongoose.Schema({
         type: String
     },
     completitionText: {
-        type: String
+        data: {
+            type: Buffer
+        },
+        contentType: {
+            type: String
+        }
     },
     samples: [
         {

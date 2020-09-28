@@ -8,6 +8,16 @@ const isComplete = (caseToCheck) => {
     }
     return false
 }
+const multer = require('multer')
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true)
+    } else {
+        cb(null, false)
+    }
+}
+const storage = multer.memoryStorage()
+const upload = multer({ storage, fileFilter })
 
 caseRouter.get('/', async (request, response) => {
     if (request.user.admin) {
@@ -25,7 +35,7 @@ caseRouter.get('/', async (request, response) => {
     }
 })
 
-caseRouter.post('/', async (request, response) => {
+caseRouter.post('/', upload.fields([{ name: 'completitionText', maxCount: 1 }]), async (request, response) => {
     if (request.user.admin) {
         try {
             const newCase = new Case({
@@ -47,7 +57,7 @@ caseRouter.post('/', async (request, response) => {
                 newCase.anamnesis = request.body.anamnesis
             }
             if (request.body.completitionText) {
-                newCase.completitionText = request.body.completitionText
+                newCase.completitionText = { data: Buffer.from(request.files.completitionText[0].buffer).toString('base64'), contentType: request.files.completitionText[0].mimetype }
             }
             if (request.body.samples) {
                 newCase.samples = request.body.samples
@@ -105,7 +115,7 @@ caseRouter.delete('/:id', async (request, response) => {
     }
 })
 
-caseRouter.put('/:id', async (request, response) => {
+caseRouter.put('/:id', upload.fields([{ name: 'completitionText', maxCount: 1 }]), async (request, response) => {
     if (request.user.admin) {
         try {
             let changes = {
@@ -127,7 +137,7 @@ caseRouter.put('/:id', async (request, response) => {
                 changes.anamnesis = request.body.anamnesis
             }
             if (request.body.completitionText) {
-                changes.completitionText = request.body.completitionText
+                changes.completitionText = { data: Buffer.from(request.files.completitionText[0].buffer).toString('base64'), contentType: request.files.completitionText[0].mimetype }
             }
             if (request.body.samples) {
                 changes.samples = request.body.samples
