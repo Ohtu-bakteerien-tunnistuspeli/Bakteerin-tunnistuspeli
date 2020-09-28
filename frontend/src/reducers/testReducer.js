@@ -1,6 +1,5 @@
 import testService from '../services/test'
 import { setNotification } from '../reducers/notificationReducer'
-import bacteria from '../services/bacteria'
 
 const reducer = (state = null, action) => {
     switch (action.type) {
