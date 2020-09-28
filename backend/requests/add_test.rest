@@ -1,7 +1,0 @@
-POST http://localhost:3001/api/bacteria
-Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOiI1ZjYwOWRiYTYxYjQwYTNmNDRhNzdlMmQiLCJpYXQiOjE2MDAxNjczNjR9.nl9xZV51D9tSR12WzBTZH2pCsymHI1-rFstAF8Nzafk
-
-{
-    "name": "koli"
-}
