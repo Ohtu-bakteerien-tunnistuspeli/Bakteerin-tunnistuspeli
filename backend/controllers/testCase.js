@@ -35,7 +35,6 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
             })
 
             if (request.files) {
-                console.log(request.files)
                 if (request.files.controlImage) {
                     test.controlImage = { data: request.files.controlImage[0].buffer, contentType: request.files.controlImage[0].mimetype }
                 }
@@ -49,6 +48,9 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
                         const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
+                        if(!bacterium) {
+                            return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
+                        }
                         test.bacteriaSpecificImages.push({ data: file.buffer, contentType: file.mimetype, bacterium })
                     }
                 }
@@ -73,19 +75,22 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
             }
             if (request.files) {
                 if (request.files.controlImage) {
-                    testToUpdate.controlImage = { data: Buffer.from(request.files.controlImage[0].buffer).toString('base64'), contentType: request.files.controlImage[0].mimetype }
+                    testToUpdate.controlImage = { data: request.files.controlImage[0].buffer, contentType: request.files.controlImage[0].mimetype }
                 }
                 if (request.files.positiveResultImage) {
-                    testToUpdate.positiveResultImage = { data: Buffer.from(request.files.positiveResultImage[0].buffer).toString('base64'), contentType: request.files.positiveResultImage[0].mimetype }
+                    testToUpdate.positiveResultImage = { data: request.files.positiveResultImage[0].buffer, contentType: request.files.positiveResultImage[0].mimetype }
                 }
                 if (request.files.negativeResultImage) {
-                    testToUpdate.negativeResultImage = { data: Buffer.from(request.files.negativeResultImage[0].buffer).toString('base64'), contentType: request.files.negativeResultImage[0].mimetype }
+                    testToUpdate.negativeResultImage = { data: request.files.negativeResultImage[0].buffer, contentType: request.files.negativeResultImage[0].mimetype }
                 }
                 if (request.files.bacteriaSpecificImages) {
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
                         const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
-                        testToUpdate.bacteriaSpecificImages.push({ data: Buffer.from(file.buffer).toString('base64'), contentType: file.mimetype, bacterium })
+                        if(!bacterium) {
+                            return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
+                        }
+                        testToUpdate.bacteriaSpecificImages.push({ data: file.buffer, contentType: file.mimetype, bacterium })
                     }
                 }
             }
