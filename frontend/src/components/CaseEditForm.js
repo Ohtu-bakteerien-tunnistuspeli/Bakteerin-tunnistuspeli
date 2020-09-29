@@ -26,6 +26,7 @@ const CaseEditForm = ({ c }) => {
     const caseName = useField('text')
     const caseAnamnesis = useField('text')
     const bacteria = useSelector(state => state.bacteria).sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
+    const [setBacterium] = useState(c.bacterium)
     const [samples ] = useState(c.samples)
     const [testGroups ] = useState(c.testGroups)
     const sampleName = useField('text')
