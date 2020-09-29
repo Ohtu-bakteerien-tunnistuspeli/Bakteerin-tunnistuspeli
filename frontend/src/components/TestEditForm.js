@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteTest, updateTest } from '../reducers/testReducer'
+import { Button, Form } from 'react-bootstrap'
 
 const TestEditForm = (test) => {
     // Get info of this test from parameter 'test'
@@ -24,9 +25,9 @@ const TestEditForm = (test) => {
 
     return (
         <div>
-            <button id='deleteTest' onClick={ removeTest }>POISTA testi</button>
+            <Button variant='danger' id='deleteTest' onClick={ removeTest }>POISTA testi</Button>
             <p></p>
-            <form onSubmit={ editTest }>
+            <Form onSubmit={ editTest } encType="multipart/form-data">
                 <p>Uusi nimi</p>
                 <input
                     id='editTestName'
@@ -34,43 +35,42 @@ const TestEditForm = (test) => {
                     onChange={ ({ target }) => setNewName(target.value.name) }
                 />
                 <p>Uusi tyyppi</p>
-                <select
+                <input
                     id='editTestType'
                     value={ newType }
                     onChange={ ({ target }) => setNewType(target.value.type) }
-                >
-                    <option value='viljely'>Viljely</option>
-                    <option value="testi">Testi</option>
-                </select>
+                />
                 <p>Kontrollikuva</p>
                 <input
                     id='editCtrlImg'
                     name='editCtrlImg'
-                    encType="multipart/form-data"
-                    value= { photoControl }
+                    value= { photoControl.image }
                     type='file'
-                    onChange={ ({ target }) => setPhotoControl(target.value.image) }
+                    onChange={ ({ target }) => setPhotoControl(target.files[0]) }
                 />
                 <p>Positiivinen oletuskuva</p>
                 <input
                     id='editTestPosImg'
                     name='editTestPosImg'
-                    encType="multipart/form-data"
-                    value= { photoPos }
+                    value= { photoPos.image }
                     type='file'
-                    onChange={ ({ target }) => setPhotoPos(target.value.image) }
+                    onChange={ ({ target }) => setPhotoPos(target.files[0]) }
                 />
                 <p>Negatiivinen oletuskuva</p>
                 <input
                     id='editTestNegImg'
                     name='editTestNegImg'
-                    encType="multipart/form-data"
-                    value= { photoNeg }
+                    value= { photoNeg.image }
                     type='file'
-                    onChange={ ({ target }) => setPhotoNeg(target.value.image) }
+                    onChange={ ({ target }) => setPhotoNeg(target.files[0]) }
                 />
-                <button type='submit'>Tallenna muutokset</button>
-            </form>
+
+                {/*
+                    Add bakteria specific images here
+                */}
+
+                <Button type='submit'>Tallenna muutokset</Button>
+            </Form>
         </div>
     )
 }

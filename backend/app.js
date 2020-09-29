@@ -11,6 +11,9 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     const { MongoMemoryServer } = require('mongodb-memory-server')
     const mongoServer = new MongoMemoryServer()
     const User = require('./models/user')
+    const Bacterium = require('./models/bacterium')
+    const TestCase = require('./models/testCase')
+    const Case = require('./models/case')
     const bcrypt = require('bcrypt')
     mongoose.Promise = Promise
     mongoServer.getUri().then((mongoUri) => {
@@ -45,6 +48,39 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 passwordHash
             })
             await admin.save()
+
+            const initialBacterium = new Bacterium({
+                name: 'initial koli'
+            })
+            await initialBacterium.save()
+
+            const intialTestCase = new TestCase({
+                name: 'initial test',
+                type: 'type of the initial test'
+            })
+            await intialTestCase.save()
+
+            const initialCase = new Case({
+                name: 'initial case',
+                bacterium: initialBacterium,
+                anamnesis: 'anamnesis of the initial case',
+                completitionText: 'You completed the initial case!',
+                samples: [
+                    {
+                        description: 'this is the right answer',
+                        rightAnswer: true
+                    },
+                    {
+                        description: 'this is the wrong answer',
+                        rightAnswer: false
+                    }
+                ],
+                testGroups: [
+                    [ { test: intialTestCase, isRequired: false, positive: false, alternativeTests: false }]
+                ]
+            })
+            await initialCase.save()
+
         })
     })
 
