@@ -518,7 +518,6 @@ describe('deleting of a test', () => {
             name: 'testCase',
             type: 'testType',
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             testGroups: [
                 [{ testId: res.body.id }]
             ]
