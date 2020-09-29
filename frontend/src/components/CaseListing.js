@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
+import CaseEditForm from './CaseEditForm'
 
 const CaseListing = ({ c, admin, deleteCase }) => {
     return (
@@ -10,7 +11,7 @@ const CaseListing = ({ c, admin, deleteCase }) => {
                         { c.name }
                         <div>
                             <Button variant='danger' style={{ float: 'right' }} id='deleteCase' onClick={ () => deleteCase(c) }>Poista</Button>
-                            <Button variant='primary' style={{ float: 'right' }} id='editCase'>Muokkaa</Button>
+                            <CaseEditForm c = { c }></CaseEditForm>
                         </div>
                     </div>
                     :
