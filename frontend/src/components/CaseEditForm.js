@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import Sample from '../components/Sample.js'
 import TestGroup from '../components/TestGroup.js'
-import { useSelector, useDispatch } from 'react-redux'
-import { deleteCase, updateCase } from '../reducers/caseReducer'
-import { Modal, Button, ButtonGroup, Form, ListGroup } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { Modal, Button, Form } from 'react-bootstrap'
 
 const useField = (type) => {
     const [value, setValue] = useState('')
@@ -27,9 +26,8 @@ const CaseEditForm = ({ c }) => {
     const caseName = useField('text')
     const caseAnamnesis = useField('text')
     const bacteria = useSelector(state => state.bacteria).sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
-    const [bacterium, setBacterium] = useState(c.bacterium)
-    const [samples, setSamples] = useState(c.samples)
-    const [testGroups, setTestGroups] = useState(c.testGroups)
+    const [samples ] = useState(c.samples)
+    const [testGroups ] = useState(c.testGroups)
     const sampleName = useField('text')
     const sampleAnswer = useField('boolean')
     console.log(c)
