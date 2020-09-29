@@ -2,7 +2,6 @@ import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 
 const CaseListing = ({ c, admin, deleteCase }) => {
-    console.log(c)
     return (
         <ListGroup>
             <ListGroup.Item key={ c.id } >
