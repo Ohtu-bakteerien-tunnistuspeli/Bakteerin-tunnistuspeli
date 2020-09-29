@@ -3,7 +3,7 @@ const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
 const isComplete = (caseToCheck) => {
-    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completitionText && caseToCheck.samples && caseToCheck.testGroups) {
+    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.samples && caseToCheck.testGroups) {
         return true
     }
     return false
@@ -35,8 +35,9 @@ caseRouter.get('/', async (request, response) => {
     }
 })
 
-caseRouter.post('/', upload.fields([{ name: 'completitionText', maxCount: 1 }]), async (request, response) => {
+caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), async (request, response) => {
     if (request.user.admin) {
+        console.log(request.body)
         try {
             const newCase = new Case({
                 name: request.body.name,
@@ -56,20 +57,26 @@ caseRouter.post('/', upload.fields([{ name: 'completitionText', maxCount: 1 }]),
             if (request.body.anamnesis) {
                 newCase.anamnesis = request.body.anamnesis
             }
-            if (request.body.completitionText) {
-                newCase.completitionText = { data: request.files.completitionText[0].buffer, contentType: request.files.completitionText[0].mimetype }
+            if (request.files.completionImage) {
+                newCase.completionImage = { data: request.files.completionImage[0].buffer, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {
-                newCase.samples = request.body.samples
+                newCase.samples = JSON.parse(request.body.samples)
             }
             if (request.body.testGroups) {
+                request.body.testGroups = JSON.parse(request.body.testGroups)
                 const testGroups = []
+                console.log(request.body.testGroups)
                 for (let i = 0; i < request.body.testGroups.length; i++) {
                     const newTestGroup = []
                     for (let k = 0; k < request.body.testGroups[i].length; k++) {
+                        console.log(request.body.testGroups[i])
                         const test = request.body.testGroups[i][k]
+                        console.log(test)
+                        console.log(JSON.stringify(test))
                         let testFromDb
                         try {
+                            console.log(`testi id backend: (${test.testId})`)
                             testFromDb = await Test.findById(test.testId)
                         } catch (e) {
                             return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
@@ -118,7 +125,7 @@ caseRouter.delete('/:id', async (request, response) => {
     }
 })
 
-caseRouter.put('/:id', upload.fields([{ name: 'completitionText', maxCount: 1 }]), async (request, response) => {
+caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }]), async (request, response) => {
     if (request.user.admin) {
         try {
             let changes = {
@@ -139,8 +146,8 @@ caseRouter.put('/:id', upload.fields([{ name: 'completitionText', maxCount: 1 }]
             if (request.body.anamnesis) {
                 changes.anamnesis = request.body.anamnesis
             }
-            if (request.body.completitionText) {
-                changes.completitionText = { data: request.files.completitionText[0].buffer, contentType: request.files.completitionText[0].mimetype }
+            if (request.files.completionImage) {
+                changes.completionImage = { data: request.files.completionImage[0].buffer, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {
                 changes.samples = request.body.samples

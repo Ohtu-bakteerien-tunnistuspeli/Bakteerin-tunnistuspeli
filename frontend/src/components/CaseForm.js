@@ -22,7 +22,7 @@ const CaseForm = () => {
         image: undefined
     }
 
-    const bacteria = useSelector(state => state.bacteria).sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
+    const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     //const tests = [{ id: '1a2b', name: 'testi1' }, { id: '3c4d', name: 'testi2' }]
     const user = useSelector(state => state.user)
@@ -31,7 +31,7 @@ const CaseForm = () => {
     const [bacterium, setBacterium] = useState(bacteria[0])
     const anamnesis = useField('text')
     //const compText = useField('text')
-    const [compImage, setCompImage] = useState(INITIAL_STATE)
+    const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
     const [sample, setSample] = useState({ name: '', rightAnswer: false })
     const [samples, setSamples] = useState([])
     const [testForCase, setTestForCase] = useState({ testName: tests[0].name, testId: tests[0].id, required: false, positive: false, alternativeTests: false })
@@ -42,8 +42,7 @@ const CaseForm = () => {
 
     const addNewCase = (event) => {
         event.preventDefault()
-        
-        dispatch(addCase(caseName, bacterium.id, anamnesis, compImage, samples, testGroups, user.token))
+        dispatch(addCase(caseName.value, bacterium.id, anamnesis.value, completionImage, samples, testGroups, user.token))
     }
 
     const [show, setShow] = useState(false)
@@ -63,11 +62,11 @@ const CaseForm = () => {
         setTestGroup([])
     }
 
-    const handleCompImageChange = (event) => {
-        setCompImage(event.target.files[0])
+    const handleCompletionImageChange = (event) => {
+        setCompletionImage(event.target.files[0])
     }
 
-    // caseName, bacterium, anamnesis, compText, samples, testGroups
+    // caseName, bacterium, anamnesis, completionText, samples, testGroups
 
     return (
         <div>
@@ -94,9 +93,9 @@ const CaseForm = () => {
                             <Form.Label>Anamneesi</Form.Label>
                             <Form.Control as="textarea" rows="3" onChange={anamnesis.onChange} />
                         </Form.Group>
-                        <Form.Group controlId="completitionImage">
+                        <Form.Group controlId="completionImage">
                             <Form.Label>Loppukuva</Form.Label>
-                            <Form.Control name='compImage' type="file" value={compImage.image} onChange={handleCompImageChange} />
+                            <Form.Control name='completionImage' type="file" value={completionImage.image} onChange={handleCompletionImageChange} />
                         </Form.Group>
                         <Form.Group controlId="samples">
                             <Form.Label>Näytevaihtoehdot</Form.Label>
@@ -114,7 +113,7 @@ const CaseForm = () => {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Testiryhmät</Form.Label>
-                            <Form.Control as="select" onChange={(event) => setTestForCase({ ...testForCase, testName: JSON.parse(event.target.value.name), testId: JSON.parse(event.target.value.id)})}>
+                            <Form.Control as="select" onChange={(event) => setTestForCase({ ...testForCase, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id})}>
                                 {tests.map(test =>
                                     <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
                                 )}

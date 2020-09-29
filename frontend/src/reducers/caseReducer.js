@@ -1,7 +1,7 @@
 import caseService from '../services/case'
 import { setNotification } from '../reducers/notificationReducer'
 
-const reducer = (state = null, action) => {
+const reducer = (state = [], action) => {
     switch (action.type) {
     case 'GET_CASES': {
         return action.data
@@ -27,11 +27,12 @@ export const getCases = (token) => {
     }
 }
 
-export const addCase = (name, bacterium, anamnesis, compText, samples, testGroups, token) => {
+export const addCase = (name, bacterium, anamnesis, completionImage, samples, testGroups, token) => {
     return async dispatch => {
-        const caseToSave = await caseService.add(name, bacterium, anamnesis, compText, samples, testGroups, token)
-        if (test.error) {
-            dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
+        const caseToSave = await caseService.add(name, bacterium, anamnesis, completionImage, samples, testGroups, token)
+        
+        if (caseToSave.error) {
+            dispatch(setNotification({ message: caseToSave.error.substring(caseToSave.error.indexOf('name: ') + 6), success: false }))
         } else {
             dispatch({
                 type: 'ADD_CASE',
