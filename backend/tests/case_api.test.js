@@ -56,7 +56,6 @@ describe('addition of a case ', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -96,7 +95,6 @@ describe('addition of a case ', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -126,7 +124,6 @@ describe('addition of a case ', () => {
             name: 'testing case',
             bacterium: 'false-id',
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -144,7 +141,6 @@ describe('addition of a case ', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -162,7 +158,6 @@ describe('addition of a case ', () => {
             name: 't',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -180,7 +175,6 @@ describe('addition of a case ', () => {
             name: 'oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -275,7 +269,6 @@ describe('addition of a case ', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -322,7 +315,6 @@ describe('deletion of a case', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -376,7 +368,6 @@ describe('deletion of a case', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -428,7 +419,6 @@ describe('modify a case', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -455,7 +445,6 @@ describe('modify a case', () => {
         const caseToUpdate = {}
         caseToUpdate.name = 'case testing'
         caseToUpdate.anamnesis = 'anamnesis test'
-        caseToUpdate.completitionText = 'completitionText test'
         const updatedCase = await api
             .put(`/api/case/${res.body[0].id}`)
             .set('Authorization', `bearer ${user.body.token}`)
@@ -466,8 +455,6 @@ describe('modify a case', () => {
         expect(res.body[0].id).toEqual(updatedCase.body.id)
         expect(updatedCase.body.name).toEqual('case testing')
         expect(updatedCase.body.anamnesis).toEqual('anamnesis test')
-        expect(updatedCase.body.completitionText).toEqual('completitionText test')
-
     })
     test('user can not modify an existing case', async () => {
         const user = await api
@@ -489,7 +476,6 @@ describe('modify a case', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -516,7 +502,6 @@ describe('modify a case', () => {
         const caseToUpdate = {}
         caseToUpdate.name = 'case testing'
         caseToUpdate.anamnesis = 'anamnesis test'
-        caseToUpdate.completitionText = 'completitionText test'
         const updatedCase = await api
             .put(`/api/case/${res.body[0].id}`)
             .set('Authorization', `bearer ${user.body.token}`)
@@ -540,7 +525,6 @@ describe('modify a case', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
@@ -565,7 +549,6 @@ describe('modify a case', () => {
             name: 'testing case2',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis2',
-            completitionText: 'test completitionText2',
             samples: [{
                 description: 'desc 1.2',
                 rightAnswer: true
@@ -652,7 +635,6 @@ describe('modify a case', () => {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             samples: [{
                 description: 'desc 1',
                 rightAnswer: true
