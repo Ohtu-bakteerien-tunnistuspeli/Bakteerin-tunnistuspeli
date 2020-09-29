@@ -57,7 +57,7 @@ caseRouter.post('/', upload.fields([{ name: 'completitionText', maxCount: 1 }]),
                 newCase.anamnesis = request.body.anamnesis
             }
             if (request.body.completitionText) {
-                newCase.completitionText = { data: Buffer.from(request.files.completitionText[0].buffer).toString('base64'), contentType: request.files.completitionText[0].mimetype }
+                newCase.completitionText = { data: request.files.completitionText[0].buffer, contentType: request.files.completitionText[0].mimetype }
             }
             if (request.body.samples) {
                 newCase.samples = request.body.samples
@@ -140,7 +140,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completitionText', maxCount: 1 }]
                 changes.anamnesis = request.body.anamnesis
             }
             if (request.body.completitionText) {
-                changes.completitionText = { data: Buffer.from(request.files.completitionText[0].buffer).toString('base64'), contentType: request.files.completitionText[0].mimetype }
+                changes.completitionText = { data: request.files.completitionText[0].buffer, contentType: request.files.completitionText[0].mimetype }
             }
             if (request.body.samples) {
                 changes.samples = request.body.samples
