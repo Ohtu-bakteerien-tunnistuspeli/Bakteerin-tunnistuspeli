@@ -28,14 +28,13 @@ Response body contains User object:
 ### Errors
 `400 Bad Request` with error message `Invalid username or password`: if given username and password combination does not exist. 
 
-## Not yet implemented: `POST /api/user/register`
+## `POST /api/user/register`
 This endpoint lets user register.  
 Request body should contain JSON:
 ```
     {
         username: String,
         password: String,
-        passwordAgain: String
     }
 ```
 
@@ -44,16 +43,11 @@ Request body should contain JSON:
 | Content-Type  | application/json |
 | Status Code | 200 OK|
 
-(If logging in automatically:
-Response body contains User object:
-```
-    {
-        token: String,
-        username: String
-    }
-```
-)
-
 ### Errors
-`400 Bad Request` with error message `Username already exists`: if given username and password combination does not exist.  
-`400 Bad Request` with error message `Passwords do not match`: if password and passwordAgain do not match.
+`400 Bad Request`: with error messages: "Käyttäjänimen tulee olla uniikki.": if given username of the new user is not unique.\  
+`400 Bad Request`: with error messages: "Käyttäjänimen tulee olla vähintään 2 merkkiä pitkä.",  if given field `username` is less than 2 characters long.\
+`400 Bad Request`: with error messages: "Käyttäjänimen tulee olla enintään 100 merkkiä pitkä.",  if given field `username` is more than 100 characters long.\
+`400 Bad Request`: with error messages: "Käyttäjänimi on pakollinen.",  if given field `username` is empty.\
+`400 Bad Request`: with error messages: "Salasana on pakollinen.",  if given field `password` is empty.\
+`400 Bad Request`: with error messages: "Salasanan täytyy olla vähintään 3 merkkiä pitkä.",  if given field `password` is less than 3 characters long.\
+

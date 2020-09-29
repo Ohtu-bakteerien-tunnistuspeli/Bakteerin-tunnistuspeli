@@ -2,6 +2,7 @@ import userService from '../services/user'
 import { setNotification } from './notificationReducer'
 import { getBacteria, zeroBacteria } from './bacteriaReducer'
 import { getTests } from './testReducer'
+import { getCases } from './caseReducer'
 const reducer = (state = null, action) => {
     switch (action.type) {
     case 'LOGIN': {
@@ -34,6 +35,7 @@ export const login = (username, password, history) => {
             })
             dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
+            dispatch(getCases(user.token))
             history.push('/bakteeriLista')
         } else {
             dispatch({
@@ -65,6 +67,7 @@ export const returnUser = () => {
             user = JSON.parse(userText)
             dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
+            dispatch(getCases(user.token))
         }
         dispatch({
             type: 'RETURN_USER',
