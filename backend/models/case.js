@@ -15,7 +15,7 @@ const caseSchema = mongoose.Schema({
     anamnesis: {
         type: String
     },
-    completitionText: {
+    completionImage: {
         data: {
             type: Buffer
         },
