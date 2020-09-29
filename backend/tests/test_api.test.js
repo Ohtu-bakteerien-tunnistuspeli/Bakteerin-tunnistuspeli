@@ -514,13 +514,14 @@ describe('deleting of a test', () => {
         const testsBeforeDelete = await api
             .get('/api/test')
             .set('Authorization', `bearer ${user.body.token}`)
+        const testGroups = JSON.stringify([
+            [{ testId: res.body.id }]
+        ])
         const newCase = {
             name: 'testCase',
             type: 'testType',
             anamnesis: 'test anamnesis',
-            testGroups: [
-                [{ testId: res.body.id }]
-            ]
+            testGroups: testGroups
         }
         await api
             .post('/api/case')
