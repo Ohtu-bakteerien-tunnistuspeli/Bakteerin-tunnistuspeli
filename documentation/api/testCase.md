@@ -95,7 +95,8 @@ Response body contains the saved Test object, which contains at least fields `id
 `400 Bad Request`: with error messages: "Testin tyypin tulee olla vähintään 2 merkkiä pitkä.",  if given field `type` is less than 2 characters long.\
 `400 Bad Request`: with error messages: "Testin nimen tulee olla enintään 100 merkkiä pitkä.",  if given field `name` is more than 100 characters long.\
 `400 Bad Request`: with error messages: "Testin tyypin tulee olla enintään 100 merkkiä pitkä.",  if given field `type` is more than 100 characters long.\
-`400 Bad Request`: with error messages: "Testin nimen tulee olla uniikki.",  if modified name of the test is not unique.
+`400 Bad Request`: with error messages: "Testin nimen tulee olla uniikki.",  if modified name of the test is not unique.\
+`400 Bad Request`: with error messages: "Kuvaan liittyvää bakteeria ei löydy tietokannasta.",  if bacterium that image is given is not found.
 
 ## `DELETE /api/test/:id`
 
@@ -153,10 +154,11 @@ Response body is modified Test object, which contains at least fields `id`, `nam
 ```
 
 ### Errors
-`204 No Content`: with error message: "Annettua testiä ei löydy tietokannasta" : if no bacterium found with given id.\
+`204 No Content`: with error message: "Annettua testiä ei löydy tietokannasta" : if no test found with given id.\
 `401 Unauthorized`: with error message: "token missing or invalid" if current user unauthorized.\
 `400 Bad Request`: with error messages: "Testin nimen tulee olla vähintään 2 merkkiä pitkä.",  if given field `name` is under 2 characters long.\
 `400 Bad Request`: with error messages: "Testin tyypin tulee olla vähintään 2 merkkiä pitkä.",  if given field `type` is under 2 characters long.\
 `400 Bad Request`: with error messages: "Testin nimen tulee olla enintään 100 merkkiä pitkä.",  if given field `name` is over 100 characters long.\
 `400 Bad Request`: with error messages: "Testin tyypin tulee olla enintään 100 merkkiä pitkä.",  if given field `type` is over 100 characters long.\
-`400 Bad Request`: with error messages: "Testin nimen tulee olla uniikki.",  if modified name of the test was not unique.
+`400 Bad Request`: with error messages: "Testin nimen tulee olla uniikki.",  if modified name of the test was not unique.\
+`400 Bad Request`: with error messages: "Kuvaan liittyvää bakteeria ei löydy tietokannasta.",  if bacterium that image is given is not found.

@@ -48,6 +48,7 @@ Response body contains the saved Bacterium object:
 `401 Unauthorized`: with error message: "token missing or invalid" if current user is unauthorized.
 `400 Bad Request`: with error messages: "Bakteerin nimen tulee olla vähintään 2 merkkiä pitkä.",  if given field `name` is less than 2 characters long.\
 `400 Bad Request`: with error messages: "Bakteerin nimen tulee olla enintään 100 merkkiä pitkä.",  if given field `name` is more than 100 characters long.\
+`400 Bad Request`: with error messages: "Bakteerin nimi on pakollinen.",  if given field `name` is empty.\
 `400 Bad Request`: with error messages: "Bakteerin nimen tulee olla uniikki.",  if given name of the new bacterium is not unique.
 
 ## `DELETE /api/bacteria/:id`

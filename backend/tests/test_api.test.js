@@ -178,7 +178,7 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest)
             .expect(400)
-        expect(res.body.error).toEqual('Test validation failed: name: Path `name` is required.')
+        expect(res.body.error).toEqual('Test validation failed: name: Testin nimi on pakollinen.')
     })
 
     test('test type is required', async () => {

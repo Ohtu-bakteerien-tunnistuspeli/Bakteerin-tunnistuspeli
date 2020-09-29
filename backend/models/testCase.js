@@ -5,7 +5,7 @@ const testSchema = mongoose.Schema({
         type: String,
         minlength: [2, 'Testin nimen tulee olla vähintään 2 merkkiä pitkä.'],
         maxlength: [100, 'Testin nimen tulee olla enintään 100 merkkiä pitkä.'],
-        required: true,
+        required: [true, 'Testin nimi on pakollinen.'],
         unique: [true, 'Testin nimen tulee olla uniikki.']
     },
     type: {

@@ -5,7 +5,7 @@ const bacteriumSchema = mongoose.Schema({
         type: String,
         minlength: [2, 'Bakteerin nimen tulee olla vähintään 2 merkkiä pitkä.'],
         maxlength: [100, 'Bakteerin nimen tulee olla enintään 100 merkkiä pitkä.'],
-        required: true,
+        required: [true, 'Bakteerin nimi on pakollinen.'],
         unique: [true, 'Bakteerin nimen tulee olla uniikki.']
     }
 })

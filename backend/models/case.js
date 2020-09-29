@@ -5,7 +5,7 @@ const caseSchema = mongoose.Schema({
         type: String,
         minlength: [2, 'Tapauksen nimen tulee olla vähintään 2 merkkiä pitkä.'],
         maxlength: [100, 'Tapauksen nimen tulee olla enintään 100 merkkiä pitkä.'],
-        required: true,
+        required: [true, 'Tapauksen nimi on pakollinen.'],
         unique: [true, 'Tapauksen nimen tulee olla uniikki.']
     },
     bacterium: {
