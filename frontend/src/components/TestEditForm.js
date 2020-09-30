@@ -10,6 +10,7 @@ const INITIAL_STATE = {
 }
 
 const TestEditForm = (test) => {
+    test = test.test
     // Get info of this test from parameter 'test'
     // and set that info as staring value for fields
     const [newName, setNewName] = useState(test.name)
@@ -42,11 +43,12 @@ const TestEditForm = (test) => {
     if (test.controlResultImage) {
         setPhotoControl(test.controlResultImage)
     }
-
-        console.log(test)
+    console.log('test at start', test)
+        console.log('id at start', test.id)
 
     // Get test.id from parameter 'test'
     const removeTest = (t) => {
+        console.log('deletion form ', t.id)
         dispatch(deleteTest(t.id, user.token))
     }
     const editTest = () => {
@@ -135,7 +137,7 @@ const TestEditForm = (test) => {
                         value={bacteriaSpecificImage.image}
                         onChange={handleSpecificImg}
                     />
-                    <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikhtainen kuva</Button>
+                    <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
                 </Form.Group> 
                 <div></div>
 

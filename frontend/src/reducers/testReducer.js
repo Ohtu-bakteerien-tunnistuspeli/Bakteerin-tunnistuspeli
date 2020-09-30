@@ -10,10 +10,11 @@ const reducer = (state = null, action) => {
         return [...state, action.data]
     }
     case 'DELETE_TEST': {
-        return state.filter(test => test.id !== action.id)
+        console.log(action.data)
+        return state.filter(test => test.id !== action.data)
     }
     case 'UPDATE_TEST': {
-        return state.map(test => test.id !== action.data.id)
+        return state.map(test => test.id !== action.data)
     }
     default: return state
     }
@@ -50,6 +51,7 @@ export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, tok
 
 export const deleteTest = (id, token) => {
     return async dispatch => {
+        console.log('deletion to reducer ', id)
         const response = await testService.deleteTest(id, token)
         if (response.status !== 204) {
             dispatch(setNotification({ message: response.error, success: false }))

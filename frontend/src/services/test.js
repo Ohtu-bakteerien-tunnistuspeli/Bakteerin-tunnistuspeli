@@ -32,6 +32,7 @@ const update = (id, name, type, contImg, photoPos, photoNeg, token) => {
 
 const deleteTest = (id, token) => {
     const config = { headers: { Authorization: token } }
+    console.log('deletion to service ', id)
     return axios.delete(`${baseUrl}/${id}`, config)
         .then(response => response)
         .catch(error => error)
