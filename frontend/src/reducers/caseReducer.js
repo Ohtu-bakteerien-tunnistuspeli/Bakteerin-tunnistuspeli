@@ -27,10 +27,9 @@ export const getCases = (token) => {
     }
 }
 
-export const addCase = (name, bacterium, anamnesis, completionImage, samples, testGroups, token) => {
+export const addCase = (name, bacterium, anamnesis, completionImage, samples, testGroups, token, resetCaseForm) => {
     return async dispatch => {
         const caseToSave = await caseService.add(name, bacterium, anamnesis, completionImage, samples, testGroups, token)
-        
         if (caseToSave.error) {
             dispatch(setNotification({ message: caseToSave.error.substring(caseToSave.error.indexOf('name: ') + 6), success: false }))
         } else {
@@ -38,6 +37,7 @@ export const addCase = (name, bacterium, anamnesis, completionImage, samples, te
                 type: 'ADD_CASE',
                 data: caseToSave
             })
+            resetCaseForm()
         }
     }
 }

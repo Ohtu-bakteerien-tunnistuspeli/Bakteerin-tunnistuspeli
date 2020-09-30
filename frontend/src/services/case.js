@@ -19,10 +19,10 @@ const add = async (name, bacterium, anamnesis, completionImage, samples, testGro
     //samples.forEach(sample => formData.append('samples', sample))
     //testGroups.forEach(testGroup => testGroup.forEach(test => formData.append(`testGroups`, test)))
     formData.append('testGroups', JSON.stringify(testGroups))
-    testGroups.forEach(testGroup => testGroup.forEach(test => console.log(test)))
-    console.log(formData.get('testGroups'))
-    console.log(testGroups)
-    console.log(samples)
+    //testGroups.forEach(testGroup => testGroup.forEach(test => console.log(test)))
+    //console.log(formData.get('testGroups'))
+    //console.log(testGroups)
+    //console.log(samples)
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
     return axios.post(baseUrl, formData , config).then(response => response.data).catch(error => error.response.data)
 }
