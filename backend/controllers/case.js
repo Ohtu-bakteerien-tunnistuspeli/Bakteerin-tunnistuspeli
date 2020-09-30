@@ -30,7 +30,7 @@ const path = require('path')
 const imageDir = path.join(__dirname, '../images')
 const fs = require('fs')
 const deleteUploadedImages = (request) => {
-    if (request.files.completionImage) {
+    if (request.files && request.files.completionImage) {
         fs.unlink(`${imageDir}/${request.files.completionImage[0].filename}`, (err) => err)
     }
 }

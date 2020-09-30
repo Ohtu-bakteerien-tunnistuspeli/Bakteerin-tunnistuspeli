@@ -25,18 +25,20 @@ const path = require('path')
 const imageDir = path.join(__dirname, '../images')
 const fs = require('fs')
 const deleteUploadedImages = (request) => {
-    if (request.files.controlImage) {
-        fs.unlink(`${imageDir}/${request.files.controlImage[0].filename}`, (err) => err)
-    }
-    if (request.files.positiveResultImage) {
-        fs.unlink(`${imageDir}/${request.files.positiveResultImage[0].filename}`, (err) => err)
-    }
-    if (request.files.negativeResultImage) {
-        fs.unlink(`${imageDir}/${request.files.negativeResultImage[0].filename}`, (err) => err)
-    }
-    if (request.files.bacteriaSpecificImages) {
-        for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
-            fs.unlink(`${imageDir}/${request.files.bacteriaSpecificImages[i].filename}`, (err) => err)
+    if (request.files) {
+        if (request.files.controlImage) {
+            fs.unlink(`${imageDir}/${request.files.controlImage[0].filename}`, (err) => err)
+        }
+        if (request.files.positiveResultImage) {
+            fs.unlink(`${imageDir}/${request.files.positiveResultImage[0].filename}`, (err) => err)
+        }
+        if (request.files.negativeResultImage) {
+            fs.unlink(`${imageDir}/${request.files.negativeResultImage[0].filename}`, (err) => err)
+        }
+        if (request.files.bacteriaSpecificImages) {
+            for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
+                fs.unlink(`${imageDir}/${request.files.bacteriaSpecificImages[i].filename}`, (err) => err)
+            }
         }
     }
 }
