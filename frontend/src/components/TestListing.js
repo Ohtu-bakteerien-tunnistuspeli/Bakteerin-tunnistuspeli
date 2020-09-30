@@ -11,9 +11,9 @@ const TestListing = ({ test, deleteTest, isAdmin }) => {
     return (
         <ListGroup>
             <ListGroup.Item key={test.id}>
-                {test.name} {test.type} {test.positiveResultImage ? <ModalImage imageData={test.positiveResultImage.data.data} imageType={test.positiveResultImage.contentType} width={'10%'} height={'10%'}/>: <></>}
-                {test.negativeResultImage ? <ModalImage imageData={test.negativeResultImage.data.data} imageType={test.negativeResultImage.contentType} width={'10%'} height={'10%'}/> : <></>}
-                {test.controlImage ? <ModalImage imageData={test.controlImage.data.data} imageType={test.controlImage.contentType} width={'10%'} height={'10%'}/> : <></>}
+                {test.name} {test.type} {test.positiveResultImage ? <ModalImage imageUrl={test.positiveResultImage.url} width={'10%'} height={'10%'}/>: <></>}
+                {test.negativeResultImage ? <ModalImage imageUrl={test.negativeResultImage.url} width={'10%'} height={'10%'}/> : <></>}
+                {test.controlImage ? <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}/> : <></>}
                 { console.log(test) }
                 {isModified ?
                     <>
