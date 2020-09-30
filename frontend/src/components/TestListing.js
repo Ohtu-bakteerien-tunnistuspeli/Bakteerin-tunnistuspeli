@@ -7,7 +7,7 @@ const TestListing = ({ test, deleteTest, isAdmin }) => {
     const [isModified, setIsModified] = useState(false)
     const stopModify = () => {
         setIsModified(false)
-    }   
+    }
     return (
         <ListGroup>
             <ListGroup.Item key={test.id}>

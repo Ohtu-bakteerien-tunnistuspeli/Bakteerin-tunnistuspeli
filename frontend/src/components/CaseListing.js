@@ -4,7 +4,7 @@ import CaseEditForm from './CaseEditForm'
 import ModalImage from './ModalImage'
 
 const CaseListing = ({ c, admin, deleteCase }) => {
-   /* let completionUrl
+    /* let completionUrl
     if(c.completionImage) {
         completionUrl = btoa(String.fromCharCode.apply(null, c.completionImage.data.data))
     }*/

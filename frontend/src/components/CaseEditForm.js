@@ -35,7 +35,7 @@ const CaseEditForm = ({ c }) => {
     return (<div>
         <Button variant="primary" onClick={handleShow}>
             Muokkaa
-            </Button>
+        </Button>
         <Modal show={show} size="lg" onHide={handleClose} >
             <Modal.Header>Muokkaat tapausta "{c.name}"</Modal.Header>
             <Modal.Header closeButton></Modal.Header>
@@ -54,22 +54,22 @@ const CaseEditForm = ({ c }) => {
                     <br></br>
                     <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
                     {samples.map(s =>
-                        <Sample key={s.description} 
-                                sample={s} 
-                                sampleChange = {sampleName.onChange} 
-                                sampleAnswerChange= {sampleAnswer.onChange}>
+                        <Sample key={s.description}
+                            sample={s}
+                            sampleChange = {sampleName.onChange}
+                            sampleAnswerChange= {sampleAnswer.onChange}>
                         </Sample>
-                        )}
+                    )}
                     <Form.Label> Testiryhmät</Form.Label>
                     {testGroups.map((tg, i) =>
-                        <TestGroup key={i} 
-                                   testgroup = {tg} 
-                                   index={i}
-                                   isRequredChange = {sampleAnswer.onChange} 
-                                   positiveChange = {sampleAnswer.onChange}
-                                   alternativeTestsChange = {sampleAnswer.onChange}
-                                   > 
-                                   </TestGroup>
+                        <TestGroup key={i}
+                            testgroup = {tg}
+                            index={i}
+                            isRequredChange = {sampleAnswer.onChange}
+                            positiveChange = {sampleAnswer.onChange}
+                            alternativeTestsChange = {sampleAnswer.onChange}
+                        >
+                        </TestGroup>
                     )}
                     <Button variant="primary" type="submit">
                         Tallenna

@@ -87,11 +87,11 @@ export const register = (username, password, history) => {
                 type: 'REGISTER',
                 data: null
             })
-            if(response.error.includes("User validation failed")) {
+            if(response.error.includes('User validation failed')) {
                 dispatch(setNotification({ message: response.error.substring(response.error.indexOf('name: ') + 6), success: false }))
             } else {
                 dispatch(setNotification({ message: response.error, success: false }))
-            }   
+            }
         }
     }
 }
