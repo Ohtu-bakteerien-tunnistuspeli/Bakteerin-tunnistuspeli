@@ -16,8 +16,8 @@ const caseSchema = mongoose.Schema({
         type: String
     },
     completionImage: {
-        data: {
-            type: Buffer
+        url: {
+            type: String
         },
         contentType: {
             type: String

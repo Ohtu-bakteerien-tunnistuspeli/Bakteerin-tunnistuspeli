@@ -14,7 +14,7 @@ let timer
 
 export const setNotification = ( notification ) => {
     return async dispatch => {
-        if(!notification !== '') {
+        if(notification !== '') {
             clearTimeout(timer)
             timer = setTimeout(() => {
                 dispatch(setNotification(''))

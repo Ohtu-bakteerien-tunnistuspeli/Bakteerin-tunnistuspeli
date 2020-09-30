@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 import CaseEditForm from './CaseEditForm'
+import ModalImage from './ModalImage'
 
 const CaseListing = ({ c, admin, deleteCase }) => {
    /* let completionUrl
@@ -12,7 +13,7 @@ const CaseListing = ({ c, admin, deleteCase }) => {
             <ListGroup.Item key={ c.id } >
                 {admin ?
                     <div>
-                        { c.name } {/*c.completionImage ? <img src={`data:${c.completionImage.contentType};base64,${completionUrl}`} alt='control'/> : <></>*/}
+                        { c.name } {c.completionImage ? <ModalImage imageUrl={c.completionImage.url} width={'10%'} height={'10%'}/> : <></>}
                         <div>
                             <Button variant='danger' style={{ float: 'right' }} id='deleteCase' onClick={ () => deleteCase(c) }>Poista</Button>
                             <CaseEditForm c = { c }></CaseEditForm>

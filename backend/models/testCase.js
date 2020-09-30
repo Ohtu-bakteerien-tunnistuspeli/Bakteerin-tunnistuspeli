@@ -15,24 +15,24 @@ const testSchema = mongoose.Schema({
         required: true,
     },
     controlImage: {
-        data: {
-            type: Buffer
+        url: {
+            type: String
         },
         contentType: {
             type: String
         }
     },
     positiveResultImage: {
-        data: {
-            type: Buffer
+        url: {
+            type: String
         },
         contentType: {
             type: String
         }
     },
     negativeResultImage: {
-        data: {
-            type: Buffer
+        url: {
+            type: String
         },
         contentType: {
             type: String
@@ -43,8 +43,8 @@ const testSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Bacterium'
         },
-        data: {
-            type: Buffer
+        url: {
+            type: String
         },
         contentType: {
             type: String
