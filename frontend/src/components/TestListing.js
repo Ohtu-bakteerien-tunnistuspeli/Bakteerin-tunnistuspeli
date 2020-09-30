@@ -1,31 +1,19 @@
 import React, { useState } from 'react'
 import { ListGroup, Button } from 'react-bootstrap'
+import ModalImage from './ModalImage'
 import TestEditForm from './TestEditForm'
 
 const TestListing = ({ test, deleteTest, isAdmin }) => {
     const [isModified, setIsModified] = useState(false)
     const stopModify = () => {
         setIsModified(false)
-    }
-    let positiveUrl
-    if(test.positiveResultImage) {
-        positiveUrl = btoa(String.fromCharCode.apply(null, test.positiveResultImage.data.data))
-    }
-    let negativeUrl
-    if(test.negativeResultImage) {
-        negativeUrl = btoa(String.fromCharCode.apply(null, test.negativeResultImage.data.data))
-    }
-    let controlUrl
-    if(test.controlImage) {
-        controlUrl = btoa(String.fromCharCode.apply(null, test.controlImage.data.data))
-    }
-
+    }   
     return (
         <ListGroup>
             <ListGroup.Item key={test.id}>
-                {test.name} {test.type} {test.positiveResultImage ? <img src={`data:${test.positiveResultImage.contentType};base64,${positiveUrl}`} alt='positive result'/> : <></>}
-                {test.negativeResultImage ? <img src={`data:${test.negativeResultImage.contentType};base64,${negativeUrl}`} alt='negative result'/> : <></>}
-                {test.controlResultImage ? <img src={`data:${test.controlResultImage.contentType};base64,${controlUrl}`} alt='control'/> : <></>}
+                {test.name} {test.type} {test.positiveResultImage ? <ModalImage imageData={test.positiveResultImage.data.data} imageType={test.positiveResultImage.contentType} width={'10%'} height={'10%'}/>: <></>}
+                {test.negativeResultImage ? <ModalImage imageData={test.negativeResultImage.data.data} imageType={test.negativeResultImage.contentType} width={'10%'} height={'10%'}/> : <></>}
+                {test.controlImage ? <ModalImage imageData={test.controlImage.data.data} imageType={test.controlImage.contentType} width={'10%'} height={'10%'}/> : <></>}
                 { console.log(test) }
                 {isModified ?
                     <>
