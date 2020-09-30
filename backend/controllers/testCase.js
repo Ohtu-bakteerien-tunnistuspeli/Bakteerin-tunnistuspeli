@@ -26,6 +26,7 @@ testRouter.get('/', async (request, response) => {
 })
 
 testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
+    console.log(request.user)
     if (request.user.admin) {
         try {
             const test = new Test({
@@ -66,6 +67,8 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
 })
 
 testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
+    console.log('edit backend pre admin check', request.body)
+    console.log(request.user)
     if (request.user.admin) {
         try {
             let testToUpdate = {
@@ -73,6 +76,9 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 type: request.body.type,
                 bacteriaSpecificImages: []
             }
+
+            console.log('edit backend post admin check', request.body.name)
+
             if (request.files) {
                 if (request.files.controlImage) {
                     testToUpdate.controlImage = { data: request.files.controlImage[0].buffer, contentType: request.files.controlImage[0].mimetype }
