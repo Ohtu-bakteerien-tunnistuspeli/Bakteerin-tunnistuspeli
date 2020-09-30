@@ -86,7 +86,6 @@ const CaseEditForm = ({ c }) => {
     /* samples control end */
 
     const [testGroups] = useState(c.testGroups)
-    const sampleName = useField('text')
     const sampleAnswer = useField('boolean')
     console.log(c)
     return (<div>
