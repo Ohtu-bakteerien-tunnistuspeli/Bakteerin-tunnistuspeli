@@ -74,14 +74,15 @@ const TestEditForm = ( {test, stopModify} ) => {
     const handleSpecificImg = (event) => {
         console.log('in handle', bacterium)
         if(event.target.files[0]) {
-            Object.defineProperty(event.target.files[0], 'name', {
-            writable: true }) 
-            event.target.files[0].name = bacterium
-            Object.defineProperty(event.target.files[0], 'originalname', {
-                writable: true }) 
-                event.target.files[0].originalname = bacterium
-            setBacteriaImage(event.target.files[0])
-            console.log(event.target.files[0])
+            // Object.defineProperty(event.target.files[0], 'name', {
+            // writable: true }) 
+            // event.target.files[0].name = bacterium
+            // setBacteriaImage(event.target.files[0])
+            // console.log(event.target.files[0])
+            var file = event.target.files[0]
+            var blob = file.slice(0, file.size, file.type)
+            var newFile = new File([blob], bacterium, {type: file.type})
+            setBacteriaImage(newFile)
         } 
     }
 

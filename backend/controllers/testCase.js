@@ -77,7 +77,7 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
                 if (request.files.bacteriaSpecificImages) {
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
-                        const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
+                        const bacterium = await Bacterium.findOne({ name: file.originalname })
                         if (!bacterium) {
                             deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
@@ -143,7 +143,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
                         console.log('filen nimi', file)
-                        const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
+                        const bacterium = await Bacterium.findOne({ name: file.originalname })
                         if (!bacterium) {
                             deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
