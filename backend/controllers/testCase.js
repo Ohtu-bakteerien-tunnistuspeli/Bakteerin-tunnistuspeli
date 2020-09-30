@@ -16,6 +16,9 @@ const storage = multer.diskStorage({
     }
 })
 const upload = multer({ storage, fileFilter })
+const path = require('path')
+const imageDir = path.join(__dirname, '../images')
+const fs = require('fs')
 
 testRouter.get('/', async (request, response) => {
     if (request.user) {
@@ -52,7 +55,7 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
                         const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
-                        if(!bacterium) {
+                        if (!bacterium) {
                             return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
                         }
                         test.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
@@ -91,7 +94,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
                         const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
-                        if(!bacterium) {
+                        if (!bacterium) {
                             return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
                         }
                         testToUpdate.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
@@ -140,7 +143,32 @@ testRouter.delete('/:id', async (request, response) => {
             if (testIsInUse) {
                 return response.status(400).json({ error: 'Testi on käytössä ainakin yhdessä taupaksessa, eikä sitä voida poistaa' })
             }
-
+            fs.unlink(`${imageDir}/${testToDelete.controlImage.url}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            })
+            fs.unlink(`${imageDir}/${testToDelete.positiveResultImage.url}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            })
+            fs.unlink(`${imageDir}/${testToDelete.negativeResultImage.url}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            })
+            for (let i = 0; i < testToDelete.bacteriaSpecificImages.length; i++) {
+                fs.unlink(`${imageDir}/${testToDelete.bacteriaSpecificImages[i].url}`, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }
+                })
+            }
             await Test.findByIdAndRemove(request.params.id)
             return response.status(204).end()
         } catch (error) {

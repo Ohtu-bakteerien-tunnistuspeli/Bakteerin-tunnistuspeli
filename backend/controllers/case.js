@@ -22,6 +22,9 @@ const storage = multer.diskStorage({
     }
 })
 const upload = multer({ storage, fileFilter })
+const path = require('path')
+const imageDir = path.join(__dirname, '../images')
+const fs = require('fs')
 
 caseRouter.get('/', async (request, response) => {
     if (request.user.admin) {
@@ -113,6 +116,13 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
 caseRouter.delete('/:id', async (request, response) => {
     if (request.user.admin) {
         try {
+            const caseToDelete = await Case.findById(request.params.id)
+            fs.unlink(`${imageDir}/${caseToDelete.completionImage.url}`, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            })
             await Case.findByIdAndRemove(request.params.id)
             response.status(204).end()
         } catch (error) {
