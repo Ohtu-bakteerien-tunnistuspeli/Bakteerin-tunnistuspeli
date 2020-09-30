@@ -146,7 +146,11 @@ caseRouter.delete('/:id', async (request, response) => {
 caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }]), async (request, response) => {
     if (request.user.admin) {
         try {
-            const caseToUpdate = await Case.findByIdAndUpdate(request.params.id)
+            const caseToUpdate = await Case.findById(request.params.id)
+            if (!caseToUpdate) {
+                deleteUploadedImages(request)
+                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
+            }
             let changes = {
                 name: request.body.name
             }
@@ -208,10 +212,6 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             }
             changes.complete = isComplete(changes)
             const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
-            if (!updatedCase) {
-                deleteUploadedImages(request)
-                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
-            }
             return response.status(200).json(updatedCase)
         } catch (error) {
             deleteUploadedImages(request)

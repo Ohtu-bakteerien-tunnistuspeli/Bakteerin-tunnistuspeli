@@ -110,6 +110,10 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 path: 'bacteriaSpecificImages.bacterium',
                 model: 'Bacterium'
             })
+            if (!testToEdit) {
+                deleteUploadedImages(request)
+                return response.status(400).json({ error: 'Annettua testiä ei löydy tietokannasta' })
+            }
             let testToUpdate = {
                 name: request.body.name,
                 type: request.body.type,
@@ -147,10 +151,6 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 }
             }
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
-            if (!updatetTest) {
-                deleteUploadedImages(request)
-                return response.status(400).json({ error: 'Annettua testiä ei löydy tietokannasta' })
-            }
             return response.status(200).json(updatetTest)
         } catch (error) {
             deleteUploadedImages(request)
