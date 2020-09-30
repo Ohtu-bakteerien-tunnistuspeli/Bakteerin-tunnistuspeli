@@ -24,7 +24,7 @@ const add = async (name, type, contImg, posImg, negImg, bacteriaSpes, token) => 
 }
 
 const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, token) => {
-    console.log('edit to service ', name, id, token)
+    console.log('edit to service ', name, id, bacteriaSpesif)
     const formData = new FormData()
     formData.append('id', id )
     formData.append('name', name )
@@ -35,6 +35,7 @@ const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesi
     Array.from(bacteriaSpesif).forEach(bact => formData.append('bacteriaSpecificImages', bact))
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
     console.log(formData)
+    console.log(bacteriaSpesif[0])
     return axios.put(`${baseUrl}/${id}`, formData, config)
         .then(response => response.data)
         .catch(error => error.response.data)

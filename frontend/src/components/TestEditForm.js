@@ -17,12 +17,14 @@ const TestEditForm = ( {test, stopModify} ) => {
     const [photoPos, setPhotoPos] = useState(INITIAL_STATE)
     const [photoNeg, setPhotoNeg] = useState(INITIAL_STATE)
     const [photoControl, setPhotoControl] = useState(INITIAL_STATE)
-    const [bacteriaSpecificImages, setBacteriaImages] = useState(test.bacteriaSpecificImages)
+    const [bacteriaSpecificImages, setBacteriaImages] = useState([])
     const [bacteriaSpecificImage, setBacteriaImage] = useState(INITIAL_STATE)
     const [bacterium, setBacterium] = useState('')
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
+
+    const testList = [...test.bacteriaSpecificImages]
 
     if (test.positiveResultImage) {
         setPhotoPos(test.positiveResultImage)
@@ -33,8 +35,9 @@ const TestEditForm = ( {test, stopModify} ) => {
     if (test.controlResultImage) {
         setPhotoControl(test.controlResultImage)
     }
+
     console.log('test at start', test)
-        console.log('id at start', test.id)
+    console.log('id at start', test.id)
 
     // Get test.id from parameter 'test'
     const removeTest = () => {
@@ -46,8 +49,9 @@ const TestEditForm = ( {test, stopModify} ) => {
         event.preventDefault()
         var token = user.token
         var id = test.id
-        console.log(token)
         done()
+        console.log(bacteriaSpecificImages)
+        console.log(photoControl)
         dispatch(updateTest(id, newName, newType, photoControl, photoPos, photoNeg, bacteriaSpecificImages, token))
     }
 
@@ -56,18 +60,26 @@ const TestEditForm = ( {test, stopModify} ) => {
     }
 
     const addBacteriumSpecificImage = () => {
-        if(bacterium !== '') {
-            setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
+        console.log('add', bacteriaSpecificImage)
+        if (bacterium !== '') {
+            testList.push(bacteriaSpecificImage)
+            bacteriaSpecificImages.push(bacteriaSpecificImage)
+            setBacteriaImages(bacteriaSpecificImages)
+            console.log('after adding', bacteriaSpecificImages)
             setBacteriaImage(INITIAL_STATE)
             setBacterium('')
         }   
     }
 
     const handleSpecificImg = (event) => {
+        console.log('in handle', bacterium)
         if(event.target.files[0]) {
             Object.defineProperty(event.target.files[0], 'name', {
-            writable: true,
-            value: bacterium }) 
+            writable: true }) 
+            event.target.files[0].name = bacterium
+            Object.defineProperty(event.target.files[0], 'originalname', {
+                writable: true }) 
+                event.target.files[0].originalname = bacterium
             setBacteriaImage(event.target.files[0])
             console.log(event.target.files[0])
         } 
@@ -116,7 +128,7 @@ const TestEditForm = ( {test, stopModify} ) => {
                     />
                 </Form.Group>
 
-                <Form.Group controlId="bacteriaSpecificImages">
+                <Form.Group controlId="editBacteriaSpecificImages">
                     <Form.Label>Bakteerikohtaiset tulokset</Form.Label>
                     <div></div>
                     <ul>

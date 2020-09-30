@@ -67,7 +67,7 @@ export const deleteTest = (id, token) => {
 
 export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, token) => {
     return async dispatch => {
-        console.log('edit to reducer ', name, token)
+        console.log('edit to reducer ', name, bacteriaSpesif)
         const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))

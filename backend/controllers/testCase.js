@@ -64,7 +64,6 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
                 type: request.body.type,
                 bacteriaSpecificImages: []
             })
-
             if (request.files) {
                 if (request.files.controlImage) {
                     test.controlImage = { url: request.files.controlImage[0].filename, contentType: request.files.controlImage[0].mimetype }
@@ -124,7 +123,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
             }
 
             console.log('edit backend post admin check', request.body.name)
-
+            console.log('seuraavksi files check')
             if (request.files) {
                 if (request.files.controlImage) {
                     fs.unlink(`${imageDir}/${testToEdit.controlImage.url}`, (err) => err)
@@ -138,9 +137,12 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     fs.unlink(`${imageDir}/${testToEdit.negativeResultImage.url}`, (err) => err)
                     testToUpdate.negativeResultImage = { url: request.files.negativeResultImage[0].filename, contentType: request.files.negativeResultImage[0].mimetype }
                 }
+                console.log('backendissa specific seraavaksu')
                 if (request.files.bacteriaSpecificImages) {
+                    console.log('backendissa specific löydetty')
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
+                        console.log('filen nimi', file)
                         const bacterium = await Bacterium.findOne({ name: file.originalname.substring(0, file.originalname.indexOf('.')) })
                         if (!bacterium) {
                             deleteUploadedImages(request)
