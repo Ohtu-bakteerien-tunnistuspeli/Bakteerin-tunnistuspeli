@@ -117,7 +117,7 @@ const TestEditForm = ( {test, stopModify} ) => {
                 </Form.Group>
 
                 <Form.Group controlId="bacteriaSpecificImages">
-                    <Form.Label>BakteeriKohtaiset Tulokset</Form.Label>
+                    <Form.Label>Bakteerikohtaiset tulokset</Form.Label>
                     <div></div>
                     <ul>
                         {bacteriaSpecificImages.map((image, i) => 
@@ -130,7 +130,7 @@ const TestEditForm = ( {test, stopModify} ) => {
                             <option key={bact.id} value={bact.name}>{bact.name}</option>
                         )}
                     </Form.Control> 
-                    <Form.Label>BakteeriKohtaiset Kuvat </Form.Label>
+                    <Form.Label>Bakteerikohtaiset Kuvat </Form.Label>
                     <Form.Control 
                         name='positiveResultImage'
                         type="file"
@@ -139,7 +139,7 @@ const TestEditForm = ( {test, stopModify} ) => {
                     />
                     <p></p>
                     <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
-                </Form.Group> 
+                </Form.Group>
                 <div></div>
 
                 <Button type='submit'>Tallenna muutokset</Button>
