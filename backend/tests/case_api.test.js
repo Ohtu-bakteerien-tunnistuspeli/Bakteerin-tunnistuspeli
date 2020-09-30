@@ -52,23 +52,25 @@ describe('addition of a case ', () => {
         const initialLength = res.body.length
         const bacterium = await Bacterium.findOne({ name: 'koli' })
         const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         const newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         await api
             .post('/api/case')
@@ -91,23 +93,25 @@ describe('addition of a case ', () => {
             })
         const testCase = await Test.findOne({ name: 'testName' })
         const bacterium = await Bacterium.findOne({ name: 'koli' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         const newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         await api
             .post('/api/case')
@@ -120,74 +124,37 @@ describe('addition of a case ', () => {
             .set('Authorization', `bearer ${user.body.token}`)
 
         const initialLength = res.body.length
+        const testGroups2 = JSON.stringify([[{
+            testId: 'false-test-id',
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
+
         const newCases = [{
             name: 'testing case',
             bacterium: 'false-id',
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }, {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: 'false-id',
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups2
         }, {
             name: 't',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }, {
             name: 'oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }]
         let addResponse = await api
             .post('/api/case')
@@ -265,23 +232,25 @@ describe('addition of a case ', () => {
         const initialLength = res.body.length
         const bacterium = await Bacterium.findOne({ name: 'koli' })
         const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         const newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         const addResponse = await api
             .post('/api/case')
@@ -311,23 +280,25 @@ describe('deletion of a case', () => {
         const initialLength = res.body.length
         const bacterium = await Bacterium.findOne({ name: 'koli' })
         const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         const newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         await api
             .post('/api/case')
@@ -364,23 +335,25 @@ describe('deletion of a case', () => {
             })
         const bacterium = await Bacterium.findOne({ name: 'koli' })
         const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         const newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         await api
             .post('/api/case')
@@ -415,23 +388,25 @@ describe('modify a case', () => {
             })
         const bacterium = await Bacterium.findOne({ name: 'koli' })
         const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         const newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         await api
             .post('/api/case')
@@ -456,6 +431,7 @@ describe('modify a case', () => {
         expect(updatedCase.body.name).toEqual('case testing')
         expect(updatedCase.body.anamnesis).toEqual('anamnesis test')
     })
+
     test('user can not modify an existing case', async () => {
         const user = await api
             .post('/api/user/login')
@@ -472,23 +448,25 @@ describe('modify a case', () => {
             })
         const bacterium = await Bacterium.findOne({ name: 'koli' })
         const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         const newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         await api
             .post('/api/case')
@@ -511,6 +489,7 @@ describe('modify a case', () => {
 
         expect(updatedCase.body.error).toEqual('token missing or invalid')
     })
+
     test('if modified case is invalid, error is returned', async () => {
         const user = await api
             .post('/api/user/login')
@@ -521,23 +500,25 @@ describe('modify a case', () => {
 
         const bacterium = await Bacterium.findOne({ name: 'koli' })
         const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         let newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         await api
             .post('/api/case')
@@ -545,23 +526,13 @@ describe('modify a case', () => {
             .send(newCase)
             .expect(201)
             .expect('Content-Type', /application\/json/)
+
         newCase = {
             name: 'testing case2',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis2',
-            samples: [{
-                description: 'desc 1.2',
-                rightAnswer: true
-            }, {
-                description: 'desc 2.2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         const postedCase = await api
             .post('/api/case')
@@ -578,12 +549,12 @@ describe('modify a case', () => {
         }, {
             bacterium: 'false-id'
         }, {
-            testGroups: [[{
+            testGroups: JSON.stringify([[{
                 testId: 'false-id',
                 isRequired: true,
                 positive: true,
                 alternativeTests: false
-            }]]
+            }]])
         }]
         let updatetCase = await api
             .put(`/api/case/${postedCase.body.id}`)
@@ -631,23 +602,25 @@ describe('modify a case', () => {
             })
         const bacterium = await Bacterium.findOne({ name: 'koli' })
         const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            testId: testCase.id,
+            isRequired: true,
+            positive: true,
+            alternativeTests: false
+        }]])
         let newCase = {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
-            samples: [{
-                description: 'desc 1',
-                rightAnswer: true
-            }, {
-                description: 'desc 2',
-                rightAnswer: false
-            }],
-            testGroups: [[{
-                testId: testCase.id,
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
-            }]]
+            samples: samples,
+            testGroups: testGroups
         }
         const res = await api
             .put('/api/case/doesnotexist')
