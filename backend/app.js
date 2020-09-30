@@ -76,6 +76,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                     }
                 ],
                 testGroups: [
+                    [ { test: intialTestCase, isRequired: false, positive: false, alternativeTests: false },{ test: intialTestCase, isRequired: false, positive: false, alternativeTests: false }],
                     [ { test: intialTestCase, isRequired: false, positive: false, alternativeTests: false }]
                 ]
             })

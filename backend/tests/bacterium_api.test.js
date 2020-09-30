@@ -286,7 +286,6 @@ describe('deletion of a bacterium', () => {
             name: 'testCase',
             type: 'testType',
             anamnesis: 'test anamnesis',
-            completitionText: 'test completitionText',
             bacterium: resAfterAdding.body[0].id
         }).save()
         const deletionRes = await api
