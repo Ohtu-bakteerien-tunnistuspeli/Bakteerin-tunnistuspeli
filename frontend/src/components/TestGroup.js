@@ -4,8 +4,6 @@ import { Form } from 'react-bootstrap'
 
 
 const TestGroup = ({ testgroup, index, isReguiredChange, positiveChange, alternativeTestsChange }) => {
-  console.log('heck')
-  console.log(testgroup)
   return (
     <div>
       <Form.Label>Testiryhmä {index + 1}</Form.Label>
@@ -15,7 +13,7 @@ const TestGroup = ({ testgroup, index, isReguiredChange, positiveChange, alterna
           {t.test.name}
             {t.isReguired ?
               <>
-                <Form.Check onChange={isReguiredChange} type="checkbox" label="Pakollinen" checked />
+                <Form.Check onChange={isReguiredChange} type="checkbox" label="Pakollinen" defaultChecked />
               </>
               :
               <>
@@ -25,7 +23,7 @@ const TestGroup = ({ testgroup, index, isReguiredChange, positiveChange, alterna
 
             {t.positive ?
               <>
-                <Form.Check onChange={positiveChange} type="checkbox" label="Positiivinen" checked />
+                <Form.Check onChange={positiveChange} type="checkbox" label="Positiivinen" defaultChecked />
               </>
               :
               <>
@@ -35,7 +33,7 @@ const TestGroup = ({ testgroup, index, isReguiredChange, positiveChange, alterna
 
             {t.alternativeTests ?
               <>
-                <Form.Check onChange={alternativeTestsChange} type="checkbox" label="Vapaaehtoinen" checked />
+                <Form.Check onChange={alternativeTestsChange} type="checkbox" label="Vapaaehtoinen" defaultChecked />
               </>
               :
               <>
