@@ -16,7 +16,11 @@ const fileFilter = (req, file, cb) => {
         cb(null, false)
     }
 }
-const storage = multer.memoryStorage()
+const storage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, 'images')
+    }
+})
 const upload = multer({ storage, fileFilter })
 
 caseRouter.get('/', async (request, response) => {
@@ -57,7 +61,7 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                 newCase.anamnesis = request.body.anamnesis
             }
             if (request.files && request.files.completionImage) {
-                newCase.completionImage = { data: request.files.completionImage[0].buffer, contentType: request.files.completionImage[0].mimetype }
+                newCase.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {
                 newCase.samples = JSON.parse(request.body.samples)
@@ -141,13 +145,13 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 changes.anamnesis = request.body.anamnesis
             }
             if (request.files && request.files.completionImage) {
-                changes.completionImage = { data: request.files.completionImage[0].buffer, contentType: request.files.completionImage[0].mimetype }
+                changes.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {
                 changes.samples = JSON.parse(request.body.samples)
             }
             if (request.body.testGroups) {
-                request.body.testGroups = JSON.parse(request.body.testGroups)                
+                request.body.testGroups = JSON.parse(request.body.testGroups)
                 const testGroups = []
                 for (let i = 0; i < request.body.testGroups.length; i++) {
                     const newTestGroup = []

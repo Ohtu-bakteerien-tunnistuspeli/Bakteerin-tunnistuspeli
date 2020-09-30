@@ -10,7 +10,11 @@ const fileFilter = (req, file, cb) => {
         cb(null, false)
     }
 }
-const storage = multer.memoryStorage()
+const storage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, 'images')
+    }
+})
 const upload = multer({ storage, fileFilter })
 
 testRouter.get('/', async (request, response) => {
@@ -36,13 +40,13 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
 
             if (request.files) {
                 if (request.files.controlImage) {
-                    test.controlImage = { data: request.files.controlImage[0].buffer, contentType: request.files.controlImage[0].mimetype }
+                    test.controlImage = { url: request.files.controlImage[0].filename, contentType: request.files.controlImage[0].mimetype }
                 }
                 if (request.files.positiveResultImage) {
-                    test.positiveResultImage = { data: request.files.positiveResultImage[0].buffer, contentType: request.files.positiveResultImage[0].mimetype }
+                    test.positiveResultImage = { url: request.files.positiveResultImage[0].filename, contentType: request.files.positiveResultImage[0].mimetype }
                 }
                 if (request.files.negativeResultImage) {
-                    test.negativeResultImage = { data: request.files.negativeResultImage[0].buffer, contentType: request.files.negativeResultImage[0].mimetype }
+                    test.negativeResultImage = { url: request.files.negativeResultImage[0].filename, contentType: request.files.negativeResultImage[0].mimetype }
                 }
                 if (request.files.bacteriaSpecificImages) {
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
@@ -51,7 +55,7 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
                         if(!bacterium) {
                             return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
                         }
-                        test.bacteriaSpecificImages.push({ data: file.buffer, contentType: file.mimetype, bacterium })
+                        test.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
                     }
                 }
             }
@@ -75,13 +79,13 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
             }
             if (request.files) {
                 if (request.files.controlImage) {
-                    testToUpdate.controlImage = { data: request.files.controlImage[0].buffer, contentType: request.files.controlImage[0].mimetype }
+                    testToUpdate.controlImage = { url: request.files.controlImage[0].filename, contentType: request.files.controlImage[0].mimetype }
                 }
                 if (request.files.positiveResultImage) {
-                    testToUpdate.positiveResultImage = { data: request.files.positiveResultImage[0].buffer, contentType: request.files.positiveResultImage[0].mimetype }
+                    testToUpdate.positiveResultImage = { url: request.files.positiveResultImage[0].filename, contentType: request.files.positiveResultImage[0].mimetype }
                 }
                 if (request.files.negativeResultImage) {
-                    testToUpdate.negativeResultImage = { data: request.files.negativeResultImage[0].buffer, contentType: request.files.negativeResultImage[0].mimetype }
+                    testToUpdate.negativeResultImage = { url: request.files.negativeResultImage[0].filename, contentType: request.files.negativeResultImage[0].mimetype }
                 }
                 if (request.files.bacteriaSpecificImages) {
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
@@ -90,7 +94,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                         if(!bacterium) {
                             return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
                         }
-                        testToUpdate.bacteriaSpecificImages.push({ data: file.buffer, contentType: file.mimetype, bacterium })
+                        testToUpdate.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
                     }
                 }
             }
