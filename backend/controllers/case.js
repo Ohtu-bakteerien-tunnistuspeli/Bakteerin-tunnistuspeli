@@ -10,8 +10,12 @@ const isComplete = (caseToCheck) => {
 }
 const multer = require('multer')
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-        cb(null, true)
+    if (req.user && req.user.admin) {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+            cb(null, true)
+        } else {
+            cb(null, false)
+        }
     } else {
         cb(null, false)
     }
@@ -22,6 +26,14 @@ const storage = multer.diskStorage({
     }
 })
 const upload = multer({ storage, fileFilter })
+const path = require('path')
+const imageDir = path.join(__dirname, '../images')
+const fs = require('fs')
+const deleteUploadedImages = (request) => {
+    if (request.files && request.files.completionImage) {
+        fs.unlink(`${imageDir}/${request.files.completionImage[0].filename}`, (err) => err)
+    }
+}
 
 caseRouter.get('/', async (request, response) => {
     if (request.user.admin) {
@@ -40,7 +52,7 @@ caseRouter.get('/', async (request, response) => {
 })
 
 caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const newCase = new Case({
                 name: request.body.name,
@@ -50,9 +62,11 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                 try {
                     bacterium = await Bacterium.findById(request.body.bacterium)
                 } catch (e) {
+                    deleteUploadedImages(request)
                     return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
                 }
                 if (!bacterium) {
+                    deleteUploadedImages(request)
                     return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
                 }
                 newCase.bacterium = bacterium
@@ -77,9 +91,11 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                         try {
                             testFromDb = await Test.findById(test.testId)
                         } catch (e) {
+                            deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
                         }
                         if (!testFromDb) {
+                            deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
                         }
                         const testToAdd = {
@@ -103,9 +119,11 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
             const savedCase = await newCase.save()
             return response.status(201).json(savedCase)
         } catch (error) {
+            deleteUploadedImages(request)
             return response.status(400).json({ error: error.message })
         }
     } else {
+        deleteUploadedImages(request)
         throw Error('JsonWebTokenError')
     }
 })
@@ -113,6 +131,8 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
 caseRouter.delete('/:id', async (request, response) => {
     if (request.user.admin) {
         try {
+            const caseToDelete = await Case.findById(request.params.id)
+            fs.unlink(`${imageDir}/${caseToDelete.completionImage.url}`, (err) => err)
             await Case.findByIdAndRemove(request.params.id)
             response.status(204).end()
         } catch (error) {
@@ -126,6 +146,11 @@ caseRouter.delete('/:id', async (request, response) => {
 caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }]), async (request, response) => {
     if (request.user.admin) {
         try {
+            const caseToUpdate = await Case.findById(request.params.id)
+            if (!caseToUpdate) {
+                deleteUploadedImages(request)
+                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
+            }
             let changes = {
                 name: request.body.name
             }
@@ -134,9 +159,11 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 try {
                     bacterium = await Bacterium.findById(request.body.bacterium)
                 } catch (e) {
+                    deleteUploadedImages(request)
                     return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
                 }
                 if (!bacterium) {
+                    deleteUploadedImages(request)
                     return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
                 }
                 changes.bacterium = bacterium
@@ -145,6 +172,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 changes.anamnesis = request.body.anamnesis
             }
             if (request.files && request.files.completionImage) {
+                fs.unlink(`${imageDir}/${caseToUpdate.completionImage.url}`, (err) => err)
                 changes.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {
@@ -161,9 +189,11 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                         try {
                             testFromDb = await Test.findById(test.testId)
                         } catch (e) {
+                            deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
                         }
                         if (!testFromDb) {
+                            deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
                         }
                         const testToAdd = {
@@ -182,14 +212,13 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             }
             changes.complete = isComplete(changes)
             const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
-            if (!updatedCase) {
-                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
-            }
             return response.status(200).json(updatedCase)
         } catch (error) {
+            deleteUploadedImages(request)
             return response.status(400).json({ error: error.message })
         }
     } else {
+        deleteUploadedImages(request)
         throw Error('JsonWebTokenError')
     }
 })
