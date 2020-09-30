@@ -20,3 +20,16 @@ Cypress.Commands.add('addBacterium', ( { name } ) => {
 
     cy.visit('http://localhost:3000')
 })
+
+Cypress.Commands.add('addTest', ( { name, type } ) => {
+    cy.request({
+        url: 'http://localhost:3001/api/test',
+        method: 'POST',
+        body: { name, type },
+        headers: {
+            'Authorization': `${JSON.parse(window.localStorage.getItem('loggedUser')).token}`
+        }
+    })
+
+    cy.visit('http://localhost:3000')
+})

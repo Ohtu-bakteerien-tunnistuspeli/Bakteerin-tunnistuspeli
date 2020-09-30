@@ -31,8 +31,9 @@ export const addCase = (name, bacterium, anamnesis, completionImage, samples, te
     return async dispatch => {
         const caseToSave = await caseService.add(name, bacterium, anamnesis, completionImage, samples, testGroups, token)
         if (caseToSave.error) {
-            dispatch(setNotification({ message: caseToSave.error.substring(caseToSave.error.indexOf('name: ') + 6), success: false }))
+            dispatch(setNotification({ message: caseToSave.error, success: false }))
         } else {
+            dispatch(setNotification({ message: `Tapauksen ${caseToSave.name} lisäys onnistui.`, success: true }))
             dispatch({
                 type: 'ADD_CASE',
                 data: caseToSave
