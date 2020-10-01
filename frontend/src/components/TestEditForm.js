@@ -81,7 +81,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
         <div>
             <p></p>
             <p></p>
-            <Button id="deleteTest" variant='danger' id='deleteTest' onClick={() => removeTest(test)}>POISTA testi</Button>
+            <Button variant='danger' id='deleteTest' onClick={() => removeTest(test)}>POISTA testi</Button>
             <p></p>
             <Form onSubmit={editTest} encType="multipart/form-data">
                 <Form.Group controlId="name">
