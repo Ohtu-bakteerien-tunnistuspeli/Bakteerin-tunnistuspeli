@@ -9,7 +9,7 @@ const INITIAL_STATE = {
     image: undefined,
 }
 
-const TestEditForm = ( {test, stopModify} ) => {
+const TestEditForm = ( {test, stopModify, bacteria} ) => {
     // Get info of this test from parameter 'test'
     // and set that info as staring value for fields
     const [newName, setNewName] = useState(test.name)
@@ -19,10 +19,11 @@ const TestEditForm = ( {test, stopModify} ) => {
     const [photoControl, setPhotoControl] = useState(INITIAL_STATE)
     const [bacteriaSpecificImages, setBacteriaImages] = useState([])
     const [bacteriaSpecificImage, setBacteriaImage] = useState(INITIAL_STATE)
-    const [bacterium, setBacterium] = useState('')
-    const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
+    const [bacterium, setBacterium] = useState(bacteria[0]?.name)
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
+
+    console.log(bacteria[0])
 
     const testList = [...test.bacteriaSpecificImages]
 

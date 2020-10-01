@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { ListGroup, Button } from 'react-bootstrap'
 import ModalImage from './ModalImage'
 import TestEditForm from './TestEditForm'
 
 const TestListing = ({ test, deleteTest, isAdmin }) => {
+    const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const [isModified, setIsModified] = useState(false)
     const stopModify = () => {
         setIsModified(false)
@@ -17,7 +19,7 @@ const TestListing = ({ test, deleteTest, isAdmin }) => {
                 { console.log(test) }
                 {isModified ?
                     <>
-                        <TestEditForm test={ test } stopModify={ stopModify } />
+                        <TestEditForm test={ test } stopModify={ stopModify } bacteria={ bacteria } />
                         <Button variant='secondary' id='stopEdit' style={{ float: 'right' }} onClick={stopModify}>Lopeta muokkaus</Button>
                     </>
                     :
