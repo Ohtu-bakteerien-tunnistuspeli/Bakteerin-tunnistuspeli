@@ -26,16 +26,6 @@ const TestEditForm = ( {test, stopModify} ) => {
 
     const testList = [...test.bacteriaSpecificImages]
 
-    if (test.positiveResultImage) {
-        setPhotoPos(test.positiveResultImage)
-    }
-    if (test.negativeResultImage) {
-        setPhotoNeg(test.negativeResultImage)
-    }
-    if (test.controlResultImage) {
-        setPhotoControl(test.controlResultImage)
-    }
-
     console.log('test at start', test)
     console.log('id at start', test.id)
 
