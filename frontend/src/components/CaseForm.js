@@ -69,7 +69,7 @@ const CaseForm = () => {
 
     return (
         <div>
-            <Button variant="primary" onClick={handleShow}>
+            <Button id='caseModalButton' variant="primary" onClick={handleShow}>
                 Luo uusi tapaus
             </Button>
             <Modal show={show} size="lg" onHide={handleClose} backdrop="static">
@@ -84,7 +84,9 @@ const CaseForm = () => {
 
                         <Form.Group controlId="bacterium">
                             <Form.Label>Bakteeri</Form.Label>
-                            <Form.Control as="select" value={bacterium} onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
+                            <Form.Control as="select"
+                                value={bacterium}
+                                onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
                                 {bacteria.map(bacterium =>
                                     <option key={bacterium.id} value={JSON.stringify(bacterium)}>{bacterium.name}</option>
                                 )}
@@ -93,19 +95,33 @@ const CaseForm = () => {
 
                         <Form.Group controlId="anamnesis">
                             <Form.Label>Anamneesi</Form.Label>
-                            <Form.Control as="textarea" rows="3" value={anamnesis} onChange={(event) => setAnamnesis(event.target.value)} />
+                            <Form.Control 
+                                as="textarea"
+                                rows="3" value={anamnesis} 
+                                onChange={(event) => setAnamnesis(event.target.value)}
+                            />
                         </Form.Group>
 
                         <Form.Group controlId="completionImage">
                             <Form.Label>Loppukuva</Form.Label>
-                            <Form.Control name='completionImage' type="file" value={completionImage.image} onChange={handleCompletionImageChange} />
+                            <Form.Control 
+                                name='completionImage' 
+                                type="file" value={completionImage.image}
+                                onChange={handleCompletionImageChange} />
                         </Form.Group>
 
                         <Form.Group controlId="samples">
                             <Form.Label>Näytevaihtoehdot</Form.Label>
-                            <Form.Control value={sample.name} onChange={({ target }) => setSample({ ...sample, name: target.value })} />
-                            <Form.Check type="checkbox" label="Oikea vastaus" onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
-                            <Button type="button" onClick={() => addSample(sample.name, sample.rightAnswer)}>+</Button>
+                            <Form.Control 
+                                value={sample.name}
+                                onChange={({ target }) => setSample({ ...sample, name: target.value })}
+                             />
+                            <Form.Check 
+                                type="checkbox" 
+                                id="isRightAnswer"
+                                label="Oikea vastaus"
+                                onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
+                            <Button type="button" id="addSample" onClick={() => addSample(sample.name, sample.rightAnswer)}>+</Button>
                             <ListGroup>
                                 {samples.map(sample => sample.rightAnswer ?
                                     <ListGroup.Item variant="success" key={sample.name}>{sample.name}</ListGroup.Item> :
@@ -116,17 +132,36 @@ const CaseForm = () => {
 
                         <Form.Group>
                             <Form.Label>Testiryhmät</Form.Label>
-                            <Form.Control as="select" onChange={(event) => setTestForCase({ ...testForCase, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
+                            <Form.Control
+                                as="select"
+                                id="testSelect" 
+                                onChange={(event) => setTestForCase({ ...testForCase, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
                                 {tests.map(test =>
                                     <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
                                 )}
                             </Form.Control>
-                            <Form.Check type="checkbox" label="Pakollinen" onChange={() => setTestForCase({ ...testForCase, required: !testForCase.required })} />
-                            <Form.Check type="checkbox" label="Positiivinen" onChange={() => setTestForCase({ ...testForCase, positive: !testForCase.positive })} />
-                            <Form.Check type="checkbox" label="Vaihtoehtoinen testi" onChange={() => setTestForCase({ ...testForCase, alternativeTests: !testForCase.alternativeTests })} />
+                            <Form.Check 
+                                type="checkbox"
+                                id="required" 
+                                label="Pakollinen" 
+                                onChange={() => setTestForCase({ ...testForCase, required: !testForCase.required })} />
+                            <Form.Check
+                                type="checkbox"
+                                id="positive"
+                                label="Positiivinen"
+                                onChange={() => setTestForCase({ ...testForCase, positive: !testForCase.positive })} />
+                            <Form.Check 
+                                type="checkbox"
+                                id="alternative"
+                                label="Vaihtoehtoinen testi"
+                                onChange={() => setTestForCase({ ...testForCase, alternativeTests: !testForCase.alternativeTests })} />
                             <ButtonGroup vertical>
-                                <Button type="button" onClick={() => setTestGroup([...testGroup, testForCase])}>Lisää testi</Button>
-                                <Table striped bordered hover>
+                                <Button
+                                    type="button"
+                                    id="addTestForGroup"
+                                    onClick={() => setTestGroup([...testGroup, testForCase])}>Lisää testi
+                                </Button>
+                                <Table striped bordered hover id="testGroupTable">
                                     {testGroup.length > 0 ?
                                         <thead>
                                             <tr>
@@ -148,13 +183,17 @@ const CaseForm = () => {
                                         )}
                                     </tbody>
                                 </Table>
-                                <Button type="button" onClick={() => addTestGroup()}>Lisää testiryhmä</Button>
+                                <Button 
+                                    type="button"
+                                    id="addTestGroup"
+                                    onClick={() => addTestGroup()}>Lisää testiryhmä
+                                </Button>
                             </ButtonGroup>
                         </Form.Group>
 
 
                         {testGroups.map((testGroup, i) =>
-                            <Table key={i} striped bordered hover>
+                            <Table key={i} striped bordered hover id="testGroupsTable">
                                 <thead>
                                     <tr>
                                         <th>Testi</th>
@@ -177,7 +216,10 @@ const CaseForm = () => {
                         )}
 
 
-                        <Button variant="primary" type="submit">
+                        <Button
+                            variant="primary"
+                            type="submit"
+                            id= "addCase">
                             Lisää
                         </Button>
                     </Form>

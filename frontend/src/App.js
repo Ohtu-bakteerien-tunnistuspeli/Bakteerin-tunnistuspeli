@@ -35,7 +35,7 @@ const App = () => {
                     <Nav className="mr-auto">
                         {/*HUOM Tarkista polku ennen käyttöön ottoa<Nav.Link href="#" as span>
                             {user 
-                                ? <Link style={padding} to="/bakteeriPeli">Bakteeripeli</Link>
+                                ? <Link style={padding} to="/bakteeripeli">Bakteeripeli</Link>
                                 : null
                             }
                         </Nav.Link>
@@ -95,22 +95,6 @@ const App = () => {
                         <Route path='/'>
                             <Redirect to='/bakteeriLista'></Redirect>
                         </Route>
-                        {/*<Route path='/skeleton'>
-                    <SkeletonComponent></SkeletonComponent>
-                    <button onClick={() => history.push('/hello')}>to hello</button>
-                </Route>
-                <Route path="/hello/:name">
-                    <h1>HELLO {name}</h1>
-                    <button onClick={() => history.push('/skeleton')}>to skeleton</button>
-                </Route>
-                <Route path='/hello'>
-                    <h1>
-                        <Link to='/hello/WORLD'>HELLO</Link>
-                    </h1>
-                </Route>
-                <Route path='/'>
-                    <Redirect to='/skeleton'></Redirect>
-    </Route>*/}
                     </Switch>
                 </>
                 :
