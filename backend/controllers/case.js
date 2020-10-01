@@ -36,7 +36,7 @@ const deleteUploadedImages = (request) => {
 }
 
 caseRouter.get('/', async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         const cases = await Case.find({}).populate('bacterium', { name: 1 }).populate({
             path: 'testGroups.test',
             model: 'Test',
@@ -129,7 +129,7 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
 })
 
 caseRouter.delete('/:id', async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const caseToDelete = await Case.findById(request.params.id)
             fs.unlink(`${imageDir}/${caseToDelete.completionImage.url}`, (err) => err)
@@ -144,7 +144,7 @@ caseRouter.delete('/:id', async (request, response) => {
 })
 
 caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }]), async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const caseToUpdate = await Case.findById(request.params.id)
             if (!caseToUpdate) {

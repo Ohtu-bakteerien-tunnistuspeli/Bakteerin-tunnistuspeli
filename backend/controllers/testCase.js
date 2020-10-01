@@ -57,7 +57,7 @@ testRouter.get('/', async (request, response) => {
 
 testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
     console.log(request.user)
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const test = new Test({
                 name: request.body.name,
@@ -106,7 +106,7 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
 testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
     console.log('edit backend pre admin check', request.body)
     console.log(request.user)
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const testToEdit = await Test.findById(request.params.id).populate({
                 path: 'bacteriaSpecificImages.bacterium',
@@ -171,7 +171,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
 })
 
 testRouter.delete('/:id', async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const testToDelete = await Test.findById(request.params.id).populate({
                 path: 'bacteriaSpecificImages.bacterium',
