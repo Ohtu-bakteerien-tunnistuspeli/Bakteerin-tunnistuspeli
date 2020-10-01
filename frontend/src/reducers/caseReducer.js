@@ -3,13 +3,16 @@ import { setNotification } from '../reducers/notificationReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
-    case 'GET_CASES': {
-        return action.data
-    }
-    case 'ADD_CASE': {
-        return [...state, action.data]
-    }
-    default: return state
+        case 'GET_CASES': {
+            return action.data
+        }
+        case 'ADD_CASE': {
+            return [...state, action.data]
+        }
+        case 'DELETE_CASE': {
+            return state.filter(ca => ca.id !== action.data.id)
+        }
+        default: return state
     }
 }
 
@@ -39,6 +42,20 @@ export const addCase = (name, bacterium, anamnesis, completionImage, samples, te
                 data: caseToSave
             })
             resetCaseForm()
+        }
+    }
+}
+
+export const deleteCase = (caseToDelete, token) => {
+    return async dispatch => {
+        const res = await caseService.deleteCase(caseToDelete.id, token)
+        if (res.status !== 204) {
+            dispatch(setNotification({ message: res.error, success: false }))
+        } else {
+            dispatch({
+                type: 'DELETE_CASE',
+                data: caseToDelete
+            })
         }
     }
 }
