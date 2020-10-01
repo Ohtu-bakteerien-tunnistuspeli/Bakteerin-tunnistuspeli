@@ -85,7 +85,6 @@ const CaseForm = () => {
                         <Form.Group controlId="bacterium">
                             <Form.Label>Bakteeri</Form.Label>
                             <Form.Control as="select"
-                                value={bacterium}
                                 onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
                                 {bacteria.map(bacterium =>
                                     <option key={bacterium.id} value={JSON.stringify(bacterium)}>{bacterium.name}</option>
