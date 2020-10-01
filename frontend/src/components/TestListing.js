@@ -26,7 +26,6 @@ const TestListing = ({ test, deleteTest, isAdmin }) => {
                     <>
                         {isAdmin ?
                             <>
-                                <Button variant='danger' style={{ float: 'right' }} id='delete' onClick={() => deleteTest(test)}>Poista</Button>
                                 <Button variant='primary' style={{ float: 'right' }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
                             </>
                             :
