@@ -67,22 +67,29 @@ const TestForm = () => {
         setControlImage(event.target.files[0])
     }
 
-    const handleChange4 = (event) => {
-        if(event.target.files[0]) {
-            Object.defineProperty(event.target.files[0], 'name', {
-            writable: true,
-            value: bacterium }) 
-            setBacteriaImage(event.target.files[0])
-            console.log(event.target.files[0])
-        } 
-    }
-
     const addBacteriumSpecificImage = () => {
         if(bacterium !== '') {
-            setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
+            bacteriaSpecificImages.push(bacteriaSpecificImage)
+            setBacteriaImages(bacteriaSpecificImages)
+            console.log('after adding', bacteriaSpecificImages)
             setBacteriaImage(INITIAL_STATE)
             setBacterium('')
         }   
+    }
+
+    const handleSpecificImg = (event) => {
+        console.log('in handle', bacterium)
+        if(event.target.files[0]) {
+            // Object.defineProperty(event.target.files[0], 'name', {
+            // writable: true }) 
+            // event.target.files[0].name = bacterium
+            // setBacteriaImage(event.target.files[0])
+            // console.log(event.target.files[0])
+            var file = event.target.files[0]
+            var blob = file.slice(0, file.size, file.type)
+            var newFile = new File([blob], bacterium, {type: file.type})
+            setBacteriaImage(newFile)
+        } 
     }
     
     return (
@@ -158,7 +165,7 @@ const TestForm = () => {
                                 name='positiveResultImage'
                                 type="file"
                                 value={bacteriaSpecificImage.image}
-                                onChange={handleChange4}
+                                onChange={handleSpecificImg}
                             />
                             <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohatinen kuva</Button>
                      {/*       <Form.Label>BakteeriKohtainen Negatiivinen Oletus</Form.Label>
