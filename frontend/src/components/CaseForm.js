@@ -94,29 +94,29 @@ const CaseForm = () => {
 
                         <Form.Group controlId="anamnesis">
                             <Form.Label>Anamneesi</Form.Label>
-                            <Form.Control 
+                            <Form.Control
                                 as="textarea"
-                                rows="3" value={anamnesis} 
+                                rows="3" value={anamnesis}
                                 onChange={(event) => setAnamnesis(event.target.value)}
                             />
                         </Form.Group>
 
                         <Form.Group controlId="completionImage">
                             <Form.Label>Loppukuva</Form.Label>
-                            <Form.Control 
-                                name='completionImage' 
+                            <Form.Control
+                                name='completionImage'
                                 type="file" value={completionImage.image}
                                 onChange={handleCompletionImageChange} />
                         </Form.Group>
 
                         <Form.Group controlId="samples">
                             <Form.Label>Näytevaihtoehdot</Form.Label>
-                            <Form.Control 
+                            <Form.Control
                                 value={sample.name}
                                 onChange={({ target }) => setSample({ ...sample, name: target.value })}
-                             />
-                            <Form.Check 
-                                type="checkbox" 
+                            />
+                            <Form.Check
+                                type="checkbox"
                                 id="isRightAnswer"
                                 label="Oikea vastaus"
                                 onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
@@ -133,23 +133,23 @@ const CaseForm = () => {
                             <Form.Label>Testiryhmät</Form.Label>
                             <Form.Control
                                 as="select"
-                                id="testSelect" 
+                                id="testSelect"
                                 onChange={(event) => setTestForCase({ ...testForCase, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
                                 {tests.map(test =>
                                     <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
                                 )}
                             </Form.Control>
-                            <Form.Check 
+                            <Form.Check
                                 type="checkbox"
-                                id="required" 
-                                label="Pakollinen" 
+                                id="required"
+                                label="Pakollinen"
                                 onChange={() => setTestForCase({ ...testForCase, required: !testForCase.required })} />
                             <Form.Check
                                 type="checkbox"
                                 id="positive"
                                 label="Positiivinen"
                                 onChange={() => setTestForCase({ ...testForCase, positive: !testForCase.positive })} />
-                            <Form.Check 
+                            <Form.Check
                                 type="checkbox"
                                 id="alternative"
                                 label="Vaihtoehtoinen testi"
@@ -182,7 +182,7 @@ const CaseForm = () => {
                                         )}
                                     </tbody>
                                 </Table>
-                                <Button 
+                                <Button
                                     type="button"
                                     id="addTestGroup"
                                     onClick={() => addTestGroup()}>Lisää testiryhmä
@@ -218,7 +218,7 @@ const CaseForm = () => {
                         <Button
                             variant="primary"
                             type="submit"
-                            id= "addCase">
+                            id="addCase">
                             Lisää
                         </Button>
                     </Form>

@@ -13,13 +13,13 @@ const TestListing = ({ test, deleteTest, isAdmin }) => {
     return (
         <ListGroup>
             <ListGroup.Item key={test.id}>
-                {test.name} {test.type} {test.positiveResultImage ? <ModalImage imageUrl={test.positiveResultImage.url} width={'10%'} height={'10%'}/>: <></>}
-                {test.negativeResultImage ? <ModalImage imageUrl={test.negativeResultImage.url} width={'10%'} height={'10%'}/> : <></>}
-                {test.controlImage ? <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}/> : <></>}
-                { console.log(test) }
+                {test.name} {test.type} {test.positiveResultImage ? <ModalImage imageUrl={test.positiveResultImage.url} width={'10%'} height={'10%'} /> : <></>}
+                {test.negativeResultImage ? <ModalImage imageUrl={test.negativeResultImage.url} width={'10%'} height={'10%'} /> : <></>}
+                {test.controlImage ? <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'} /> : <></>}
+                {console.log(test)}
                 {isModified ?
                     <>
-                        <TestEditForm test={ test } stopModify={ stopModify } bacteria={ bacteria } />
+                        <TestEditForm test={test} stopModify={stopModify} bacteria={bacteria} />
                         <Button variant='secondary' id='stopEdit' style={{ float: 'right' }} onClick={stopModify}>Lopeta muokkaus</Button>
                     </>
                     :

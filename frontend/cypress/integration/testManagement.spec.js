@@ -5,10 +5,15 @@ describe('Test management', function () {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
         cy.addBacterium({ name: 'Tetanus' })
-        cy.addTest({ name: 'Testi', type: 'Viljely' })
+        cy.addTest({ name: 'Cypress Testi', type: 'Viljely' })
     })
 
-    describe('Cases can be added', function () {
+    it('User cannot access test management', function () {
+        cy.login({ username: 'user', password: 'user' })
+        cy.get('div').should('not.contain', 'Testien hallinta')
+    })
+
+    describe('Tests can be added', function () {
         beforeEach(function () {
         })
 
@@ -32,7 +37,7 @@ describe('Test management', function () {
             cy.contains('Testi lisätty onnistuneesti')
             cy.contains('Katalaasitesti')
             cy.get('#testModalButton').click()
-            // Since UI doesn't reset name and type we don't have to type them again
+            // Since UI doesn't reset name and type we don't have to write them again
             // cy.get('#name').type('Katalaasitesti')
             // cy.get('#type').type('Testi')
             cy.get('#addTest').click()
@@ -56,10 +61,40 @@ describe('Test management', function () {
             cy.get('#addTest').click()
             cy.contains('Testin tyypin tulee olla vähintään 2 merkkiä pitkä')
         })
+    })
 
-        it('User cannot add a test', function () {
-            cy.login({ username: 'user', password: 'user' })
-            cy.get('div').should('not.contain', 'Testien hallinta')
+    describe('Tests can be deleted', function () {
+        beforeEach(function () {
+        })
+
+        it('Test can be deleted', function () {
+            cy.contains('Testien hallinta').click()
+            cy.contains('Cypress Testi')
+            cy.get('#edit').click()
+            cy.get('#deleteTest').click()
+            cy.contains('Test successfully deleted')
+            cy.should('not.contain', 'Cypress Testi')
+        })
+    })
+
+    describe('Tests can be modified', function () {
+        beforeEach(function () {
+        })
+
+        it('Test name can be edited', function () {
+            cy.contains('Testien hallinta').click()
+            cy.get('#edit').click()
+            cy.get('#newNameInput').type(' edited')
+            cy.get('#saveChanges').click()
+            cy.contains('Cypress Testi edited')
+        })
+
+        it('Test type can be edited', function () {
+            cy.contains('Testien hallinta').click()
+            cy.get('#edit').click()
+            cy.get('#newTypeInput').type(' edited')
+            cy.get('#saveChanges').click()
+            cy.contains('Viljely edited')
         })
     })
 
