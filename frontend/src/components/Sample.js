@@ -3,20 +3,23 @@ import { Form } from 'react-bootstrap'
 
 
 
-const Sample = ({ sample, sampleChange, sampleAnswerChange }) => {
+const Sample = ({ sample, sampleChange }) => {
     return (
-        <div>
-            <Form.Control onChange={sampleChange} defaultValue={sample.description} />
+ <div>
+            <Form.Label>{sample.description} </ Form.Label>
             {sample.rightAnswer ?
                 <>
-                    <Form.Check onChange={sampleAnswerChange} type="checkbox" label="Oikea vastaus" checked />
+                    <Form.Label>Oikea vastaus </ Form.Label>
                 </>
                 :
                 <>
-                    <Form.Check onChange={sampleAnswerChange} type="checkbox" label="Oikea vastaus"/>
+                    <Form.Label>Väärä vastaus </ Form.Label>
                 </>
             }
-
+            <button onClick={(event) => {
+                event.preventDefault()
+                sampleChange(sample)
+            }}>Poista</button>
         </div>
     )
 }
