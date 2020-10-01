@@ -46,6 +46,7 @@ const TestForm = () => {
         setPhotoPos([])
         setPhotoNeg([])
         setBacteriaImages([])
+        handleClose()
     }
 
     const [show, setShow] = useState(false)
@@ -94,7 +95,7 @@ const TestForm = () => {
     
     return (
         <div>
-            <Button variant="primary" onClick={handleShow}>
+            <Button id="testModalButton" variant="primary" onClick={handleShow}>
               Luo uusi testi
             </Button>
             <Modal show={show} size='lg' onHide={handleClose} >
@@ -177,7 +178,7 @@ const TestForm = () => {
                      /> */}
                         </Form.Group> 
                         <div></div>
-                        <button type="submit">Lisää</button>
+                        <button id="addTest" type="submit">Lisää</button>
                     </Form>
                 </Modal.Body>
             </Modal>
