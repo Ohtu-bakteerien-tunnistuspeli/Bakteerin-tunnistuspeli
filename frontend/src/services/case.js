@@ -27,4 +27,9 @@ const add = async (name, bacterium, anamnesis, completionImage, samples, testGro
     return axios.post(baseUrl, formData , config).then(response => response.data).catch(error => error.response.data)
 }
 
-export default { get, add }
+const deleteCase = (id, token) => {
+    const config = { headers: { Authorization: token } }
+    return axios.delete(`${baseUrl}/${id}`, config).then(response => response).catch(error => error)
+}
+
+export default { get, add, deleteCase }
