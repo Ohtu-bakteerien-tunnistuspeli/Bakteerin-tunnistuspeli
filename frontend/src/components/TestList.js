@@ -19,6 +19,7 @@ const TestList = () => {
     return (
         <div>
             <h2 style={style}>Testit</h2>
+            <p></p>
             {user?.admin ?
                 <TestForm></TestForm>
                 :
@@ -26,6 +27,7 @@ const TestList = () => {
             } 
             {tests ?
                 <ul>
+                    <p></p>
                     {tests.map(test =>
                         <TestListing key={test.id} test={test} deleteTest={deleteTests} updateTest={updateTests} isAdmin={user?.admin}></TestListing>
                     )}

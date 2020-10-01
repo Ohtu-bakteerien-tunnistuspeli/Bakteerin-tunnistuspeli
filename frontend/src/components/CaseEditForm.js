@@ -91,7 +91,7 @@ const CaseEditForm = ({ c }) => {
     return (<div>
         <Button variant="primary" onClick={handleShow}>
             Muokkaa
-            </Button>
+        </Button>
         <Modal show={show} size="lg" onHide={handleClose} >
             <Modal.Header>Muokkaat tapausta "{c.name}"</Modal.Header>
             <Modal.Header closeButton></Modal.Header>
@@ -111,7 +111,7 @@ const CaseEditForm = ({ c }) => {
                         )}
                     </Form.Control><br></br>
 
-                    <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
+ <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
                     {samples.map(s =>
                         <Sample key={s.description}
                             sample={s}

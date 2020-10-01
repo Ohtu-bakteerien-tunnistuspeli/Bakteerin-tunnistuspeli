@@ -11,7 +11,7 @@ const ModalImage = ({ imageUrl, width, height }) => {
         setShow(true)
         dispatch(setNotification(''))
     }
-    
+
     return (
         <>
             <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={

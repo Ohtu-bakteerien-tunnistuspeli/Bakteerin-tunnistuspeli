@@ -14,7 +14,7 @@ const reducer = (state = null, action) => {
         return state.filter(test => test.id !== action.data)
     }
     case 'UPDATE_TEST': {
-        return state.map(test => test.id !== action.data)
+        return state.map(test => test.id === action.data.id ? test = action.data : test)
     }
     default: return state
     }
@@ -65,9 +65,10 @@ export const deleteTest = (id, token) => {
     }
 }
 
-export const updateTest = (id, name, type, contImg, photoPos, photoNeg, token) => {
+export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, token) => {
     return async dispatch => {
-        const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, token)
+        console.log('edit to reducer ', name, bacteriaSpesif)
+        const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {

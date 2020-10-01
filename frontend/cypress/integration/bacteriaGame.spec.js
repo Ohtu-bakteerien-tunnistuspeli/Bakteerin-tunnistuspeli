@@ -31,6 +31,95 @@ describe('Game', function() {
         cy.contains('Kirjaudu Bakteeripeliin')
     })
 
+    it('User can sign up with valid credentials and then log in', function() {
+        cy.contains('Rekisteröidy').click()
+        cy.contains('Rekisteröidy Bakteeripeliin')
+
+        cy.get('#username').type('newUser')
+        cy.get('#password').type('newpass')
+        cy.get('#passwordAgain').type('newpass')
+
+        cy.get('#acceptCheckBox').click()
+
+        cy.get('#submit').click()
+
+        cy.get('#username').type('newUser')
+        cy.get('#password').type('newpass')
+        cy.get('#submit').click()
+
+        cy.get('div').should('not.contain', 'Kirjaudu Bakteeripeliin')
+    })
+
+    it('User cannot sign up without accepting the terms and conditions', function() {
+        cy.contains('Rekisteröidy').click()
+        cy.contains('Rekisteröidy Bakteeripeliin')
+
+        cy.get('#username').type('newUser')
+        cy.get('#password').type('newpass')
+        cy.get('#passwordAgain').type('newpass')
+
+        cy.get('#submit').click()
+
+        cy.contains('Käyttöehtojen hyväksyminen on pakollista')
+        cy.contains('Rekisteröidy Bakteeripeliin')
+    })
+
+    it('User cannot sign up with taken username', function() {
+        cy.contains('Rekisteröidy').click()
+        cy.contains('Rekisteröidy Bakteeripeliin')
+
+        cy.get('#username').type('admin')
+        cy.get('#password').type('newpass')
+        cy.get('#passwordAgain').type('newpass')
+        cy.get('#acceptCheckBox').click()
+
+        cy.get('#submit').click()
+
+        cy.contains('Käyttäjänimen tulee olla uniikki.')
+        cy.contains('Rekisteröidy Bakteeripeliin')
+    })
+
+    it('User cannot sign up if passwords do not match', function() {
+        cy.contains('Rekisteröidy').click()
+        cy.contains('Rekisteröidy Bakteeripeliin')
+
+        cy.get('#username').type('newUser')
+        cy.get('#password').type('newpass')
+        cy.get('#passwordAgain').type('newpas')
+        cy.get('#acceptCheckBox').click()
+
+        cy.get('#submit').click()
+
+        cy.contains('Salasanojen tulee olla samat.')
+        cy.contains('Rekisteröidy Bakteeripeliin')
+    })
+
+    it('User cannot sign up with empty username', function() {
+        cy.contains('Rekisteröidy').click()
+        cy.contains('Rekisteröidy Bakteeripeliin')
+
+        cy.get('#password').type('newpass')
+        cy.get('#passwordAgain').type('newpass')
+        cy.get('#acceptCheckBox').click()
+
+        cy.get('#submit').click()
+
+        cy.contains('Käyttäjänimi on pakollinen')
+        cy.contains('Rekisteröidy Bakteeripeliin')
+    })
+
+    it('User cannot sign up with empty password', function() {
+        cy.contains('Rekisteröidy').click()
+        cy.contains('Rekisteröidy Bakteeripeliin')
+
+        cy.get('#username').type('newUser')
+        cy.get('#acceptCheckBox').click()
+        cy.get('#submit').click()
+
+        cy.contains('Salasana on pakollinen')
+        cy.contains('Rekisteröidy Bakteeripeliin')
+    })
+
     describe('After logging in as a normal user', function() {
         beforeEach(function() {
             cy.login({ username: 'user', password: 'user' })

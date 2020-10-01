@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteTest, updateTest } from '../reducers/testReducer'
 import { Button, Form } from 'react-bootstrap'
@@ -9,8 +9,7 @@ const INITIAL_STATE = {
     image: undefined,
 }
 
-const TestEditForm = (test) => {
-    test = test.test
+const TestEditForm = ( {test, stopModify} ) => {
     // Get info of this test from parameter 'test'
     // and set that info as staring value for fields
     const [newName, setNewName] = useState(test.name)
@@ -25,14 +24,7 @@ const TestEditForm = (test) => {
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        console.log('name to be set')
-        setNewName(test.name)
-    }, [test])
-    
-    useEffect(() => {
-        setNewType(test.type)
-    }, [test])
+    const testList = [...test.bacteriaSpecificImages]
 
     if (test.positiveResultImage) {
         setPhotoPos(test.positiveResultImage)
@@ -43,81 +35,102 @@ const TestEditForm = (test) => {
     if (test.controlResultImage) {
         setPhotoControl(test.controlResultImage)
     }
+
     console.log('test at start', test)
-        console.log('id at start', test.id)
+    console.log('id at start', test.id)
 
     // Get test.id from parameter 'test'
-    const removeTest = (t) => {
-        console.log('deletion form ', t.id)
-        dispatch(deleteTest(t.id, user.token))
+    const removeTest = () => {
+        console.log('deletion form ', test.id)
+        dispatch(deleteTest(test.id, user.token))
     }
-    const editTest = () => {
-        dispatch(updateTest(test.id, newName, newType, photoPos, photoNeg, user.token))
+    const editTest = (event) => {
+        console.log('dispatching edit ', newName)
+        event.preventDefault()
+        var token = user.token
+        var id = test.id
+        done()
+        console.log(bacteriaSpecificImages)
+        console.log(photoControl)
+        dispatch(updateTest(id, newName, newType, photoControl, photoPos, photoNeg, bacteriaSpecificImages, token))
+    }
+
+    const done = () => {
+        stopModify()
     }
 
     const addBacteriumSpecificImage = () => {
-        if(bacterium !== '') {
-            setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
+        console.log('add', bacteriaSpecificImage)
+        if (bacterium !== '') {
+            testList.push(bacteriaSpecificImage)
+            bacteriaSpecificImages.push(bacteriaSpecificImage)
+            setBacteriaImages(bacteriaSpecificImages)
+            console.log('after adding', bacteriaSpecificImages)
             setBacteriaImage(INITIAL_STATE)
             setBacterium('')
         }   
     }
 
     const handleSpecificImg = (event) => {
+        console.log('in handle', bacterium)
         if(event.target.files[0]) {
-            Object.defineProperty(event.target.files[0], 'name', {
-            writable: true,
-            value: bacterium }) 
-            setBacteriaImage(event.target.files[0])
-            console.log(event.target.files[0])
+            // Object.defineProperty(event.target.files[0], 'name', {
+            // writable: true }) 
+            // event.target.files[0].name = bacterium
+            // setBacteriaImage(event.target.files[0])
+            // console.log(event.target.files[0])
+            var file = event.target.files[0]
+            var blob = file.slice(0, file.size, file.type)
+            var newFile = new File([blob], bacterium, {type: file.type})
+            setBacteriaImage(newFile)
         } 
     }
 
     return (
         <div>
             <p></p>
+            <p></p>
             <Button variant='danger' id='deleteTest' onClick={ () => removeTest(test) }>POISTA testi</Button>
             <p></p>
             <Form onSubmit={ editTest } encType="multipart/form-data">
-                <p>Uusi nimi</p>
-                <input
-                    id='editTestName'
-                    value={ newName }
-                    onChange={ ({ target }) => setNewName(target.value.name) }
-                />
-                <p>Uusi tyyppi</p>
-                <input
-                    id='editTestType'
-                    value={ newType }
-                    onChange={ ({ target }) => setNewType(target.value.type) }
-                />
-                <p>Kontrollikuva</p>
-                <input
-                    id='editCtrlImg'
-                    name='editCtrlImg'
-                    value= { photoControl.image }
-                    type='file'
-                    onChange={ ({ target }) => setPhotoControl(target.files[0]) }
-                />
-                <p>Positiivinen oletuskuva</p>
-                <input
-                    id='editTestPosImg'
-                    name='editTestPosImg'
-                    value= { photoPos.image }
-                    type='file'
-                    onChange={ ({ target }) => setPhotoPos(target.files[0]) }
-                />
-                <p>Negatiivinen oletuskuva</p>
-                <input
-                    id='editTestNegImg'
-                    name='editTestNegImg'
-                    value= { photoNeg.image }
-                    type='file'
-                    onChange={ ({ target }) => setPhotoNeg(target.files[0]) }
-                />
+                <Form.Group controlId="name">
+                    <Form.Label>Uusi nimi</Form.Label>
+                    <Form.Control type='input' value={newName} onChange={ ({ target }) => setNewName(target.value) } />
+                </Form.Group>
+                <Form.Group controlId="type">
+                    <Form.Label>Tyyppi</Form.Label>
+                    <Form.Control type='input' value={newType} onChange={ ({ target }) => setNewType(target.value) } />
+                </Form.Group>
+                <Form.Group controlId="editControlImage">
+                    <Form.Label>Kontrollikuva</Form.Label>
+                    <Form.Control 
+                        name='editCtrlImg'
+                        value= { photoControl.image }
+                        type='file'
+                        onChange={ ({ target }) => setPhotoControl(target.files[0]) }
+                    />
+                </Form.Group>
+                <Form.Group controlId="editPositiveResultImage">
+                    <Form.Label>Positiivinen oletus</Form.Label>
+                    <Form.Control
+                        name='editTestPosImg'
+                        value= { photoPos.image }
+                        type='file'
+                        onChange={ ({ target }) => setPhotoPos(target.files[0]) }
+                    />
+                </Form.Group>
+                <Form.Group controlId="editNegativeResultImage">
+                    <Form.Label>Negatiivinen Oletus</Form.Label>
+                    <Form.Control 
+                        name='editTestNegImg'
+                        value= { photoNeg.image }
+                        type='file'
+                        onChange={ ({ target }) => setPhotoNeg(target.files[0]) }
+                    />
+                </Form.Group>
 
-                <Form.Group controlId="bacteriaSpecificImages">
-                    <Form.Label>BakteeriKohtaiset Tulokset</Form.Label>
+                <Form.Group controlId="editBacteriaSpecificImages">
+                    <Form.Label>Bakteerikohtaiset tulokset</Form.Label>
                     <div></div>
                     <ul>
                         {bacteriaSpecificImages.map((image, i) => 
@@ -130,18 +143,20 @@ const TestEditForm = (test) => {
                             <option key={bact.id} value={bact.name}>{bact.name}</option>
                         )}
                     </Form.Control> 
-                    <Form.Label>BakteeriKohtaiset Kuvat </Form.Label>
+                    <Form.Label>Bakteerikohtaiset Kuvat </Form.Label>
                     <Form.Control 
                         name='positiveResultImage'
                         type="file"
                         value={bacteriaSpecificImage.image}
                         onChange={handleSpecificImg}
                     />
+                    <p></p>
                     <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
-                </Form.Group> 
+                </Form.Group>
                 <div></div>
 
                 <Button type='submit'>Tallenna muutokset</Button>
+                <p></p>
             </Form>
         </div>
     )

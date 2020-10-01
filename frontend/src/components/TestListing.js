@@ -7,7 +7,7 @@ const TestListing = ({ test, deleteTest, isAdmin }) => {
     const [isModified, setIsModified] = useState(false)
     const stopModify = () => {
         setIsModified(false)
-    }   
+    }
     return (
         <ListGroup>
             <ListGroup.Item key={test.id}>
@@ -17,7 +17,7 @@ const TestListing = ({ test, deleteTest, isAdmin }) => {
                 { console.log(test) }
                 {isModified ?
                     <>
-                        <TestEditForm test={test} />
+                        <TestEditForm test={ test } stopModify={ stopModify } />
                         <Button variant='secondary' id='stopEdit' style={{ float: 'right' }} onClick={stopModify}>Lopeta muokkaus</Button>
                     </>
                     :
