@@ -9,7 +9,7 @@ const INITIAL_STATE = {
     image: undefined,
 }
 
-const TestEditForm = ( {test, stopModify, bacteria} ) => {
+const TestEditForm = ({ test, stopModify, bacteria }) => {
     // Get info of this test from parameter 'test'
     // and set that info as staring value for fields
     const [newName, setNewName] = useState(test.name)
@@ -59,12 +59,12 @@ const TestEditForm = ( {test, stopModify, bacteria} ) => {
             console.log('after adding', bacteriaSpecificImages)
             setBacteriaImage(INITIAL_STATE)
             setBacterium('')
-        }   
+        }
     }
 
     const handleSpecificImg = (event) => {
         console.log('in handle', bacterium)
-        if(event.target.files[0]) {
+        if (event.target.files[0]) {
             // Object.defineProperty(event.target.files[0], 'name', {
             // writable: true }) 
             // event.target.files[0].name = bacterium
@@ -72,51 +72,51 @@ const TestEditForm = ( {test, stopModify, bacteria} ) => {
             // console.log(event.target.files[0])
             var file = event.target.files[0]
             var blob = file.slice(0, file.size, file.type)
-            var newFile = new File([blob], bacterium, {type: file.type})
+            var newFile = new File([blob], bacterium, { type: file.type })
             setBacteriaImage(newFile)
-        } 
+        }
     }
 
     return (
         <div>
             <p></p>
             <p></p>
-            <Button variant='danger' id='deleteTest' onClick={ () => removeTest(test) }>POISTA testi</Button>
+            <Button variant='danger' id='deleteTest' onClick={() => removeTest(test)}>POISTA testi</Button>
             <p></p>
-            <Form onSubmit={ editTest } encType="multipart/form-data">
+            <Form onSubmit={editTest} encType="multipart/form-data">
                 <Form.Group controlId="name">
                     <Form.Label>Uusi nimi</Form.Label>
-                    <Form.Control type='input' value={newName} onChange={ ({ target }) => setNewName(target.value) } />
+                    <Form.Control id="newNameInput" type='input' value={newName} onChange={({ target }) => setNewName(target.value)} />
                 </Form.Group>
                 <Form.Group controlId="type">
                     <Form.Label>Tyyppi</Form.Label>
-                    <Form.Control type='input' value={newType} onChange={ ({ target }) => setNewType(target.value) } />
+                    <Form.Control id="newTypeInput" type='input' value={newType} onChange={({ target }) => setNewType(target.value)} />
                 </Form.Group>
                 <Form.Group controlId="editControlImage">
                     <Form.Label>Kontrollikuva</Form.Label>
-                    <Form.Control 
+                    <Form.Control
                         name='editCtrlImg'
-                        value= { photoControl.image }
+                        value={photoControl.image}
                         type='file'
-                        onChange={ ({ target }) => setPhotoControl(target.files[0]) }
+                        onChange={({ target }) => setPhotoControl(target.files[0])}
                     />
                 </Form.Group>
                 <Form.Group controlId="editPositiveResultImage">
                     <Form.Label>Positiivinen oletus</Form.Label>
                     <Form.Control
                         name='editTestPosImg'
-                        value= { photoPos.image }
+                        value={photoPos.image}
                         type='file'
-                        onChange={ ({ target }) => setPhotoPos(target.files[0]) }
+                        onChange={({ target }) => setPhotoPos(target.files[0])}
                     />
                 </Form.Group>
                 <Form.Group controlId="editNegativeResultImage">
                     <Form.Label>Negatiivinen Oletus</Form.Label>
-                    <Form.Control 
+                    <Form.Control
                         name='editTestNegImg'
-                        value= { photoNeg.image }
+                        value={photoNeg.image}
                         type='file'
-                        onChange={ ({ target }) => setPhotoNeg(target.files[0]) }
+                        onChange={({ target }) => setPhotoNeg(target.files[0])}
                     />
                 </Form.Group>
 
@@ -124,18 +124,18 @@ const TestEditForm = ( {test, stopModify, bacteria} ) => {
                     <Form.Label>Bakteerikohtaiset tulokset</Form.Label>
                     <div></div>
                     <ul>
-                        {bacteriaSpecificImages.map((image, i) => 
+                        {bacteriaSpecificImages.map((image, i) =>
                             <li key={i}>{image.name}</li>
                         )}
                     </ul>
                     <Form.Label>Bakteeri</Form.Label>
-                    <Form.Control as="select" value={bacterium} onClick={({target})=>setBacterium(target.value)} onChange={({target})=>setBacterium(target.value)}>
+                    <Form.Control as="select" value={bacterium} onClick={({ target }) => setBacterium(target.value)} onChange={({ target }) => setBacterium(target.value)}>
                         {bacteria.map(bact =>
                             <option key={bact.id} value={bact.name}>{bact.name}</option>
                         )}
-                    </Form.Control> 
+                    </Form.Control>
                     <Form.Label>Bakteerikohtaiset Kuvat </Form.Label>
-                    <Form.Control 
+                    <Form.Control
                         name='positiveResultImage'
                         type="file"
                         value={bacteriaSpecificImage.image}
@@ -146,7 +146,7 @@ const TestEditForm = ( {test, stopModify, bacteria} ) => {
                 </Form.Group>
                 <div></div>
 
-                <Button type='submit'>Tallenna muutokset</Button>
+                <Button id="saveChanges" type='submit'>Tallenna muutokset</Button>
                 <p></p>
             </Form>
         </div>
