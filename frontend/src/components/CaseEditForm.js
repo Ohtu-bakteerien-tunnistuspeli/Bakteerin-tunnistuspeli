@@ -4,23 +4,6 @@ import TestGroup from '../components/TestGroup.js'
 import { useSelector } from 'react-redux'
 import { Modal, Button, Form } from 'react-bootstrap'
 
-const useField = (type) => {
-    const [value, setValue] = useState('')
-    const onChange = (event) => {
-        setValue(event.target.value)
-    }
-    console.log(value)
-    return {
-        type,
-        value,
-        onChange
-    }
-}
-
-
-
-
-
 const CaseEditForm = ({ c }) => {
     /* Modal config */
     const handleShow = () => setShow(true)
@@ -34,7 +17,7 @@ const CaseEditForm = ({ c }) => {
         console.log(`new name ${caseName}`)
         console.log(`new anamnesis ${caseAnamnesis}`)
         console.log(`new bacterium ${bacterium.name}`)
-        console.log(`new samples ${samples.map(s => s.description)}`)
+        console.log(`new samples ${samples.map(s => [s.description, s.rightAnswer])} `)
     }
 
     /* case name control*/
@@ -59,34 +42,54 @@ const CaseEditForm = ({ c }) => {
         console.log(samples)
         setSamples(samples.filter(s => s.description !== sample2.description))
     }
-    const [sample, setSample] = useState(null)
-    const handleSample = (event) => {
-/*ei toimi vielä*/
-        if (sample === null) {
-            const newSample = {
-                description: ``,
-                rightAnswer: false
-            }
-            setSample(newSample)
-        }
-        if (event.target.checked) {
-            setSample({...sample, rightAnswer: true})
-        }else if (event.target.value !== 'on') {
-            const newSample = {
-                description: `${event.target.value}`,
-                rightAnswer: false
-            }
-            setSample(newSample)
-        } 
-    }
+    const[newSampleName, setNewSampleName] = useState('')
+    const[newSampleRightAnswer, setNewSampleRightAnswer] = useState(false)
+    const handleNewSampleName = (event) => setNewSampleName(event.target.value)
+    const handleNewSampleRightAnswer = (event) => setNewSampleRightAnswer(!newSampleRightAnswer)
+
     const addSample = (event) => {
         event.preventDefault()
-        setSamples(samples.concat(sample))
+        const newSample = {
+            description: newSampleName,
+            rightAnswer: newSampleRightAnswer
+        }
+        setSamples(samples.concat(newSample))
+        setNewSampleName('')
+        setNewSampleRightAnswer(false)
+        
     }
     /* samples control end */
+    
+    /* testgroup control1 */
+    const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
+    console.log(tests)
+    const [testGroups, setTestGroups] = useState(c.testGroups)
+    const [newTestGroup, setNewTestGroup] = useState(null)
+    const [newTest, setNewTest] = useState(tests[0])
+    const [isRequired, setIsRequired] = useState(false)
+    const [positive, setPositive] = useState(false)
+    const [alternativeTests, setSetAltervativeTests] = useState(false)
 
-    const [testGroups] = useState(c.testGroups)
-    const sampleAnswer = useField('boolean')
+    const addTest = (testgroup) => {
+    console.log(newTest.name)
+    console.log(isRequired)
+    console.log(positive)
+    console.log(alternativeTests)
+    const newTestgroup = testgroup.concat({test: newTest, 
+        isRequired: isRequired, 
+        positive: positive, 
+        alternativeTests: alternativeTests})
+    const copyOfTestGroups = testGroups
+    copyOfTestGroups[testGroups.indexOf(testgroup)]=newTestgroup
+    setTestGroups(copyOfTestGroups)
+   // setTestGroups([...testGroups, testGroups[testGroups.indexOf(testgroup)] = newTestGroup])
+    }
+    const handleTestChange = (event) => setNewTest(tests.find(t => t.id ===event.target.value))
+    const handleIsRequiredChange = (event) => setIsRequired(!isRequired)
+    const handlePositiveChange = (event) => setPositive(!positive)
+    const handleAlternativeTests = (event) => setSetAltervativeTests(!alternativeTests)
+    /* testgroup control end */
+    
     console.log(c)
     return (<div>
         <Button variant="primary" onClick={handleShow}>
@@ -105,21 +108,26 @@ const CaseEditForm = ({ c }) => {
                     <Form.Control onChange={handleAnamnesisChange} defaultValue={c.anamnesis} /><br></br>
 
                     <Form.Label>Bakteeri:</Form.Label><br></br>
-                    <Form.Control as="select" onChange={handleBacteriumChange} defaultValue={bacterium.name}>
-                        {bacteria.map(bacterium =>
-                            <option key={bacterium.id} value={bacterium.id}>{bacterium.name}</option>
+                    <Form.Control as="select" onChange={handleBacteriumChange} value={bacterium.id}>
+                        {bacteria.map(bac =>
+                            <option key={bac.id} value={bac.id}>{bac.name}</option>
                         )}
                     </Form.Control><br></br>
 
- <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
+                    <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
                     {samples.map(s =>
                         <Sample key={s.description}
                             sample={s}
                             sampleChange={deleteSample} >
                         </Sample>
                     )}
-                    <Form.Control onChange={handleSample} placeholder="Näytteen kuvaus" />
-                    <Form.Check onChange={handleSample} type="checkbox" label="Oikea vastaus" />
+                    <Form.Control onChange={handleNewSampleName} 
+                                  placeholder="Näytteen kuvaus" 
+                                  value={newSampleName}/>
+                    <Form.Check onChange={handleNewSampleRightAnswer} 
+                                type="checkbox" 
+                                label="Oikea vastaus" 
+                                checked={newSampleRightAnswer}/>
                     <Button onClick={addSample}>Lisää näytevaihtoehto</Button><br></br>
 
                     <Form.Label> Testiryhmät</Form.Label>
@@ -127,9 +135,15 @@ const CaseEditForm = ({ c }) => {
                         <TestGroup key={i}
                             testgroup={tg}
                             index={i}
-                            isRequredChange={sampleAnswer.onChange}
-                            positiveChange={sampleAnswer.onChange}
-                            alternativeTestsChange={sampleAnswer.onChange}
+                            tests = {tests}
+                            testChange = {handleTestChange}
+                            isRequired = {isRequired}
+                            isRequiredChange={handleIsRequiredChange}
+                            positive = {positive}
+                            positiveChange={handlePositiveChange}
+                            alternativeTests={alternativeTests}
+                            alternativeTestsChange={handleAlternativeTests}
+                            addTest={addTest}
                         >
                         </TestGroup>
                     )}

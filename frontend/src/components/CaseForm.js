@@ -28,7 +28,8 @@ const CaseForm = () => {
 
     const addNewCase = (event) => {
         event.preventDefault()
-        console.log()
+        console.log('hei me testataan')
+        console.log(testGroups)
         dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
     }
 

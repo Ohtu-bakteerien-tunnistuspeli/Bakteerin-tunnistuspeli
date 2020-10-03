@@ -23,6 +23,8 @@ const add = async (name, bacterium, anamnesis, completionImage, samples, testGro
     //console.log(formData.get('testGroups'))
     //console.log(testGroups)
     //console.log(samples)
+    console.log("servicce print")
+    console.log(JSON.stringify(testGroups))
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
     return axios.post(baseUrl, formData , config).then(response => response.data).catch(error => error.response.data)
 }

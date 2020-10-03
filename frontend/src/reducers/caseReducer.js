@@ -32,7 +32,11 @@ export const getCases = (token) => {
 
 export const addCase = (name, bacterium, anamnesis, completionImage, samples, testGroups, token, resetCaseForm) => {
     return async dispatch => {
+        console.log('stuff from reducer')
+        console.log(testGroups)
         const caseToSave = await caseService.add(name, bacterium, anamnesis, completionImage, samples, testGroups, token)
+        console.log("this is the case to saved")
+        console.log(caseToSave)
         if (caseToSave.error) {
             dispatch(setNotification({ message: caseToSave.error, success: false }))
         } else {
