@@ -35,7 +35,7 @@ export const getTests = (token) => {
     }
 }
 
-export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token) => {
+export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token, resetTestForm) => {
     return async dispatch => {
         const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpesif, token)
         if (test.error) {
@@ -46,6 +46,7 @@ export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, tok
                 type: 'ADD_TEST',
                 data: test
             })
+            resetTestForm()
         }
     }
 }

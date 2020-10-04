@@ -28,7 +28,6 @@ const TestForm = () => {
     }
 
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
-    //  const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const TestName = useField('text')
     const TestType = useField('text')
     const [bacterium, setBacterium] = useState(bacteria[0].name)
@@ -37,22 +36,23 @@ const TestForm = () => {
     const [negativeResultImage, setPhotoNeg] = useState(INITIAL_STATE)
     const [bacteriaSpecificImages, setBacteriaImages] = useState([])
     const [bacteriaSpecificImage, setBacteriaImage] = useState(INITIAL_STATE)
-    //  const tests = [{ id: '1a3g', name: 'testi3', type: 'Viljely' }, { id: '1a2b', name: 'testi1', type: 'Testi' }, { id: '3c4d', name: 'testi2', type: 'Värjäys' }]
 
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
     const addTests = (event) => {
-
         event.preventDefault()
         console.log('dispatch')
-        dispatch(addTest(TestName, TestType, controlImage, positiveResultImage, negativeResultImage, bacteriaSpecificImages, user.token))
+        dispatch(addTest(TestName, TestType, controlImage, positiveResultImage, negativeResultImage, bacteriaSpecificImages, user.token, resetTestForm))
+        handleClose()
+    }
+
+    const resetTestForm = () => {
         setPhotoPos([])
         setPhotoNeg([])
         setBacteriaImages([])
         TestName.reset()
         TestType.reset()
-        handleClose()
     }
 
     const [show, setShow] = useState(false)
