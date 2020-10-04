@@ -57,7 +57,7 @@ export const deleteTest = (id, token) => {
         if (response.status !== 204) {
             dispatch(setNotification({ message: response.error, success: false }))
         } else {
-            dispatch(setNotification({ message: 'Test successfully deleted', success: true }))
+            dispatch(setNotification({ message: 'Testi poistettiin onnistuneesti', success: true }))
             dispatch({
                 type: 'DELETE_TEST',
                 data: id
