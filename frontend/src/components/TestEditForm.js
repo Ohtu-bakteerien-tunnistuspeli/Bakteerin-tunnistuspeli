@@ -53,7 +53,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
     const addBacteriumSpecificImage = () => {
         console.log('add', bacteriaSpecificImage)
         if (bacteriaSpecificImage.image !== 'undefined' && bacteriaSpecificImage.bacterium !== '' ) {
-            if (bacteriaSpecificImage.name !== '') {
+            if (bacteriaSpecificImage.name !== '' && !bacteriaSpecificImages.map(b => b.name).includes(bacteriaSpecificImage.name)) {
                 //testList.push(bacteriaSpecificImage)
                 setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
                 console.log('after adding', bacteriaSpecificImages)
