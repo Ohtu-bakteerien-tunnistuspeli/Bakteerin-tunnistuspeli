@@ -140,6 +140,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                     />
                     <p></p>
                     <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
+                    <Button type='button' variant="warning" onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaiset kuvat lista</Button>
                 </Form.Group>
                 <div></div>
 

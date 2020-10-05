@@ -172,6 +172,7 @@ const TestForm = () => {
                                 onChange={handleSpecificImg}
                             />
                             <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
+                            <Button type='button' variant="warning" onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaiset kuvat lista</Button>
                         </Form.Group>
                         <div></div>
                         <button id="addTest" type="submit">Lisää</button>
