@@ -533,7 +533,7 @@ describe('deleting of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(deletionRes.body.error).toContain('Testi on käytössä ainakin yhdessä taupaksessa, eikä sitä voida poistaa')
+        expect(deletionRes.body.error).toContain('Testi on käytössä ainakin yhdessä tapauksessa, eikä sitä voida poistaa')
         const testsAfterDelete = await api
             .get('/api/test')
             .set('Authorization', `bearer ${user.body.token}`)

@@ -46,7 +46,7 @@ const deleteTest = async (id, token) => {
     console.log('deletion to service ', id)
     return axios.delete(`${baseUrl}/${id}`, config)
         .then(response => response)
-        .catch(error => error)
+        .catch(error => error.response.data)
 }
 
 export default { get, add, update, deleteTest }

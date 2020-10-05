@@ -35,7 +35,7 @@ export const getTests = (token) => {
     }
 }
 
-export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token) => {
+export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token, resetTestForm) => {
     return async dispatch => {
         const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpesif, token)
         if (test.error) {
@@ -46,6 +46,7 @@ export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, tok
                 type: 'ADD_TEST',
                 data: test
             })
+            resetTestForm()
         }
     }
 }
@@ -57,7 +58,7 @@ export const deleteTest = (id, token) => {
         if (response.status !== 204) {
             dispatch(setNotification({ message: response.error, success: false }))
         } else {
-            dispatch(setNotification({ message: 'Test successfully deleted', success: true }))
+            dispatch(setNotification({ message: 'Testi poistettiin onnistuneesti', success: true }))
             dispatch({
                 type: 'DELETE_TEST',
                 data: id
