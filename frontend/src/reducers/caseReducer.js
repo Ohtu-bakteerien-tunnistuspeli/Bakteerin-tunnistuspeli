@@ -3,16 +3,16 @@ import { setNotification } from '../reducers/notificationReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
-        case 'GET_CASES': {
-            return action.data
-        }
-        case 'ADD_CASE': {
-            return [...state, action.data]
-        }
-        case 'DELETE_CASE': {
-            return state.filter(ca => ca.id !== action.data.id)
-        }
-        default: return state
+    case 'GET_CASES': {
+        return action.data
+    }
+    case 'ADD_CASE': {
+        return [...state, action.data]
+    }
+    case 'DELETE_CASE': {
+        return state.filter(ca => ca.id !== action.data.id)
+    }
+    default: return state
     }
 }
 

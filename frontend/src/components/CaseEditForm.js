@@ -61,23 +61,23 @@ const CaseEditForm = ({ c }) => {
     }
     const [sample, setSample] = useState(null)
     const handleSample = (event) => {
-/*ei toimi vielä*/
+        /*ei toimi vielä*/
         if (sample === null) {
             const newSample = {
-                description: ``,
+                description: '',
                 rightAnswer: false
             }
             setSample(newSample)
         }
         if (event.target.checked) {
-            setSample({...sample, rightAnswer: true})
+            setSample({ ...sample, rightAnswer: true })
         }else if (event.target.value !== 'on') {
             const newSample = {
                 description: `${event.target.value}`,
                 rightAnswer: false
             }
             setSample(newSample)
-        } 
+        }
     }
     const addSample = (event) => {
         event.preventDefault()
@@ -111,7 +111,7 @@ const CaseEditForm = ({ c }) => {
                         )}
                     </Form.Control><br></br>
 
- <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
+                    <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
                     {samples.map(s =>
                         <Sample key={s.description}
                             sample={s}
