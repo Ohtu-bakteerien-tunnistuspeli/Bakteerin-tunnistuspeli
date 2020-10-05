@@ -106,7 +106,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                     />
                 </Form.Group>
                 <Form.Group controlId="editNegativeResultImage">
-                    <Form.Label>Negatiivinen Oletus</Form.Label>
+                    <Form.Label>Negatiivinen oletus</Form.Label>
                     <Form.Control
                         name='editTestNegImg'
                         value={photoNeg.image}
@@ -140,7 +140,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                     />
                     <p></p>
                     <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
-                    <Button type='button' variant="warning" onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaiset kuvat lista</Button>
+                    <Button type='button' variant="warning" onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaisten kuvien lista</Button>
                 </Form.Group>
                 <div></div>
 
