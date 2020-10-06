@@ -1,24 +1,9 @@
 import React, { useState } from 'react'
-import Sample from '../components/Sample.js'
-import TestGroup from '../components/TestGroup.js'
+import Sample from './Sample.js'
+import TestGroup from './TestGroup.js'
+import AddTestGroup from './AddTestGroup.js'
 import { useSelector } from 'react-redux'
 import { Modal, Button, Form } from 'react-bootstrap'
-
-const useField = (type) => {
-    const [value, setValue] = useState('')
-    const onChange = (event) => {
-        setValue(event.target.value)
-    }
-    console.log(value)
-    return {
-        type,
-        value,
-        onChange
-    }
-}
-
-
-
 
 
 const CaseEditForm = ({ c }) => {
@@ -56,37 +41,48 @@ const CaseEditForm = ({ c }) => {
     /* samples control*/
     const [samples, setSamples] = useState(c.samples)
     const deleteSample = (sample2) => {
-        console.log(samples)
         setSamples(samples.filter(s => s.description !== sample2.description))
-    }
-    const [sample, setSample] = useState(null)
-    const handleSample = (event) => {
-        /*ei toimi vielä*/
-        if (sample === null) {
-            const newSample = {
-                description: '',
-                rightAnswer: false
-            }
-            setSample(newSample)
-        }
-        if (event.target.checked) {
-            setSample({ ...sample, rightAnswer: true })
-        }else if (event.target.value !== 'on') {
-            const newSample = {
-                description: `${event.target.value}`,
-                rightAnswer: false
-            }
-            setSample(newSample)
-        }
-    }
+    }    
+    const [newSampleName, setNewSampleName] = useState('')
+    const [newSampleRightAnswer, setNewSampleRightAnswer] = useState(false)
+    const handleNewSampleName = (event) => setNewSampleName(event.target.value)
+    const handleNewSampleRightAnswer = (event) => setNewSampleRightAnswer(!newSampleRightAnswer)
+
     const addSample = (event) => {
         event.preventDefault()
-        setSamples(samples.concat(sample))
+        const newSample = {
+            description: newSampleName,
+            rightAnswer: newSampleRightAnswer
+        }
+        setSamples(samples.concat(newSample))
+        setNewSampleName('')
+        setNewSampleRightAnswer(false)
+
     }
     /* samples control end */
 
-    const [testGroups] = useState(c.testGroups)
-    const sampleAnswer = useField('boolean')
+      /* testgroup control */
+      const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
+      console.log(tests)
+  
+      const [testForCase, setTestForCase] = useState({ name: tests[0].name, testId: tests[0].id, required: false, positive: false, alternativeTests: false })
+      const [testBools, setTestBools] = useState({isRequired: false, positive: false, alternativeTests: false})
+      const [testGroup, setTestGroup] = useState([])
+      const [testGroups, setTestGroups] = useState(c.testGroups)
+      const addTestGroup = () => {
+  
+          setTestGroups([...testGroups, testGroup])
+          setTestGroup([])
+      }
+      const handleTestChange = (event) => setTestForCase(tests.find(t => t.id === event.target.value))
+      const handleTestAdd = () => setTestGroup([...testGroup, 
+          {test: testForCase, 
+          isRequired: testBools.isRequired,
+          positive: testBools.positive,
+          alternativeTests: testBools.alternativeTests
+      }])
+      /* testgroup control end */
+
     console.log(c)
     return (<div>
         <Button variant="primary" onClick={handleShow}>
@@ -105,9 +101,9 @@ const CaseEditForm = ({ c }) => {
                     <Form.Control onChange={handleAnamnesisChange} defaultValue={c.anamnesis} /><br></br>
 
                     <Form.Label>Bakteeri:</Form.Label><br></br>
-                    <Form.Control as="select" onChange={handleBacteriumChange} defaultValue={bacterium.name}>
-                        {bacteria.map(bacterium =>
-                            <option key={bacterium.id} value={bacterium.id}>{bacterium.name}</option>
+                    <Form.Control as="select" onChange={handleBacteriumChange} value={bacterium.id}>
+                        {bacteria.map(bac =>
+                            <option key={bac.id} value={bac.id}>{bac.name}</option>
                         )}
                     </Form.Control><br></br>
 
@@ -118,8 +114,13 @@ const CaseEditForm = ({ c }) => {
                             sampleChange={deleteSample} >
                         </Sample>
                     )}
-                    <Form.Control onChange={handleSample} placeholder="Näytteen kuvaus" />
-                    <Form.Check onChange={handleSample} type="checkbox" label="Oikea vastaus" />
+                    <Form.Control onChange={handleNewSampleName}
+                        placeholder="Näytteen kuvaus"
+                        value={newSampleName} />
+                    <Form.Check onChange={handleNewSampleRightAnswer}
+                        type="checkbox"
+                        label="Oikea vastaus"
+                        checked={newSampleRightAnswer} />
                     <Button onClick={addSample}>Lisää näytevaihtoehto</Button><br></br>
 
                     <Form.Label> Testiryhmät</Form.Label>
@@ -127,12 +128,19 @@ const CaseEditForm = ({ c }) => {
                         <TestGroup key={i}
                             testgroup={tg}
                             index={i}
-                            isRequredChange={sampleAnswer.onChange}
-                            positiveChange={sampleAnswer.onChange}
-                            alternativeTestsChange={sampleAnswer.onChange}
                         >
                         </TestGroup>
                     )}
+                     <Form.Label>Lisää Testiryhmä</Form.Label>
+                    <AddTestGroup 
+                           setCaseTest={handleTestChange}
+                           setTestBools = {setTestBools}
+                           testBools = {testBools}
+                           tests={tests}
+                           handleTestAdd={handleTestAdd}
+                           testGroup={testGroup}
+                           addTestGroup={addTestGroup}
+                           ></AddTestGroup>
                     <Button variant="primary" type="submit">
                         Tallenna
                     </Button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCase } from '../reducers/caseReducer'
+import { addCase } from '../../reducers/caseReducer'
 import { Modal, Button, ButtonGroup, Form, ListGroup, Table } from 'react-bootstrap'
 
 const CaseForm = () => {
