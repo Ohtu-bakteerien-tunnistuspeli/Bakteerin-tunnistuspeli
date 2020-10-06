@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
 import Register from './components/Register'
+import FrontPage from './components/FrontPage'
 import BacteriaList from './components/BacteriaList'
 import CaseList from './components/CaseList'
 import TestList from './components/TestList'
@@ -40,6 +41,12 @@ const App = () => {
                             }
                         </Nav.Link>
                         */}
+                        <Nav.Link href="#" as="span">
+                            {user
+                                ? <Link style={padding} to="/">Etusivu</Link>
+                                : null
+                            }
+                        </Nav.Link>
                         <Nav.Link href="#" as="span">
                             {user?.admin
                                 ? <Link style={padding} to="/bakteeriLista">Bakteerien hallinta</Link>
@@ -93,7 +100,7 @@ const App = () => {
                             <TestList />
                         </Route>
                         <Route path='/'>
-                            <Redirect to='/bakteeriLista'></Redirect>
+                            <FrontPage />
                         </Route>
                     </Switch>
                 </>
