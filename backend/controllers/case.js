@@ -82,6 +82,8 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
             }
             if (request.body.testGroups) {
                 request.body.testGroups = JSON.parse(request.body.testGroups)
+                console.log('print from backend')
+                console.log(JSON.parse(request.body.testGroups))
                 const testGroups = []
                 for (let i = 0; i < request.body.testGroups.length; i++) {
                     const newTestGroup = []

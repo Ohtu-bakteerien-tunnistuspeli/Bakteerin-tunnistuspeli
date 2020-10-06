@@ -1,8 +1,6 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-
-
 const Sample = ({ sample, sampleChange }) => {
     return (
  <div>

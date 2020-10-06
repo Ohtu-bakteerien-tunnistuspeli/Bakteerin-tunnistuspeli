@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 import CaseEditForm from './CaseEditForm'
-import ModalImage from './ModalImage'
+import ModalImage from '../ModalImage'
 
 const CaseListing = ({ c, admin, deleteCase }) => {
     /* let completionUrl
