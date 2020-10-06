@@ -46,6 +46,9 @@ caseRouter.get('/', async (request, response) => {
             }
         })
         response.json(cases.map(caseToMap => caseToMap.toJSON()))
+    } else if (request.user) {
+        const cases = await Case.find({})
+        response.json(cases.map(caseToMap => caseToMap.toJSON()).filter(caseToFilter => caseToFilter.complete).map(caseToMap => { return { name: caseToMap.name, id: caseToMap.id } }))
     } else {
         throw Error('JsonWebTokenError')
     }
@@ -219,6 +222,53 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
         }
     } else {
         deleteUploadedImages(request)
+        throw Error('JsonWebTokenError')
+    }
+})
+
+caseRouter.get('/:id', async (request, response) => {
+    if (request.user) {
+        try {
+            let caseToGet = await Case.findById(request.params.id)
+            caseToGet = caseToGet.toJSON()
+            caseToGet.samples = caseToGet.samples.map(sample => { return { description: sample.description } })
+            delete caseToGet.bacterium
+            delete caseToGet.complete
+            delete caseToGet.testGroups
+            delete caseToGet.completionImage
+            response.json(caseToGet)
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
+caseRouter.post('/:id/checkSamples', async (request, response) => {
+    if (request.user) {
+        try {
+            const caseToCheck = await Case.findById(request.params.id)
+            let isRight = true
+            let correctSamples = caseToCheck.samples.filter(sample => sample.rightAnswer).map(sample => sample.description)
+            if (request.body.samples && correctSamples.length === request.body.samples.length) {
+                correctSamples.forEach(sample => {
+                    if (!request.body.samples.includes(sample)) {
+                        isRight = false
+                    }
+                })
+            } else {
+                isRight = false
+            }
+            if (isRight) {
+                return response.status(200).json({ correct: true })
+            } else {
+                return response.status(200).json({ correct: false })
+            }
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
         throw Error('JsonWebTokenError')
     }
 })

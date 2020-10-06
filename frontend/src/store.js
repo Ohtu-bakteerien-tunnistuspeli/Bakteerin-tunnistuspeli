@@ -7,7 +7,8 @@ import bacteriaReducer from './reducers/bacteriaReducer'
 import testReducer from './reducers/testReducer'
 import caseReducer from './reducers/caseReducer'
 import notificationReducer from './reducers/notificationReducer'
-const reducer = combineReducers({ message: skeletonReducer, user: userReducer, bacteria: bacteriaReducer, notification: notificationReducer, test: testReducer, case: caseReducer })
+import gameReducer from './reducers/gameReducer'
+const reducer = combineReducers({ message: skeletonReducer, user: userReducer, bacteria: bacteriaReducer, notification: notificationReducer, test: testReducer, case: caseReducer, game: gameReducer })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
 

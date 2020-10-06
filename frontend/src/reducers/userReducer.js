@@ -36,7 +36,7 @@ export const login = (username, password, history) => {
             dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
-            history.push('/bakteeriLista')
+            history.push('/')
         } else {
             dispatch({
                 type: 'LOGIN',
