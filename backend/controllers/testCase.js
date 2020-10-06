@@ -44,12 +44,19 @@ const deleteUploadedImages = (request) => {
 }
 
 testRouter.get('/', async (request, response) => {
-    if (request.user) {
+    if (request.user.admin) {
         const tests = await Test.find({}).populate({
             path: 'bacteriaSpecificImages.bacterium',
             model: 'Bacterium'
         })
         response.json(tests.map(test => test.toJSON()))
+    } else if (request.user) {
+        let tests = await Test.find({}).populate({
+            path: 'bacteriaSpecificImages.bacterium',
+            model: 'Bacterium'
+        })
+        tests = tests.map(test => test.toJSON()).map(test => { return { name: test.name, id: test.id, type: test.type, controlImage: test.controlImage } })
+        response.json(tests)
     } else {
         throw Error('JsonWebTokenError')
     }

@@ -2,16 +2,16 @@ import gameService from '../services/game'
 import { setNotification } from '../reducers/notificationReducer'
 const reducer = (state = null, action) => {
     switch (action.type) {
-    case 'GET_GAME': {
-        return action.data
-    }
-    case 'CHECK_SAMPLES': {
-        return action.data
-    }
-    case 'ZERO_GAME': {
-        return action.data
-    }
-    default: return state
+        case 'GET_GAME': {
+            return action.data
+        }
+        case 'CHECK_SAMPLES': {
+            return action.data
+        }
+        case 'ZERO_GAME': {
+            return action.data
+        }
+        default: return state
     }
 }
 
@@ -41,20 +41,20 @@ export const getGame = (history, id, token) => {
 
 export const checkSamples = (game, samples, token) => {
     return async dispatch => {
-        const checkSample = await gameService.get(game.case.id, samples, token)
+        const checkSample = await gameService.sampleCheck(game.case.id, samples, token)
         if (checkSample.error) {
-            dispatch(setNotification({ message: receivedCase.error, success: false }))
+            dispatch(setNotification({ message: checkSample.error, success: false }))
         } else {
-            if(checkSample.correct) {
+            if (checkSample.correct) {
                 dispatch(setNotification({ message: 'Oikea vastaus', success: true }))
                 dispatch({
                     type: 'CHECK_SAMPLES',
-                    data: {...game, samplesCorrect: true}
+                    data: { ...game, samplesCorrect: true }
                 })
             } else {
                 dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
             }
-            
+
         }
     }
 }

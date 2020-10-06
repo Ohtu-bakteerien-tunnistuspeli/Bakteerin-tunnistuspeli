@@ -9,6 +9,7 @@ import FrontPage from './components/FrontPage'
 import BacteriaList from './components/BacteriaList'
 import CaseList from './components/CaseList'
 import TestList from './components/TestList'
+import GamePage from './components/GamePage'
 import Notification from './components/Notification'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
+    const game = useSelector(state => state.game)
     useEffect(() => {
         dispatch(returnUser())
     }, [dispatch])
@@ -91,13 +93,32 @@ const App = () => {
                 <>
                     <Switch>
                         <Route path='/bakteeriLista'>
-                            <BacteriaList></BacteriaList>
+                            {user.admin ?
+                                <BacteriaList></BacteriaList>
+                                :
+                                <Redirect to='/'></Redirect>
+                            }
                         </Route>
                         <Route path='/tapausLista'>
-                            <CaseList />
+                            {user.admin ?
+                                <CaseList />
+                                :
+                                <Redirect to='/'></Redirect>
+                            }
                         </Route>
                         <Route path='/testiLista'>
-                            <TestList />
+                            {user.admin ?
+                                <TestList />
+                                :
+                                <Redirect to='/'></Redirect>
+                            }
+                        </Route>
+                        <Route path='/peli'>
+                            {game ?
+                                <GamePage></GamePage>
+                                :
+                                <Redirect to='/'></Redirect>
+                            }
                         </Route>
                         <Route path='/'>
                             <FrontPage />
