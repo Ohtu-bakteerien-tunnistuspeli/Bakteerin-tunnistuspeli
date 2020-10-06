@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Tabs, Tab, Form, Button } from 'react-bootstrap'
+import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkSamples } from '../reducers/gameReducer'
+import ModalImage from './ModalImage'
 const GamePage = () => {
     const [tab, setTab] = useState('anamneesi')
     const [testTab, setTestTab] = useState('testejä')
@@ -9,7 +10,7 @@ const GamePage = () => {
     const game = useSelector(state => state.game)
     const user = useSelector(state => state.user)
     const [selectedSamples, setSelectedSamples] = useState([])
-    const tests = useSelector(state => state.test)
+    const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     /*
     const types = tests.map(test => test.type)
     types.reduce(function(a,b){
@@ -17,10 +18,10 @@ const GamePage = () => {
         return a
     },[])
     */
-    const testsToShow = tests.filter(test => test.type === 'Testi')
-    const cultivationsToShow = tests.filter(test => test.type === 'Viljely')
-    const stainingsToShow = tests.filter(test => test.type === 'Värjäys')
-    const othersToShow = tests.filter(test => test.type !== 'Testi' && test.type !== 'Viljely' && test.type !== 'Värjäys')
+    const testsToShow = tests.filter(test => test.type === 'Testi').sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const cultivationsToShow = tests.filter(test => test.type === 'Viljely').sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const stainingsToShow = tests.filter(test => test.type === 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const othersToShow = tests.filter(test => test.type !== 'Testi' && test.type !== 'Viljely' && test.type !== 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
 
     const sampleCheckBoxChange = (description) => {
         if (selectedSamples.includes(description)) {
@@ -123,6 +124,20 @@ const GamePage = () => {
                         </Tab>
                         <Tab eventKey='kontrolleja' title='Kontrolleja'>
                             <p>Kontrollit</p>
+                            <Table>
+                                <tbody>
+                                    {tests.map(test => 
+                                        <tr key={test.id}>
+                                            <td>{test.name}</td>
+                                            {test.controlImage ? 
+                                                <td><ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}></ModalImage></td>
+                                            :
+                                                <td></td>
+                                            }  
+                                        </tr>
+                                        )}
+                                </tbody>
+                            </Table>
                         </Tab>
                     </Tabs>
 
