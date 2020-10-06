@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap'
 
 const Sample = ({ sample, sampleChange }) => {
     return (
- <div>
+        <div>
             <Form.Label>{sample.description} </ Form.Label>
             {sample.rightAnswer ?
                 <>

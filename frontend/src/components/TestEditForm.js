@@ -24,8 +24,8 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
     const dispatch = useDispatch()
 
     console.log(bacteria[0])
-
-    const testList = [...test.bacteriaSpecificImages]
+    //Is this needed?
+    //const testList = [...test.bacteriaSpecificImages]
 
     console.log('test at start', test)
     console.log('id at start', test.id)
@@ -52,24 +52,19 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
 
     const addBacteriumSpecificImage = () => {
         console.log('add', bacteriaSpecificImage)
-        if (bacterium !== '') {
-            testList.push(bacteriaSpecificImage)
-            bacteriaSpecificImages.push(bacteriaSpecificImage)
-            setBacteriaImages(bacteriaSpecificImages)
-            console.log('after adding', bacteriaSpecificImages)
-            setBacteriaImage(INITIAL_STATE)
-            setBacterium('')
+        if (bacteriaSpecificImage.image !== 'undefined' && bacteriaSpecificImage.bacterium !== '' ) {
+            if (bacteriaSpecificImage.name !== '' && !bacteriaSpecificImages.map(b => b.name).includes(bacteriaSpecificImage.name)) {
+                //testList.push(bacteriaSpecificImage)
+                setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
+                console.log('after adding', bacteriaSpecificImages)
+                setBacteriaImage(INITIAL_STATE)
+            }
         }
     }
 
     const handleSpecificImg = (event) => {
         console.log('in handle', bacterium)
         if (event.target.files[0]) {
-            // Object.defineProperty(event.target.files[0], 'name', {
-            // writable: true }) 
-            // event.target.files[0].name = bacterium
-            // setBacteriaImage(event.target.files[0])
-            // console.log(event.target.files[0])
             var file = event.target.files[0]
             var blob = file.slice(0, file.size, file.type)
             var newFile = new File([blob], bacterium, { type: file.type })
@@ -84,11 +79,11 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
             <Button variant='danger' id='deleteTest' onClick={() => removeTest(test)}>POISTA testi</Button>
             <p></p>
             <Form onSubmit={editTest} encType="multipart/form-data">
-                <Form.Group controlId="name">
+                <Form.Group>
                     <Form.Label>Uusi nimi</Form.Label>
                     <Form.Control id="newNameInput" type='input' value={newName} onChange={({ target }) => setNewName(target.value)} />
                 </Form.Group>
-                <Form.Group controlId="type">
+                <Form.Group>
                     <Form.Label>Tyyppi</Form.Label>
                     <Form.Control id="newTypeInput" type='input' value={newType} onChange={({ target }) => setNewType(target.value)} />
                 </Form.Group>
@@ -111,7 +106,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                     />
                 </Form.Group>
                 <Form.Group controlId="editNegativeResultImage">
-                    <Form.Label>Negatiivinen Oletus</Form.Label>
+                    <Form.Label>Negatiivinen oletus</Form.Label>
                     <Form.Control
                         name='editTestNegImg'
                         value={photoNeg.image}
@@ -129,20 +124,23 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                         )}
                     </ul>
                     <Form.Label>Bakteeri</Form.Label>
-                    <Form.Control as="select" value={bacterium} onClick={({ target }) => setBacterium(target.value)} onChange={({ target }) => setBacterium(target.value)}>
+                    <Form.Control as="select" 
+                        value={bacterium} onClick={({ target }) => setBacterium(target.value)} 
+                        onChange={({ target }) => setBacterium(target.value)}>
                         {bacteria.map(bact =>
                             <option key={bact.id} value={bact.name}>{bact.name}</option>
                         )}
                     </Form.Control>
                     <Form.Label>Bakteerikohtaiset Kuvat </Form.Label>
                     <Form.Control
-                        name='positiveResultImage'
+                        name='bacteriaSpecificImage'
                         type="file"
                         value={bacteriaSpecificImage.image}
                         onChange={handleSpecificImg}
                     />
                     <p></p>
                     <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
+                    <Button type='button' variant="warning" onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaisten kuvien lista</Button>
                 </Form.Group>
                 <div></div>
 

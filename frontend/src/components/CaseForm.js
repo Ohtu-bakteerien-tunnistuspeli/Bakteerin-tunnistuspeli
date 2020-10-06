@@ -20,7 +20,7 @@ const CaseForm = () => {
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
     const [sample, setSample] = useState({ name: '', rightAnswer: false })
     const [samples, setSamples] = useState([])
-    const [testForCase, setTestForCase] = useState({ testName: tests[0].name, testId: tests[0].id, required: false, positive: false, alternativeTests: false })
+    const [testForCase, setTestForCase] = useState({ testName: tests[0].name, testId: tests[0].id, isRequired: false, positive: false, alternativeTests: false })
     const [testGroup, setTestGroup] = useState([])
     const [testGroups, setTestGroups] = useState([])
 
@@ -40,7 +40,7 @@ const CaseForm = () => {
         setCompletionImage(INITIAL_STATE)
         setSample({ name: '', rightAnswer: false })
         setSamples([])
-        setTestForCase({ testName: tests[0].name, testId: tests[0].id, required: false, positive: false, alternativeTests: false })
+        setTestForCase({ testName: tests[0].name, testId: tests[0].id, isRequired: false, positive: false, alternativeTests: false })
         setTestGroup([])
         setTestGroups([])
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
@@ -144,7 +144,7 @@ const CaseForm = () => {
                                 type="checkbox"
                                 id="required"
                                 label="Pakollinen"
-                                onChange={() => setTestForCase({ ...testForCase, required: !testForCase.required })} />
+                                onChange={() => setTestForCase({ ...testForCase, isRequired: !testForCase.isRequired })} />
                             <Form.Check
                                 type="checkbox"
                                 id="positive"
@@ -176,7 +176,7 @@ const CaseForm = () => {
                                         {testGroup.map((testForCase, i) =>
                                             <tr key={i}>
                                                 <td>{testForCase.testName}</td>
-                                                <td>{testForCase.required ? 'Kyllä' : 'Ei'}</td>
+                                                <td>{testForCase.isRequired ? 'Kyllä' : 'Ei'}</td>
                                                 <td>{testForCase.positive ? 'Kyllä' : 'Ei'}</td>
                                                 <td>{testForCase.alternativeTests ? 'Kyllä' : 'Ei'}</td>
                                             </tr>
@@ -206,7 +206,7 @@ const CaseForm = () => {
                                     {testGroup.map((testForCase, j) =>
                                         <tr key={j}>
                                             <td>{testForCase.testName}</td>
-                                            <td>{testForCase.required ? 'Kyllä' : 'Ei'}</td>
+                                            <td>{testForCase.isRequired ? 'Kyllä' : 'Ei'}</td>
                                             <td>{testForCase.positive ? 'Kyllä' : 'Ei'}</td>
                                             <td>{testForCase.alternativeTests ? 'Kyllä' : 'Ei'}</td>
                                         </tr>

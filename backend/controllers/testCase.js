@@ -56,7 +56,6 @@ testRouter.get('/', async (request, response) => {
 })
 
 testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
-    console.log(request.user)
     if (request.user && request.user.admin) {
         try {
             const test = new Test({
@@ -104,8 +103,6 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
 })
 
 testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
-    console.log('edit backend pre admin check', request.body)
-    console.log(request.user)
     if (request.user && request.user.admin) {
         try {
             const testToEdit = await Test.findById(request.params.id).populate({
@@ -197,7 +194,7 @@ testRouter.delete('/:id', async (request, response) => {
                 }
             })
             if (testIsInUse) {
-                return response.status(400).json({ error: 'Testi on käytössä ainakin yhdessä taupaksessa, eikä sitä voida poistaa' })
+                return response.status(400).json({ error: 'Testi on käytössä ainakin yhdessä tapauksessa, eikä sitä voida poistaa' })
             }
             fs.unlink(`${imageDir}/${testToDelete.controlImage.url}`, (err) => err)
             fs.unlink(`${imageDir}/${testToDelete.positiveResultImage.url}`, (err) => err)
