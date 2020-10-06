@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CaseListing from './CaseListing'
 import CaseForm from './CaseForm'
-import { deleteCase } from '../reducers/caseReducer'
+import { deleteCase } from '../../reducers/caseReducer'
 
 const CaseList = () => {
     const cases = useSelector(state => state.case)?.sort((case1, case2) => case1.name.localeCompare(case2.name))
