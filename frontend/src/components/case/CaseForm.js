@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
+import { setNotification } from '../../reducers/notificationReducer'
 import { Modal, Button, ButtonGroup, Form, ListGroup, Table } from 'react-bootstrap'
 
 const CaseForm = () => {
@@ -18,7 +19,7 @@ const CaseForm = () => {
     const [bacterium, setBacterium] = useState(bacteria[0])
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
-    const [sample, setSample] = useState({ name: '', rightAnswer: false })
+    const [sample, setSample] = useState({ description: '', rightAnswer: false })
     const [samples, setSamples] = useState([])
     const [testForCase, setTestForCase] = useState({ testName: tests[0].name, testId: tests[0].id, isRequired: false, positive: false, alternativeTests: false })
     const [testGroup, setTestGroup] = useState([])
@@ -30,6 +31,7 @@ const CaseForm = () => {
         event.preventDefault()
         console.log()
         dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
+        handleClose()
     }
 
     const resetCaseForm = () => {
@@ -37,25 +39,32 @@ const CaseForm = () => {
         setBacterium(bacteria[0])
         setAnamnesis('')
         setCompletionImage(INITIAL_STATE)
-        setSample({ name: '', rightAnswer: false })
+        setSample({ description: '', rightAnswer: false })
         setSamples([])
         setTestForCase({ testName: tests[0].name, testId: tests[0].id, isRequired: false, positive: false, alternativeTests: false })
         setTestGroup([])
         setTestGroups([])
-        document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false);
-        handleClose()
+        document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
     }
 
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
-    const handleClose = () => setShow(false)
+    const handleClose = () => {
+        setShow(false)
+        resetCaseForm()
+    }
 
-    const addSample = (name, rightAnswer) => {
-        setSamples(samples.concat({ name, rightAnswer }))
-        setSample({
-            ...sample,
-            name: ''
-        })
+    const addSample = (description, rightAnswer) => {
+        if (samples.map(sample => sample.description).includes(description)) {
+            dispatch(setNotification({ message: 'Näytteen kuvaus on jo käytössä', success: false }))
+        } else {
+            setSamples(samples.concat({ description, rightAnswer }))
+            setSample({
+                ...sample,
+                description: ''
+            })
+        }
+
     }
 
     const addTestGroup = () => {
@@ -69,22 +78,22 @@ const CaseForm = () => {
 
     return (
         <div>
-            <Button id='caseModalButton' variant="primary" onClick={handleShow}>
+            <Button id='caseModalButton' variant='primary' onClick={handleShow}>
                 Luo uusi tapaus
             </Button>
-            <Modal show={show} size="lg" onHide={handleClose} backdrop="static">
+            <Modal show={show} size='lg' onHide={() => handleClose} backdrop='static'>
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={addNewCase}>
 
-                        <Form.Group controlId="name">
+                        <Form.Group controlId='name'>
                             <Form.Label>Nimi</Form.Label>
                             <Form.Control value={caseName} onChange={(event) => setCaseName(event.target.value)} />
                         </Form.Group>
 
-                        <Form.Group controlId="bacterium">
+                        <Form.Group controlId='bacterium'>
                             <Form.Label>Bakteeri</Form.Label>
-                            <Form.Control as="select"
+                            <Form.Control as='select'
                                 onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
                                 {bacteria.map(bacterium =>
                                     <option key={bacterium.id} value={JSON.stringify(bacterium)}>{bacterium.name}</option>
@@ -92,39 +101,39 @@ const CaseForm = () => {
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group controlId="anamnesis">
+                        <Form.Group controlId='anamnesis'>
                             <Form.Label>Anamneesi</Form.Label>
                             <Form.Control
-                                as="textarea"
-                                rows="3" value={anamnesis}
+                                as='textarea'
+                                rows='3' value={anamnesis}
                                 onChange={(event) => setAnamnesis(event.target.value)}
                             />
                         </Form.Group>
 
-                        <Form.Group controlId="completionImage">
+                        <Form.Group controlId='completionImage'>
                             <Form.Label>Loppukuva</Form.Label>
                             <Form.Control
                                 name='completionImage'
-                                type="file" value={completionImage.image}
+                                type='file' value={completionImage.image}
                                 onChange={handleCompletionImageChange} />
                         </Form.Group>
 
-                        <Form.Group controlId="samples">
+                        <Form.Group controlId='samples'>
                             <Form.Label>Näytevaihtoehdot</Form.Label>
                             <Form.Control
                                 value={sample.description}
-                                onChange={({ target }) => setSample({ ...sample, name: target.value })}
+                                onChange={({ target }) => setSample({ ...sample, description: target.value })}
                             />
                             <Form.Check
-                                type="checkbox"
-                                id="isRightAnswer"
-                                label="Oikea vastaus"
+                                type='checkbox'
+                                id='isRightAnswer'
+                                label='Oikea vastaus'
                                 onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
-                            <Button type="button" id="addSample" onClick={() => addSample(sample.description, sample.rightAnswer)}>+</Button>
+                            <Button type='button' id='addSample' onClick={() => addSample(sample.description, sample.rightAnswer)}>+</Button>
                             <ListGroup>
                                 {samples.map(sample => sample.rightAnswer ?
-                                    <ListGroup.Item variant="success" key={sample.description}>{sample.description}</ListGroup.Item> :
-                                    <ListGroup.Item variant="danger" key={sample.description}>{sample.description}</ListGroup.Item>
+                                    <ListGroup.Item variant='success' key={sample.description}>{sample.description}</ListGroup.Item> :
+                                    <ListGroup.Item variant='danger' key={sample.description}>{sample.description}</ListGroup.Item>
                                 )}
                             </ListGroup>
                         </Form.Group>
@@ -132,35 +141,35 @@ const CaseForm = () => {
                         <Form.Group>
                             <Form.Label>Testiryhmät</Form.Label>
                             <Form.Control
-                                as="select"
-                                id="testSelect"
+                                as='select'
+                                id='testSelect'
                                 onChange={(event) => setTestForCase({ ...testForCase, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
                                 {tests.map(test =>
                                     <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
                                 )}
                             </Form.Control>
                             <Form.Check
-                                type="checkbox"
-                                id="required"
-                                label="Pakollinen"
+                                type='checkbox'
+                                id='required'
+                                label='Pakollinen'
                                 onChange={() => setTestForCase({ ...testForCase, isRequired: !testForCase.isRequired })} />
                             <Form.Check
-                                type="checkbox"
-                                id="positive"
-                                label="Positiivinen"
+                                type='checkbox'
+                                id='positive'
+                                label='Positiivinen'
                                 onChange={() => setTestForCase({ ...testForCase, positive: !testForCase.positive })} />
                             <Form.Check
-                                type="checkbox"
-                                id="alternative"
-                                label="Vaihtoehtoinen testi"
+                                type='checkbox'
+                                id='alternative'
+                                label='Vaihtoehtoinen testi'
                                 onChange={() => setTestForCase({ ...testForCase, alternativeTests: !testForCase.alternativeTests })} />
                             <ButtonGroup vertical>
                                 <Button
-                                    type="button"
-                                    id="addTestForGroup"
+                                    type='button'
+                                    id='addTestForGroup'
                                     onClick={() => setTestGroup([...testGroup, testForCase])}>Lisää testi
                                 </Button>
-                                <Table striped bordered hover id="testGroupTable">
+                                <Table striped bordered hover id='testGroupTable'>
                                     {testGroup.length > 0 ?
                                         <thead>
                                             <tr>
@@ -183,8 +192,8 @@ const CaseForm = () => {
                                     </tbody>
                                 </Table>
                                 <Button
-                                    type="button"
-                                    id="addTestGroup"
+                                    type='button'
+                                    id='addTestGroup'
                                     onClick={() => addTestGroup()}>Lisää testiryhmä
                                 </Button>
                             </ButtonGroup>
@@ -192,7 +201,7 @@ const CaseForm = () => {
 
 
                         {testGroups.map((testGroup, i) =>
-                            <Table key={i} striped bordered hover id="testGroupsTable">
+                            <Table key={i} striped bordered hover id='testGroupsTable'>
                                 <thead>
                                     <tr>
                                         <th>Testi</th>
@@ -216,9 +225,9 @@ const CaseForm = () => {
 
 
                         <Button
-                            variant="primary"
-                            type="submit"
-                            id="addCase">
+                            variant='primary'
+                            type='submit'
+                            id='addCase'>
                             Lisää
                         </Button>
                     </Form>
