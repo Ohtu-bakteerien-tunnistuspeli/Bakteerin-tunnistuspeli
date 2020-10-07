@@ -148,6 +148,7 @@ caseRouter.delete('/:id', async (request, response) => {
 
 caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }]), async (request, response) => {
     if (request.user && request.user.admin) {
+        const oldLinks = []
         try {
             const caseToUpdate = await Case.findById(request.params.id)
             if (!caseToUpdate) {
@@ -175,7 +176,8 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 changes.anamnesis = request.body.anamnesis
             }
             if (request.files && request.files.completionImage) {
-                fs.unlink(`${imageDir}/${caseToUpdate.completionImage.url}`, (err) => err)
+                oldLinks.push(caseToUpdate.completionImage.url)
+                //fs.unlink(`${imageDir}/${caseToUpdate.completionImage.url}`, (err) => err)
                 changes.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {
@@ -215,6 +217,10 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             }
             changes.complete = isComplete(changes)
             const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
+            var i
+            for (i = 0; i < oldLinks.length; i++) {
+                fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
+            }
             return response.status(200).json(updatedCase)
         } catch (error) {
             deleteUploadedImages(request)
