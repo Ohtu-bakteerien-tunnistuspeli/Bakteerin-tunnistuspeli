@@ -13,11 +13,14 @@ const Register = () => {
     const handleRegister = async (event) => {
         event.preventDefault()
         const username = event.target.username.value
+        const email = event.target.email.value
+        const studentNumber = event.target.studentNumber.value
+        const classGroup = event.target.classGroup.value
         const password = event.target.password.value
         const passwordAgain = event.target.passwordAgain.value
         if (accept) {
             if (password === passwordAgain) {
-                dispatch(register(username, password, history))
+                dispatch(register(username, email, studentNumber, classGroup, password, history))
             } else {
                 dispatch(setNotification({ message: 'Salasanojen tulee olla samat.', success: false }))
             }
@@ -35,6 +38,25 @@ const Register = () => {
                         type="text"
                         id="username"
                         name="username"
+                    />
+                    <Form.Label>Sähköposti:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="email"
+                        name="email"
+                    />
+                    <Form.Label>Opiskelijanumero:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="studentNumber"
+                        name="studentNumber"
+                    />
+                    <Form.Label>Vuosikurssi:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="classGroup"
+                        name="classGroup"
+                        defaultValue="C-"
                     />
                     <Form.Label>Salasana:</Form.Label>
                     <Form.Control
