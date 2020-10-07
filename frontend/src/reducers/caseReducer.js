@@ -12,6 +12,9 @@ const reducer = (state = [], action) => {
     case 'DELETE_CASE': {
         return state.filter(ca => ca.id !== action.data.id)
     }
+    case 'UPDATE_CASE': {
+        return state.map(c => c.id === action.data.id ? c = action.data : c)
+    }
     default: return state
     }
 }
@@ -58,6 +61,19 @@ export const deleteCase = (caseToDelete, token) => {
             })
         }
     }
+}
+
+export const updateCase = (id, name, bacterium, anamnesis, completionImage, samples, testGroups, token) => {
+return async dispatch => {
+    const caseToUpdate = caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, token)
+    if(caseToUpdate.error){
+    }else {
+        dispatch({
+            type: 'UPDATE_CASE',
+            data: caseToUpdate
+        })
+    }
+}
 }
 
 export default reducer
