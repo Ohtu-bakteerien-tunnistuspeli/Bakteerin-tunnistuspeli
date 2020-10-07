@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
-import { checkSamples } from '../reducers/gameReducer'
+import { checkSamples, checkTests } from '../reducers/gameReducer'
 import ModalImage from './ModalImage'
 const GamePage = () => {
     const [tab, setTab] = useState('anamneesi')
@@ -40,6 +40,11 @@ const GamePage = () => {
 
     const handleTest = (testId) => {
         console.log(testId)
+        if (!game.correctTests.includes(testId)) {
+            dispatch(checkTests(game, testId, user.token))
+        } else {
+            console.log('Test already done')
+        }
         console.log([...game.correctTests, testId])
     }
 
@@ -126,16 +131,16 @@ const GamePage = () => {
                             <p>Kontrollit</p>
                             <Table>
                                 <tbody>
-                                    {tests.map(test => 
+                                    {tests.map(test =>
                                         <tr key={test.id}>
                                             <td>{test.name}</td>
-                                            {test.controlImage ? 
+                                            {test.controlImage ?
                                                 <td><ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}></ModalImage></td>
-                                            :
+                                                :
                                                 <td></td>
-                                            }  
+                                            }
                                         </tr>
-                                        )}
+                                    )}
                                 </tbody>
                             </Table>
                         </Tab>

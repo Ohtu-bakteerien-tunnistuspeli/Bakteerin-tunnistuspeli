@@ -273,4 +273,82 @@ caseRouter.post('/:id/checkSamples', async (request, response) => {
     }
 })
 
+caseRouter.post('/:id/checkTests', async (request, response) => {
+    if (request.user) {
+        try {
+            const caseToCheck = await Case.findById(request.params.id).populate({
+                path: 'testGroups.test',
+                model: 'Test',
+                populate: {
+                    path: 'bacteriaSpecificImages.bacterium',
+                    model: 'Bacterium'
+                }
+            })
+            const testGroups = caseToCheck.testGroups
+            const testsToCheck = request.body.tests
+            let extraTests = []
+            let currentRequiredTests = []
+            let groupIndex = 0
+
+            if (testsToCheck.length === 0) {
+                return response.status(400).json({ error: 'Testin lähettämisessä tapahtui virhe.' })
+            }
+
+            for (let i = 0; i < testsToCheck.length; i++) {
+                if (currentRequiredTests.length === 0 && testGroups.length > groupIndex) {
+                    extraTests = [...extraTests, ...testGroups[groupIndex].filter(test => !test.isRequired)]
+                    currentRequiredTests = testGroups[groupIndex].filter(test => test.isRequired)
+                    groupIndex = groupIndex + 1
+                }
+                const testToCheck = testsToCheck[i]
+                if (currentRequiredTests.map(testForCase => testForCase.test.id).includes(testToCheck)) {
+                    currentRequiredTests = currentRequiredTests.filter(testForCase => testForCase.test.id !== testToCheck)
+                } else if (extraTests.map(testForCase => testForCase.test.id).includes(testToCheck)) {
+                    extraTests = extraTests.filter(testForCase => testForCase.test.id !== testToCheck)
+                } else {
+                    return response.status(200).json({ correct: false })
+                }
+            }
+            let latestTestId = testsToCheck[testsToCheck.length - 1]
+            let latestTestForCase
+            for (let i = 0; i < testGroups.length; i++) {
+                const searchTestForCase = testGroups[i].filter(testForCase => testForCase.test.id === latestTestId)
+                if (searchTestForCase.length === 1) {
+                    latestTestForCase = searchTestForCase[0]
+                    break
+                }
+            }
+
+            let requiredDone = false
+            let allDone = false
+
+            if (groupIndex === testGroups.length && currentRequiredTests.length === 0) {
+                requiredDone = true
+            }
+
+            if (requiredDone && extraTests.length === 0) {
+                allDone = true
+            }
+
+            let imageUrl
+            if (latestTestForCase.positive) {
+                const bacteriaSpecificImages = latestTestForCase.test.bacteriaSpecificImages.filter(bacteriaImage => bacteriaImage.bacterium.name === caseToCheck.bacterium.name)
+                if (bacteriaSpecificImages.length > 0) {
+                    imageUrl = bacteriaSpecificImages[0].url
+                } else {
+                    imageUrl = latestTestForCase.test.positiveResultImage.url
+                }
+            } else {
+                imageUrl = latestTestForCase.test.negativeResultImage.url
+            }
+            return response.status(200).json({ correct: true, imageUrl, testName: latestTestForCase.test.name, allDone, requiredDone })
+
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
 module.exports = caseRouter

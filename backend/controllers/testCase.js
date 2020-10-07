@@ -44,7 +44,7 @@ const deleteUploadedImages = (request) => {
 }
 
 testRouter.get('/', async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         const tests = await Test.find({}).populate({
             path: 'bacteriaSpecificImages.bacterium',
             model: 'Bacterium'

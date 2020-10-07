@@ -28,7 +28,8 @@ export const getGame = (history, id, token) => {
                 requiredTestsDone: false,
                 allTestsDone: false,
                 bacteriumCorrect: false,
-                correctTests: []
+                correctTests: [],
+                testResults: []
             }
             dispatch({
                 type: 'GET_GAME',
@@ -50,6 +51,32 @@ export const checkSamples = (game, samples, token) => {
                 dispatch({
                     type: 'CHECK_SAMPLES',
                     data: { ...game, samplesCorrect: true }
+                })
+            } else {
+                dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
+            }
+
+        }
+    }
+}
+
+export const checkTests = (game, test, token) => {
+    return async dispatch => {
+        const checkTest = await gameService.testCheck(game.case.id, { tests: [...game.correctTests, test] }, token)
+        if (checkTest.error) {
+            dispatch(setNotification({ message: checkTest.error, success: false }))
+        } else {
+            if (checkTest.correct) {
+                if(checkTest.allDone) {
+                    dispatch(setNotification({ message: 'Oikea vastaus. Kaikki testit tehty.', success: true }))
+                } else if(checkTest.requiredDone) {
+                    dispatch(setNotification({ message: 'Oikea vastaus. Kaikki vaaditut testit tehty.', success: true }))
+                } else {
+                    dispatch(setNotification({ message: 'Oikea vastaus.', success: true }))
+                }     
+                dispatch({
+                    type: 'CHECK_SAMPLES',
+                    data: { ...game, correctTests: [...game.correctTests, test], testResults: [...game.testResults, {imageUrl: checkTest.imageUrl, testName: checkTest.testName}], requiredTestsDone: checkTest.requiredDone, allTestsDone: checkTest.allDone }
                 })
             } else {
                 dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
