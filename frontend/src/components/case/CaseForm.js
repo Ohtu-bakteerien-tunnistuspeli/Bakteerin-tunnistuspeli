@@ -112,7 +112,7 @@ const CaseForm = () => {
                         <Form.Group controlId="samples">
                             <Form.Label>Näytevaihtoehdot</Form.Label>
                             <Form.Control
-                                value={sample.name}
+                                value={sample.description}
                                 onChange={({ target }) => setSample({ ...sample, name: target.value })}
                             />
                             <Form.Check
@@ -120,11 +120,11 @@ const CaseForm = () => {
                                 id="isRightAnswer"
                                 label="Oikea vastaus"
                                 onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
-                            <Button type="button" id="addSample" onClick={() => addSample(sample.name, sample.rightAnswer)}>+</Button>
+                            <Button type="button" id="addSample" onClick={() => addSample(sample.description, sample.rightAnswer)}>+</Button>
                             <ListGroup>
                                 {samples.map(sample => sample.rightAnswer ?
-                                    <ListGroup.Item variant="success" key={sample.name}>{sample.name}</ListGroup.Item> :
-                                    <ListGroup.Item variant="danger" key={sample.name}>{sample.name}</ListGroup.Item>
+                                    <ListGroup.Item variant="success" key={sample.description}>{sample.description}</ListGroup.Item> :
+                                    <ListGroup.Item variant="danger" key={sample.description}>{sample.description}</ListGroup.Item>
                                 )}
                             </ListGroup>
                         </Form.Group>
