@@ -33,7 +33,9 @@ const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesi
     formData.append('positiveResultImage', photoPos )
     formData.append('negativeResultImage', photoNeg)
     Array.from(bacteriaSpesif).forEach(bact => formData.append('bacteriaSpecificImages', bact))
-    formData.append('deletePhotos', photosToDelete)
+    formData.append('deleteCtrl', photosToDelete.ctrl)
+    formData.append('deletePos', photosToDelete.pos)
+    formData.append('deleteNeg', photosToDelete.neg)
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
     console.log(formData)
     console.log(bacteriaSpesif[0])

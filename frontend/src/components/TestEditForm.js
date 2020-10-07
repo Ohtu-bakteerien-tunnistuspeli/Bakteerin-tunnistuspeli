@@ -25,6 +25,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
     const [bacteriaSpecificImages, setBacteriaImages] = useState([])
     const [bacteriaSpecificImage, setBacteriaImage] = useState(INITIAL_STATE)
     const [bacterium, setBacterium] = useState(bacteria[0]?.name)
+    const [deletePhotos, setDeletePhotos] = useState({ctrl: false, pos: false, neg: false})
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
@@ -42,7 +43,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
     }
     const editTest = (event) => {
         event.preventDefault()
-        const photosToDelete = { pos: pos, neg: neg, ctrl: ctrl }
+        const photosToDelete = deletePhotos
         var token = user.token
         var id = test.id
         done()
@@ -103,7 +104,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                         type='file'
                         onChange={({ target }) => { setPhotoControl(target.files[0]); setCtrl(true)}}
                     />
-                    <Button style={marginStyle} id='deleteControl'>Poista kontrollikuva</Button>
+                    <Button style={marginStyle} id='deleteControl' onClick={ () => {setCtrl(false); setDeletePhotos({...deletePhotos, ctrl: true})} }>Poista kontrollikuva</Button>
                 </Form.Group>
                 <Form.Group controlId="editPositiveResultImage">
                     <Form.Label style={marginStyle}>Positiivinen oletus</Form.Label>
@@ -118,7 +119,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                         type='file'
                         onChange={({ target }) => { setPhotoPos(target.files[0]); setPos(true)}}
                     />
-                    <Button style={marginStyle} id='deletePositive'>Poista positiivinen kuva</Button>
+                    <Button style={marginStyle} id='deletePositive' onClick={ () => {setPos(false); setDeletePhotos({...deletePhotos, pos: true})} } >Poista positiivinen kuva</Button>
                 </Form.Group>
                 <Form.Group controlId="editNegativeResultImage">
                     <Form.Label style={marginStyle}>Negatiivinen oletus</Form.Label>
@@ -133,7 +134,7 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                         type='file'
                         onChange={({ target }) => {setPhotoNeg(target.files[0]); setNeg(true)}}
                     />
-                    <Button style={marginStyle} id='deleteNegative'>Poista negatiivinen kuva</Button>
+                    <Button style={marginStyle} id='deleteNegative' onClick={ () => {setNeg(false); setDeletePhotos({...deletePhotos, neg: true})} }>Poista negatiivinen kuva</Button>
                 </Form.Group>
 
                 <Form.Group controlId="editBacteriaSpecificImages">

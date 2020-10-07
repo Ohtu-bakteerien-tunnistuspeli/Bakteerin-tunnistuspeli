@@ -123,13 +123,16 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
             let testToUpdate = {
                 name: request.body.name,
                 type: request.body.type,
-                bacteriaSpecificImages: testToEdit.bacteriaSpecificImages
+                bacteriaSpecificImages: testToEdit.bacteriaSpecificImages,
             }
-
+            const deletePhotos = { ctrl:request.body.deleteCtrl, pos:request.body.deletePos, neg:request.body.deleteNeg }
+            console.log(deletePhotos.ctrl)
             const oldLinks = []
+
             if (request.files) {
                 if (request.files.controlImage) {
                     oldLinks.push(testToEdit.controlImage.url)
+                    console.log('control image')
                     // fs.unlink(`${imageDir}/${testToEdit.controlImage.url}`, (err) => err)
                     testToUpdate.controlImage = { url: request.files.controlImage[0].filename, contentType: request.files.controlImage[0].mimetype }
                 }
@@ -161,8 +164,20 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     }
                 }
             }
+            if (deletePhotos.ctrl) {
+                console.log('delete ctrl')
+                oldLinks.push(testToEdit.controlImage.url)
+                testToUpdate.controlImage = null
+            }
+            if (deletePhotos.pos) {
+                oldLinks.push(testToEdit.positiveResultImage.url)
+                testToUpdate.positiveResultImage = null
+            }
+            if (deletePhotos.neg) {
+                oldLinks.push(testToEdit.negativeResultImage.url)
+                testToUpdate.negativeResultImage = null
+            }
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
-            // move deletion of old photos here(?):
             var i
             for (i = 0; i < oldLinks.length; i++) {
                 fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
