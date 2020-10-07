@@ -126,27 +126,26 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 bacteriaSpecificImages: testToEdit.bacteriaSpecificImages
             }
 
-            console.log('edit backend post admin check', request.body.name)
-            console.log('seuraavksi files check')
+            const oldLinks = []
             if (request.files) {
                 if (request.files.controlImage) {
-                    fs.unlink(`${imageDir}/${testToEdit.controlImage.url}`, (err) => err)
+                    oldLinks.push(testToEdit.controlImage.url)
+                    // fs.unlink(`${imageDir}/${testToEdit.controlImage.url}`, (err) => err)
                     testToUpdate.controlImage = { url: request.files.controlImage[0].filename, contentType: request.files.controlImage[0].mimetype }
                 }
                 if (request.files.positiveResultImage) {
-                    fs.unlink(`${imageDir}/${testToEdit.positiveResultImage.url}`, (err) => err)
+                    oldLinks.push(testToEdit.positiveResultImage.url)
+                    // fs.unlink(`${imageDir}/${testToEdit.positiveResultImage.url}`, (err) => err)
                     testToUpdate.positiveResultImage = { url: request.files.positiveResultImage[0].filename, contentType: request.files.positiveResultImage[0].mimetype }
                 }
                 if (request.files.negativeResultImage) {
-                    fs.unlink(`${imageDir}/${testToEdit.negativeResultImage.url}`, (err) => err)
+                    oldLinks.push(testToEdit.negativeResultImage.url)
+                    //fs.unlink(`${imageDir}/${testToEdit.negativeResultImage.url}`, (err) => err)
                     testToUpdate.negativeResultImage = { url: request.files.negativeResultImage[0].filename, contentType: request.files.negativeResultImage[0].mimetype }
                 }
-                console.log('backendissa specific seraavaksu')
                 if (request.files.bacteriaSpecificImages) {
-                    console.log('backendissa specific löydetty')
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
-                        console.log('filen nimi', file)
                         const bacterium = await Bacterium.findOne({ name: file.originalname })
                         if (!bacterium) {
                             deleteUploadedImages(request)
@@ -163,6 +162,11 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 }
             }
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
+            // move deletion of old photos here(?):
+            var i
+            for (i = 0; i < oldLinks.length; i++) {
+                fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
+            }
             return response.status(200).json(updatetTest)
         } catch (error) {
             deleteUploadedImages(request)

@@ -5,19 +5,25 @@ import { useHistory } from 'react-router-dom'
 import { Form, Button, Modal } from 'react-bootstrap'
 import { setNotification } from '../reducers/notificationReducer'
 import GDBRText from './GDPRText'
+import PrivacyText from './PrivacyText'
+
 const Register = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const [accept, setAccept] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [showModal2, setShowModal2] = useState(false)
     const handleRegister = async (event) => {
         event.preventDefault()
         const username = event.target.username.value
+        const email = event.target.email.value
+        const studentNumber = event.target.studentNumber.value
+        const classGroup = event.target.classGroup.value
         const password = event.target.password.value
         const passwordAgain = event.target.passwordAgain.value
         if (accept) {
             if (password === passwordAgain) {
-                dispatch(register(username, password, history))
+                dispatch(register(username, email, studentNumber, classGroup, password, history))
             } else {
                 dispatch(setNotification({ message: 'Salasanojen tulee olla samat.', success: false }))
             }
@@ -36,6 +42,25 @@ const Register = () => {
                         id="username"
                         name="username"
                     />
+                    <Form.Label>Sähköposti:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="email"
+                        name="email"
+                    />
+                    <Form.Label>Opiskelijanumero:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="studentNumber"
+                        name="studentNumber"
+                    />
+                    <Form.Label>Vuosikurssi:</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="classGroup"
+                        name="classGroup"
+                        defaultValue="C-"
+                    />
                     <Form.Label>Salasana:</Form.Label>
                     <Form.Control
                         type="password"
@@ -48,7 +73,10 @@ const Register = () => {
                     />
                     <div className="form-group form-inline">
                         <Form.Label>Olen lukenut ja hyväksyn&nbsp;{<a href="#" onClick={() => setShowModal(true)}>käyttöehdot</a>//eslint-disable-line
-                        }:&nbsp;</Form.Label>
+                        }&nbsp;
+                        ja&nbsp;{<a href="#" onClick={() => setShowModal2(true)}>tietosuojailmoituksen</a> //eslint-disable-line
+                        }:&nbsp;
+                        </Form.Label>
                         <Form.Check type="checkbox" label="" id="acceptCheckBox" value={accept} onChange={() => setAccept(!accept)} />
                     </div>
                     <Button id="submit" variant="primary" type="submit">
@@ -60,6 +88,12 @@ const Register = () => {
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body >
                     <GDBRText></GDBRText>
+                </Modal.Body>
+            </Modal>
+            <Modal show={showModal2} size="lg" onHide={() => setShowModal2(false)} >
+                <Modal.Header closeButton></Modal.Header>
+                <Modal.Body >
+                    <PrivacyText></PrivacyText>
                 </Modal.Body>
             </Modal>
         </div>

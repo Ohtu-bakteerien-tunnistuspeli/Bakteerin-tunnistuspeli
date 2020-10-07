@@ -80,9 +80,9 @@ export const returnUser = () => {
     }
 }
 
-export const register = (username, password, history) => {
+export const register = (username, email, studentNumber, classGroup, password, history) => {
     return async dispatch => {
-        let response = await userService.register({ username, password })
+        let response = await userService.register({ username, email, studentNumber, classGroup, password })
         if (response && !response.error) {
             dispatch(setNotification({ message: `Rekisteröidyit onnistuneesti, ${username}`, success: true }))
             history.push('/kirjautuminen')
