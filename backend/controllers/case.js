@@ -82,9 +82,20 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
             }
             if (request.body.samples) {
                 newCase.samples = JSON.parse(request.body.samples)
+                let descList = newCase.samples.map(sample => sample.description)
+                let checkedDescList = []
+                for (let i = 0; i < descList.length; i++) {
+                    if (checkedDescList.includes(descList[i])) {
+                        deleteUploadedImages(request)
+                        return response.status(400).json({ error: `Näytettä ${descList[i]} yritetään käyttää tapauksessa useampaan kertaan` })
+                    } else {
+                        checkedDescList.push(descList[i])
+                    }
+                }
             }
             if (request.body.testGroups) {
                 request.body.testGroups = JSON.parse(request.body.testGroups)
+                let addedTestIds = []
                 const testGroups = []
                 for (let i = 0; i < request.body.testGroups.length; i++) {
                     const newTestGroup = []
@@ -108,7 +119,12 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                             alternativeTests: test.alternativeTests
                         }
                         if (testToAdd.test) {
+                            if (addedTestIds.includes(testToAdd.test.id)) {
+                                deleteUploadedImages(request)
+                                return response.status(400).json({ error: `Testiä ${testToAdd.test.name} yritetään käyttää tapauksessa useampaan kertaan` })
+                            }
                             newTestGroup.push(testToAdd)
+                            addedTestIds.push(testToAdd.test.id)
                         }
                     }
                     testGroups.push(newTestGroup)
@@ -182,9 +198,20 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             }
             if (request.body.samples) {
                 changes.samples = JSON.parse(request.body.samples)
+                let descList = changes.samples.map(sample => sample.description)
+                let checkedDescList = []
+                for (let i = 0; i < descList.length; i++) {
+                    if (checkedDescList.includes(descList[i])) {
+                        deleteUploadedImages(request)
+                        return response.status(400).json({ error: `Näytettä ${descList[i]} yritetään käyttää tapauksessa useampaan kertaan` })
+                    } else {
+                        checkedDescList.push(descList[i])
+                    }
+                }
             }
             if (request.body.testGroups) {
                 request.body.testGroups = JSON.parse(request.body.testGroups)
+                let addedTestIds = []
                 const testGroups = []
                 for (let i = 0; i < request.body.testGroups.length; i++) {
                     const newTestGroup = []
@@ -208,7 +235,12 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                             alternativeTests: test.alternativeTests
                         }
                         if (testToAdd.test) {
+                            if (addedTestIds.includes(testToAdd.test.id)) {
+                                deleteUploadedImages(request)
+                                return response.status(400).json({ error: `Testiä ${testToAdd.test.name} yritetään käyttää tapauksessa useampaan kertaan` })
+                            }
                             newTestGroup.push(testToAdd)
+                            addedTestIds.push(testToAdd.test.id)
                         }
                     }
                     testGroups.push(newTestGroup)
