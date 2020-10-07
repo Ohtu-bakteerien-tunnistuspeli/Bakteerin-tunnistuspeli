@@ -5,19 +5,19 @@ import { getTests } from './testReducer'
 import { getCases } from './caseReducer'
 const reducer = (state = null, action) => {
     switch (action.type) {
-    case 'LOGIN': {
-        return action.data
-    }
-    case 'LOGOUT': {
-        return action.data
-    }
-    case 'RETURN_USER': {
-        return action.data
-    }
-    case 'REGISTER': {
-        return action.data
-    }
-    default: return state
+        case 'LOGIN': {
+            return action.data
+        }
+        case 'LOGOUT': {
+            return action.data
+        }
+        case 'RETURN_USER': {
+            return action.data
+        }
+        case 'REGISTER': {
+            return action.data
+        }
+        default: return state
     }
 }
 
@@ -33,7 +33,9 @@ export const login = (username, password, history) => {
                 type: 'LOGIN',
                 data: user
             })
-            dispatch(getBacteria(user.token))
+            if (user.admin) {
+                dispatch(getBacteria(user.token))
+            }
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
             history.push('/')
@@ -65,7 +67,9 @@ export const returnUser = () => {
         let user = null
         if (userText) {
             user = JSON.parse(userText)
-            dispatch(getBacteria(user.token))
+            if (user.admin) {
+                dispatch(getBacteria(user.token))
+            }
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
         }
@@ -87,7 +91,7 @@ export const register = (username, password, history) => {
                 type: 'REGISTER',
                 data: null
             })
-            if(response.error.includes('User validation failed')) {
+            if (response.error.includes('User validation failed')) {
                 dispatch(setNotification({ message: response.error.substring(response.error.indexOf('name: ') + 6), success: false }))
             } else {
                 dispatch(setNotification({ message: response.error, success: false }))

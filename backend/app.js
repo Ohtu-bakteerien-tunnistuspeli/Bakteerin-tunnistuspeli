@@ -117,11 +117,19 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                     {
                         description: 'Tankkimaitonäyte',
                         rightAnswer: false
+                    },
+                    {
+                        description: 'Ulostenäyte Muurikilta',
+                        rightAnswer: false
+                    },
+                    {
+                        description: 'Virtsanäyte Muurikilta',
+                        rightAnswer: false
                     }
                 ],
                 testGroups: [
-                    [ { test: intialTestCase1, isRequired: true, positive: true, alternativeTests: false },{ test: intialTestCase2, isRequired: true, positive: true, alternativeTests: false }],
-                    [ { test: intialTestCase3, isRequired: true, positive: false, alternativeTests: false }]
+                    [{ test: intialTestCase1, isRequired: true, positive: true, alternativeTests: false }, { test: intialTestCase2, isRequired: true, positive: true, alternativeTests: false }],
+                    [{ test: intialTestCase3, isRequired: true, positive: false, alternativeTests: false }]
                 ]
             })
             await initialCase.save()

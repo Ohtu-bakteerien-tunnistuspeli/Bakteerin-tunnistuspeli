@@ -351,4 +351,21 @@ caseRouter.post('/:id/checkTests', async (request, response) => {
     }
 })
 
+caseRouter.post('/:id/checkBacterium', async (request, response) => {
+    if (request.user) {
+        try {
+            const caseToCheck = await Case.findById(request.params.id).populate('bacterium', { name: 1 })
+            if (caseToCheck.bacterium.name.toLowerCase() === request.body.bacteriumName.toLowerCase()) {
+                return response.status(200).json({ correct: true, completionImageUrl: caseToCheck.completionImage.url })
+            } else {
+                return response.status(200).json({ correct: false })
+            }
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
 module.exports = caseRouter

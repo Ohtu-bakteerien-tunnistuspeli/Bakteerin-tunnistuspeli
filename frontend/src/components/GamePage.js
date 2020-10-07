@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
-import { checkSamples, checkTests } from '../reducers/gameReducer'
+import { checkSamples, checkTests, checkBacterium } from '../reducers/gameReducer'
 import ModalImage from './ModalImage'
 const GamePage = () => {
     const [tab, setTab] = useState('anamneesi')
@@ -9,15 +9,9 @@ const GamePage = () => {
     const dispatch = useDispatch()
     const game = useSelector(state => state.game)
     const user = useSelector(state => state.user)
+    const [bacterium, setBacterium] = useState('')
     const [selectedSamples, setSelectedSamples] = useState([])
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
-    /*
-    const types = tests.map(test => test.type)
-    types.reduce(function(a,b){
-        if(a.indexOf(b)<0)a.push(b)
-        return a
-    },[])
-    */
     const testsToShow = tests.filter(test => test.type === 'Testi').sort((test1, test2) => test1.name.localeCompare(test2.name))
     const cultivationsToShow = tests.filter(test => test.type === 'Viljely').sort((test1, test2) => test1.name.localeCompare(test2.name))
     const stainingsToShow = tests.filter(test => test.type === 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
@@ -25,10 +19,8 @@ const GamePage = () => {
 
     const sampleCheckBoxChange = (description) => {
         if (selectedSamples.includes(description)) {
-            //console.log(selectedSamples.filter(sample => sample !== description))
             setSelectedSamples(selectedSamples.filter(sample => sample !== description))
         } else {
-            //console.log([...selectedSamples, description])
             setSelectedSamples([...selectedSamples, description])
         }
     }
@@ -39,13 +31,16 @@ const GamePage = () => {
     }
 
     const handleTest = (testId) => {
-        console.log(testId)
-        if (!game.correctTests.includes(testId)) {
+        if (!game.correctTests.includes(testId) && !game.allTestsDone) {
             dispatch(checkTests(game, testId, user.token))
-        } else {
-            console.log('Test already done')
         }
-        console.log([...game.correctTests, testId])
+    }
+
+    const bacteriumSubmit = (event) => {
+        event.preventDefault()
+        if (!game.bacteriumCorrect) {
+            dispatch(checkBacterium(game, bacterium, user.token))
+        }
     }
 
     return (
@@ -125,7 +120,21 @@ const GamePage = () => {
                             }
                         </Tab>
                         <Tab eventKey='tuloksia' title='Tuloksia'>
-                            <p>tulokset</p>
+                            <p>Tulokset</p>
+                            <Table>
+                                <tbody>
+                                    {game.testResults.map((result, i) =>
+                                        <tr key={i}>
+                                            <td>{result.testName}</td>
+                                            {result.imageUrl ?
+                                                <td><ModalImage imageUrl={result.imageUrl} width={'10%'} height={'10%'}></ModalImage></td>
+                                                :
+                                                <td></td>
+                                            }
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </Table>
                         </Tab>
                         <Tab eventKey='kontrolleja' title='Kontrolleja'>
                             <p>Kontrollit</p>
@@ -148,7 +157,31 @@ const GamePage = () => {
 
                 </Tab>
                 <Tab eventKey='diagnoosi' title='Diagnoosi' disabled={!game.requiredTestsDone}>
-                    <p>Diagnoosi</p>
+                    <h1>Diagnoosi</h1>
+                    {game.bacteriumCorrect ?
+                        <>
+                            {game.completionImageUrl ?
+                                <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
+                                :
+                                <></>
+                            }
+                        </>
+                        :
+                        <>
+                            <p>Syötä alla olevaan kenttään oikea diagnoosi (=bakteeri) tekemiesi testien perusteella.</p>
+                            <Form onSubmit={(event) => bacteriumSubmit(event)}>
+                                <Form.Group controlId="bacterium">
+                                    <Form.Label>Syötä bakteerin nimi</Form.Label>
+                                    <Form.Control value={bacterium} onChange={(event) => setBacterium(event.target.value)} />
+                                </Form.Group>
+                                <Button variant="info"
+                                    type="submit"
+                                    id="checkDiagnosis">
+                                    Tarkasta diagnoosi
+                        </Button>
+                            </Form>
+                        </>
+                    }
                 </Tab>
             </Tabs>
         </>
