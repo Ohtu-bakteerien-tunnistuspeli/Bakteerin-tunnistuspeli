@@ -2,7 +2,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-// const { TestScheduler } = require('jest')
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const api = supertest(app)
@@ -11,8 +10,8 @@ beforeEach(async () => {
     await User.deleteMany({})
     const adminPassword = await bcrypt.hash('admin', 10)
     const userPassword = await bcrypt.hash('password', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true })
-    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com' })
+    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'example@com' })
     await admin.save()
     await user.save()
 })
@@ -38,12 +37,32 @@ describe('login ', () => {
     })
 })
 describe('register ', () => {
-    test('valid user can register', async () => {
+    test('valid user with compolsory fields can register', async () => {
         await api
             .post('/api/user/register')
             .send({
                 username: 'testUser',
+                password: 'testPassword',
+                email: 'example@com'
+            })
+            .expect(200)
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'testUser',
                 password: 'testPassword'
+            })
+            .expect(200)
+    })
+    test('valid user with all fields can register', async () => {
+        await api
+            .post('/api/user/register')
+            .send({
+                username: 'testUser',
+                password: 'testPassword',
+                email: 'example@com',
+                classGroup: 'C-76',
+                studentNumber: '1234567'
             })
             .expect(200)
         await api
@@ -57,18 +76,40 @@ describe('register ', () => {
     test('invalid user cannot register', async () => {
         const invalidUsers = [{
             username: 'usernameNew',
-            password: 'testPassword'
+            password: 'testPassword',
+            email: 'example@com'
         }, {
             username: 'usernameNew'
         }, {
             username: 'usernameNew',
-            password: 't'
+            password: 't',
+            email: 'example@com'
         }, {
             username: 'u',
-            password: 'testPassword'
+            password: 'testPassword',
+            email: 'example@com'
         }, {
             username: 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu',
-            password: 'testPassword'
+            password: 'testPassword',
+            email: 'example@com'
+        }, {
+            username: 'uniqueUser',
+            password: 'testPassword',
+            classGroup: '123',
+            email: 'example@com'
+        }, {
+            username: 'usernameNew',
+            password: 'testPassword',
+            email: 'examplecom@'
+        }, {
+            username: 'usernameNew',
+            password: 'testPassword',
+            email: ''
+        }, {
+            username: 'usernameNew',
+            password: 'testPassword',
+            classGroup: '123',
+            email: 'abcdf'
         }]
         let registerResponse = await api
             .post('/api/user/register')
@@ -114,6 +155,42 @@ describe('register ', () => {
         await api
             .post('/api/user/login')
             .send(invalidUsers[4])
+            .expect(400)
+        registerResponse = await api
+            .post('/api/user/register')
+            .send(invalidUsers[5])
+            .expect(400)
+        expect(registerResponse.body.error).toContain('Vuosikurssin tule alkaa merkeillä \'C-\'')
+        await api
+            .post('/api/user/login')
+            .send(invalidUsers[5])
+            .expect(400)
+        registerResponse = await api
+            .post('/api/user/register')
+            .send(invalidUsers[6])
+            .expect(400)
+        expect(registerResponse.body.error).toContain('Sähköpostiosoite on virheellinen.')
+        await api
+            .post('/api/user/login')
+            .send(invalidUsers[6])
+            .expect(400)
+        registerResponse = await api
+            .post('/api/user/register')
+            .send(invalidUsers[7])
+            .expect(400)
+        expect(registerResponse.body.error).toContain('Sähköpostiosoite on pakollinen.')
+        await api
+            .post('/api/user/login')
+            .send(invalidUsers[7])
+            .expect(400)
+        registerResponse = await api
+            .post('/api/user/register')
+            .send(invalidUsers[8])
+            .expect(400)
+        expect(registerResponse.body.error).toContain('User validation failed: classGroup: Vuosikurssin tule alkaa merkeillä \'C-\'., email: Sähköpostiosoite on virheellinen., username: Käyttäjänimen tulee olla uniikki.')
+        await api
+            .post('/api/user/login')
+            .send(invalidUsers[8])
             .expect(400)
     })
 })

@@ -37,6 +37,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             let passwordHash = await bcrypt.hash('user', saltRounds)
             const user = new User({
                 username: 'user',
+                email: 'example@com',
                 admin: false,
                 passwordHash
             })
@@ -44,6 +45,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             passwordHash = await bcrypt.hash('admin', saltRounds)
             const admin = new User({
                 username: 'admin',
+                email: 'example@com',
                 admin: true,
                 passwordHash
             })

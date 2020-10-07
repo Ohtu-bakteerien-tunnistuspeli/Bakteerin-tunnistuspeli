@@ -46,7 +46,10 @@ userRouter.post('/register', async (request, response) => {
             const user = new User({
                 username: body.username,
                 passwordHash: passwordHash,
-                admin: false
+                admin: false,
+                classGroup: body.classGroup,
+                email: body.email,
+                studentNumber: body.studentNumber
             })
             await user.save()
             return response.status(200).send()
