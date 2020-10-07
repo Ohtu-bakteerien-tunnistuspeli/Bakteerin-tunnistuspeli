@@ -126,7 +126,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 bacteriaSpecificImages: testToEdit.bacteriaSpecificImages,
             }
             const deletePhotos = { ctrl:request.body.deleteCtrl, pos:request.body.deletePos, neg:request.body.deleteNeg }
-            console.log(deletePhotos.ctrl)
+            console.log(deletePhotos)
             const oldLinks = []
 
             if (request.files) {
@@ -164,16 +164,16 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     }
                 }
             }
-            if (deletePhotos.ctrl) {
+            if (deletePhotos.ctrl === 'true') {
                 console.log('delete ctrl')
                 oldLinks.push(testToEdit.controlImage.url)
                 testToUpdate.controlImage = null
             }
-            if (deletePhotos.pos) {
+            if (deletePhotos.pos === 'true') {
                 oldLinks.push(testToEdit.positiveResultImage.url)
                 testToUpdate.positiveResultImage = null
             }
-            if (deletePhotos.neg) {
+            if (deletePhotos.neg === 'true') {
                 oldLinks.push(testToEdit.negativeResultImage.url)
                 testToUpdate.negativeResultImage = null
             }
