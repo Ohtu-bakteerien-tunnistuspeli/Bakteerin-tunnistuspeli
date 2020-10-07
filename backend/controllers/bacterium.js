@@ -4,7 +4,7 @@ const Test = require('../models/testCase')
 const Case = require('../models/case')
 
 bacteriumRouter.get('/', async (request, response) => {
-    if (request.user) {
+    if (request.user && request.user.admin) {
         const backteria = await Bacterium.find({})
         response.json(backteria.map(bacterium => bacterium.toJSON()))
     } else {

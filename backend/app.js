@@ -51,35 +51,85 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             })
             await admin.save()
 
-            const initialBacterium = new Bacterium({
-                name: 'initial koli'
+            const bac1 = new Bacterium({
+                name: 'Streptococcus agalactiae'
             })
-            await initialBacterium.save()
 
-            const intialTestCase = new TestCase({
-                name: 'initial test',
-                type: 'type of the initial test'
+            const bac2 = new Bacterium({
+                name: 'Staphylococcus aureus'
             })
-            await intialTestCase.save()
+
+            await bac1.save()
+            await bac2.save()
+
+            const intialTestCase1 = new TestCase({
+                name: 'Veriagar, +37 °C, aerobinen kasvatus',
+                type: 'Viljely'
+            })
+
+            const intialTestCase2 = new TestCase({
+                name: 'Gram-värjäys',
+                type: 'Värjäys'
+            })
+
+            const intialTestCase3 = new TestCase({
+                name: 'Katalaasitesti',
+                type: 'Testi'
+            })
+            const intialTestCase4 = new TestCase({
+                name: 'HIRS-sarja (hippuraatti, inuliini, raffinoosi, sorbitoli)',
+                type: 'Testi'
+            })
+
+            const intialTestCase5 = new TestCase({
+                name: 'Eskuliiniveriagar',
+                type: 'Viljely'
+            })
+
+            const intialTestCase6 = new TestCase({
+                name: 'Edwardsin agar',
+                type: 'Viljely'
+            })
+
+            const intialTestCase7 = new TestCase({
+                name: 'CAMP-testi',
+                type: 'Testi'
+            })
+
+            await intialTestCase1.save()
+            await intialTestCase2.save()
+            await intialTestCase3.save()
+            await intialTestCase4.save()
+            await intialTestCase5.save()
+            await intialTestCase6.save()
+            await intialTestCase7.save()
 
             const initialCase = new Case({
-                name: 'initial case',
-                bacterium: initialBacterium,
-                anamnesis: 'anamnesis of the initial case',
-                completitionText: 'You completed the initial case!',
+                name: 'Maitotila 1',
+                bacterium: bac1,
+                anamnesis: 'Vasemman takaneljänneksen maito on hiukan kokkareista...',
+                //completitionText: 'You completed the initial case!',
                 samples: [
                     {
-                        description: 'this is the right answer',
+                        description: 'Maitonäyte Muurikin kaikista neljänneksistä',
                         rightAnswer: true
                     },
                     {
-                        description: 'this is the wrong answer',
+                        description: 'Tankkimaitonäyte',
+                        rightAnswer: false
+                    },
+                    {
+                        description: 'Ulostenäyte Muurikilta',
+                        rightAnswer: false
+                    },
+                    {
+                        description: 'Virtsanäyte Muurikilta',
                         rightAnswer: false
                     }
                 ],
                 testGroups: [
-                    [ { test: intialTestCase, isRequired: true, positive: false, alternativeTests: false },{ test: intialTestCase, isRequired: false, positive: false, alternativeTests: false }],
-                    [ { test: intialTestCase, isRequired: false, positive: true, alternativeTests: false }]
+                    [{ test: intialTestCase1, isRequired: true, positive: true, alternativeTests: false }, { test: intialTestCase2, isRequired: true, positive: true, alternativeTests: false }],
+                    [{ test: intialTestCase3, isRequired: true, positive: false, alternativeTests: false }]
                 ]
             })
             await initialCase.save()

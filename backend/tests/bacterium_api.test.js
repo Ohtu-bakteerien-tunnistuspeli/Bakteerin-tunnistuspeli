@@ -133,6 +133,12 @@ describe('addition of a bacterium ', () => {
     })
 
     test('user cannot add a bacterium', async () => {
+        const adminUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
         const user = await api
             .post('/api/user/login')
             .send({
@@ -141,7 +147,7 @@ describe('addition of a bacterium ', () => {
             })
         const res = await api
             .get('/api/bacteria')
-            .set('Authorization', `bearer ${user.body.token}`)
+            .set('Authorization', `bearer ${adminUser.body.token}`)
         const initialLength = res.body.length
         const newBacterium = {
             name: 'testing bacterium'
@@ -155,7 +161,7 @@ describe('addition of a bacterium ', () => {
         expect(addResponse.body.error).toEqual('token missing or invalid')
         const resAfterAdding = await api
             .get('/api/bacteria')
-            .set('Authorization', `bearer ${user.body.token}`)
+            .set('Authorization', `bearer ${adminUser.body.token}`)
         expect(resAfterAdding.body).toHaveLength(initialLength)
     })
 })
@@ -201,9 +207,15 @@ describe('deletion of a bacterium', () => {
                 username: 'usernameNew',
                 password: 'password'
             })
+        const adminUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
         const res = await api
             .get('/api/bacteria')
-            .set('Authorization', `bearer ${user.body.token}`)
+            .set('Authorization', `bearer ${adminUser.body.token}`)
         const initialLength = res.body.length
         const deleteResponse = await api
             .delete(`/api/bacteria/${res.body[0].id}`)
@@ -213,7 +225,7 @@ describe('deletion of a bacterium', () => {
         expect(deleteResponse.body.error).toEqual('token missing or invalid')
         const resAfterDelete = await api
             .get('/api/bacteria')
-            .set('Authorization', `bearer ${user.body.token}`)
+            .set('Authorization', `bearer ${adminUser.body.token}`)
         expect(resAfterDelete.body).toHaveLength(initialLength)
     })
 
