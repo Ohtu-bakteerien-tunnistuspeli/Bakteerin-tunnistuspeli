@@ -19,7 +19,7 @@ const AddTestGroup = ({ setCaseTest,
                 type="checkbox"
                 id="required"
                 label="Pakollinen"
-                onChange={() => setTestBools({ ...testBools, required: !testBools.required })} />
+                onChange={() => setTestBools({ ...testBools, isRequired: !testBools.isRequired })} />
             <Form.Check
                 type="checkbox"
                 id="positive"
@@ -51,7 +51,7 @@ const AddTestGroup = ({ setCaseTest,
                         {testGroup.map((tg, i) =>
                             <tr key={i}>
                                 <td>{tg.test.name}</td>
-                                <td>{testBools.required ? 'Kyllä' : 'Ei'}</td>
+                                <td>{testBools.isRequired ? 'Kyllä' : 'Ei'}</td>
                                 <td>{testBools.positive ? 'Kyllä' : 'Ei'}</td>
                                 <td>{testBools.alternativeTests ? 'Kyllä' : 'Ei'}</td>
                             </tr>

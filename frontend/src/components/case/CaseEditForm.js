@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import Sample from './Sample.js'
 import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Button, Form } from 'react-bootstrap'
+import { updateCase } from '../../reducers/caseReducer'
 
 
 const CaseEditForm = ({ c }) => {
@@ -13,13 +14,21 @@ const CaseEditForm = ({ c }) => {
     const [show, setShow] = useState(false)
     /*end of modal config*/
 
-    const updateCase = (event) => {
+    const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
+
+    const updateCase2 = (event) => {
         event.preventDefault()
         console.log('do the update here')
         console.log(`new name ${caseName}`)
         console.log(`new anamnesis ${caseAnamnesis}`)
         console.log(`new bacterium ${bacterium.name}`)
         console.log(`new samples ${samples.map(s => s.description)}`)
+        console.log(`testgroups ${testGroups}`)
+        var token = user.token
+        var id = c.id
+        dispatch(updateCase(id, caseName, bacterium, caseAnamnesis, c.completionImage, samples, testGroups, token))
+
     }
 
     /* case name control*/
@@ -63,26 +72,29 @@ const CaseEditForm = ({ c }) => {
 
       /* testgroup control */
       const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
-      console.log(tests)
   
       const [testForCase, setTestForCase] = useState({ name: tests[0].name, testId: tests[0].id, required: false, positive: false, alternativeTests: false })
       const [testBools, setTestBools] = useState({isRequired: false, positive: false, alternativeTests: false})
       const [testGroup, setTestGroup] = useState([])
       const [testGroups, setTestGroups] = useState(c.testGroups)
       const addTestGroup = () => {
-  
           setTestGroups([...testGroups, testGroup])
           setTestGroup([])
       }
       const handleTestChange = (event) => setTestForCase(tests.find(t => t.id === event.target.value))
-      const handleTestAdd = () => setTestGroup([...testGroup, 
+      const handleTestAdd = () => { 
+        setTestGroup([...testGroup, 
           {test: testForCase, 
           isRequired: testBools.isRequired,
           positive: testBools.positive,
           alternativeTests: testBools.alternativeTests
-      }])
-      /* testgroup control end */
+      }])}
 
+      const removeTestGroup = (tg) => {
+          setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
+      }
+      /* testgroup control end */
+console.log("THE CASE")
     console.log(c)
     return (<div>
         <Button variant="primary" onClick={handleShow}>
@@ -92,7 +104,7 @@ const CaseEditForm = ({ c }) => {
             <Modal.Header>Muokkaat tapausta "{c.name}"</Modal.Header>
             <Modal.Header closeButton></Modal.Header>
             <Modal.Body>
-                <Form onSubmit={updateCase} >
+                <Form onSubmit={updateCase2} >
 
                     <Form.Label>Nimi:</Form.Label><br></br>
                     <Form.Control onChange={handleCaseNameChange} defaultValue={c.name} /><br></br>
@@ -128,6 +140,7 @@ const CaseEditForm = ({ c }) => {
                         <TestGroup key={i}
                             testgroup={tg}
                             index={i}
+                            removeTestGroup = {removeTestGroup}
                         >
                         </TestGroup>
                     )}

@@ -1,46 +1,38 @@
 import React from 'react'
-import { Form } from 'react-bootstrap'
+import { Form, Table } from 'react-bootstrap'
 
 
 
-const TestGroup = ({ testgroup, index, isReguiredChange, positiveChange, alternativeTestsChange }) => {
+const TestGroup = ({ testgroup, index, removeTestGroup }) => {
+    console.log('this is the testgroup')
+    console.log(testgroup)
     return (
         <div>
-            <Form.Label>Testiryhmä {index + 1}</Form.Label>
+            <Form.Label>Testiryhmä {index + 1}</Form.Label><button onClick={(event) => {
+                event.preventDefault()
+                removeTestGroup(testgroup)
+            }}>Poista</button>
 
-            {testgroup.map((t, i) =>
-                <div key={i}>
-                    {t.test.name}
-                    {t.isReguired ?
-                        <>
-                            <Form.Check onChange={isReguiredChange} type="checkbox" label="Pakollinen" defaultChecked />
-                        </>
-                        :
-                        <>
-                            <Form.Check onChange={isReguiredChange} type="checkbox" label="Pakollinen" />
-                        </>
-                    }
-
-                    {t.positive ?
-                        <>
-                            <Form.Check onChange={positiveChange} type="checkbox" label="Positiivinen" defaultChecked />
-                        </>
-                        :
-                        <>
-                            <Form.Check onChange={positiveChange} type="checkbox" label="Positiivinen" />
-                        </>
-                    }
-
-                    {t.alternativeTests ?
-                        <>
-                            <Form.Check onChange={alternativeTestsChange} type="checkbox" label="Vapaaehtoinen" defaultChecked />
-                        </>
-                        :
-                        <>
-                            <Form.Check onChange={alternativeTestsChange} type="checkbox" label="Vapaaehtoinen" />
-                        </>}
-                </div>
-            )}
+            <Table>
+                <thead>
+                    <tr>
+                        <th>Testi</th>
+                        <th>Pakollinen</th>
+                        <th>Positiivinen</th>
+                        <th>Vaihtoehtoinen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {testgroup.map((testOfCase, j) =>
+                        <tr key={j}>
+                            <td>{testOfCase.test.name}</td>
+                            <td>{testOfCase.isRequired ? 'Kyllä' : 'Ei'}</td>
+                            <td>{testOfCase.positive ? 'Kyllä' : 'Ei'}</td>
+                            <td>{testOfCase.alternativeTests ? 'Kyllä' : 'Ei'}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
         </div>
 
     )
