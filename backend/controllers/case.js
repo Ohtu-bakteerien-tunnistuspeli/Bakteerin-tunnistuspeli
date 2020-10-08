@@ -165,6 +165,7 @@ caseRouter.delete('/:id', async (request, response) => {
 caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }]), async (request, response) => {
     if (request.user && request.user.admin) {
         const oldLinks = []
+        const deleteEndImage = request.body.deleteEndImage
         try {
             const caseToUpdate = await Case.findById(request.params.id)
             if (!caseToUpdate) {
@@ -246,6 +247,10 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                     testGroups.push(newTestGroup)
                 }
                 changes.testGroups = testGroups
+            }
+            if (deleteEndImage === 'true') {
+                oldLinks.push(caseToUpdate.completionImage.url)
+                changes.controlImage = null
             }
             changes.complete = isComplete(changes)
             const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
