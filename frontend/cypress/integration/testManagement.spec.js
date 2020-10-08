@@ -37,9 +37,8 @@ describe('Test management', function () {
             cy.contains('Testi lisätty onnistuneesti')
             cy.contains('Katalaasitesti')
             cy.get('#testModalButton').click()
-            // Since UI doesn't reset name and type we don't have to write them again
-            // cy.get('#name').type('Katalaasitesti')
-            // cy.get('#type').type('Testi')
+            cy.get('#name').type('Katalaasitesti')
+            cy.get('#type').type('Testi')
             cy.get('#addTest').click()
             cy.contains('Testin nimen tulee olla uniikki')
         })

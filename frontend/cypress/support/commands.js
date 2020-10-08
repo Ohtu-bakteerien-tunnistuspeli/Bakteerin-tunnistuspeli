@@ -33,3 +33,16 @@ Cypress.Commands.add('addTest', ( { name, type } ) => {
 
     cy.visit('http://localhost:3000')
 })
+
+Cypress.Commands.add('addCase', ( { name, bacterium, anamnesis, samples, testGroups } ) => {
+    cy.request({
+        url: 'http://localhost:3001/api/case',
+        method: 'POST',
+        body: { name, bacterium, anamnesis, samples, testGroups },
+        headers: {
+            'Authorization': `${JSON.parse(window.localStorage.getItem('loggedUser')).token}`
+        }
+    })
+
+    cy.visit('http://localhost:3000')
+})
