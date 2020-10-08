@@ -37,8 +37,8 @@ const update = async (id, name, bacterium, anamnesis, completionImage, samples, 
     formData.append('testGroups', JSON.stringify(testGroups))
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
     return axios.put(`${baseUrl}/${id}`, formData, config)
-    .then(response => response.data)
-    .catch(error => error.response.data)
+        .then(response => response.data)
+        .catch(error => error.response.data)
 }
 
 const deleteCase = (id, token) => {

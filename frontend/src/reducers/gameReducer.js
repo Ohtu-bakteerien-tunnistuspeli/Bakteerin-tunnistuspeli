@@ -2,22 +2,22 @@ import gameService from '../services/game'
 import { setNotification } from '../reducers/notificationReducer'
 const reducer = (state = null, action) => {
     switch (action.type) {
-        case 'GET_GAME': {
-            return action.data
-        }
-        case 'CHECK_SAMPLES': {
-            return action.data
-        }
-        case 'CHECK_TESTS': {
-            return action.data
-        }
-        case 'CHECK_BACTERIUM': {
-            return action.data
-        }
-        case 'ZERO_GAME': {
-            return action.data
-        }
-        default: return state
+    case 'GET_GAME': {
+        return action.data
+    }
+    case 'CHECK_SAMPLES': {
+        return action.data
+    }
+    case 'CHECK_TESTS': {
+        return action.data
+    }
+    case 'CHECK_BACTERIUM': {
+        return action.data
+    }
+    case 'ZERO_GAME': {
+        return action.data
+    }
+    default: return state
     }
 }
 

@@ -64,16 +64,16 @@ export const deleteCase = (caseToDelete, token) => {
 }
 
 export const updateCase = (id, name, bacterium, anamnesis, completionImage, samples, testGroups, token) => {
-return async dispatch => {
-    const caseToUpdate = caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, token)
-    if(caseToUpdate.error){
-    }else {
-        dispatch({
-            type: 'UPDATE_CASE',
-            data: caseToUpdate
-        })
+    return async dispatch => {
+        const caseToUpdate = caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, token)
+        if(caseToUpdate.error){
+        } else {
+            dispatch({
+                type: 'UPDATE_CASE',
+                data: caseToUpdate
+            })
+        }
     }
-}
 }
 
 export default reducer

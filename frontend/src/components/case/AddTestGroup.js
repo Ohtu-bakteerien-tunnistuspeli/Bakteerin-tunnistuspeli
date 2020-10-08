@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, ButtonGroup, Form, Table } from 'react-bootstrap'
 
 const AddTestGroup = ({ setCaseTest,
-    setTestBools, testBools, tests, handleTestAdd, 
+    setTestBools, testBools, tests, handleTestAdd,
     testGroup, addTestGroup }) => {
 
     return (
@@ -35,7 +35,7 @@ const AddTestGroup = ({ setCaseTest,
                     type="button"
                     id="addTestForGroup"
                     onClick={handleTestAdd}>Lisää testi
-</Button>
+                </Button>
                 <Table striped bordered hover id="testGroupTable">
                     {testGroup.length > 0 ?
                         <thead>
@@ -62,7 +62,7 @@ const AddTestGroup = ({ setCaseTest,
                     type="button"
                     id="addTestGroup"
                     onClick={addTestGroup}>Lisää testiryhmä
-</Button>
+                </Button>
             </ButtonGroup>
         </div>
     )
