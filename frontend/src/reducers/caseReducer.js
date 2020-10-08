@@ -67,6 +67,7 @@ export const updateCase = (id, name, bacterium, anamnesis, completionImage, samp
     return async dispatch => {
         const caseToUpdate = caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token)
         if(caseToUpdate.error){
+            dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
         } else {
             dispatch({
                 type: 'UPDATE_CASE',

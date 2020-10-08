@@ -28,9 +28,17 @@ const add = async (name, bacterium, anamnesis, completionImage, samples, testGro
 }
 
 const update = async (id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token) => {
+    var i
+    var j
+    for (i = 0; i < testGroups.length; i++) {
+        var testGroup = testGroups[i]
+        for (j = 0; j < testGroup.length; j++) {
+            testGroup[j].test = JSON.stringify(testGroup[j].test)
+        }
+    }
     const formData = new FormData()
     formData.append('name', name )
-    formData.append('bacterium', bacterium )
+    formData.append('bacterium', bacterium.id )
     formData.append('anamnesis', anamnesis )
     formData.append('completionImage', completionImage)
     formData.append('samples', JSON.stringify(samples))
