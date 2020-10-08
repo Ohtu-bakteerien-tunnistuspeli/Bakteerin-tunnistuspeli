@@ -156,7 +156,8 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                         }
                         const imageToDelete = testToUpdate.bacteriaSpecificImages.filter(image => image.bacterium.name === bacterium.name)
                         if (imageToDelete.length > 0) {
-                            fs.unlink(`${imageDir}/${imageToDelete[0].url}`, (err) => err)
+                            oldLinks.push(imageToDelete[0].url)
+                            //fs.unlink(`${imageDir}/${imageToDelete[0].url}`, (err) => err)
                             testToUpdate.bacteriaSpecificImages.map(image => image.bacterium.name === bacterium.name ? { url: file.filename, contentType: file.mimetype, bacterium } : image)
                         } else {
                             testToUpdate.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
