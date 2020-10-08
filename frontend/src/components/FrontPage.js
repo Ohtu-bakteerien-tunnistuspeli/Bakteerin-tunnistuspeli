@@ -17,7 +17,7 @@ const FrontPage = () => {
         <div>
             <p>
                 Pelissä tutkitaan bakteriologinen näyte laboratoriossa. Pelin alussa saat näkyviin
-                tapauksen anamneesin, minkä perusteella voit miettiä minkälaisesta taudinaiheuttajasta ja
+                tapauksen anamneesin, jonka perusteella voit miettiä minkälaisesta taudinaiheuttajasta ja
                 sairaudesta voisi olla kyse. Voit luoda itsellesi yhden tai useamman työhypoteesin. Tämän
                 jälkeen valitset millaisen näytteen haluat eläimestä ottaa tutkimuksia varten. Sitten voit
                 lähteä tutkimaan näytettä laboratoriossa.
