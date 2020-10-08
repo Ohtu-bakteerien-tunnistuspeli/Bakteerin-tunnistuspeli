@@ -27,7 +27,7 @@ const add = async (name, bacterium, anamnesis, completionImage, samples, testGro
     return axios.post(baseUrl, formData , config).then(response => response.data).catch(error => error.response.data)
 }
 
-const update = async (id, name, bacterium, anamnesis, completionImage, samples, testGroups, token) => {
+const update = async (id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token) => {
     const formData = new FormData()
     formData.append('name', name )
     formData.append('bacterium', bacterium )
@@ -35,6 +35,7 @@ const update = async (id, name, bacterium, anamnesis, completionImage, samples, 
     formData.append('completionImage', completionImage)
     formData.append('samples', JSON.stringify(samples))
     formData.append('testGroups', JSON.stringify(testGroups))
+    formData.append('deleteEndImage', deleteEndImage)
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
     return axios.put(`${baseUrl}/${id}`, formData, config)
         .then(response => response.data)

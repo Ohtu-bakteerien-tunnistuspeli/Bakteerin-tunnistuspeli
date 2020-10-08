@@ -27,7 +27,7 @@ const CaseEditForm = ({ c }) => {
         console.log(`testgroups ${testGroups}`)
         var token = user.token
         var id = c.id
-        dispatch(updateCase(id, caseName, bacterium, caseAnamnesis, c.completionImage, samples, testGroups, token))
+        dispatch(updateCase(id, caseName, bacterium, caseAnamnesis, c.completionImage, samples, testGroups, deleteEndImage, token))
 
     }
 
@@ -46,6 +46,10 @@ const CaseEditForm = ({ c }) => {
     const [bacterium, setBacterium] = useState(c.bacterium)
     const handleBacteriumChange = (event) => setBacterium(bacteria.find(bac => bac.id === event.target.value))
     /* bacterium control end */
+
+    /*Image control */
+    const [deleteEndImage, setDeleteEndImage] = useState(false)
+    /*image control end*/
 
     /* samples control*/
     const [samples, setSamples] = useState(c.samples)

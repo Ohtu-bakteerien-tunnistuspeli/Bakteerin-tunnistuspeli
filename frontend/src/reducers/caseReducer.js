@@ -63,9 +63,9 @@ export const deleteCase = (caseToDelete, token) => {
     }
 }
 
-export const updateCase = (id, name, bacterium, anamnesis, completionImage, samples, testGroups, token) => {
+export const updateCase = (id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token) => {
     return async dispatch => {
-        const caseToUpdate = caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, token)
+        const caseToUpdate = caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token)
         if(caseToUpdate.error){
         } else {
             dispatch({
