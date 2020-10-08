@@ -65,7 +65,7 @@ export const deleteCase = (caseToDelete, token) => {
 
 export const updateCase = (id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token) => {
     return async dispatch => {
-        const caseToUpdate = caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token)
+        const caseToUpdate = await caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token)
         if(caseToUpdate.error){
             dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
         } else {
