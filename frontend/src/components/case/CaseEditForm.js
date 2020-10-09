@@ -24,7 +24,7 @@ const CaseEditForm = ({ c }) => {
         console.log(`new anamnesis ${caseAnamnesis}`)
         console.log(`new bacterium ${bacterium.name}`)
         console.log(`new samples ${samples.map(s => s.description)}`)
-        console.log(`testgroups ${testGroups.map(tg => tg.map(t => t.test.testId))}`)
+        console.log(`testgroups ${testGroups}`)
         var token = user.token
         var id = c.id
         dispatch(updateCase(id, caseName, bacterium, caseAnamnesis, c.completionImage, samples, testGroups, deleteEndImage, token))
@@ -77,7 +77,7 @@ const CaseEditForm = ({ c }) => {
       /* testgroup control */
       const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
   
-      const [testForCase, setTestForCase] = useState({ name: tests[0].name, testId: tests[0].id, isRrequired: false, positive: false, alternativeTests: false })
+      const [testIdForCase, setTestIdForCase] = useState("")
       const [testBools, setTestBools] = useState({isRequired: false, positive: false, alternativeTests: false})
       const [testGroup, setTestGroup] = useState([])
       const [testGroups, setTestGroups] = useState(c.testGroups)
@@ -85,10 +85,10 @@ const CaseEditForm = ({ c }) => {
           setTestGroups([...testGroups, testGroup])
           setTestGroup([])
       }
-      const handleTestChange = (event) => setTestForCase(JSON.stringify(tests.find(t => t.id === event.target.value)))
-      const handleTestAdd = () => { 
+      const handleTestChange = (event) => setTestIdForCase(event.target.value)
+      const handleTestAdd = () => {
         setTestGroup([...testGroup, 
-          {test: testForCase, 
+          {testId: testIdForCase, 
           isRequired: testBools.isRequired,
           positive: testBools.positive,
           alternativeTests: testBools.alternativeTests

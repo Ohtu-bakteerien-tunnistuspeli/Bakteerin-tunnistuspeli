@@ -13,7 +13,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup }) => {
                 removeTestGroup(testgroup)
             }}>Poista</button>
 
-            <Table>
+          {/*   <Table>
                 <thead>
                     <tr>
                         <th>Testi</th>
@@ -32,7 +32,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup }) => {
                         </tr>
                     )}
                 </tbody>
-            </Table>
+            </Table>*/}
         </div>
 
     )
