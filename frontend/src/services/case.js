@@ -28,14 +28,6 @@ const add = async (name, bacterium, anamnesis, completionImage, samples, testGro
 }
 
 const update = async (id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token) => {
-    let i
-    let j
-    for (i = 0; i < testGroups.length; i++) {
-        var testGroup = testGroups[i]
-        for (j = 0; j < testGroup.length; j++) {
-            testGroup[j].test = {...testGroup[j].test, testId: testGroup[j].test.id}
-        }
-    }
     const formData = new FormData()
     formData.append('name', name )
     formData.append('bacterium', bacterium.id )
