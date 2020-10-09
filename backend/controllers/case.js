@@ -214,16 +214,21 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             if (request.body.testGroups) {
                 request.body.testGroups = JSON.parse(request.body.testGroups)
                 console.log(request.body.testGroups)
-                console.log(request.body.testGroups[0][0].testId)
+                console.log(request.body.testGroups[0][0].test.id)
+                console.log(request.body.testGroups[2][0].testId)
                 let addedTestIds = []
                 const testGroups = []
                 for (let i = 0; i < request.body.testGroups.length; i++) {
                     const newTestGroup = []
                     for (let k = 0; k < request.body.testGroups[i].length; k++) {
-                        const testId = request.body.testGroups[i][k].testId
+                        let testId
+                        request.body.testGroups[i][k].testId ?
+                            testId = request.body.testGroups[i][k].testId :
+                            testId = request.body.testGroups[i][k].test.id
                         let testFromDb
                         try {
                             testFromDb = await Test.findById(testId)
+                            console.log(testFromDb)
                         } catch (e) {
                             deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
