@@ -28,8 +28,8 @@ const add = async (name, bacterium, anamnesis, completionImage, samples, testGro
 }
 
 const update = async (id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token) => {
-    var i
-    var j
+    let i
+    let j
     for (i = 0; i < testGroups.length; i++) {
         var testGroup = testGroups[i]
         for (j = 0; j < testGroup.length; j++) {

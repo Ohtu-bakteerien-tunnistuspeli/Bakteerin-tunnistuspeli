@@ -95,7 +95,8 @@ describe('Case management', function () {
 
     describe('Modify a case', function () {
         beforeEach(function () {
-            cy.login({ username: 'admin', password: 'admin' })
+            const bact = cy.getBacterium({ name: 'Tetanus' })[0]
+            cy.addCase({ name:'Tapaus', bacterium: bact.id, anamnesis: 'anamneesi', samples: ['Verinäyte'], testGroups: [[{ name:'Testi', type:'Viljely' }]] })
         })
     })
 
