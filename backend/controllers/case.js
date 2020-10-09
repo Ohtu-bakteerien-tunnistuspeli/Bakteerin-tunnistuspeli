@@ -239,9 +239,9 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                         }
                         const testToAdd = {
                             test: testFromDb,
-                            isRequired: true,
-                            positive: true,
-                            alternativeTests: true
+                            isRequired: request.body.testGroups[i][k].isRequired,
+                            positive: request.body.testGroups[i][k].positive,
+                            alternativeTests: request.body.testGroups[i][k].alternativeTests
                         }
                         console.log(testToAdd)
                         console.log(testToAdd.test)
