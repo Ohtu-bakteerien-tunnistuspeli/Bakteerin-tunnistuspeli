@@ -4,7 +4,6 @@ import { Button, ButtonGroup, Form, Table } from 'react-bootstrap'
 const AddTestGroup = ({ setCaseTest,
     setTestBools, testBools, tests, handleTestAdd,
     testGroup, addTestGroup }) => {
-
     return (
         <div>
             <Form.Control
@@ -36,8 +35,8 @@ const AddTestGroup = ({ setCaseTest,
                     id="addTestForGroup"
                     onClick={handleTestAdd}>Lisää testi
                 </Button>
-                {/* 
-                <Table striped bordered hover id="testGroupTable">
+                
+                 <Table striped bordered hover id="testGroupTable">
                     {testGroup.length > 0 ?
                         <thead>
                             <tr>
@@ -51,14 +50,14 @@ const AddTestGroup = ({ setCaseTest,
                     <tbody>
                         {testGroup.map((tg, i) =>
                             <tr key={i}>
-                                <td>{tg.test.name}</td>
-                                <td>{testBools.isRequired ? 'Kyllä' : 'Ei'}</td>
-                                <td>{testBools.positive ? 'Kyllä' : 'Ei'}</td>
-                                <td>{testBools.alternativeTests ? 'Kyllä' : 'Ei'}</td>
+                                <td>{tests.find(t => t.id === tg.testId).name}</td>
+                                <td>{tg.isRequired ? 'Kyllä' : 'Ei'}</td>
+                                <td>{tg.positive ? 'Kyllä' : 'Ei'}</td>
+                                <td>{tg.alternativeTests ? 'Kyllä' : 'Ei'}</td>
                             </tr>
                         )}
                     </tbody>
-                </Table>*/}
+                </Table>
                 <Button
                     type="button"
                     id="addTestGroup"

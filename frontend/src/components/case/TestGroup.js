@@ -1,19 +1,31 @@
 import React from 'react'
-import { Form, Table } from 'react-bootstrap'
+import { Form, Table, Button, Container, Row, Col, ListGroup } from 'react-bootstrap'
 
 
 
-const TestGroup = ({ testgroup, index, removeTestGroup }) => {
-    console.log('this is the testgroup')
-    console.log(testgroup)
+const TestGroup = ({ testgroup, index, removeTestGroup, tests }) => {
+
     return (
         <div>
-            <Form.Label>Testiryhmä {index + 1}</Form.Label><button onClick={(event) => {
+            <ListGroup.Item>
+            <Container>
+                <Row>
+                    <Col xs={10}>
+                    <Form.Label>Testiryhmä {index + 1}</Form.Label>
+                    </Col>
+                    <Col>
+                    <Button variant='danger' 
+            onClick={(event) => {
                 event.preventDefault()
                 removeTestGroup(testgroup)
-            }}>Poista</button>
+            }}>Poista</Button>
+                    </Col>
+                </Row>
+            </Container>
+            
+            
 
-          {/*   <Table>
+            <Table>
                 <thead>
                     <tr>
                         <th>Testi</th>
@@ -25,14 +37,15 @@ const TestGroup = ({ testgroup, index, removeTestGroup }) => {
                 <tbody>
                     {testgroup.map((testOfCase, j) =>
                         <tr key={j}>
-                            <td>{testOfCase.test.name}</td>
+                            <td>{testOfCase.test ? testOfCase.test.name : tests.find(t  => t.id === testOfCase.testId).name }</td>
                             <td>{testOfCase.isRequired ? 'Kyllä' : 'Ei'}</td>
                             <td>{testOfCase.positive ? 'Kyllä' : 'Ei'}</td>
                             <td>{testOfCase.alternativeTests ? 'Kyllä' : 'Ei'}</td>
                         </tr>
                     )}
                 </tbody>
-            </Table>*/}
+            </Table>
+            </ListGroup.Item>
         </div>
 
     )
