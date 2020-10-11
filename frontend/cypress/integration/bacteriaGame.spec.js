@@ -50,6 +50,29 @@ describe('Game', function() {
         cy.get('div').should('not.contain', 'Kirjaudu Bakteeripeliin')
     })
 
+    it('User can register with all fields filled in and then login', function() {
+        cy.contains('Rekisteröidy').click()
+        cy.contains('Rekisteröidy Bakteeripeliin')
+
+        cy.get('#username').type('newUser1')
+        cy.get('#password').type('newpass1')
+        cy.get('#email').type('example@com')
+        cy.get('#classGroup').type('C-67')
+        cy.get('#studentNumber').type('12345678')
+
+        cy.get('#acceptCheckBox').click()
+
+        cy.get('#submit').click()
+
+        cy.get('#username').type('newUser1')
+        cy.get('#password').type('newpass1')
+        cy.get('#submit').click()
+
+        cy.get('div').should('not.contain', 'Kirjaudu Bakteeripeliin')
+
+
+    })
+
     it('User cannot sign up without accepting the terms and conditions', function() {
         cy.contains('Rekisteröidy').click()
         cy.contains('Rekisteröidy Bakteeripeliin')
