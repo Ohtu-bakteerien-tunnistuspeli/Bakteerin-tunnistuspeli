@@ -176,7 +176,6 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 name: request.body.name
             }
             if (request.body.bacterium) {
-                console.log('case update reached backend bacterium', request.body.bacterium)
                 let bacterium
                 try {
                     bacterium = await Bacterium.findById(request.body.bacterium)
@@ -213,9 +212,6 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             }
             if (request.body.testGroups) {
                 request.body.testGroups = JSON.parse(request.body.testGroups)
-                console.log(request.body.testGroups)
-                console.log(request.body.testGroups[0][0].test.id)
-                console.log(request.body.testGroups[2][0].testId)
                 let addedTestIds = []
                 const testGroups = []
                 for (let i = 0; i < request.body.testGroups.length; i++) {
@@ -228,7 +224,6 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                         let testFromDb
                         try {
                             testFromDb = await Test.findById(testId)
-                            console.log(testFromDb)
                         } catch (e) {
                             deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
@@ -243,8 +238,6 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                             positive: request.body.testGroups[i][k].positive,
                             alternativeTests: request.body.testGroups[i][k].alternativeTests
                         }
-                        console.log(testToAdd)
-                        console.log(testToAdd.test)
                         if (testToAdd.test) {
                             if (addedTestIds.includes(testToAdd.test.id)) {
                                 deleteUploadedImages(request)
@@ -262,9 +255,8 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 oldLinks.push(caseToUpdate.completionImage.url)
                 changes.controlImage = null
             }
-            console.log('case update reached backend changes complete')
             changes.complete = isComplete(changes)
-            const updatedCase = await Case.findByIdAndUpdate(request.body.id, changes, { new: true, runValidators: true, context: 'query' })
+            const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
             var i
             for (i = 0; i < oldLinks.length; i++) {
                 fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
