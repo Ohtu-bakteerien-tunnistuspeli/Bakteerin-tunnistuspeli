@@ -35,17 +35,16 @@ const caseSchema = mongoose.Schema({
     ],
     testGroups: [[
         {
-            test: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Test'
-            },
+            tests: [{
+                test: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Test'
+                },
+                positive: {
+                    type: Boolean
+                }
+            }],
             isRequired: {
-                type: Boolean
-            },
-            positive: {
-                type: Boolean
-            },
-            alternativeTests: {
                 type: Boolean
             }
         }

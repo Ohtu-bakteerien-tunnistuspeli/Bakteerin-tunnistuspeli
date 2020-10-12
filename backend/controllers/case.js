@@ -38,7 +38,7 @@ const deleteUploadedImages = (request) => {
 caseRouter.get('/', async (request, response) => {
     if (request.user && request.user.admin) {
         const cases = await Case.find({}).populate('bacterium', { name: 1 }).populate({
-            path: 'testGroups.test',
+            path: 'testGroups.tests.test',
             model: 'Test',
             populate: {
                 path: 'bacteriaSpecificImages.bacterium',
@@ -99,33 +99,35 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                 const testGroups = []
                 for (let i = 0; i < request.body.testGroups.length; i++) {
                     const newTestGroup = []
-                    for (let k = 0; k < request.body.testGroups[i].length; k++) {
-                        const test = request.body.testGroups[i][k]
-                        let testFromDb
-                        try {
-                            testFromDb = await Test.findById(test.testId)
-                        } catch (e) {
-                            deleteUploadedImages(request)
-                            return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
-                        }
-                        if (!testFromDb) {
-                            deleteUploadedImages(request)
-                            return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
-                        }
-                        const testToAdd = {
-                            test: testFromDb,
-                            isRequired: test.isRequired,
-                            positive: test.positive,
-                            alternativeTests: test.alternativeTests
-                        }
-                        if (testToAdd.test) {
-                            if (addedTestIds.includes(testToAdd.test.id)) {
+                    for (let j = 0; j < request.body.testGroups[i].length; j++) {
+                        const testForCase = request.body.testGroups[i][j]
+                        let testsFromDb = []
+                        for (let k = 0; k < testForCase.tests.length; k++) {
+                            let testForAlternativeTests = testForCase.tests[k]
+                            let testFromDb
+                            try {
+                                testFromDb = await Test.findById(testForAlternativeTests.testId)
+                            } catch (e) {
                                 deleteUploadedImages(request)
-                                return response.status(400).json({ error: `Testiä ${testToAdd.test.name} yritetään käyttää tapauksessa useampaan kertaan` })
+                                return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
                             }
-                            newTestGroup.push(testToAdd)
-                            addedTestIds.push(testToAdd.test.id)
+                            if (!testFromDb) {
+                                deleteUploadedImages(request)
+                                return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                            } else {
+                                if (addedTestIds.includes(testFromDb.id)) {
+                                    deleteUploadedImages(request)
+                                    return response.status(400).json({ error: `Testiä ${testFromDb.name} yritetään käyttää tapauksessa useampaan kertaan` })
+                                }
+                                addedTestIds.push(testFromDb.id)
+                                testsFromDb.push({ test: testFromDb, positive: testForAlternativeTests.positive })
+                            }
                         }
+                        const testForCaseToAdd = {
+                            tests: testsFromDb,
+                            isRequired: testForCase.isRequired
+                        }
+                        newTestGroup.push(testForCaseToAdd)
                     }
                     testGroups.push(newTestGroup)
                 }
@@ -213,39 +215,39 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             }
             if (request.body.testGroups) {
                 request.body.testGroups = JSON.parse(request.body.testGroups)
-                console.log(request.body.testGroups)
-                console.log(request.body.testGroups[0][0].test)
                 let addedTestIds = []
                 const testGroups = []
                 for (let i = 0; i < request.body.testGroups.length; i++) {
                     const newTestGroup = []
-                    for (let k = 0; k < request.body.testGroups[i].length; k++) {
-                        const test = request.body.testGroups[i][k].test
-                        let testFromDb
-                        try {
-                            testFromDb = await Test.findById(test.testId)
-                        } catch (e) {
-                            deleteUploadedImages(request)
-                            return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
-                        }
-                        if (!testFromDb) {
-                            deleteUploadedImages(request)
-                            return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
-                        }
-                        const testToAdd = {
-                            test: testFromDb,
-                            isRequired: test.isRequired,
-                            positive: test.positive,
-                            alternativeTests: test.alternativeTests
-                        }
-                        if (testToAdd.test) {
-                            if (addedTestIds.includes(testToAdd.test.id)) {
+                    for (let j = 0; j < request.body.testGroups[i].length; j++) {
+                        const testForCase = request.body.testGroups[i][j]
+                        let testsFromDb = []
+                        for (let k = 0; k < testForCase.tests.length; k++) {
+                            let testForAlternativeTests = testForCase.tests[k]
+                            let testFromDb
+                            try {
+                                testFromDb = await Test.findById(testForAlternativeTests.testId)
+                            } catch (e) {
                                 deleteUploadedImages(request)
-                                return response.status(400).json({ error: `Testiä ${testToAdd.test.name} yritetään käyttää tapauksessa useampaan kertaan` })
+                                return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
                             }
-                            newTestGroup.push(testToAdd)
-                            addedTestIds.push(testToAdd.test.id)
+                            if (!testFromDb) {
+                                deleteUploadedImages(request)
+                                return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                            } else {
+                                if (addedTestIds.includes(testFromDb.id)) {
+                                    deleteUploadedImages(request)
+                                    return response.status(400).json({ error: `Testiä ${testFromDb.name} yritetään käyttää tapauksessa useampaan kertaan` })
+                                }
+                                addedTestIds.push(testFromDb.id)
+                                testsFromDb.push({ test: testFromDb, positive: testForAlternativeTests.positive })
+                            }
                         }
+                        const testForCaseToAdd = {
+                            tests: testsFromDb,
+                            isRequired: testForCase.isRequired
+                        }
+                        newTestGroup.push(testForCaseToAdd)
                     }
                     testGroups.push(newTestGroup)
                 }
