@@ -29,7 +29,6 @@ const CaseForm = () => {
 
     const addNewCase = (event) => {
         event.preventDefault()
-        console.log()
         dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
         handleClose()
     }
@@ -51,6 +50,7 @@ const CaseForm = () => {
     const handleShow = () => setShow(true)
     const handleClose = () => {
         setShow(false)
+        console.log('huhuuu')
         resetCaseForm()
     }
 
@@ -81,8 +81,8 @@ const CaseForm = () => {
             <Button id='caseModalButton' variant='primary' onClick={handleShow}>
                 Luo uusi tapaus
             </Button>
-            <Modal show={show} size='lg' onHide={() => handleClose} backdrop='static'>
-                <Modal.Header closeButton></Modal.Header>
+            <Modal show={show} size='lg' onHide={handleClose} backdrop='static'>
+                <Modal.Header closeButton>Luo uusi tapaus</Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={addNewCase}>
 
