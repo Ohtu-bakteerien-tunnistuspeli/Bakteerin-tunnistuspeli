@@ -322,7 +322,7 @@ caseRouter.post('/:id/checkSamples', async (request, response) => {
 caseRouter.post('/:id/checkTests', async (request, response) => {
     if (request.user) {
         try {
-            const caseToCheck = await Case.findById(request.params.id).populate({
+            const caseToCheck = await Case.findById(request.params.id).populate('bacterium', { name: 1 }).populate({
                 path: 'testGroups.test',
                 model: 'Test',
                 populate: {
