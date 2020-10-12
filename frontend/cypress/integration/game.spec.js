@@ -24,7 +24,7 @@ describe('Palying game', function () {
             description: 'Ulostenäyte Muurikilta',
             rightAnswer: false
         }, {
-            description: 'Maitonäyte Muurikin kaikista neljänksistä',
+            description: 'Maitonäyte Muurikin kaikista neljänneksistä',
             rightAnswer: true
         }, {
             description: 'Virtsanäyte Muurikilta',
@@ -118,7 +118,6 @@ describe('Palying game', function () {
                     },
                 ],
             ])
-
             case1.testGroups = testGroups
         }).then(() => {
             cy.addCase({
@@ -133,33 +132,59 @@ describe('Palying game', function () {
                 bacterium: case2.bacterium,
                 anamnesis: case2.anamnesis,
                 samples: JSON.stringify([]),
-                testGroups: JSON.stringify([[]])
+                testGroups: JSON.stringify([[]]),
+                completionImage: null
             })
         })
     })
     describe('Game can be played', function () {
         it('Admin can choose a case which to play', function () {
-
+            cy.contains('Etusivu').click()
+            cy.get('div').should('contain', 'Maitotila 1')
+            cy.get('div').should('contain', 'Maitotila 2')
+            cy.contains('Maitotila 1').click()
+            cy.get('#samples').should('contain', 'Tankin maitonäyte')
+            cy.get('#samples').should('contain', 'Maitonäyte Muurikin kaikista neljänneksistä')
+            cy.get('#samples').should('contain', 'Ulostenäyte Muurikilta')
+            cy.get('#samples').should('contain', 'Virtsanäyte Muurikilta')
         })
 
         it('Normal user can choose a case which to play', function () {
-
+            cy.login({ username: 'user', password: 'user' })
+            cy.visit('http://localhost:3000')
+            cy.contains('Etusivu').click()
+            cy.get('div').should('contain', 'Maitotila 1')
+            //cy.get('div').should('not.contain', 'Maitotila 2')
+            cy.contains('Maitotila 1').click()
+            cy.get('#samples').should('contain', 'Tankin maitonäyte')
+            cy.get('#samples').should('contain', 'Maitonäyte Muurikin kaikista neljänneksistä')
+            cy.get('#samples').should('contain', 'Ulostenäyte Muurikilta')
+            cy.get('#samples').should('contain', 'Virtsanäyte Muurikilta')
         })
 
-        it('Admin can choose a valid samplingmethod', function () {
-
+        it('A valid samplingmethod can be chosen', function () {
+            cy.login({ username: 'user', password: 'user' })
+            cy.contains('Etusivu').click()
+            cy.contains('Maitotila 1').click()
+            cy.get('div').should('contain','Tilalla on 27 lypsävää lehmää parsinavetassa ja lisäksi nuorkarjaa. Kuivikkeena käytetään kutteria, vesi tulee omasta kaivosta. Pääosa lehmistä on omaa tuotantoa, mutta navetan laajennuksen yhteydessä edellisenä kesänä hankittiin muutama uusi tiine eläin, jotka poikivat loppusyksystä.')
+            cy.contains('Toiminnot').click()
+            cy.get('[type="checkbox"]').eq('2').check()
+            cy.get('#checkSamples').click()
+            cy.contains('Oikea vastaus')
         })
 
-        it('Normal user can choose a valid samplingmethod', function () {
-
-        })
-
-        it('If wrong samplingmethod is chosen, user/(admin) is informed', function () {
-
-        })
-
-        it('After selecting wrong method right one can be chosen', function () {
-
+        it('If wrong samplingmethod is chosen, user is informed and right one can be chosen', function () {
+            cy.login({ username: 'user', password: 'user' })
+            cy.contains('Etusivu').click()
+            cy.contains('Maitotila 1').click()
+            cy.contains('Toiminnot').click()
+            cy.get('[type="checkbox"]').first().check()
+            cy.get('#checkSamples').click()
+            cy.contains('Väärä vastaus')
+            cy.get('[type="checkbox"]').first().uncheck()
+            cy.get('[type="checkbox"]').eq('2').check()
+            cy.get('#checkSamples').click()
+            cy.contains('Oikea vastaus')  
         })
     })
 

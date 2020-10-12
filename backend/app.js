@@ -130,7 +130,8 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 testGroups: [
                     [{ test: intialTestCase1, isRequired: true, positive: true, alternativeTests: false }, { test: intialTestCase2, isRequired: true, positive: true, alternativeTests: false }],
                     [{ test: intialTestCase3, isRequired: true, positive: false, alternativeTests: false }]
-                ]
+                ],
+                complete: true
             })
             await initialCase.save()
 
