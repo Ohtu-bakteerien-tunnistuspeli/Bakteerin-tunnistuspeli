@@ -96,7 +96,7 @@ const CaseForm = () => {
             <Button id='caseModalButton' variant='primary' onClick={handleShow}>
                 Luo uusi tapaus
             </Button>
-            <Modal show={show} size='lg' onHide={() => handleClose} backdrop='static'>
+            <Modal show={show} size='lg' onHide={handleClose} backdrop='static'>
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={addNewCase}>
