@@ -21,7 +21,8 @@ const CaseForm = () => {
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
     const [samples, setSamples] = useState([])
-    const [testForCase, setTestForCase] = useState({ testName: tests[0].name, testId: tests[0].id, isRequired: false, positive: false, alternativeTests: false })
+    const [testForAlternativeTests, setTestForAlternativeTests] = useState({ testName: tests[0].name, testId: tests[0].id, positive: false })
+    const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
     const [testGroup, setTestGroup] = useState([])
     const [testGroups, setTestGroups] = useState([])
 
@@ -41,7 +42,8 @@ const CaseForm = () => {
         setCompletionImage(INITIAL_STATE)
         setSample({ description: '', rightAnswer: false })
         setSamples([])
-        setTestForCase({ testName: tests[0].name, testId: tests[0].id, isRequired: false, positive: false, alternativeTests: false })
+        setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
+        setTestForCase({ isRequired: false, tests: [] })
         setTestGroup([])
         setTestGroups([])
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
@@ -68,8 +70,21 @@ const CaseForm = () => {
     }
 
     const addTestGroup = () => {
-        setTestGroups([...testGroups, testGroup])
-        setTestGroup([])
+        if (testGroup.length > 0) {
+            setTestGroups([...testGroups, testGroup])
+            setTestGroup([])
+        }
+    }
+
+    const addTestForCaseToTestGroup = () => {
+        if (testForCase.tests.length > 0) {
+            setTestGroup([...testGroup, testForCase])
+            setTestForCase({ isRequired: testForCase.isRequired, tests: [] })
+        }
+    }
+
+    const addAlternativeTestToTestForCase = () => {
+        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(testForAlternativeTests) })
     }
 
     const handleCompletionImageChange = (event) => {
@@ -143,50 +158,94 @@ const CaseForm = () => {
                             <Form.Control
                                 as='select'
                                 id='testSelect'
-                                onChange={(event) => setTestForCase({ ...testForCase, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
+                                onChange={(event) => setTestForAlternativeTests({ ...testForAlternativeTests, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
                                 {tests.map(test =>
                                     <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
                                 )}
                             </Form.Control>
                             <Form.Check
                                 type='checkbox'
-                                id='required'
-                                label='Pakollinen'
-                                onChange={() => setTestForCase({ ...testForCase, isRequired: !testForCase.isRequired })} />
-                            <Form.Check
-                                type='checkbox'
                                 id='positive'
                                 label='Positiivinen'
-                                onChange={() => setTestForCase({ ...testForCase, positive: !testForCase.positive })} />
-                            <Form.Check
-                                type='checkbox'
-                                id='alternative'
-                                label='Vaihtoehtoinen testi'
-                                onChange={() => setTestForCase({ ...testForCase, alternativeTests: !testForCase.alternativeTests })} />
+                                onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
                             <ButtonGroup vertical>
-                                <Button
-                                    type='button'
-                                    id='addTestForGroup'
-                                    onClick={() => setTestGroup([...testGroup, testForCase])}>Lisää testi
-                                </Button>
+                                <Table striped bordered hover id='alternativeTestsTable'>
+                                    {testForCase.tests.length > 0 ?
+                                        <thead>
+                                            <tr>
+                                                <th>Testi</th>
+                                                <th>Positiivinen</th>
+                                            </tr>
+                                        </thead>
+                                        : <thead></thead>}
+                                    <tbody>
+                                        {testForCase.tests.map((alternativeTest, i) =>
+                                            <tr key={i}>
+                                                <td>{alternativeTest.testName}</td>
+                                                <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </Table>
+                                {testForCase.tests.length > 0 ?
+                                    <Button
+                                        type='button'
+                                        id='addAlternativeTestForTest'
+                                        onClick={() => addAlternativeTestToTestForCase()}>Lisää vaihtoehtoinen testi</Button>
+                                    :
+                                    <>
+                                        <Button
+                                            type='button'
+                                            id='addAlternativeTestForTest'
+                                            onClick={() => addAlternativeTestToTestForCase()}>Lisää testi</Button>
+                                    </>
+                                }
+                                <Form.Check
+                                    type='checkbox'
+                                    id='required'
+                                    label='Pakollinen'
+                                    onChange={() => setTestForCase({ ...testForCase, isRequired: !testForCase.isRequired })} />
+                                {testForCase.tests.length > 0 ?
+                                    <Button
+                                        type='button'
+                                        id='addTestForGroup'
+                                        onClick={() => addTestForCaseToTestGroup()}>Lisää testit ryhmään</Button>
+                                    :
+                                    <></>
+                                }
                                 <Table striped bordered hover id='testGroupTable'>
                                     {testGroup.length > 0 ?
                                         <thead>
                                             <tr>
-                                                <th>Testi</th>
+                                                <th>Testit</th>
                                                 <th>Pakollinen</th>
-                                                <th>Positiivinen</th>
-                                                <th>Vaihtoehtoinen</th>
                                             </tr>
                                         </thead>
                                         : <thead></thead>}
                                     <tbody>
                                         {testGroup.map((testForCase, i) =>
                                             <tr key={i}>
-                                                <td>{testForCase.testName}</td>
+                                                <td>
+                                                    <Table striped bordered hover id='testGroupTable'>
+                                                        {testForCase.tests.length > 0 ?
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Testi</th>
+                                                                    <th>Positiivinen</th>
+                                                                </tr>
+                                                            </thead>
+                                                            : <thead></thead>}
+                                                        <tbody>
+                                                            {testForCase.tests.map((alternativeTest, j) =>
+                                                                <tr key={j}>
+                                                                    <td>{alternativeTest.testName}</td>
+                                                                    <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
+                                                                </tr>
+                                                            )}
+                                                        </tbody>
+                                                    </Table>
+                                                </td>
                                                 <td>{testForCase.isRequired ? 'Kyllä' : 'Ei'}</td>
-                                                <td>{testForCase.positive ? 'Kyllä' : 'Ei'}</td>
-                                                <td>{testForCase.alternativeTests ? 'Kyllä' : 'Ei'}</td>
                                             </tr>
                                         )}
                                     </tbody>
@@ -201,29 +260,45 @@ const CaseForm = () => {
 
 
                         {testGroups.map((testGroup, i) =>
-                            <Table key={i} striped bordered hover id='testGroupsTable'>
-                                <thead>
-                                    <tr>
-                                        <th>Testi</th>
-                                        <th>Pakollinen</th>
-                                        <th>Positiivinen</th>
-                                        <th>Vaihtoehtoinen</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {testGroup.map((testForCase, j) =>
-                                        <tr key={j}>
-                                            <td>{testForCase.testName}</td>
-                                            <td>{testForCase.isRequired ? 'Kyllä' : 'Ei'}</td>
-                                            <td>{testForCase.positive ? 'Kyllä' : 'Ei'}</td>
-                                            <td>{testForCase.alternativeTests ? 'Kyllä' : 'Ei'}</td>
+                            <div key={i} >
+                                <div>{`Testiryhmä: ${i + 1}`}</div>
+                                <Table striped bordered hover id='testGroupsTable'>
+                                    <thead>
+                                        <tr>
+                                            <th>Testit</th>
+                                            <th>Pakollinen</th>
                                         </tr>
-                                    )}
-                                </tbody>
-                            </Table>
+                                    </thead>
+                                    <tbody>
+                                        {testGroup.map((testForCase, j) =>
+                                            <tr key={j}>
+                                                <td>
+                                                    <Table striped bordered hover id='testGroupTable'>
+                                                        {testForCase.tests.length > 0 ?
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Testi</th>
+                                                                    <th>Positiivinen</th>
+                                                                </tr>
+                                                            </thead>
+                                                            : <thead></thead>}
+                                                        <tbody>
+                                                            {testForCase.tests.map((alternativeTest, k) =>
+                                                                <tr key={k}>
+                                                                    <td>{alternativeTest.testName}</td>
+                                                                    <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
+                                                                </tr>
+                                                            )}
+                                                        </tbody>
+                                                    </Table>
+                                                </td>
+                                                <td>{testForCase.isRequired ? 'Kyllä' : 'Ei'}</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </Table>
+                            </div>
                         )}
-
-
                         <Button
                             variant='primary'
                             type='submit'
