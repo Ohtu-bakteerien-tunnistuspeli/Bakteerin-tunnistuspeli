@@ -105,8 +105,7 @@ console.log("THE CASE")
             Muokkaa
         </Button>
         <Modal show={show} size="lg" onHide={handleClose} >
-            <Modal.Header>Muokkaat tapausta "{c.name}"</Modal.Header>
-            <Modal.Header closeButton></Modal.Header>
+            <Modal.Header closeButton>Muokkaat tapausta "{c.name}"</Modal.Header>
             <Modal.Body>
                 <Form onSubmit={updateCase2} >
 

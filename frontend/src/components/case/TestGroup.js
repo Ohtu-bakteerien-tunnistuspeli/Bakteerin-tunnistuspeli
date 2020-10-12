@@ -4,8 +4,6 @@ import { Form, Table } from 'react-bootstrap'
 
 
 const TestGroup = ({ testgroup, index, removeTestGroup }) => {
-    console.log('this is the testgroup')
-    console.log(testgroup)
     return (
         <div>
             <Form.Label>Testiryhmä {index + 1}</Form.Label><button onClick={(event) => {
@@ -16,19 +14,32 @@ const TestGroup = ({ testgroup, index, removeTestGroup }) => {
             <Table>
                 <thead>
                     <tr>
-                        <th>Testi</th>
+                        <th>Testit</th>
                         <th>Pakollinen</th>
-                        <th>Positiivinen</th>
-                        <th>Vaihtoehtoinen</th>
                     </tr>
                 </thead>
                 <tbody>
                     {testgroup.map((testOfCase, j) =>
                         <tr key={j}>
-                            <td>{testOfCase.test.name}</td>
+                            <td>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>Testi</th>
+                                            <th>Positiivinen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {testOfCase.tests.map((alternativeTest, k) =>
+                                            <tr key={k}>
+                                                <td>{alternativeTest.test.name}</td>
+                                                <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </Table>
+                            </td>
                             <td>{testOfCase.isRequired ? 'Kyllä' : 'Ei'}</td>
-                            <td>{testOfCase.positive ? 'Kyllä' : 'Ei'}</td>
-                            <td>{testOfCase.alternativeTests ? 'Kyllä' : 'Ei'}</td>
                         </tr>
                     )}
                 </tbody>
