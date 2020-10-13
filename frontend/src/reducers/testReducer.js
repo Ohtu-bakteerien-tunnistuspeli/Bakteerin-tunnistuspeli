@@ -41,7 +41,7 @@ export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, tok
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {
-            dispatch(setNotification({ message: 'Test successfully added', success: true }))
+            dispatch(setNotification({ message: 'Testi lisätty onnistuneesti', success: true }))
             dispatch({
                 type: 'ADD_TEST',
                 data: test
