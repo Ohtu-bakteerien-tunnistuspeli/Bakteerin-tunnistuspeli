@@ -3,7 +3,7 @@ import Sample from './Sample.js'
 import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, Table } from 'react-bootstrap'
 import { updateCase } from '../../reducers/caseReducer'
 
 
@@ -120,12 +120,17 @@ const CaseEditForm = ({ c }) => {
                     </Form.Control><br></br>
 
                     <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
-                    {samples.map(s =>
-                        <Sample key={s.description}
-                            sample={s}
-                            sampleChange={deleteSample} >
-                        </Sample>
-                    )}
+                    <Table>
+                        <tbody>
+                            {samples.map(s =>
+                                <Sample key={s.description}
+                                    sample={s}
+                                    sampleChange={deleteSample} >
+                                </Sample>
+                            )}
+                        </tbody>
+                    </Table>
+
                     <Form.Control onChange={handleNewSampleName}
                         placeholder="Näytteen kuvaus"
                         value={newSampleName} />
