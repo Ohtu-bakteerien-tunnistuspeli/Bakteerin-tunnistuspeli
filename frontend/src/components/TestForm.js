@@ -26,6 +26,7 @@ const TestForm = () => {
         bacterium: '',
         image: undefined,
     }
+    const style = { margin: '10px' }
 
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const TestName = useField('text')
@@ -98,7 +99,7 @@ const TestForm = () => {
 
     return (
         <div>
-            <Button id="testModalButton" variant="primary" onClick={handleShow}>
+            <Button style={ style } id="testModalButton" variant="primary" onClick={handleShow}>
                 Luo uusi testi
             </Button>
             <Modal show={show} size='lg' onHide={handleClose} >

@@ -16,6 +16,7 @@ const GamePage = () => {
     const cultivationsToShow = tests.filter(test => test.type === 'Viljely').sort((test1, test2) => test1.name.localeCompare(test2.name))
     const stainingsToShow = tests.filter(test => test.type === 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
     const othersToShow = tests.filter(test => test.type !== 'Testi' && test.type !== 'Viljely' && test.type !== 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const style = { marginTop: '10px', marginBottom: '10px' }
 
     const sampleCheckBoxChange = (description) => {
         if (selectedSamples.includes(description)) {
@@ -62,7 +63,8 @@ const GamePage = () => {
                                             <Button
                                                 variant='success'
                                                 type='submit'
-                                                id='checkSamples'>
+                                                id='checkSamples'
+                                                style={ style }>
                                                 Ota näyte
                                             </Button>
                                         </Form>
@@ -120,7 +122,7 @@ const GamePage = () => {
                             }
                         </Tab>
                         <Tab eventKey='tuloksia' title='Tuloksia'>
-                            <p>Tulokset</p>
+                            <h4 style={ style }>Tulokset</h4>
                             <Table>
                                 <tbody>
                                     {game.testResults.map((result, i) =>
@@ -137,7 +139,7 @@ const GamePage = () => {
                             </Table>
                         </Tab>
                         <Tab eventKey='kontrolleja' title='Kontrolleja'>
-                            <p>Kontrollit</p>
+                            <h4 style={ style }>Kontrollit</h4>
                             <Table>
                                 <tbody>
                                     {tests.map(test =>
