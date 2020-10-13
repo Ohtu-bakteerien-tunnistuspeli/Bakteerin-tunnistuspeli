@@ -31,7 +31,7 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
                         {isAdmin ?
                             <>
                                 <Button variant='danger' style={{ float: 'right' }} id='delete' onClick={() => deleteBact(bacterium)}>Poista</Button>
-                                <Button style={ style } variant='primary' style={{ float: 'right' }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
+                                <Button variant='primary' style={{ float: 'right', marginLeft: '10px', marginRight: '10px'  }} id='edit' onClick={() => setIsModified(true)}>Muokkaa</Button>
                             </>
                             :
                             <></>
