@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 
 const Sample = ({ sample, sampleChange }) => {
     return (
-         <tr>
+        <tr>
             <td>{sample.description}</td>
             <td>{sample.rightAnswer ? <p>Oikea vastaus</p> : <p>Väärä vastaus</p>}</td>
             <td><Button variant='danger' onClick={(event) => {

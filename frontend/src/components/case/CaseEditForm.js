@@ -21,8 +21,8 @@ const CaseEditForm = ({ caseToEdit }) => {
         event.preventDefault()
         var token = user.token
         var id = caseToEdit.id
-        dispatch(updateCase(id, caseName, 
-            bacterium, caseAnamnesis, caseToEdit.completionImage, samples, 
+        dispatch(updateCase(id, caseName,
+            bacterium, caseAnamnesis, caseToEdit.completionImage, samples,
             testGroups, deleteEndImage, token))
     }
 
@@ -38,8 +38,8 @@ const CaseEditForm = ({ caseToEdit }) => {
 
     /*bacterium control*/
     const bacteria = useSelector(state => state.bacteria)
-                                .sort((bacterium1, bacterium2) => 
-                                bacterium1.name.localeCompare(bacterium2.name))
+        .sort((bacterium1, bacterium2) =>
+            bacterium1.name.localeCompare(bacterium2.name))
 
     const [bacterium, setBacterium] = useState(caseToEdit.bacterium)
     const handleBacteriumChange = (event) => setBacterium(bacteria.find(bac => bac.id === event.target.value))
@@ -56,7 +56,7 @@ const CaseEditForm = ({ caseToEdit }) => {
     const [sampleDescription, setSampleDescription] = useState('')
     const [sampleRightAnswer, setSampleRightAnswer] = useState(false)
     const handleSampleName = (event) => setSampleDescription(event.target.value)
-    const handleSampleRightAnswer = (event) => setSampleRightAnswer(!sampleRightAnswer)
+    const handleSampleRightAnswer = () => setSampleRightAnswer(!sampleRightAnswer)
 
     const addSample = (event) => {
         event.preventDefault()
@@ -74,7 +74,7 @@ const CaseEditForm = ({ caseToEdit }) => {
     /* testgroup control */
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
 
-    const [testIdForCase, setTestIdForCase] = useState("")
+    const [testIdForCase, setTestIdForCase] = useState('')
     const [testBools, setTestBools] = useState({ isRequired: false, positive: false, alternativeTests: false })
     const [testGroup, setTestGroup] = useState([])
     const [testGroups, setTestGroups] = useState(caseToEdit.testGroups)
@@ -85,12 +85,13 @@ const CaseEditForm = ({ caseToEdit }) => {
     const handleTestChange = (event) => setTestIdForCase(event.target.value)
     const handleTestAdd = () => {
         setTestGroup([...testGroup,
-        {
-            testId: testIdForCase,
-            isRequired: testBools.isRequired,
-            positive: testBools.positive,
-            alternativeTests: testBools.alternativeTests
-        }])
+            {
+                testId: testIdForCase,
+                isRequired: testBools.isRequired,
+                positive: testBools.positive,
+                alternativeTests: testBools.alternativeTests
+            }
+        ])
         setTestBools({ isRequired: false, positive: false, alternativeTests: false })
     }
 
@@ -100,78 +101,79 @@ const CaseEditForm = ({ caseToEdit }) => {
     /* testgroup control end */
 
     return (
-    <div>
-        <Button variant="primary" onClick={handleShow}>
-            Muokkaa
-        </Button>
-        <Modal show={show} size="lg" onHide={handleClose} >
-            <Modal.Header closeButton>Muokkaat tapausta "{caseToEdit.name}"</Modal.Header>
-            <Modal.Body>
-                <Form onSubmit={saveUpdatedCase} >
+        <div>
+            <Button variant="primary" onClick={handleShow}>
+                Muokkaa
+            </Button>
+            <Modal show={show} size="lg" onHide={handleClose} >
+                <Modal.Header closeButton>Muokkaat tapausta "{caseToEdit.name}"</Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={saveUpdatedCase} >
 
-                    <Form.Label>Nimi:</Form.Label><br></br>
-                    <Form.Control onChange={handleCaseNameChange} defaultValue={caseToEdit.name} /><br></br>
+                        <Form.Label>Nimi:</Form.Label><br></br>
+                        <Form.Control onChange={handleCaseNameChange} defaultValue={caseToEdit.name} /><br></br>
 
-                    <Form.Label>Anamneesi:</Form.Label><br></br>
-                    <Form.Control as='textarea' onChange={handleAnamnesisChange} defaultValue={caseToEdit.anamnesis} /><br></br>
+                        <Form.Label>Anamneesi:</Form.Label><br></br>
+                        <Form.Control as='textarea' onChange={handleAnamnesisChange} defaultValue={caseToEdit.anamnesis} /><br></br>
 
-                    <Form.Label>Bakteeri:</Form.Label><br></br>
-                    <Form.Control as="select" onChange={handleBacteriumChange} value={bacterium.id}>
-                        {bacteria.map(bac =>
-                            <option key={bac.id} value={bac.id}>{bac.name}</option>
-                        )}
-                    </Form.Control><br></br>
+                        <Form.Label>Bakteeri:</Form.Label><br></br>
+                        <Form.Control as="select" onChange={handleBacteriumChange} value={bacterium.id}>
+                            {bacteria.map(bac =>
+                                <option key={bac.id} value={bac.id}>{bac.name}</option>
+                            )}
+                        </Form.Control><br></br>
 
-                    <Form.Label>Näytevaihtoehdot: </Form.Label><br></br>
-                    <Table>
-                <tbody>
-                {samples.map(s =>
-                        <Sample key={s.description}
-                            sample={s}
-                            sampleChange={deleteSample} >
-                        </Sample>
-                    )}
-                </tbody>
-                    </Table>
-                    
-                    <Form.Control onChange={handleSampleName}
-                        placeholder="Näytteen kuvaus"
-                        value={sampleDescription} />
-                    <Form.Check onChange={handleSampleRightAnswer}
-                        type="checkbox"
-                        label="Oikea vastaus"
-                        checked={sampleRightAnswer} />
-                    <Button onClick={addSample}>Lisää näytevaihtoehto</Button><br></br>
-                    <br></br>
-                    <ListGroup>
-                    <Form.Label>Testiryhmät:</Form.Label>
-                    {testGroups.map((tg, i) =>
-                        <TestGroup key={i}
-                            testgroup={tg}
-                            index={i}
-                            removeTestGroup={removeTestGroup}
+                        <Form.Label>Näytevaihtoehdot: </Form.Label><br></br>
+                        <Table>
+                            <tbody>
+                                {samples.map(s =>
+                                    <Sample key={s.description}
+                                        sample={s}
+                                        sampleChange={deleteSample} >
+                                    </Sample>
+                                )}
+                            </tbody>
+                        </Table>
+
+                        <Form.Control onChange={handleSampleName}
+                            placeholder="Näytteen kuvaus"
+                            value={sampleDescription} />
+                        <Form.Check onChange={handleSampleRightAnswer}
+                            type="checkbox"
+                            label="Oikea vastaus"
+                            checked={sampleRightAnswer} />
+                        <Button onClick={addSample}>Lisää näytevaihtoehto</Button><br></br>
+                        <br></br>
+                        <ListGroup>
+                            <Form.Label>Testiryhmät:</Form.Label>
+                            {testGroups.map((tg, i) =>
+                                <TestGroup key={i}
+                                    testgroup={tg}
+                                    index={i}
+                                    removeTestGroup={removeTestGroup}
+                                    tests={tests}
+                                >
+                                </TestGroup>
+                            )}
+                        </ListGroup>
+                        <Form.Label>Lisää testiryhmä:</Form.Label>
+                        <AddTestGroup
+                            setCaseTest={handleTestChange}
+                            setTestBools={setTestBools}
+                            testBools={testBools}
                             tests={tests}
-                        >
-                        </TestGroup>
-                    )}
-                    </ListGroup>
-                    <Form.Label>Lisää testiryhmä:</Form.Label>
-                    <AddTestGroup
-                        setCaseTest={handleTestChange}
-                        setTestBools={setTestBools}
-                        testBools={testBools}
-                        tests={tests}
-                        handleTestAdd={handleTestAdd}
-                        testGroup={testGroup}
-                        addTestGroup={addTestGroup}
-                    ></AddTestGroup>
-                    <Button variant="primary" type="submit">
-                        Tallenna
-                    </Button>
-                </Form>
-            </Modal.Body>
-        </Modal>
-    </div>)
+                            handleTestAdd={handleTestAdd}
+                            testGroup={testGroup}
+                            addTestGroup={addTestGroup}
+                        ></AddTestGroup>
+                        <Button variant="primary" type="submit">
+                            Tallenna
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+        </div>
+    )
 
 }
 
