@@ -72,13 +72,13 @@ const GamePage = () => {
                                     :
                                     <>
                                         <h1>Laboratoriotutkimukset</h1>
-                                        <div style={{ backgroundColor: "#F5F5F5" }}>
+                                        <div id='testView' style={{ backgroundColor: "#F5F5F5" }}>
                                             {
                                                 (cultivationsToShow && cultivationsToShow.length > 0) ?
                                                     <>
                                                         <h2>Viljelyt</h2>
                                                         {cultivationsToShow.map(test =>
-                                                            <Button key={test.id} variant='warning' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className="fas fa-check"></i> : <></>}</Button>
+                                                            <Button id='testButton' key={test.id} variant='warning' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className="fas fa-check"></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -123,7 +123,7 @@ const GamePage = () => {
                         </Tab>
                         <Tab eventKey='tuloksia' title='Tuloksia'>
                             <h4 style={ style }>Tulokset</h4>
-                            <Table>
+                            <Table id='resultTable'>
                                 <tbody>
                                     {game.testResults.map((result, i) =>
                                         <tr key={i}>
@@ -140,7 +140,7 @@ const GamePage = () => {
                         </Tab>
                         <Tab eventKey='kontrolleja' title='Kontrolleja'>
                             <h4 style={ style }>Kontrollit</h4>
-                            <Table>
+                            <Table id='controlImgTable'>
                                 <tbody>
                                     {tests.map(test =>
                                         <tr key={test.id}>
