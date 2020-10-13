@@ -17,9 +17,9 @@ return (
     <tr key={test.id}>
         <td>{test.name}</td> 
         <td>{test.type}</td>
+        <td> {test.controlImage ? <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}/> : <></>} </td>
         <td> {test.positiveResultImage ? <ModalImage imageUrl={test.positiveResultImage.url} width={'10%'} height={'10%'}/>: <></>} </td>
         <td>{test.negativeResultImage ? <ModalImage imageUrl={test.negativeResultImage.url} width={'10%'} height={'10%'}/> : <></>} </td>
-        <td> {test.controlImage ? <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}/> : <></>} </td>
     {isModified ?
         <td>
             <TestEditForm test={ test } stopModify={ stopModify } bacteria={bacteria} />
