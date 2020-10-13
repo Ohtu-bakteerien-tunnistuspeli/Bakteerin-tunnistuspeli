@@ -40,7 +40,7 @@ const CaseEditForm = ({ c }) => {
     /* bacterium control end */
 
     /*Image control */
-    const [deleteEndImage, setDeleteEndImage] = useState(false)
+    const [deleteEndImage, setDeleteEndImage] = useState(false) // eslint-disable-line 
     /*image control end*/
 
     /* samples control*/
