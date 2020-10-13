@@ -24,7 +24,6 @@ router.post('/reset_cases', async (request, response) => {
     response.status(204).end()
 })
 
-
 router.post('/cases', async (request, response) => {
     const bacterium = new Bacterium({ name: 'Streptococcus agalactiae' })
     await bacterium.save()
@@ -46,6 +45,8 @@ router.post('/cases', async (request, response) => {
     await lancefield.save()
     const penisilliini = new Test({ name: 'Penisilliinin sietokoe agarvaluamenetelmällä', type: 'Testi' })
     await penisilliini.save()
+    const notInTestsGroups = new Test({ name: 'Testi ei kuulu testiryhmiin', type: 'Testi' })
+    await notInTestsGroups.save()
 
     const textForAnamesis = 'Tilalla on 27 lypsävää lehmää parsinavetassa ja lisäksi nuorkarjaa. Kuivikkeena käytetään kutteria, vesi tulee omasta kaivosta. Pääosa lehmistä on omaa tuotantoa, mutta navetan laajennuksen yhteydessä edellisenä kesänä hankittiin muutama uusi tiine eläin, jotka poikivat loppusyksystä.'
     'Yleisesti utareterveys on ollut tilalla hyvä; yksi lehmä on solutellut jo pidempään. Muurikki on alkanut oireilla vasta hiljan. Varsinaisia yleisoireita ei ole aivan hienoista vaisuutta lukuun ottamatta. Utare on kuitenkin selvästi turvonnut, soluluku noussut kaikissa neljänneksissä ja maitomäärä pudonnut.'
