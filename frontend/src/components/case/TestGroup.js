@@ -1,15 +1,26 @@
 import React from 'react'
-import { Form, Table } from 'react-bootstrap'
+import { Form, Table, Button, Container, Row, Col, ListGroup } from 'react-bootstrap'
 
 
 
 const TestGroup = ({ testgroup, index, removeTestGroup }) => {
     return (
         <div>
-            <Form.Label>Testiryhmä {index + 1}</Form.Label><button onClick={(event) => {
+            <ListGroup.Item>
+            <Container>
+                <Row>
+                    <Col xs={10}>
+                    <Form.Label>Testiryhmä {index + 1}</Form.Label>
+                    </Col>
+                    <Col>
+                    <Button variant='danger' 
+            onClick={(event) => {
                 event.preventDefault()
                 removeTestGroup(testgroup)
-            }}>Poista</button>
+            }}>Poista</Button>
+                    </Col>
+                </Row>
+            </Container>
 
             <Table>
                 <thead>
@@ -44,6 +55,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup }) => {
                     )}
                 </tbody>
             </Table>
+            </ListGroup.Item>
         </div>
 
     )

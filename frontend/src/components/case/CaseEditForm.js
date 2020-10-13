@@ -3,11 +3,11 @@ import Sample from './Sample.js'
 import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Button, Form, Table } from 'react-bootstrap'
+import { Modal, Button, Form, Table, ListGroup } from 'react-bootstrap'
 import { updateCase } from '../../reducers/caseReducer'
 
 
-const CaseEditForm = ({ c }) => {
+const CaseEditForm = ({ caseToEdit }) => {
     /* Modal config */
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
@@ -17,25 +17,31 @@ const CaseEditForm = ({ c }) => {
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
-    const updateCase2 = (event) => {
+    const saveUpdatedCase = (event) => {
         event.preventDefault()
-        dispatch(updateCase(c.id, caseName, bacterium, caseAnamnesis, c.completionImage, samples, testGroups, deleteEndImage, user.token))
-
+        var token = user.token
+        var id = caseToEdit.id
+        dispatch(updateCase(id, caseName, 
+            bacterium, caseAnamnesis, caseToEdit.completionImage, samples, 
+            testGroups, deleteEndImage, token))
     }
 
     /* case name control*/
-    const [caseName, setCaseName] = useState(c.name)
+    const [caseName, setCaseName] = useState(caseToEdit.name)
     const handleCaseNameChange = (event) => setCaseName(event.target.value)
     /* case name control end */
 
     /* case anamnesis control */
-    const [caseAnamnesis, setCaseAnamnesis] = useState(c.anamnesis)
+    const [caseAnamnesis, setCaseAnamnesis] = useState(caseToEdit.anamnesis)
     const handleAnamnesisChange = (event) => setCaseAnamnesis(event.target.value)
     /*case anamnesis control end */
 
     /*bacterium control*/
-    const bacteria = useSelector(state => state.bacteria).sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
-    const [bacterium, setBacterium] = useState(c.bacterium)
+    const bacteria = useSelector(state => state.bacteria)
+                                .sort((bacterium1, bacterium2) => 
+                                bacterium1.name.localeCompare(bacterium2.name))
+
+    const [bacterium, setBacterium] = useState(caseToEdit.bacterium)
     const handleBacteriumChange = (event) => setBacterium(bacteria.find(bac => bac.id === event.target.value))
     /* bacterium control end */
 
@@ -44,24 +50,23 @@ const CaseEditForm = ({ c }) => {
     /*image control end*/
 
     /* samples control*/
-    const [samples, setSamples] = useState(c.samples)
-    const deleteSample = (sample2) => {
-        setSamples(samples.filter(s => s.description !== sample2.description))
-    }
-    const [newSampleName, setNewSampleName] = useState('')
-    const [newSampleRightAnswer, setNewSampleRightAnswer] = useState(false)
-    const handleNewSampleName = (event) => setNewSampleName(event.target.value)
-    const handleNewSampleRightAnswer = (event) => setNewSampleRightAnswer(!newSampleRightAnswer)
+    const [samples, setSamples] = useState(caseToEdit.samples)
+    const deleteSample = (sampleToDelete) => setSamples(samples.filter(s => s.description !== sampleToDelete.description))
+
+    const [sampleDescription, setSampleDescription] = useState('')
+    const [sampleRightAnswer, setSampleRightAnswer] = useState(false)
+    const handleSampleName = (event) => setSampleDescription(event.target.value)
+    const handleSampleRightAnswer = (event) => setSampleRightAnswer(!sampleRightAnswer)
 
     const addSample = (event) => {
         event.preventDefault()
         const newSample = {
-            description: newSampleName,
-            rightAnswer: newSampleRightAnswer
+            description: sampleDescription,
+            rightAnswer: sampleRightAnswer
         }
         setSamples(samples.concat(newSample))
-        setNewSampleName('')
-        setNewSampleRightAnswer(false)
+        setSampleDescription('')
+        setSampleRightAnswer(false)
 
     }
     /* samples control end */
@@ -71,7 +76,7 @@ const CaseEditForm = ({ c }) => {
     const [testForAlternativeTests, setTestForAlternativeTests] = useState({ name: tests[0].name, testId: tests[0].id, positive: false })
     const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
     const [testGroup, setTestGroup] = useState([])
-    const [testGroups, setTestGroups] = useState(c.testGroups)
+    const [testGroups, setTestGroups] = useState(caseToEdit.testGroups)
 
     const addTestGroup = () => {
         if (testGroup.length > 0) {
@@ -102,15 +107,15 @@ const CaseEditForm = ({ c }) => {
             Muokkaa
         </Button>
         <Modal show={show} size="lg" onHide={handleClose} >
-            <Modal.Header closeButton>Muokkaat tapausta "{c.name}"</Modal.Header>
+            <Modal.Header closeButton>Muokkaat tapausta "{caseToEdit.name}"</Modal.Header>
             <Modal.Body>
-                <Form onSubmit={updateCase2} >
+            <Form onSubmit={saveUpdatedCase} >
 
                     <Form.Label>Nimi:</Form.Label><br></br>
-                    <Form.Control onChange={handleCaseNameChange} defaultValue={c.name} /><br></br>
+                    <Form.Control onChange={handleCaseNameChange} defaultValue={caseToEdit.name} /><br></br>
 
                     <Form.Label>Anamneesi:</Form.Label><br></br>
-                    <Form.Control onChange={handleAnamnesisChange} defaultValue={c.anamnesis} /><br></br>
+                    <Form.Control onChange={handleAnamnesisChange} defaultValue={caseToEdit.anamnesis} /><br></br>
 
                     <Form.Label>Bakteeri:</Form.Label><br></br>
                     <Form.Control as="select" onChange={handleBacteriumChange} value={bacterium.id}>
@@ -119,26 +124,27 @@ const CaseEditForm = ({ c }) => {
                         )}
                     </Form.Control><br></br>
 
-                    <Form.Label>Näytevaihtoehdot</Form.Label><br></br>
+                    <Form.Label>Näytevaihtoehdot: </Form.Label><br></br>
                     <Table>
-                        <tbody>
-                            {samples.map(s =>
-                                <Sample key={s.description}
-                                    sample={s}
-                                    sampleChange={deleteSample} >
-                                </Sample>
-                            )}
-                        </tbody>
+                <tbody>
+                {samples.map(s =>
+                        <Sample key={s.description}
+                            sample={s}
+                            sampleChange={deleteSample} >
+                        </Sample>
+                    )}
+                </tbody>
                     </Table>
 
-                    <Form.Control onChange={handleNewSampleName}
+                    <Form.Control onChange={handleSampleName}
                         placeholder="Näytteen kuvaus"
-                        value={newSampleName} />
-                    <Form.Check onChange={handleNewSampleRightAnswer}
+                        value={sampleDescription} />
+                    <Form.Check onChange={handleSampleRightAnswer}
                         type="checkbox"
                         label="Oikea vastaus"
-                        checked={newSampleRightAnswer} />
+                        checked={sampleRightAnswer} />
                     <Button onClick={addSample}>Lisää näytevaihtoehto</Button><br></br>
+                    <br></br>
 
                     <Form.Label> Testiryhmät</Form.Label>
                     {testGroups.map((tg, i) =>
