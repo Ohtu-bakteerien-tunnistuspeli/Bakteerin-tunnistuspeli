@@ -257,9 +257,10 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 changes.controlImage = null
             }
             changes.complete = isComplete(changes)
-            const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
-            var i
-            for (i = 0; i < oldLinks.length; i++) {
+            let updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
+            let completeChange = { complete: isComplete(updatedCase) }
+            updatedCase = await Case.findByIdAndUpdate(request.params.id, completeChange, { new: true, runValidators: true, context: 'query' })
+            for (let i = 0; i < oldLinks.length; i++) {
                 fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
             }
             return response.status(200).json(updatedCase)
