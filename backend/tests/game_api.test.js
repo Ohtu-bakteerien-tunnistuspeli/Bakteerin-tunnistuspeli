@@ -20,25 +20,25 @@ beforeEach(async () => {
     const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'example@com' })
     await admin.save()
     await user.save()
-    const bacterium = new Bacterium({ name: 'Streptococcus agalactiae' })
+    const bacterium = new Bacterium({ name: 'Streptococcus agalactiaee' })
     await bacterium.save()
-    const veriagar = new Test({ name: 'Veriagar, +37 C, aerobinen kasvatus', type: 'Viljely' })
+    const veriagar = new Test({ name: 'Veriagar, +37 C, aerobinen kasvatuss', type: 'Viljely' })
     await veriagar.save()
-    const gram = new Test({ name: 'Gramvärjäys', type: 'Värjäys' })
+    const gram = new Test({ name: 'Gramvärjäyss', type: 'Värjäys' })
     await gram.save()
-    const katalaasi = new Test({ name: 'Katalaasitesti', type: 'Testi' })
+    const katalaasi = new Test({ name: 'Katalaasitestii', type: 'Testi' })
     await katalaasi.save()
-    const hirs = new Test({ name: 'HIRS-sarja', type: 'Testi' })
+    const hirs = new Test({ name: 'HIRS-sarjaa', type: 'Testi' })
     await hirs.save()
-    const eskuliini = new Test({ name: 'Eskuliiniveriagar', type: 'Viljely' })
+    const eskuliini = new Test({ name: 'Eskuliiniveriagarr', type: 'Viljely' })
     await eskuliini.save()
-    const edwards = new Test({ name: 'Edwardsin agar', type: 'Viljely' })
+    const edwards = new Test({ name: 'Edwardsin agarr', type: 'Viljely' })
     await edwards.save()
-    const camp = new Test({ name: 'CAMP-testi', type: 'Testi' })
+    const camp = new Test({ name: 'CAMP-testii', type: 'Testi' })
     await camp.save()
-    const lancefield = new Test({ name: 'Lancefield määritys', type: 'Testi' })
+    const lancefield = new Test({ name: 'Lancefield määrityss', type: 'Testi' })
     await lancefield.save()
-    const penisilliini = new Test({ name: 'Penisilliinin sietokoe agarvaluamenetelmällä', type: 'Testi' })
+    const penisilliini = new Test({ name: 'Penisilliinin sietokoe agarvaluamenetelmällää', type: 'Testi' })
     await penisilliini.save()
 
     const textForAnamesis = 'Tilalla on 27 lypsävää lehmää parsinavetassa ja lisäksi nuorkarjaa. Kuivikkeena käytetään kutteria, vesi tulee omasta kaivosta. Pääosa lehmistä on omaa tuotantoa, mutta navetan laajennuksen yhteydessä edellisenä kesänä hankittiin muutama uusi tiine eläin, jotka poikivat loppusyksystä.'
@@ -59,12 +59,20 @@ beforeEach(async () => {
     },
     ]
     let case1 = {
-        name: 'Maitotila 1',
+        name: 'Maitotila 11',
         bacterium: bacterium,
         anamnesis: textForAnamesis,
         samples: samples,
         testGroups: [[]],
         complete: true
+    }
+    let case2 = {
+        name: 'Maitotila 12',
+        bacterium: bacterium,
+        anamnesis: textForAnamesis,
+        samples: samples,
+        testGroups: [[]],
+        complete: false
     }
     const testGroups = [
         [
@@ -129,7 +137,53 @@ beforeEach(async () => {
         ],
     ]
     case1.testGroups = testGroups
+    case2.testGroups = testGroups
     await new Case(case1).save()
+    await new Case(case2).save()
+})
+
+describe('starting game', () => {
+    test('user can get list of cases', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const getResponse = await api
+            .get('/api/case')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(getResponse.body).toHaveLength(1)
+        expect(getResponse.body[0].id).toBeTruthy()
+        expect(getResponse.body[0].name).toBeTruthy()
+        expect(getResponse.body[0].samples).toBeUndefined()
+        expect(getResponse.body[0].testGroups).toBeUndefined()
+        expect(getResponse.body[0].anamnesis).toBeUndefined()
+        expect(getResponse.body[0].bacterium).toBeUndefined()
+    })
+
+    test('user can get single case to play', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const getResponse = await api
+            .get(`/api/case/${caseToTest.id}`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(getResponse.body.id).toBeTruthy()
+        expect(getResponse.body.name).toBeTruthy()
+        expect(getResponse.body.samples).toBeTruthy()
+        expect(getResponse.body.testGroups).toBeUndefined()
+        expect(getResponse.body.anamnesis).toBeTruthy()
+        expect(getResponse.body.bacterium).toBeUndefined()
+    })
 })
 
 describe('checking sample', () => {
@@ -137,10 +191,10 @@ describe('checking sample', () => {
         const user = await api
             .post('/api/user/login')
             .send({
-                username: 'adminNew',
-                password: 'admin'
+                username: 'usernameNew',
+                password: 'password'
             })
-        const caseToTest = await Case.findOne({ name: 'Maitotila 1' })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const samples = { samples: ['Maitonäyte Muurikin kaikista neljänneksistä'] }
         const checkingResponse = await api
             .post(`/api/case/${caseToTest.id}/checkSamples`)
@@ -155,11 +209,47 @@ describe('checking sample', () => {
         const user = await api
             .post('/api/user/login')
             .send({
-                username: 'adminNew',
-                password: 'admin'
+                username: 'usernameNew',
+                password: 'password'
             })
-        const caseToTest = await Case.findOne({ name: 'Maitotila 1' })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const samples = { samples: ['Virtsanäyte Muurikilta'] }
+        const checkingResponse = await api
+            .post(`/api/case/${caseToTest.id}/checkSamples`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(samples)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(checkingResponse.body.correct).toEqual(false)
+    })
+
+    test('giving wrong number of samples gives incorrect answer', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const samples = { samples: ['Maitonäyte Muurikin kaikista neljänneksistä', 'Virtsanäyte Muurikilta'] }
+        const checkingResponse = await api
+            .post(`/api/case/${caseToTest.id}/checkSamples`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(samples)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(checkingResponse.body.correct).toEqual(false)
+    })
+
+    test('giving no samples gives incorrect answer', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const samples = { samples: [] }
         const checkingResponse = await api
             .post(`/api/case/${caseToTest.id}/checkSamples`)
             .set('Authorization', `bearer ${user.body.token}`)
