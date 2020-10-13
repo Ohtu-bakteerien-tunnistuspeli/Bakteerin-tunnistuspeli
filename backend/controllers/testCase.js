@@ -44,20 +44,26 @@ const deleteUploadedImages = (request) => {
 }
 
 testRouter.get('/', async (request, response) => {
-    if (request.user) {
+    if (request.user && request.user.admin) {
         const tests = await Test.find({}).populate({
             path: 'bacteriaSpecificImages.bacterium',
             model: 'Bacterium'
         })
         response.json(tests.map(test => test.toJSON()))
+    } else if (request.user) {
+        let tests = await Test.find({}).populate({
+            path: 'bacteriaSpecificImages.bacterium',
+            model: 'Bacterium'
+        })
+        tests = tests.map(test => test.toJSON()).map(test => { return { name: test.name, id: test.id, type: test.type, controlImage: test.controlImage } })
+        response.json(tests)
     } else {
         throw Error('JsonWebTokenError')
     }
 })
 
 testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
-    console.log(request.user)
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const test = new Test({
                 name: request.body.name,
@@ -104,9 +110,7 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
 })
 
 testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { name: 'positiveResultImage', maxCount: 1 }, { name: 'negativeResultImage', maxCount: 1 }, { name: 'bacteriaSpecificImages', maxCount: 100 }]), async (request, response) => {
-    console.log('edit backend pre admin check', request.body)
-    console.log(request.user)
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const testToEdit = await Test.findById(request.params.id).populate({
                 path: 'bacteriaSpecificImages.bacterium',
@@ -119,30 +123,32 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
             let testToUpdate = {
                 name: request.body.name,
                 type: request.body.type,
-                bacteriaSpecificImages: testToEdit.bacteriaSpecificImages
+                bacteriaSpecificImages: testToEdit.bacteriaSpecificImages,
             }
+            const deletePhotos = { ctrl: request.body.deleteCtrl, pos: request.body.deletePos, neg: request.body.deleteNeg }
+            console.log(deletePhotos)
+            const oldLinks = []
 
-            console.log('edit backend post admin check', request.body.name)
-            console.log('seuraavksi files check')
             if (request.files) {
                 if (request.files.controlImage) {
-                    fs.unlink(`${imageDir}/${testToEdit.controlImage.url}`, (err) => err)
+                    oldLinks.push(testToEdit.controlImage.url)
+                    console.log('control image')
+                    // fs.unlink(`${imageDir}/${testToEdit.controlImage.url}`, (err) => err)
                     testToUpdate.controlImage = { url: request.files.controlImage[0].filename, contentType: request.files.controlImage[0].mimetype }
                 }
                 if (request.files.positiveResultImage) {
-                    fs.unlink(`${imageDir}/${testToEdit.positiveResultImage.url}`, (err) => err)
+                    oldLinks.push(testToEdit.positiveResultImage.url)
+                    // fs.unlink(`${imageDir}/${testToEdit.positiveResultImage.url}`, (err) => err)
                     testToUpdate.positiveResultImage = { url: request.files.positiveResultImage[0].filename, contentType: request.files.positiveResultImage[0].mimetype }
                 }
                 if (request.files.negativeResultImage) {
-                    fs.unlink(`${imageDir}/${testToEdit.negativeResultImage.url}`, (err) => err)
+                    oldLinks.push(testToEdit.negativeResultImage.url)
+                    //fs.unlink(`${imageDir}/${testToEdit.negativeResultImage.url}`, (err) => err)
                     testToUpdate.negativeResultImage = { url: request.files.negativeResultImage[0].filename, contentType: request.files.negativeResultImage[0].mimetype }
                 }
-                console.log('backendissa specific seraavaksu')
                 if (request.files.bacteriaSpecificImages) {
-                    console.log('backendissa specific löydetty')
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
-                        console.log('filen nimi', file)
                         const bacterium = await Bacterium.findOne({ name: file.originalname })
                         if (!bacterium) {
                             deleteUploadedImages(request)
@@ -150,7 +156,8 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                         }
                         const imageToDelete = testToUpdate.bacteriaSpecificImages.filter(image => image.bacterium.name === bacterium.name)
                         if (imageToDelete.length > 0) {
-                            fs.unlink(`${imageDir}/${imageToDelete[0].url}`, (err) => err)
+                            oldLinks.push(imageToDelete[0].url)
+                            //fs.unlink(`${imageDir}/${imageToDelete[0].url}`, (err) => err)
                             testToUpdate.bacteriaSpecificImages.map(image => image.bacterium.name === bacterium.name ? { url: file.filename, contentType: file.mimetype, bacterium } : image)
                         } else {
                             testToUpdate.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
@@ -158,7 +165,24 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     }
                 }
             }
+            if (deletePhotos.ctrl === 'true') {
+                console.log('delete ctrl')
+                oldLinks.push(testToEdit.controlImage.url)
+                testToUpdate.controlImage = null
+            }
+            if (deletePhotos.pos === 'true') {
+                oldLinks.push(testToEdit.positiveResultImage.url)
+                testToUpdate.positiveResultImage = null
+            }
+            if (deletePhotos.neg === 'true') {
+                oldLinks.push(testToEdit.negativeResultImage.url)
+                testToUpdate.negativeResultImage = null
+            }
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
+            var i
+            for (i = 0; i < oldLinks.length; i++) {
+                fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
+            }
             return response.status(200).json(updatetTest)
         } catch (error) {
             deleteUploadedImages(request)
@@ -171,7 +195,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
 })
 
 testRouter.delete('/:id', async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const testToDelete = await Test.findById(request.params.id).populate({
                 path: 'bacteriaSpecificImages.bacterium',
@@ -179,7 +203,7 @@ testRouter.delete('/:id', async (request, response) => {
             })
 
             const cases = await Case.find({}).populate({
-                path: 'testGroups.test',
+                path: 'testGroups.tests.test',
                 model: 'Test',
                 populate: {
                     path: 'bacteriaSpecificImages.bacterium',
@@ -190,14 +214,16 @@ testRouter.delete('/:id', async (request, response) => {
             cases.forEach(element => {
                 for (let i = 0; i < element.testGroups.length; i++) {
                     for (let j = 0; j < element.testGroups[i].length; j++) {
-                        if (element.testGroups[i][j].test.name === testToDelete.name) {
-                            testIsInUse = true
+                        for (let k = 0; k < element.testGroups[i][j].tests.length; k++) {
+                            if (element.testGroups[i][j].tests[k].test.name === testToDelete.name) {
+                                testIsInUse = true
+                            }
                         }
                     }
                 }
             })
             if (testIsInUse) {
-                return response.status(400).json({ error: 'Testi on käytössä ainakin yhdessä taupaksessa, eikä sitä voida poistaa' })
+                return response.status(400).json({ error: 'Testi on käytössä ainakin yhdessä tapauksessa, eikä sitä voida poistaa' })
             }
             fs.unlink(`${imageDir}/${testToDelete.controlImage.url}`, (err) => err)
             fs.unlink(`${imageDir}/${testToDelete.positiveResultImage.url}`, (err) => err)

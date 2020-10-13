@@ -15,7 +15,27 @@ const userSchema = mongoose.Schema({
     admin: {
         type: Boolean,
         required: true
-    }
+    },
+    classGroup: {
+        type: String,
+        validate: {
+            validator: function(group) {
+                return /C-+\S+/.test(group)
+            },
+            message: 'Vuosikurssin tule alkaa merkeillä \'C-\'.'
+        },
+    },
+    email: {
+        type: String,
+        validate: {
+            validator: function(mailAddress) {
+                return /\S+@\S+/.test(mailAddress)
+            },
+            message: 'Sähköpostiosoite on virheellinen.'
+        },
+        required: [true, 'Sähköpostiosoite on pakollinen.']
+    },
+    studentNumber: String,
 })
 
 userSchema.set('toJSON', {

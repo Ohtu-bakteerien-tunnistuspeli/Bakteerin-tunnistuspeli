@@ -23,10 +23,10 @@ beforeEach(async () => {
     const promiseArray = testObjects.map(test => test.save())
     await Promise.all(promiseArray)
     const adminPassword = await bcrypt.hash('admin', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com' })
     await admin.save()
     const userPassword = await bcrypt.hash('user', 10)
-    const user = new User({ username: 'userNew', passwordHash: userPassword, admin: false })
+    const user = new User({ username: 'userNew', passwordHash: userPassword, admin: false, email: 'example@com' })
     await user.save()
 })
 
@@ -515,7 +515,7 @@ describe('deleting of a test', () => {
             .get('/api/test')
             .set('Authorization', `bearer ${user.body.token}`)
         const testGroups = JSON.stringify([
-            [{ testId: res.body.id }]
+            [{ tests: [{ testId: res.body.id }] }]
         ])
         const newCase = {
             name: 'testCase',
@@ -533,7 +533,7 @@ describe('deleting of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(deletionRes.body.error).toContain('Testi on käytössä ainakin yhdessä taupaksessa, eikä sitä voida poistaa')
+        expect(deletionRes.body.error).toContain('Testi on käytössä ainakin yhdessä tapauksessa, eikä sitä voida poistaa')
         const testsAfterDelete = await api
             .get('/api/test')
             .set('Authorization', `bearer ${user.body.token}`)

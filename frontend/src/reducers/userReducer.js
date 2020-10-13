@@ -33,10 +33,12 @@ export const login = (username, password, history) => {
                 type: 'LOGIN',
                 data: user
             })
-            dispatch(getBacteria(user.token))
+            if (user.admin) {
+                dispatch(getBacteria(user.token))
+            }
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
-            history.push('/bakteeriLista')
+            history.push('/')
         } else {
             dispatch({
                 type: 'LOGIN',
@@ -65,7 +67,9 @@ export const returnUser = () => {
         let user = null
         if (userText) {
             user = JSON.parse(userText)
-            dispatch(getBacteria(user.token))
+            if (user.admin) {
+                dispatch(getBacteria(user.token))
+            }
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
         }
@@ -76,9 +80,9 @@ export const returnUser = () => {
     }
 }
 
-export const register = (username, password, history) => {
+export const register = (username, email, studentNumber, classGroup, password, history) => {
     return async dispatch => {
-        let response = await userService.register({ username, password })
+        let response = await userService.register({ username, email, studentNumber, classGroup, password })
         if (response && !response.error) {
             dispatch(setNotification({ message: `Rekisteröidyit onnistuneesti, ${username}`, success: true }))
             history.push('/kirjautuminen')
@@ -87,7 +91,7 @@ export const register = (username, password, history) => {
                 type: 'REGISTER',
                 data: null
             })
-            if(response.error.includes('User validation failed')) {
+            if (response.error.includes('User validation failed')) {
                 dispatch(setNotification({ message: response.error.substring(response.error.indexOf('name: ') + 6), success: false }))
             } else {
                 dispatch(setNotification({ message: response.error, success: false }))

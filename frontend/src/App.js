@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'
 import Register from './components/Register'
+import FrontPage from './components/FrontPage'
 import BacteriaList from './components/BacteriaList'
-import CaseList from './components/CaseList'
+import CaseList from './components/case/CaseList'
 import TestList from './components/TestList'
+import GamePage from './components/GamePage'
 import Notification from './components/Notification'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 const App = () => {
@@ -16,6 +18,7 @@ const App = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
+    const game = useSelector(state => state.game)
     useEffect(() => {
         dispatch(returnUser())
     }, [dispatch])
@@ -35,11 +38,17 @@ const App = () => {
                     <Nav className="mr-auto">
                         {/*HUOM Tarkista polku ennen käyttöön ottoa<Nav.Link href="#" as span>
                             {user 
-                                ? <Link style={padding} to="/bakteeriPeli">Bakteeripeli</Link>
+                                ? <Link style={padding} to="/bakteeripeli">Bakteeripeli</Link>
                                 : null
                             }
                         </Nav.Link>
                         */}
+                        <Nav.Link href="#" as="span">
+                            {user
+                                ? <Link style={padding} to="/">Etusivu</Link>
+                                : null
+                            }
+                        </Nav.Link>
                         <Nav.Link href="#" as="span">
                             {user?.admin
                                 ? <Link style={padding} to="/bakteeriLista">Bakteerien hallinta</Link>
@@ -84,33 +93,36 @@ const App = () => {
                 <>
                     <Switch>
                         <Route path='/bakteeriLista'>
-                            <BacteriaList></BacteriaList>
+                            {user.admin ?
+                                <BacteriaList></BacteriaList>
+                                :
+                                <Redirect to='/'></Redirect>
+                            }
                         </Route>
                         <Route path='/tapausLista'>
-                            <CaseList />
+                            {user.admin ?
+                                <CaseList />
+                                :
+                                <Redirect to='/'></Redirect>
+                            }
                         </Route>
                         <Route path='/testiLista'>
-                            <TestList />
+                            {user.admin ?
+                                <TestList />
+                                :
+                                <Redirect to='/'></Redirect>
+                            }
+                        </Route>
+                        <Route path='/peli'>
+                            {game ?
+                                <GamePage></GamePage>
+                                :
+                                <Redirect to='/'></Redirect>
+                            }
                         </Route>
                         <Route path='/'>
-                            <Redirect to='/bakteeriLista'></Redirect>
+                            <FrontPage />
                         </Route>
-                        {/*<Route path='/skeleton'>
-                    <SkeletonComponent></SkeletonComponent>
-                    <button onClick={() => history.push('/hello')}>to hello</button>
-                </Route>
-                <Route path="/hello/:name">
-                    <h1>HELLO {name}</h1>
-                    <button onClick={() => history.push('/skeleton')}>to skeleton</button>
-                </Route>
-                <Route path='/hello'>
-                    <h1>
-                        <Link to='/hello/WORLD'>HELLO</Link>
-                    </h1>
-                </Route>
-                <Route path='/'>
-                    <Redirect to='/skeleton'></Redirect>
-    </Route>*/}
                     </Switch>
                 </>
                 :

@@ -35,7 +35,7 @@ export const getTests = (token) => {
     }
 }
 
-export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token) => {
+export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token, resetTestForm) => {
     return async dispatch => {
         const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpesif, token)
         if (test.error) {
@@ -46,6 +46,7 @@ export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, tok
                 type: 'ADD_TEST',
                 data: test
             })
+            resetTestForm()
         }
     }
 }
@@ -57,7 +58,7 @@ export const deleteTest = (id, token) => {
         if (response.status !== 204) {
             dispatch(setNotification({ message: response.error, success: false }))
         } else {
-            dispatch(setNotification({ message: 'Test successfully deleted', success: true }))
+            dispatch(setNotification({ message: 'Testi poistettiin onnistuneesti', success: true }))
             dispatch({
                 type: 'DELETE_TEST',
                 data: id
@@ -66,10 +67,9 @@ export const deleteTest = (id, token) => {
     }
 }
 
-export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, token) => {
+export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, token) => {
     return async dispatch => {
-        console.log('edit to reducer ', name, bacteriaSpesif)
-        const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, token)
+        const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {

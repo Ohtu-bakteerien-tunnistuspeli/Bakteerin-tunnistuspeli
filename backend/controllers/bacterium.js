@@ -4,7 +4,7 @@ const Test = require('../models/testCase')
 const Case = require('../models/case')
 
 bacteriumRouter.get('/', async (request, response) => {
-    if (request.user) {
+    if (request.user && request.user.admin) {
         const backteria = await Bacterium.find({})
         response.json(backteria.map(bacterium => bacterium.toJSON()))
     } else {
@@ -13,7 +13,7 @@ bacteriumRouter.get('/', async (request, response) => {
 })
 
 bacteriumRouter.post('/', async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const bacterium = new Bacterium(request.body)
             const savedBacterium = await bacterium.save()
@@ -27,7 +27,7 @@ bacteriumRouter.post('/', async (request, response) => {
 })
 
 bacteriumRouter.delete('/:id', async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const bacteriumToDelete = await Bacterium.findById(request.params.id)
             const testsUsingBacterium = await Test.find({ 'bacteriaSpecificImages.bacterium': bacteriumToDelete }).populate({
@@ -55,7 +55,7 @@ bacteriumRouter.delete('/:id', async (request, response) => {
 })
 
 bacteriumRouter.put('/:id', async (request, response) => {
-    if (request.user.admin) {
+    if (request.user && request.user.admin) {
         try {
             const updatedBacterium = await Bacterium.findByIdAndUpdate(request.params.id, { name: request.body.name }, { new: true, runValidators: true, context: 'query' })
             if (!updatedBacterium) {

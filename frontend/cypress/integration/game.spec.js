@@ -1,0 +1,66 @@
+describe('Palying game', function () {
+    beforeEach(function () {
+        cy.login({ username: 'admin', password: 'admin' })
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+        cy.request('POST', 'http://localhost:3001/api/testing/cases')
+        cy.visit('http://localhost:3000')
+    })
+    describe('Game can be played', function () {
+        it('Admin can choose a case which to play', function () {
+            cy.contains('Etusivu').click()
+            cy.get('div').should('contain', 'Maitotila 1')
+            cy.get('div').should('contain', 'Maitotila 2')
+            cy.contains('Maitotila 1').click()
+            cy.get('#samples').should('contain', 'Tankin maitonäyte')
+            cy.get('#samples').should('contain', 'Maitonäyte Muurikin kaikista neljänneksistä')
+            cy.get('#samples').should('contain', 'Ulostenäyte Muurikilta')
+            cy.get('#samples').should('contain', 'Virtsanäyte Muurikilta')
+        })
+
+        it('Normal user can choose a case which to play', function () {
+            cy.login({ username: 'user', password: 'user' })
+            cy.visit('http://localhost:3000')
+            cy.contains('Etusivu').click()
+            cy.get('div').should('contain', 'Maitotila 1')
+            cy.get('div').should('not.contain', 'Maitotila 2')
+            cy.contains('Maitotila 1').click()
+            cy.get('#samples').should('contain', 'Tankin maitonäyte')
+            cy.get('#samples').should('contain', 'Maitonäyte Muurikin kaikista neljänneksistä')
+            cy.get('#samples').should('contain', 'Ulostenäyte Muurikilta')
+            cy.get('#samples').should('contain', 'Virtsanäyte Muurikilta')
+        })
+
+        it('A valid samplingmethod can be chosen', function () {
+            cy.login({ username: 'user', password: 'user' })
+            cy.contains('Etusivu').click()
+            cy.contains('Maitotila 1').click()
+            cy.get('div').should('contain','Tilalla on 27 lypsävää lehmää parsinavetassa ja lisäksi nuorkarjaa. Kuivikkeena käytetään kutteria, vesi tulee omasta kaivosta. Pääosa lehmistä on omaa tuotantoa, mutta navetan laajennuksen yhteydessä edellisenä kesänä hankittiin muutama uusi tiine eläin, jotka poikivat loppusyksystä.')
+            cy.contains('Toiminnot').click()
+            cy.get('[type="checkbox"]').eq('2').check()
+            cy.get('#checkSamples').click()
+            cy.contains('Oikea vastaus')
+        })
+
+        it('If wrong samplingmethod is chosen, user is informed and right one can be chosen', function () {
+            cy.login({ username: 'user', password: 'user' })
+            cy.contains('Etusivu').click()
+            cy.contains('Maitotila 1').click()
+            cy.contains('Toiminnot').click()
+            cy.get('[type="checkbox"]').first().check()
+            cy.get('#checkSamples').click()
+            cy.contains('Väärä vastaus')
+            cy.get('[type="checkbox"]').first().uncheck()
+            cy.get('[type="checkbox"]').eq('2').check()
+            cy.get('#checkSamples').click()
+            cy.contains('Oikea vastaus')
+        })
+    })
+
+    after(function () {
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+    })
+})

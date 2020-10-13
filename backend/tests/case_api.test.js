@@ -31,8 +31,8 @@ beforeEach(async () => {
     await Promise.all(promiseArray)
     const adminPassword = await bcrypt.hash('admin', 10)
     const userPassword = await bcrypt.hash('password', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true })
-    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com' })
+    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'example@com' })
     await admin.save()
     await user.save()
     await Test(initialTest).save()
@@ -60,10 +60,11 @@ describe('addition of a case ', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         const newCase = {
             name: 'testing case',
@@ -101,10 +102,11 @@ describe('addition of a case ', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         const newCase = {
             name: 'testing case',
@@ -125,10 +127,11 @@ describe('addition of a case ', () => {
 
         const initialLength = res.body.length
         const testGroups2 = JSON.stringify([[{
-            testId: 'false-test-id',
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: 'false-test-id',
+                positive: true,
+            }],
+            isRequired: true
         }]])
 
         const newCases = [{
@@ -240,10 +243,11 @@ describe('addition of a case ', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         const newCase = {
             name: 'testing case',
@@ -288,10 +292,11 @@ describe('deletion of a case', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         const newCase = {
             name: 'testing case',
@@ -343,10 +348,11 @@ describe('deletion of a case', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         const newCase = {
             name: 'testing case',
@@ -396,10 +402,11 @@ describe('modify a case', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         const newCase = {
             name: 'testing case',
@@ -456,10 +463,11 @@ describe('modify a case', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         const newCase = {
             name: 'testing case',
@@ -508,10 +516,11 @@ describe('modify a case', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         let newCase = {
             name: 'testing case',
@@ -550,10 +559,11 @@ describe('modify a case', () => {
             bacterium: 'false-id'
         }, {
             testGroups: JSON.stringify([[{
-                testId: 'false-id',
-                isRequired: true,
-                positive: true,
-                alternativeTests: false
+                tests: [{
+                    testId: 'false-test-id',
+                    positive: true,
+                }],
+                isRequired: true
             }]])
         }]
         let updatetCase = await api
@@ -610,10 +620,11 @@ describe('modify a case', () => {
             rightAnswer: false
         }])
         const testGroups = JSON.stringify([[{
-            testId: testCase.id,
-            isRequired: true,
-            positive: true,
-            alternativeTests: false
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
         }]])
         let newCase = {
             name: 'testing case',

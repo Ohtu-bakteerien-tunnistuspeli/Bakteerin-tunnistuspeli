@@ -23,7 +23,7 @@ const add = async (name, type, contImg, posImg, negImg, bacteriaSpes, token) => 
     return axios.post(baseUrl, formData , config).then(response => response.data).catch(error => error.response.data)
 }
 
-const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, token) => {
+const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, token) => {
     console.log('edit to service ', name, id, bacteriaSpesif)
     const formData = new FormData()
     formData.append('id', id )
@@ -33,6 +33,9 @@ const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesi
     formData.append('positiveResultImage', photoPos )
     formData.append('negativeResultImage', photoNeg)
     Array.from(bacteriaSpesif).forEach(bact => formData.append('bacteriaSpecificImages', bact))
+    formData.append('deleteCtrl', photosToDelete.ctrl)
+    formData.append('deletePos', photosToDelete.pos)
+    formData.append('deleteNeg', photosToDelete.neg)
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
     console.log(formData)
     console.log(bacteriaSpesif[0])
@@ -46,7 +49,7 @@ const deleteTest = async (id, token) => {
     console.log('deletion to service ', id)
     return axios.delete(`${baseUrl}/${id}`, config)
         .then(response => response)
-        .catch(error => error)
+        .catch(error => error.response.data)
 }
 
 export default { get, add, update, deleteTest }

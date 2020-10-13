@@ -9,6 +9,12 @@ const reducer = (state = [], action) => {
     case 'ADD_CASE': {
         return [...state, action.data]
     }
+    case 'DELETE_CASE': {
+        return state.filter(ca => ca.id !== action.data.id)
+    }
+    case 'UPDATE_CASE': {
+        return state.map(c => c.id === action.data.id ? c = action.data : c)
+    }
     default: return state
     }
 }
@@ -31,13 +37,42 @@ export const addCase = (name, bacterium, anamnesis, completionImage, samples, te
     return async dispatch => {
         const caseToSave = await caseService.add(name, bacterium, anamnesis, completionImage, samples, testGroups, token)
         if (caseToSave.error) {
-            dispatch(setNotification({ message: caseToSave.error.substring(caseToSave.error.indexOf('name: ') + 6), success: false }))
+            dispatch(setNotification({ message: caseToSave.error, success: false }))
         } else {
+            dispatch(setNotification({ message: `Tapauksen ${caseToSave.name} lisäys onnistui.`, success: true }))
             dispatch({
                 type: 'ADD_CASE',
                 data: caseToSave
             })
             resetCaseForm()
+        }
+    }
+}
+
+export const deleteCase = (caseToDelete, token) => {
+    return async dispatch => {
+        const res = await caseService.deleteCase(caseToDelete.id, token)
+        if (res.status !== 204) {
+            dispatch(setNotification({ message: res.error, success: false }))
+        } else {
+            dispatch({
+                type: 'DELETE_CASE',
+                data: caseToDelete
+            })
+        }
+    }
+}
+
+export const updateCase = (id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token) => {
+    return async dispatch => {
+        const caseToUpdate = await caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token)
+        if(caseToUpdate.error){
+            dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
+        } else {
+            dispatch({
+                type: 'UPDATE_CASE',
+                data: caseToUpdate
+            })
         }
     }
 }
