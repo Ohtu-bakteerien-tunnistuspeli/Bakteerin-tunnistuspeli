@@ -3,11 +3,11 @@ import Sample from './Sample.js'
 import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Button, Form, Table, ListGroup } from 'react-bootstrap'
+import { Modal, Button, Form } from 'react-bootstrap'
 import { updateCase } from '../../reducers/caseReducer'
 
 
-const CaseEditForm = ({ caseToEdit }) => {
+const CaseEditForm = ({ c }) => {
     /* Modal config */
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
@@ -17,33 +17,30 @@ const CaseEditForm = ({ caseToEdit }) => {
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
-    const saveUpdatedCase = (event) => {
+    const updateCase2 = (event) => {
         event.preventDefault()
         dispatch(updateCase(c.id, caseName, bacterium, caseAnamnesis, c.completionImage, samples, testGroups, deleteEndImage, user.token))
 
     }
 
     /* case name control*/
-    const [caseName, setCaseName] = useState(caseToEdit.name)
+    const [caseName, setCaseName] = useState(c.name)
     const handleCaseNameChange = (event) => setCaseName(event.target.value)
     /* case name control end */
 
     /* case anamnesis control */
-    const [caseAnamnesis, setCaseAnamnesis] = useState(caseToEdit.anamnesis)
+    const [caseAnamnesis, setCaseAnamnesis] = useState(c.anamnesis)
     const handleAnamnesisChange = (event) => setCaseAnamnesis(event.target.value)
     /*case anamnesis control end */
 
     /*bacterium control*/
-    const bacteria = useSelector(state => state.bacteria)
-        .sort((bacterium1, bacterium2) =>
-            bacterium1.name.localeCompare(bacterium2.name))
-
-    const [bacterium, setBacterium] = useState(caseToEdit.bacterium)
+    const bacteria = useSelector(state => state.bacteria).sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
+    const [bacterium, setBacterium] = useState(c.bacterium)
     const handleBacteriumChange = (event) => setBacterium(bacteria.find(bac => bac.id === event.target.value))
     /* bacterium control end */
 
     /*Image control */
-    const [deleteEndImage] = useState(false)
+    const [deleteEndImage, setDeleteEndImage] = useState(false)
     /*image control end*/
 
     /* samples control*/
@@ -59,12 +56,12 @@ const CaseEditForm = ({ caseToEdit }) => {
     const addSample = (event) => {
         event.preventDefault()
         const newSample = {
-            description: sampleDescription,
-            rightAnswer: sampleRightAnswer
+            description: newSampleName,
+            rightAnswer: newSampleRightAnswer
         }
         setSamples(samples.concat(newSample))
-        setSampleDescription('')
-        setSampleRightAnswer(false)
+        setNewSampleName('')
+        setNewSampleRightAnswer(false)
 
     }
     /* samples control end */
