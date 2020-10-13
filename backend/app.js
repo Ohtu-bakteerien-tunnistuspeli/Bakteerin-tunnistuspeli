@@ -128,7 +128,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                     }
                 ],
                 testGroups: [
-                    [{ tests: [{ test: intialTestCase1, positive: true }], isRequired: true }, { tests: [{ test: intialTestCase2, positive: true }], isRequired: true }],
+                    [{ tests: [{ test: intialTestCase1, positive: true }], isRequired: false }, { tests: [{ test: intialTestCase2, positive: true }, { test: intialTestCase4, positive: true }], isRequired: true }],
                     [{ tests: [{ test: intialTestCase3, positive: false }], isRequired: true }]
                 ]
             })
