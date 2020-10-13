@@ -56,9 +56,9 @@ const GamePage = () => {
                                 !game.samplesCorrect ?
                                     <>
                                         <h1>Näytteenotto</h1>
-                                        <Form onSubmit={(event) => sampleSubmit(event)} style={{ backgroundColor: "#F5F5F5" }}>
+                                        <Form id='samples' onSubmit={(event) => sampleSubmit(event)} style={{ backgroundColor: "#F5F5F5" }}>
                                             <Form.Label>Millaisen näytteen otat?</Form.Label>
-                                            {game.case.samples.map((sample, i) => <Form.Check key={i} label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)}></Form.Check>)}
+                                            {game.case.samples.map((sample, i) => <Form.Check  key={i} label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)}></Form.Check>)}
                                             <Button
                                                 variant='success'
                                                 type='submit'

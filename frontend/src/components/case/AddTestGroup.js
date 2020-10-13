@@ -21,8 +21,19 @@ const AddTestGroup = ({ testForAlternativeTests,
                 label='Positiivinen'
                 onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
             <ButtonGroup vertical>
+<<<<<<< HEAD
                 <Table striped bordered hover id='alternativeTestsTable'>
                     {testForCase.tests.length > 0 ?
+=======
+                <Button
+                    type="button"
+                    id="addTestForGroup"
+                    onClick={handleTestAdd}>Lisää testi
+                </Button>
+
+                <Table striped bordered hover id="testGroupTable">
+                    {testGroup.length > 0 ?
+>>>>>>> 47912250814b20d604ba070ccd13ebb12aa54ee4
                         <thead>
                             <tr>
                                 <th>Testi</th>
@@ -77,6 +88,7 @@ const AddTestGroup = ({ testForAlternativeTests,
                     <tbody>
                         {testGroup.map((testForCase, i) =>
                             <tr key={i}>
+<<<<<<< HEAD
                                 <td>
                                     <Table striped bordered hover id='testGroupTable'>
                                         {testForCase.tests.length > 0 ?
@@ -98,6 +110,12 @@ const AddTestGroup = ({ testForAlternativeTests,
                                     </Table>
                                 </td>
                                 <td>{testForCase.isRequired ? 'Kyllä' : 'Ei'}</td>
+=======
+                                <td>{tests.find(t => t.id === tg.testId).name}</td>
+                                <td>{tg.isRequired ? 'Kyllä' : 'Ei'}</td>
+                                <td>{tg.positive ? 'Kyllä' : 'Ei'}</td>
+                                <td>{tg.alternativeTests ? 'Kyllä' : 'Ei'}</td>
+>>>>>>> 47912250814b20d604ba070ccd13ebb12aa54ee4
                             </tr>
                         )}
                     </tbody>

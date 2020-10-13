@@ -3,7 +3,7 @@ const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
 const isComplete = (caseToCheck) => {
-    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.samples && caseToCheck.testGroups) {
+    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.completionImage.url && caseToCheck.samples && caseToCheck.testGroups) {
         return true
     }
     return false
@@ -178,7 +178,6 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 name: request.body.name
             }
             if (request.body.bacterium) {
-                console.log('case update reached backend bacterium', request.body.bacterium)
                 let bacterium
                 try {
                     bacterium = await Bacterium.findById(request.body.bacterium)
@@ -257,7 +256,6 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 oldLinks.push(caseToUpdate.completionImage.url)
                 changes.controlImage = null
             }
-            console.log('case update reached backend changes complete')
             changes.complete = isComplete(changes)
             const updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
             var i
