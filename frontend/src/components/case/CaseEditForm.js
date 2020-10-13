@@ -21,8 +21,8 @@ const CaseEditForm = ({ caseToEdit }) => {
         event.preventDefault()
         var token = user.token
         var id = caseToEdit.id
-        dispatch(updateCase(id, caseName, 
-            bacterium, caseAnamnesis, caseToEdit.completionImage, samples, 
+        dispatch(updateCase(id, caseName,
+            bacterium, caseAnamnesis, caseToEdit.completionImage, samples,
             testGroups, deleteEndImage, token))
     }
 
@@ -38,8 +38,8 @@ const CaseEditForm = ({ caseToEdit }) => {
 
     /*bacterium control*/
     const bacteria = useSelector(state => state.bacteria)
-                                .sort((bacterium1, bacterium2) => 
-                                bacterium1.name.localeCompare(bacterium2.name))
+        .sort((bacterium1, bacterium2) =>
+            bacterium1.name.localeCompare(bacterium2.name))
 
     const [bacterium, setBacterium] = useState(caseToEdit.bacterium)
     const handleBacteriumChange = (event) => setBacterium(bacteria.find(bac => bac.id === event.target.value))
@@ -109,7 +109,7 @@ const CaseEditForm = ({ caseToEdit }) => {
         <Modal show={show} size="lg" onHide={handleClose} >
             <Modal.Header closeButton>Muokkaat tapausta "{caseToEdit.name}"</Modal.Header>
             <Modal.Body>
-            <Form onSubmit={saveUpdatedCase} >
+                <Form onSubmit={saveUpdatedCase} >
 
                     <Form.Label>Nimi:</Form.Label><br></br>
                     <Form.Control onChange={handleCaseNameChange} defaultValue={caseToEdit.name} /><br></br>
@@ -126,14 +126,14 @@ const CaseEditForm = ({ caseToEdit }) => {
 
                     <Form.Label>Näytevaihtoehdot: </Form.Label><br></br>
                     <Table>
-                <tbody>
-                {samples.map(s =>
-                        <Sample key={s.description}
-                            sample={s}
-                            sampleChange={deleteSample} >
-                        </Sample>
-                    )}
-                </tbody>
+                        <tbody>
+                            {samples.map(s =>
+                                <Sample key={s.description}
+                                    sample={s}
+                                    sampleChange={deleteSample} >
+                                </Sample>
+                            )}
+                        </tbody>
                     </Table>
 
                     <Form.Control onChange={handleSampleName}
@@ -145,16 +145,17 @@ const CaseEditForm = ({ caseToEdit }) => {
                         checked={sampleRightAnswer} />
                     <Button onClick={addSample}>Lisää näytevaihtoehto</Button><br></br>
                     <br></br>
-
-                    <Form.Label> Testiryhmät</Form.Label>
-                    {testGroups.map((tg, i) =>
-                        <TestGroup key={i}
-                            testgroup={tg}
-                            index={i}
-                            removeTestGroup={removeTestGroup}
-                        >
-                        </TestGroup>
-                    )}
+                    <ListGroup>
+                        <Form.Label> Testiryhmät</Form.Label>
+                        {testGroups.map((tg, i) =>
+                            <TestGroup key={i}
+                                testgroup={tg}
+                                index={i}
+                                removeTestGroup={removeTestGroup}
+                            >
+                            </TestGroup>
+                        )}
+                    </ListGroup>
                     <Form.Label>Lisää Testiryhmä</Form.Label>
                     <AddTestGroup
                         testForAlternativeTests={testForAlternativeTests}
