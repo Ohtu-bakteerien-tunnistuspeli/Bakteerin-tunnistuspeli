@@ -515,7 +515,7 @@ describe('deleting of a test', () => {
             .get('/api/test')
             .set('Authorization', `bearer ${user.body.token}`)
         const testGroups = JSON.stringify([
-            [{ testId: res.body.id }]
+            [{ tests: [{ testId: res.body.id }] }]
         ])
         const newCase = {
             name: 'testCase',

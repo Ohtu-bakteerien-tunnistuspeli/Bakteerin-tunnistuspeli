@@ -125,7 +125,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 type: request.body.type,
                 bacteriaSpecificImages: testToEdit.bacteriaSpecificImages,
             }
-            const deletePhotos = { ctrl:request.body.deleteCtrl, pos:request.body.deletePos, neg:request.body.deleteNeg }
+            const deletePhotos = { ctrl: request.body.deleteCtrl, pos: request.body.deletePos, neg: request.body.deleteNeg }
             console.log(deletePhotos)
             const oldLinks = []
 
@@ -203,7 +203,7 @@ testRouter.delete('/:id', async (request, response) => {
             })
 
             const cases = await Case.find({}).populate({
-                path: 'testGroups.test',
+                path: 'testGroups.tests.test',
                 model: 'Test',
                 populate: {
                     path: 'bacteriaSpecificImages.bacterium',
@@ -214,8 +214,10 @@ testRouter.delete('/:id', async (request, response) => {
             cases.forEach(element => {
                 for (let i = 0; i < element.testGroups.length; i++) {
                     for (let j = 0; j < element.testGroups[i].length; j++) {
-                        if (element.testGroups[i][j].test.name === testToDelete.name) {
-                            testIsInUse = true
+                        for (let k = 0; k < element.testGroups[i][j].tests.length; k++) {
+                            if (element.testGroups[i][j].tests[k].test.name === testToDelete.name) {
+                                testIsInUse = true
+                            }
                         }
                     }
                 }
