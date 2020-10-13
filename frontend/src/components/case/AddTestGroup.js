@@ -35,8 +35,8 @@ const AddTestGroup = ({ setCaseTest,
                     id="addTestForGroup"
                     onClick={handleTestAdd}>Lisää testi
                 </Button>
-                
-                 <Table striped bordered hover id="testGroupTable">
+
+                <Table striped bordered hover id="testGroupTable">
                     {testGroup.length > 0 ?
                         <thead>
                             <tr>

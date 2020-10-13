@@ -3,7 +3,7 @@ const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
 const isComplete = (caseToCheck) => {
-    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.samples && caseToCheck.testGroups) {
+    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.completionImage.url && caseToCheck.samples && caseToCheck.testGroups) {
         return true
     }
     return false
