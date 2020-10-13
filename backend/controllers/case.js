@@ -3,7 +3,8 @@ const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
 const isComplete = (caseToCheck) => {
-    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.samples && caseToCheck.testGroups) {
+    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.completionImage.url && caseToCheck.samples && caseToCheck.testGroups) {
+        console.log(caseToCheck.completionImage)
         return true
     }
     return false
@@ -78,6 +79,7 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                 newCase.anamnesis = request.body.anamnesis
             }
             if (request.files && request.files.completionImage) {
+                console.log(request.files.completionImage)
                 newCase.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {
