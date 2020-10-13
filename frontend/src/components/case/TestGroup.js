@@ -32,7 +32,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup }) => {
                                     <tbody>
                                         {testOfCase.tests.map((alternativeTest, k) =>
                                             <tr key={k}>
-                                                <td>{alternativeTest.test.name}</td>
+                                                <td>{alternativeTest.test ? alternativeTest.test.name : alternativeTest.name}</td>
                                                 <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
                                             </tr>
                                         )}

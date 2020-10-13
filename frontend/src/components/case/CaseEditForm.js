@@ -19,15 +19,15 @@ const CaseEditForm = ({ c }) => {
 
     const updateCase2 = (event) => {
         event.preventDefault()
+        /*
         console.log('do the update here')
         console.log(`new name ${caseName}`)
         console.log(`new anamnesis ${caseAnamnesis}`)
         console.log(`new bacterium ${bacterium.name}`)
         console.log(`new samples ${samples.map(s => s.description)}`)
         console.log(`testgroups ${testGroups}`)
-        var token = user.token
-        var id = c.id
-        dispatch(updateCase(id, caseName, bacterium, caseAnamnesis, c.completionImage, samples, testGroups, deleteEndImage, token))
+        */
+        dispatch(updateCase(c.id, caseName, bacterium, caseAnamnesis, c.completionImage, samples, testGroups, deleteEndImage, user.token))
 
     }
 
@@ -55,7 +55,7 @@ const CaseEditForm = ({ c }) => {
     const [samples, setSamples] = useState(c.samples)
     const deleteSample = (sample2) => {
         setSamples(samples.filter(s => s.description !== sample2.description))
-    }    
+    }
     const [newSampleName, setNewSampleName] = useState('')
     const [newSampleRightAnswer, setNewSampleRightAnswer] = useState(false)
     const handleNewSampleName = (event) => setNewSampleName(event.target.value)
@@ -74,32 +74,37 @@ const CaseEditForm = ({ c }) => {
     }
     /* samples control end */
 
-      /* testgroup control */
-      const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
-  
-      const [testForCase, setTestForCase] = useState({ name: tests[0].name, testId: tests[0].id, required: false, positive: false, alternativeTests: false })
-      const [testBools, setTestBools] = useState({isRequired: false, positive: false, alternativeTests: false})
-      const [testGroup, setTestGroup] = useState([])
-      const [testGroups, setTestGroups] = useState(c.testGroups)
-      const addTestGroup = () => {
-          setTestGroups([...testGroups, testGroup])
-          setTestGroup([])
-      }
-      const handleTestChange = (event) => setTestForCase(tests.find(t => t.id === event.target.value))
-      const handleTestAdd = () => { 
-        setTestGroup([...testGroup, 
-          {test: testForCase, 
-          isRequired: testBools.isRequired,
-          positive: testBools.positive,
-          alternativeTests: testBools.alternativeTests
-      }])}
+    /* testgroup control */
+    const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const [testForAlternativeTests, setTestForAlternativeTests] = useState({ name: tests[0].name, testId: tests[0].id, positive: false })
+    const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
+    const [testGroup, setTestGroup] = useState([])
+    const [testGroups, setTestGroups] = useState(c.testGroups)
 
-      const removeTestGroup = (tg) => {
-          setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
-      }
-      /* testgroup control end */
-console.log("THE CASE")
-    console.log(c)
+    const addTestGroup = () => {
+        if (testGroup.length > 0) {
+            setTestGroups([...testGroups, testGroup])
+            setTestGroup([])
+        }
+    }
+
+    const addTestForCaseToTestGroup = () => {
+        if (testForCase.tests.length > 0) {
+            setTestGroup([...testGroup, testForCase])
+            setTestForCase({ isRequired: testForCase.isRequired, tests: [] })
+        }
+    }
+
+    const addAlternativeTestToTestForCase = () => {
+        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(testForAlternativeTests) })
+    }
+
+
+
+    const removeTestGroup = (tg) => {
+        setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
+    }
+    /* testgroup control end */
     return (<div>
         <Button variant="primary" onClick={handleShow}>
             Muokkaa
@@ -143,20 +148,22 @@ console.log("THE CASE")
                         <TestGroup key={i}
                             testgroup={tg}
                             index={i}
-                            removeTestGroup = {removeTestGroup}
+                            removeTestGroup={removeTestGroup}
                         >
                         </TestGroup>
                     )}
-                     <Form.Label>Lisää Testiryhmä</Form.Label>
-                    <AddTestGroup 
-                           setCaseTest={handleTestChange}
-                           setTestBools = {setTestBools}
-                           testBools = {testBools}
-                           tests={tests}
-                           handleTestAdd={handleTestAdd}
-                           testGroup={testGroup}
-                           addTestGroup={addTestGroup}
-                           ></AddTestGroup>
+                    <Form.Label>Lisää Testiryhmä</Form.Label>
+                    <AddTestGroup
+                        testForAlternativeTests={testForAlternativeTests}
+                        testForCase={testForCase}
+                        addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
+                        tests={tests}
+                        setTestForCase={setTestForCase}
+                        testGroup={testGroup}
+                        addTestGroup={addTestGroup}
+                        addTestForCaseToTestGroup={addTestForCaseToTestGroup}
+                        setTestForAlternativeTests={setTestForAlternativeTests}
+                    ></AddTestGroup>
                     <Button variant="primary" type="submit">
                         Tallenna
                     </Button>
