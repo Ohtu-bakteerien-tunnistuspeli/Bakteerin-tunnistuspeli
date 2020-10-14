@@ -26,8 +26,8 @@ Response body contains array of Case objects, each returned object contains at l
             id: ObjectId
         },
 		anamnesis: String,
-        completitionText: {
-            data: Buffer,
+        completionImage: {
+            url: String,
             contentType: String
         },
         samples: [{
@@ -40,15 +40,15 @@ Response body contains array of Case objects, each returned object contains at l
 				name: String,
 				type: String
 				controlImage: {
-					data: Buffer,
+					url: String,
 					contentType: String
 				},
 				positiveResultImage: {
-					data: Buffer,
+					url: String,
 					contentType: String
 				},
 				negativeResultImage: {
-					data: Buffer,
+					url: String,
 					contentType: String
 				},
 				bacteriaSpecificImages: [{
@@ -56,7 +56,7 @@ Response body contains array of Case objects, each returned object contains at l
 						name: String,
 						id: ObjectId
 					},
-					data: Buffer,
+					url: String,
 					contentType: String
 				}], 
 			}
@@ -69,7 +69,7 @@ Response body contains array of Case objects, each returned object contains at l
 `401 Unauthorized`: with error message: "token missing or invalid" if current user is unauthorized. 
 
 
-### `POST /api/case/`
+## `POST /api/case/`
 This endpoint lets teacher (admin role) create a new Case object and returns this created object, if object was saved successfully to the database.
 
 ### Response
@@ -78,7 +78,7 @@ This endpoint lets teacher (admin role) create a new Case object and returns thi
 | Content-Type  | application/json |
 |Status Code|201 Created|
 
-Response body contains the saved Case object, which contains at least fields `id`, `name`, and `complete`. If data was added to any of the fields `bacterium`, `anamnesis`, `completitionText`, `samples`, `testGroups`, this is also returned:
+Response body contains the saved Case object, which contains at least fields `id`, `name`, and `complete`. If data was added to any of the fields `bacterium`, `anamnesis`, `completionImage`, `samples`, `testGroups`, this is also returned:
 ```
 {
     id: ObjectId,
@@ -93,8 +93,8 @@ Response body contains the saved Case object, which contains at least fields `id
         id: ObjectId
     },
 	anamnesis: String,
-    completitionText: {
-        data: Buffer,
+    completionText: {
+        url: String,
         contentType: String
     },
     samples: [{
@@ -107,15 +107,15 @@ Response body contains the saved Case object, which contains at least fields `id
 			name: String,
 			type: String
 			controlImage: {
-				data: Buffer,
+				url: String,
 				contentType: String
 			},
 			positiveResultImage: {
-				data: Buffer,
+				url: String,
 				contentType: String
 			},
 			negativeResultImage: {
-				data: Buffer,
+				url: String,
 				contentType: String
 			},
 			bacteriaSpecificImages: [{
@@ -123,7 +123,7 @@ Response body contains the saved Case object, which contains at least fields `id
 					name: String,
 					id: ObjectId
 				},
-				data: Buffer,
+				url: String,
 				contentType: String
 			}], 
 		}
@@ -176,8 +176,8 @@ Response body is modified Case object, which contains at least fields which cont
         id: ObjectId
     },
 	anamnesis: String,
-    completitionText: {
-        data: Buffer,
+    completionImage: {
+        url: String,
         contentType: String
     },
     samples: [{
@@ -190,15 +190,15 @@ Response body is modified Case object, which contains at least fields which cont
 			name: String,
 			type: String
 			controlImage: {
-				data: Buffer,
+				url: String,
 				contentType: String
 			},
 			positiveResultImage: {
-				data: Buffer,
+				url: String,
 				contentType: String
 			},
 			negativeResultImage: {
-				data: Buffer,
+				url: String,
 				contentType: String
 			},
 			bacteriaSpecificImages: [{
@@ -206,7 +206,7 @@ Response body is modified Case object, which contains at least fields which cont
 					name: String,
 					id: ObjectId
 				},
-				data: Buffer,
+				url: String,
 				contentType: String
 			}], 
 		}
