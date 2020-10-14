@@ -64,7 +64,11 @@ beforeEach(async () => {
         anamnesis: textForAnamesis,
         samples: samples,
         testGroups: [[]],
-        complete: true
+        complete: true,
+        completionImage: {
+            url: 'image',
+            contentType: 'string'
+        }
     }
     let case2 = {
         name: 'Maitotila 12',
@@ -72,7 +76,11 @@ beforeEach(async () => {
         anamnesis: textForAnamesis,
         samples: samples,
         testGroups: [[]],
-        complete: false
+        complete: false,
+        completionImage: {
+            url: 'image',
+            contentType: 'string'
+        }
     }
     const testGroups = [
         [
@@ -162,6 +170,14 @@ describe('starting game', () => {
         expect(getResponse.body[0].testGroups).toBeUndefined()
         expect(getResponse.body[0].anamnesis).toBeUndefined()
         expect(getResponse.body[0].bacterium).toBeUndefined()
+        expect(getResponse.body[0].completionImage).toBeUndefined()
+    })
+
+    test('non-user cannot get list of cases', async () => {
+        await api
+            .get('/api/case')
+            .expect('Content-Type', /application\/json/)
+            .expect(401)
     })
 
     test('user can get single case to play', async () => {
@@ -183,6 +199,29 @@ describe('starting game', () => {
         expect(getResponse.body.testGroups).toBeUndefined()
         expect(getResponse.body.anamnesis).toBeTruthy()
         expect(getResponse.body.bacterium).toBeUndefined()
+        expect(getResponse.body.completionImage).toBeUndefined()
+    })
+
+    test('getting bad case returns error 400', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        await api
+            .get('/api/case/badId')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(400)
+    })
+
+    test('non-user cannot get single case to play', async () => {
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        await api
+            .get(`/api/case/${caseToTest.id}`)
+            .expect('Content-Type', /application\/json/)
+            .expect(401)
     })
 })
 
@@ -258,7 +297,155 @@ describe('checking sample', () => {
             .expect(200)
         expect(checkingResponse.body.correct).toEqual(false)
     })
+
+    test('checking samples for bad case return error 400', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const samples = { samples: ['Maitonäyte Muurikin kaikista neljänneksistä'] }
+        await api
+            .post('/api/case/badId/checkSamples')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(samples)
+            .expect('Content-Type', /application\/json/)
+            .expect(400)
+    })
+
+    test('non-user cannot check samples', async () => {
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const samples = { samples: ['Maitonäyte Muurikin kaikista neljänneksistä'] }
+        await api
+            .post(`/api/case/${caseToTest.id}/checkSamples`)
+            .send(samples)
+            .expect('Content-Type', /application\/json/)
+            .expect(401)
+    })
 })
+
+describe('checking bacterium', () => {
+    test('giving correct bacterium gives correct answer', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const bacterium = { bacteriumName: 'Streptococcus agalactiaee' }
+        const checkingResponse = await api
+            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacterium)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(checkingResponse.body.correct).toEqual(true)
+        expect(checkingResponse.body.completionImageUrl).toBeTruthy()
+    })
+
+    test('giving correct bacterium in lower case gives correct answer', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const bacterium = { bacteriumName: 'streptococcus agalactiaee' }
+        const checkingResponse = await api
+            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacterium)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(checkingResponse.body.correct).toEqual(true)
+        expect(checkingResponse.body.completionImageUrl).toBeTruthy()
+    })
+
+    test('giving correct bacterium in upper case gives correct answer', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const bacterium = { bacteriumName: 'STREPTOCOCCUS AGALACTIAEE' }
+        const checkingResponse = await api
+            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacterium)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(checkingResponse.body.correct).toEqual(true)
+        expect(checkingResponse.body.completionImageUrl).toBeTruthy()
+    })
+
+    test('giving wrong bacterium gives incorrect answer', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const bacterium = { bacteriumName: 'Koli' }
+        const checkingResponse = await api
+            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacterium)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(checkingResponse.body.correct).toEqual(false)
+    })
+
+    test('giving no bacterium gives incorrect answer', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const bacterium = {}
+        const checkingResponse = await api
+            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacterium)
+            .expect('Content-Type', /application\/json/)
+            .expect(200)
+        expect(checkingResponse.body.correct).toEqual(false)
+    })
+
+    test('checking bacterium for bad case returns error 400', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+        const bacterium = { bacteriumName: 'Streptococcus agalactiaee' }
+        await api
+            .post('/api/case/badid/checkBacterium')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(bacterium)
+            .expect('Content-Type', /application\/json/)
+            .expect(400)
+    })
+
+    test('non-user cannot check bacterium', async () => {
+        const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
+        const bacterium = { bacteriumName: 'Streptococcus agalactiaee' }
+        await api
+            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .send(bacterium)
+            .expect('Content-Type', /application\/json/)
+            .expect(401)
+    })
+})
+
 
 afterAll(async () => {
     await mongoose.connection.close()
