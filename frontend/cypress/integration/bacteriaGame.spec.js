@@ -156,22 +156,6 @@ describe('Game', function() {
             cy.contains('Kirjaudu ulos').click()
             cy.contains('Kirjaudu Bakteeripeliin')
         })
-
-        describe('and there is a bacterium', function() {
-            beforeEach(function() {
-                cy.login({ username: 'admin', password: 'admin' })
-                cy.addBacterium({ name: 'pneumokokki' })
-                cy.login({ username: 'user', password: 'user' })
-            })
-
-            it('it can be found on the list', function() {
-                cy.contains('pneumokokki')
-            })
-
-            it('it cannot be deleted from the list', function() {
-                cy.get('div').should('not.contain', '#delete')
-            })
-        })
     })
 
     describe('After logging in as admin', function() {
@@ -180,6 +164,7 @@ describe('Game', function() {
         })
 
         it('a new bacterium can be added', function() {
+            cy.contains('Bakteerien hallinta').click()
             cy.get('#newBacterium').type('testibakteeri')
             cy.contains('Lisää').click()
 
@@ -197,17 +182,19 @@ describe('Game', function() {
             })
 
             it('it can be found on the list', function() {
+                cy.contains('Bakteerien hallinta').click()
                 cy.contains('pneumokokki2')
             })
 
             it('it can be deleted from the list', function() {
                 cy.addBacterium({ name: 'testdelete' })
-
+                cy.contains('Bakteerien hallinta').click()
                 cy.contains('testdelete').find('#delete').click()
                 cy.get('div').should('not.contain', 'testdelete')
             })
 
             it('it can be edited', function() {
+                cy.contains('Bakteerien hallinta').click()
                 cy.contains('pneumokokki2').find('#edit').click()
 
                 cy.contains('pneumokokki2').find('#editField').type('pneumokokki3')
@@ -217,6 +204,7 @@ describe('Game', function() {
             })
 
             it('its edit field can be exited without saving changes', function() {
+                cy.contains('Bakteerien hallinta').click()
                 cy.contains('pneumokokki2').find('#edit').click()
                 cy.contains('pneumokokki2').find('#editField').type('pneumokokki3')
                 cy.contains('pneumokokki2').find('#stopEdit').click()

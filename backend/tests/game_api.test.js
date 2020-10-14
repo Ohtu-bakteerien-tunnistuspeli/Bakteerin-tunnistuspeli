@@ -189,7 +189,7 @@ describe('starting game', () => {
             })
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const getResponse = await api
-            .get(`/api/case/${caseToTest.id}`)
+            .get(`/api/game/${caseToTest.id}`)
             .set('Authorization', `bearer ${user.body.token}`)
             .expect('Content-Type', /application\/json/)
             .expect(200)
@@ -210,7 +210,7 @@ describe('starting game', () => {
                 password: 'password'
             })
         await api
-            .get('/api/case/badId')
+            .get('/api/game/badId')
             .set('Authorization', `bearer ${user.body.token}`)
             .expect('Content-Type', /application\/json/)
             .expect(400)
@@ -219,7 +219,7 @@ describe('starting game', () => {
     test('non-user cannot get single case to play', async () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         await api
-            .get(`/api/case/${caseToTest.id}`)
+            .get(`/api/game/${caseToTest.id}`)
             .expect('Content-Type', /application\/json/)
             .expect(401)
     })
@@ -236,7 +236,7 @@ describe('checking sample', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const samples = { samples: ['Maitonäyte Muurikin kaikista neljänneksistä'] }
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkSamples`)
+            .post(`/api/game/${caseToTest.id}/checkSamples`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(samples)
             .expect('Content-Type', /application\/json/)
@@ -254,7 +254,7 @@ describe('checking sample', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const samples = { samples: ['Virtsanäyte Muurikilta'] }
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkSamples`)
+            .post(`/api/game/${caseToTest.id}/checkSamples`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(samples)
             .expect('Content-Type', /application\/json/)
@@ -272,7 +272,7 @@ describe('checking sample', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const samples = { samples: ['Maitonäyte Muurikin kaikista neljänneksistä', 'Virtsanäyte Muurikilta'] }
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkSamples`)
+            .post(`/api/game/${caseToTest.id}/checkSamples`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(samples)
             .expect('Content-Type', /application\/json/)
@@ -290,7 +290,7 @@ describe('checking sample', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const samples = { samples: [] }
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkSamples`)
+            .post(`/api/game/${caseToTest.id}/checkSamples`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(samples)
             .expect('Content-Type', /application\/json/)
@@ -307,7 +307,7 @@ describe('checking sample', () => {
             })
         const samples = { samples: ['Maitonäyte Muurikin kaikista neljänneksistä'] }
         await api
-            .post('/api/case/badId/checkSamples')
+            .post('/api/game/badId/checkSamples')
             .set('Authorization', `bearer ${user.body.token}`)
             .send(samples)
             .expect('Content-Type', /application\/json/)
@@ -318,7 +318,7 @@ describe('checking sample', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const samples = { samples: ['Maitonäyte Muurikin kaikista neljänneksistä'] }
         await api
-            .post(`/api/case/${caseToTest.id}/checkSamples`)
+            .post(`/api/game/${caseToTest.id}/checkSamples`)
             .send(samples)
             .expect('Content-Type', /application\/json/)
             .expect(401)
@@ -336,7 +336,7 @@ describe('checking bacterium', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const bacterium = { bacteriumName: 'Streptococcus agalactiaee' }
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .post(`/api/game/${caseToTest.id}/checkBacterium`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacterium)
             .expect('Content-Type', /application\/json/)
@@ -355,7 +355,7 @@ describe('checking bacterium', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const bacterium = { bacteriumName: 'streptococcus agalactiaee' }
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .post(`/api/game/${caseToTest.id}/checkBacterium`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacterium)
             .expect('Content-Type', /application\/json/)
@@ -374,7 +374,7 @@ describe('checking bacterium', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const bacterium = { bacteriumName: 'STREPTOCOCCUS AGALACTIAEE' }
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .post(`/api/game/${caseToTest.id}/checkBacterium`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacterium)
             .expect('Content-Type', /application\/json/)
@@ -393,7 +393,7 @@ describe('checking bacterium', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const bacterium = { bacteriumName: 'Koli' }
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .post(`/api/game/${caseToTest.id}/checkBacterium`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacterium)
             .expect('Content-Type', /application\/json/)
@@ -411,7 +411,7 @@ describe('checking bacterium', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const bacterium = {}
         const checkingResponse = await api
-            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .post(`/api/game/${caseToTest.id}/checkBacterium`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacterium)
             .expect('Content-Type', /application\/json/)
@@ -428,7 +428,7 @@ describe('checking bacterium', () => {
             })
         const bacterium = { bacteriumName: 'Streptococcus agalactiaee' }
         await api
-            .post('/api/case/badid/checkBacterium')
+            .post('/api/game/badid/checkBacterium')
             .set('Authorization', `bearer ${user.body.token}`)
             .send(bacterium)
             .expect('Content-Type', /application\/json/)
@@ -439,7 +439,7 @@ describe('checking bacterium', () => {
         const caseToTest = await Case.findOne({ name: 'Maitotila 11' })
         const bacterium = { bacteriumName: 'Streptococcus agalactiaee' }
         await api
-            .post(`/api/case/${caseToTest.id}/checkBacterium`)
+            .post(`/api/game/${caseToTest.id}/checkBacterium`)
             .send(bacterium)
             .expect('Content-Type', /application\/json/)
             .expect(401)

@@ -165,6 +165,8 @@ const testRouter = require('./controllers/testCase')
 app.use('/api/test', testRouter)
 const caseRouter = require('./controllers/case')
 app.use('/api/case', caseRouter)
+const gameRouter = require('./controllers/game')
+app.use('/api/game', gameRouter)
 app.use(security.authorizationHandler)
 if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
