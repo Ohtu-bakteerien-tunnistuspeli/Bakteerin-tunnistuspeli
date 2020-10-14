@@ -22,7 +22,7 @@ const CaseEditForm = ({ caseToEdit }) => {
         var token = user.token
         var id = caseToEdit.id
         dispatch(updateCase(id, caseName,
-            bacterium, caseAnamnesis, caseToEdit.completionImage, samples,
+            bacterium, caseAnamnesis, completionImage, samples,
             testGroups, deleteEndImage, token))
     }
 
@@ -46,7 +46,17 @@ const CaseEditForm = ({ caseToEdit }) => {
     /* bacterium control end */
 
     /*Image control */
-    const [deleteEndImage, setDeleteEndImage] = useState(false) // eslint-disable-line 
+console.group(caseToEdit)
+
+    const INITIAL_STATE = {
+        id: '',
+        image: undefined,
+    }
+    const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
+    const [deleteEndImage, setDeleteEndImage] = useState(false)
+    const [img, setImg] = useState(caseToEdit.completionImage ? true : false)
+    const borderStyle = { borderStyle:'solid', borderColor: 'black', borderWidth: 'thin' }
+    const marginStyle = { margin: '10px' }
     /*image control end*/
 
     /* samples control*/
@@ -123,6 +133,22 @@ const CaseEditForm = ({ caseToEdit }) => {
                             <option key={bac.id} value={bac.id}>{bac.name}</option>
                         )}
                     </Form.Control><br></br>
+
+                    <Form.Group controlId="editCompletionImage">
+                        <Form.Label style={marginStyle}>Loppukuva</Form.Label>
+                        {img ?
+                        <p style={borderStyle}>Loppukuva on annettu</p>
+                        : <></>
+                        }
+                        <Form.Control
+                            style={marginStyle}
+                            name='editCompletionImg'
+                            value={completionImage.image}
+                            type='file'
+                            onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false)}}
+                        />
+                        <Button style={marginStyle} id='deleteImage' onClick={ () => {setImg(false); setDeleteEndImage(true)} }>Poista loppukuva</Button>
+                    </Form.Group>
 
                     <Form.Label>Näytevaihtoehdot: </Form.Label><br></br>
                     <Table>

@@ -194,7 +194,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             if (request.body.anamnesis) {
                 changes.anamnesis = request.body.anamnesis
             }
-            if (request.files && request.files.completionImage) {
+            if (request.files && request.files.completionImage && deleteEndImage === 'false') {
                 oldLinks.push(caseToUpdate.completionImage.url)
                 //fs.unlink(`${imageDir}/${caseToUpdate.completionImage.url}`, (err) => err)
                 changes.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
@@ -254,7 +254,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             }
             if (deleteEndImage === 'true') {
                 oldLinks.push(caseToUpdate.completionImage.url)
-                changes.controlImage = null
+                changes.completionImage = null
             }
             changes.complete = isComplete(changes)
             let updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
