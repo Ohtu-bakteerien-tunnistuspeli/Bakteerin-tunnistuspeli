@@ -243,6 +243,91 @@ describe('it is possible to do tests', () => {
     })
 })
 
+describe('it is possible to do multiple tests', () => {
+    test('user can do tests from second group after completing all required tests from the first one', async () => {
+        const data = [
+            testMap['test0'],
+            testMap['test3']
+        ]
+        const res = await api
+            .post(`/api/case/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toEqual(true)
+    })
+
+    test('alternative required test can be done as extra', async () => {
+        const data = [
+            testMap['test0'],
+            testMap['test1']
+        ]
+        const res = await api
+            .post(`/api/case/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toEqual(true)
+    })
+
+    test('only required tests are required for completion', async () => {
+        const data = [
+            testMap['test0'],
+            testMap['test3'],
+            testMap['test5'],
+            testMap['test7'],
+            testMap['test9']
+        ]
+        const res = await api
+            .post(`/api/case/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toEqual(true)
+        expect(res.body.requiredDone).toEqual(true)
+    })
+
+    test('allDone is false if not all tests are done', async () => {
+        const data = [
+            testMap['test0'],
+            testMap['test3'],
+            testMap['test5'],
+            testMap['test7'],
+            testMap['test9']
+        ]
+        const res = await api
+            .post(`/api/case/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toEqual(true)
+        expect(res.body.allDone).toEqual(false)
+    })
+
+    test('allDone is true if all tests are done', async () => {
+        const data = [
+            testMap['test0'],
+            testMap['test1'],
+            testMap['test2'],
+            testMap['test3'],
+            testMap['test4'],
+            testMap['test5'],
+            testMap['test6'],
+            testMap['test7'],
+            testMap['test8'],
+            testMap['test9']
+        ]
+        const res = await api
+            .post(`/api/case/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toEqual(true)
+        expect(res.body.requiredDone).toEqual(true)
+        expect(res.body.allDone).toEqual(true)
+    })
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
     await mongoose.disconnect()
