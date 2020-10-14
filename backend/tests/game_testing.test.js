@@ -328,6 +328,26 @@ describe('it is possible to do multiple tests', () => {
     })
 })
 
+describe('correct errors are given', () => {
+    test('when empty list is posted', async () => {
+        const data = []
+        const res = await api
+            .post(`/api/case/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(400)
+        expect(res.body.error).toContain('Testin lähettämisessä tapahtui virhe.')
+    })
+
+    test('when no list is posted', async () => {
+        const res = await api
+            .post(`/api/case/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .expect(400)
+        expect(res.body.error).toContain('Testin lähettämisessä tapahtui virhe.')
+    })
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
     await mongoose.disconnect()

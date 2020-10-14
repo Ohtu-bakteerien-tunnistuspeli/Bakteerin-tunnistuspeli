@@ -338,7 +338,7 @@ caseRouter.post('/:id/checkTests', async (request, response) => {
             let currentRequiredTests = []
             let groupIndex = 0
 
-            if (testsToCheck.length === 0) {
+            if (!testsToCheck || testsToCheck.length === 0) {
                 return response.status(400).json({ error: 'Testin lähettämisessä tapahtui virhe.' })
             }
             let latestTestForCase
