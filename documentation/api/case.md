@@ -35,31 +35,35 @@ Response body contains array of Case objects, each returned object contains at l
 			rightAnswer: Boolean
 		}],
 		testGroups: [[{
-			test: {
-				id: ObjectId,
-				name: String,
-				type: String
-				controlImage: {
-					url: String,
-					contentType: String
-				},
-				positiveResultImage: {
-					url: String,
-					contentType: String
-				},
-				negativeResultImage: {
-					url: String,
-					contentType: String
-				},
-				bacteriaSpecificImages: [{
-					bacterium: {
-						name: String,
-						id: ObjectId
+			tests: [
+				test: {
+					id: ObjectId,
+					name: String,
+					type: String
+					controlImage: {
+						url: String,
+						contentType: String
 					},
-					url: String,
-					contentType: String
-				}], 
-			}
+					positiveResultImage: {
+						url: String,
+						contentType: String
+					},
+					negativeResultImage: {
+						url: String,
+						contentType: String
+					},
+					bacteriaSpecificImages: [{
+						bacterium: {
+							name: String,
+							id: ObjectId
+						},
+						url: String,
+						contentType: String
+					}], 
+				},
+				positive: Boolean
+			],
+			isRequired: Boolean
 		}]],
 		complete: Boolean
     }
@@ -102,31 +106,35 @@ Response body contains the saved Case object, which contains at least fields `id
 		rightAnswer: Boolean
 	}],
 	testGroups: [[{
-		test: {
-			id: ObjectId,
-			name: String,
-			type: String
-			controlImage: {
-				url: String,
-				contentType: String
-			},
-			positiveResultImage: {
-				url: String,
-				contentType: String
-			},
-			negativeResultImage: {
-				url: String,
-				contentType: String
-			},
-			bacteriaSpecificImages: [{
-				bacterium: {
-					name: String,
-					id: ObjectId
+		tests: [
+			test: {
+				id: ObjectId,
+				name: String,
+				type: String
+				controlImage: {
+					url: String,
+					contentType: String
 				},
-				url: String,
-				contentType: String
-			}], 
-		}
+				positiveResultImage: {
+					url: String,
+					contentType: String
+				},
+				negativeResultImage: {
+					url: String,
+					contentType: String
+				},
+				bacteriaSpecificImages: [{
+					bacterium: {
+						name: String,
+						id: ObjectId
+					},
+					url: String,
+					contentType: String
+				}], 
+			},
+			positive: Boolean
+		],
+		isRequired: Boolean
 	}]],
 	complete: Boolean
 }
@@ -185,31 +193,35 @@ Response body is modified Case object, which contains at least fields which cont
 		rightAnswer: Boolean
 	}],
 	testGroups: [[{
-		test: {
-			id: ObjectId,
-			name: String,
-			type: String
-			controlImage: {
-				url: String,
-				contentType: String
-			},
-			positiveResultImage: {
-				url: String,
-				contentType: String
-			},
-			negativeResultImage: {
-				url: String,
-				contentType: String
-			},
-			bacteriaSpecificImages: [{
-				bacterium: {
-					name: String,
-					id: ObjectId
+		tests: [
+			test: {
+				id: ObjectId,
+				name: String,
+				type: String
+				controlImage: {
+					url: String,
+					contentType: String
 				},
-				url: String,
-				contentType: String
-			}], 
-		}
+				positiveResultImage: {
+					url: String,
+					contentType: String
+				},
+				negativeResultImage: {
+					url: String,
+					contentType: String
+				},
+				bacteriaSpecificImages: [{
+					bacterium: {
+						name: String,
+						id: ObjectId
+					},
+					url: String,
+					contentType: String
+				}], 
+			},
+			positive: Boolean
+		],
+		isRequired: Boolean
 	}]],
 	complete: Boolean
 }

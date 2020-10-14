@@ -24,15 +24,15 @@ Response body contains array of Test objects, each returned object contains at l
         name: String,
         type: String
         controlImage: {
-            data: Buffer,
+            url: String,
             contentType: String
         },
         positiveResultImage: {
-            data: Buffer,
+            url: String,
             contentType: String
         },
         negativeResultImage: {
-            data: Buffer,
+            url: String,
             contentType: String
         },
         bacteriaSpecificImages: [{
@@ -40,7 +40,7 @@ Response body contains array of Test objects, each returned object contains at l
                 name: String,
                 id: ObjectId
             },
-            data: Buffer,
+            url: String,
             contentType: String
         }], 
     }
@@ -66,15 +66,15 @@ Response body contains the saved Test object, which contains at least fields `id
     name: String,
     type: String,
     controlImage: {
-      data: Buffer,
+      url: String,
       contentType: String
     },
     positiveResultImage: {
-      data: Buffer,
+      url: String,
       contentType: String
     },
     negativeResultImage: {
-      data: Buffer,
+      url: String,
       contentType: String
     },
     bacteriaSpecificImages: [{
@@ -82,7 +82,7 @@ Response body contains the saved Test object, which contains at least fields `id
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Bacterium'
       },
-      data: Buffer,
+      url: String,
       contentType: String
     }], 
 }
@@ -131,15 +131,15 @@ Response body is modified Test object, which contains at least fields `id`, `nam
     name: String,
     type: String,
     controlImage: {
-      data: Buffer,
+      url: String,
       contentType: String
     },
     positiveResultImage: {
-      data: Buffer,
+      url: String,
       contentType: String
     },
     negativeResultImage: {
-      data: Buffer,
+      url: String,
       contentType: String
     },
     bacteriaSpecificImages: [{
@@ -147,7 +147,7 @@ Response body is modified Test object, which contains at least fields `id`, `nam
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Bacterium'
       },
-      data: Buffer,
+      url: String,
       contentType: String
     }], 
 }
