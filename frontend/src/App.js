@@ -30,9 +30,17 @@ const App = () => {
         padding: 5
     }
 
+    const marginBot = {
+        marginBottom: '20px'
+    }
+
+    const marginTop = {
+        marginTop: '15px'
+    }
+
     return (
         <div className="container">
-            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+            <Navbar style={ marginBot } collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" >
                     <Nav className="mr-auto">
@@ -70,7 +78,7 @@ const App = () => {
                     </Nav>
                     <Nav.Link href="#" as="span">
                         {user
-                            ? <em><p>Tervetuloa {user.username}</p></em>
+                            ? <em><p style={ marginTop }>Tervetuloa {user.username}</p></em>
                             : <Link style={padding} to="/kirjautuminen">Kirjaudu sisään</Link>
                         }
                     </Nav.Link>

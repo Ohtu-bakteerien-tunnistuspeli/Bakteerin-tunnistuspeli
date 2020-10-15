@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/case'
+const baseUrl = '/api/game'
 
 
 const get = (id, token) => {

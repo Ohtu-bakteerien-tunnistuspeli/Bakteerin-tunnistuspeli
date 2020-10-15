@@ -17,7 +17,7 @@ const Login = () => {
         }
     }
     return (
-        <div >
+        <div>
             <h2>Kirjaudu Bakteeripeliin</h2>
             <Form onSubmit={handleLogin}>
                 <Form.Group>

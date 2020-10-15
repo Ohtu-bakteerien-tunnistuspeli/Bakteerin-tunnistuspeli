@@ -10,13 +10,13 @@ const CaseListing = ({ c, admin, deleteCase }) => {
     }*/
     return (
         <ListGroup>
-            <ListGroup.Item key={ c.id } >
+            <ListGroup.Item key={c.id} >
                 {admin ?
                     <div>
-                        { c.name } {c.completionImage ? <ModalImage imageUrl={c.completionImage.url} width={'10%'} height={'10%'}/> : <></>}
+                        {c.name} {c.completionImage ? <ModalImage imageUrl={c.completionImage.url} width={'10%'} height={'10%'} /> : <></>}
                         <div>
-                            <Button variant='danger' style={{ float: 'right' }} id='deleteCase' onClick={ () => deleteCase(c) }>Poista</Button>
-                            <CaseEditForm c= { c }></CaseEditForm>
+                            <Button variant='danger' style={{ float: 'right' }} id='deleteCase' onClick={() => deleteCase(c)}>Poista</Button>
+                            <CaseEditForm caseToEdit={c}></CaseEditForm>
                         </div>
                     </div>
                     :

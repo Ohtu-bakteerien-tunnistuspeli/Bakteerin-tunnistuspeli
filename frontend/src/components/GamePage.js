@@ -16,6 +16,7 @@ const GamePage = () => {
     const cultivationsToShow = tests.filter(test => test.type === 'Viljely').sort((test1, test2) => test1.name.localeCompare(test2.name))
     const stainingsToShow = tests.filter(test => test.type === 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
     const othersToShow = tests.filter(test => test.type !== 'Testi' && test.type !== 'Viljely' && test.type !== 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const style = { marginTop: '10px', marginBottom: '10px' }
 
     const sampleCheckBoxChange = (description) => {
         if (selectedSamples.includes(description)) {
@@ -62,7 +63,8 @@ const GamePage = () => {
                                             <Button
                                                 variant='success'
                                                 type='submit'
-                                                id='checkSamples'>
+                                                id='checkSamples'
+                                                style={ style }>
                                                 Ota näyte
                                             </Button>
                                         </Form>
@@ -70,13 +72,13 @@ const GamePage = () => {
                                     :
                                     <>
                                         <h1>Laboratoriotutkimukset</h1>
-                                        <div style={{ backgroundColor: "#F5F5F5" }}>
+                                        <div id='testView' style={{ backgroundColor: "#F5F5F5" }}>
                                             {
                                                 (cultivationsToShow && cultivationsToShow.length > 0) ?
                                                     <>
                                                         <h2>Viljelyt</h2>
                                                         {cultivationsToShow.map(test =>
-                                                            <Button key={test.id} variant='warning' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className="fas fa-check"></i> : <></>}</Button>
+                                                            <Button id='testButton' key={test.id} variant='warning' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className="fas fa-check"></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -120,8 +122,8 @@ const GamePage = () => {
                             }
                         </Tab>
                         <Tab eventKey='tuloksia' title='Tuloksia'>
-                            <p>Tulokset</p>
-                            <Table>
+                            <h4 style={ style }>Tulokset</h4>
+                            <Table id='resultTable'>
                                 <tbody>
                                     {game.testResults.map((result, i) =>
                                         <tr key={i}>
@@ -137,8 +139,8 @@ const GamePage = () => {
                             </Table>
                         </Tab>
                         <Tab eventKey='kontrolleja' title='Kontrolleja'>
-                            <p>Kontrollit</p>
-                            <Table>
+                            <h4 style={ style }>Kontrollit</h4>
+                            <Table id='controlImgTable'>
                                 <tbody>
                                     {tests.map(test =>
                                         <tr key={test.id}>
