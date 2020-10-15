@@ -80,7 +80,12 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
         <div>
             <p></p>
             <p></p>
-            <Button variant='danger' id='deleteTest' onClick={() => removeTest(test)}>POISTA testi</Button>
+            <Button variant='danger' id='deleteTest' onClick={() => removeTest(test)}>POISTA testi
+                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                    <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                </svg>
+            </Button>
             <p></p>
             <Form onSubmit={editTest} encType="multipart/form-data">
                 <Form.Group>
@@ -104,7 +109,12 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                         type='file'
                         onChange={({ target }) => { setPhotoControl(target.files[0]); setCtrl(true)}}
                     />
-                    <Button style={marginStyle} id='deleteControl' onClick={ () => {setCtrl(false); setDeletePhotos({...deletePhotos, ctrl: true})} }>Poista kontrollikuva</Button>
+                    <Button style={marginStyle} id='deleteControl' onClick={ () => {setCtrl(false); setDeletePhotos({...deletePhotos, ctrl: true})} }>Poista kontrollikuva
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </Button>
                 </Form.Group>
                 <Form.Group controlId="editPositiveResultImage">
                     <Form.Label style={marginStyle}>Positiivinen oletus</Form.Label>
@@ -119,7 +129,12 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                         type='file'
                         onChange={({ target }) => { setPhotoPos(target.files[0]); setPos(true)}}
                     />
-                    <Button style={marginStyle} id='deletePositive' onClick={ () => {setPos(false); setDeletePhotos({...deletePhotos, pos: true})} } >Poista positiivinen kuva</Button>
+                    <Button style={marginStyle} id='deletePositive' onClick={ () => {setPos(false); setDeletePhotos({...deletePhotos, pos: true})} } >Poista positiivinen kuva
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </Button>
                 </Form.Group>
                 <Form.Group controlId="editNegativeResultImage">
                     <Form.Label style={marginStyle}>Negatiivinen oletus</Form.Label>
@@ -134,7 +149,12 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
                         type='file'
                         onChange={({ target }) => {setPhotoNeg(target.files[0]); setNeg(true)}}
                     />
-                    <Button style={marginStyle} id='deleteNegative' onClick={ () => {setNeg(false); setDeletePhotos({...deletePhotos, neg: true})} }>Poista negatiivinen kuva</Button>
+                    <Button style={marginStyle} id='deleteNegative' onClick={ () => {setNeg(false); setDeletePhotos({...deletePhotos, neg: true})} }>Poista negatiivinen kuva
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                    </Button>
                 </Form.Group>
 
                 <Form.Group controlId="editBacteriaSpecificImages">
