@@ -51,7 +51,7 @@ gameRouter.post('/:id/checkSamples', async (request, response) => {
 gameRouter.post('/:id/checkTests', async (request, response) => {
     if (request.user) {
         try {
-            const caseToCheck = await Case.findById(request.params.id).populate({
+            const caseToCheck = await Case.findById(request.params.id).populate('bacterium', { name: 1 }).populate({
                 path: 'testGroups.tests.test',
                 model: 'Test',
                 populate: {
