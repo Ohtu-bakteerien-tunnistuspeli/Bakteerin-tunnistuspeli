@@ -187,7 +187,7 @@ describe('it is possible to do tests', () => {
             testMap['test0']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -199,7 +199,7 @@ describe('it is possible to do tests', () => {
             testMap['test2']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -211,7 +211,7 @@ describe('it is possible to do tests', () => {
             testMap['test3']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -223,7 +223,7 @@ describe('it is possible to do tests', () => {
             testMap['test4']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -235,7 +235,7 @@ describe('it is possible to do tests', () => {
             testMap['test11']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -250,7 +250,7 @@ describe('it is possible to do multiple tests', () => {
             testMap['test3']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -263,7 +263,7 @@ describe('it is possible to do multiple tests', () => {
             testMap['test1']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -279,7 +279,7 @@ describe('it is possible to do multiple tests', () => {
             testMap['test9']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -296,7 +296,7 @@ describe('it is possible to do multiple tests', () => {
             testMap['test9']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -318,7 +318,7 @@ describe('it is possible to do multiple tests', () => {
             testMap['test9']
         ]
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
@@ -332,7 +332,7 @@ describe('correct errors are given', () => {
     test('when empty list is posted', async () => {
         const data = []
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(400)
@@ -341,7 +341,7 @@ describe('correct errors are given', () => {
 
     test('when no list is posted', async () => {
         const res = await api
-            .post(`/api/case/${addedCaseId}/checkTests`)
+            .post(`/api/game/${addedCaseId}/checkTests`)
             .set('Authorization', `bearer ${adminUserToken}`)
             .expect(400)
         expect(res.body.error).toContain('Testin lähettämisessä tapahtui virhe.')
