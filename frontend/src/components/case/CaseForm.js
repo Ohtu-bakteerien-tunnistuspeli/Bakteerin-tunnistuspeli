@@ -36,6 +36,7 @@ const CaseForm = () => {
     const [testGroups, setTestGroups] = useState([])
 
     const [addingAlt, setAddingAlt] = useState(false)
+    const [addingTest, setAddingTest] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -57,6 +58,7 @@ const CaseForm = () => {
         setTestGroup([])
         setTestGroups([])
         setAddingAlt(false)
+        setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
     }
 
@@ -87,19 +89,23 @@ const CaseForm = () => {
             setTestGroup([])
         }
         setAddingAlt(false)
+        setAddingTest(false)
     }
 
     const addTestForCaseToTestGroup = () => {
         if (testForCase.tests.length > 0) {
+            setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
             setTestGroup([...testGroup, testForCase])
             setTestForCase({ isRequired: testForCase.isRequired, tests: [] })
         }
         setAddingAlt(false)
+        setAddingTest(false)
     }
 
     const addAlternativeTestToTestForCase = () => {
         setTestForCase({ ...testForCase, tests: testForCase.tests.concat(testForAlternativeTests) })
         setAddingAlt(false)
+        //setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
     }
 
     const handleCompletionImageChange = (event) => {
@@ -170,7 +176,7 @@ const CaseForm = () => {
 
                         <Form.Group>
                             <Form.Label>Testiryhmät</Form.Label>
-                            { !addingAlt ?
+                            { !addingAlt && !addingTest ?
                                 <>
                                 <Form.Control
                                     as='select'
@@ -233,10 +239,10 @@ const CaseForm = () => {
                                                     </td>
                                                     <td>
                                                         <Form.Check
-                                                        type='checkbox'
-                                                        id='positive2'
-                                                        label='Positiivinen'
-                                                        onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
+                                                            type='checkbox'
+                                                            id='positive2'
+                                                            label='Positiivinen'
+                                                            onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
                                                     </td>
                                                     <td>
                                                         <Button
@@ -259,7 +265,7 @@ const CaseForm = () => {
                                         <Button
                                             type='button'
                                             id='addAlternativeTestForTest'
-                                            onClick={() => addAlternativeTestToTestForCase()}>Lisää testi</Button>
+                                            onClick={() => {addAlternativeTestToTestForCase(); setAddingTest(true)}}>Lisää testi</Button>
                                     </>
                                 }
                                 <Form.Check
@@ -271,7 +277,7 @@ const CaseForm = () => {
                                     <Button
                                         type='button'
                                         id='addTestForGroup'
-                                        onClick={() => addTestForCaseToTestGroup()}>Lisää testit ryhmään</Button>
+                                        onClick={() => addTestForCaseToTestGroup()}>Lisää testi(t) ryhmään</Button>
                                     :
                                     <></>
                                 }
