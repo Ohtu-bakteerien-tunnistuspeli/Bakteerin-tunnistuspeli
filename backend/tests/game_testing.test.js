@@ -182,6 +182,40 @@ beforeEach(async () => {
 })
 
 describe('it is possible to do tests', () => {
+    test('admin can do tests', async () => {
+        const data = [
+            testMap['test0']
+        ]
+        const res = await api
+            .post(`/api/game/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toEqual(true)
+    })
+
+    test('normal user can do tests', async () => {
+        const adminPassword = await bcrypt.hash('user', 10)
+        const admin = new User({ username: 'userNew', passwordHash: adminPassword, admin: false, email: 'example@com' })
+        await admin.save()
+        const loginRes = await api
+            .post('/api/user/login')
+            .send({
+                username: 'userNew',
+                password: 'user'
+            })
+
+        const data = [
+            testMap['test0']
+        ]
+        const res = await api
+            .post(`/api/game/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${loginRes.body.token}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toEqual(true)
+    })
+
     test('correct first required test can be done', async () => {
         const data = [
             testMap['test0']
