@@ -65,8 +65,8 @@ const CaseForm = () => {
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
     const handleClose = () => {
+        setShow(false)
         setAddingAlt(false)
-        console.log('huhuuu')
         resetCaseForm()
     }
 
