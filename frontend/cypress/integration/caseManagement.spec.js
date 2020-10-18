@@ -9,7 +9,7 @@ describe('Case management', function () {
     })
 
     it('Cases can be modified', function () {
-        cy.contains('Tapausten hallinta').click()
+        // cy.contains('Tapausten hallinta').click()
     })
     describe('Add case', function () {
         beforeEach(function () {
@@ -97,14 +97,68 @@ describe('Case management', function () {
 
     describe('Modify a case', function () {
         beforeEach(function () {
-            const bact = cy.getBacterium({ name: 'Tetanus' })[0]
-            cy.addCase({ name:'Tapaus', bacterium: bact.id, anamnesis: 'anamneesi', samples: ['Verinäyte'], testGroups: [[{ name:'Testi', type:'Viljely' }]] })
         })
+
+        it('The case Tapaus can be modified', function () {
+            cy.login({ username: 'admin', password: 'admin' })
+            cy.contains('Tapausten hallinta').click()
+            cy.should('not.contain', 'Maatila')
+            cy.get('#caseModalButton').click()
+            cy.get('#name').type('Maatila')
+            cy.get('#anamnesis').type('Monta nautaa kipeänä.')
+            cy.get('#bacterium').select('Tetanus')
+            cy.get('#samples').type('Verinäyte')
+            cy.get('#isRightAnswer').click()
+            cy.get('#addSample').click()
+            cy.contains('Verinäyte')
+            cy.get('#testSelect').select('Testi')
+            cy.get('#required').click()
+            cy.get('#positive').click()
+            cy.get('#addAlternativeTestForTest').click()
+            cy.get('#addTestForGroup').click()
+            cy.get('#testGroupTable').contains('Testi')
+            cy.get('#testGroupTable').contains('Kyllä')
+            cy.get('#addTestGroup').click()
+            cy.get('#testGroupsTable').contains('Testi')
+            cy.get('#testGroupsTable').contains('Kyllä')
+            cy.get('#addCase').click()
+            cy.get('#caseEditButton').click()
+            cy.get('#editName').type('Maatila2')
+            cy.get('#saveEdit').click()
+            cy.contains('MaatilaMaatila2')
+        })
+
     })
 
     describe('Remove a case', function () {
         beforeEach(function () {
             cy.login({ username: 'admin', password: 'admin' })
+        })
+
+        it('The case Tapaus can be deleted', function () {
+            cy.contains('Tapausten hallinta').click()
+            cy.should('not.contain', 'Maatila')
+            cy.get('#caseModalButton').click()
+            cy.get('#name').type('Maatila')
+            cy.get('#anamnesis').type('Monta nautaa kipeänä.')
+            cy.get('#bacterium').select('Tetanus')
+            cy.get('#samples').type('Verinäyte')
+            cy.get('#isRightAnswer').click()
+            cy.get('#addSample').click()
+            cy.contains('Verinäyte')
+            cy.get('#testSelect').select('Testi')
+            cy.get('#required').click()
+            cy.get('#positive').click()
+            cy.get('#addAlternativeTestForTest').click()
+            cy.get('#addTestForGroup').click()
+            cy.get('#testGroupTable').contains('Testi')
+            cy.get('#testGroupTable').contains('Kyllä')
+            cy.get('#addTestGroup').click()
+            cy.get('#testGroupsTable').contains('Testi')
+            cy.get('#testGroupsTable').contains('Kyllä')
+            cy.get('#addCase').click()
+            cy.contains('Maatila')
+            cy.get('#deleteCase').click()
         })
 
 

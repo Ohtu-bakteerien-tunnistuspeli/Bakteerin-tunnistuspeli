@@ -113,7 +113,7 @@ console.group(caseToEdit)
     }
     /* testgroup control end */
     return (<div>
-        <Button variant="primary" onClick={handleShow}>
+        <Button id="caseEditButton" variant="primary" onClick={handleShow}>
             Muokkaa
         </Button>
         <Modal show={show} size="lg" onHide={handleClose} >
@@ -122,7 +122,7 @@ console.group(caseToEdit)
                 <Form onSubmit={saveUpdatedCase} >
 
                     <Form.Label>Nimi:</Form.Label><br></br>
-                    <Form.Control onChange={handleCaseNameChange} defaultValue={caseToEdit.name} /><br></br>
+                    <Form.Control id="editName" onChange={handleCaseNameChange} defaultValue={caseToEdit.name} /><br></br>
 
                     <Form.Label>Anamneesi:</Form.Label><br></br>
                     <Form.Control onChange={handleAnamnesisChange} defaultValue={caseToEdit.anamnesis} /><br></br>
@@ -199,7 +199,7 @@ console.group(caseToEdit)
                         addTestForCaseToTestGroup={addTestForCaseToTestGroup}
                         setTestForAlternativeTests={setTestForAlternativeTests}
                     ></AddTestGroup>
-                    <Button variant="primary" type="submit">
+                    <Button id="saveEdit" variant="primary" type="submit">
                         Tallenna
                     </Button>
                 </Form>
