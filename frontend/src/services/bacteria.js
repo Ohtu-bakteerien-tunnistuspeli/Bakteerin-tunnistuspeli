@@ -19,7 +19,7 @@ const update = (id, name, token) => {
 
 const deleteBacterium = (id, token) => {
     const config = { headers: { Authorization: token } }
-    return axios.delete(`${baseUrl}/${id}`, config).then(response => response.data).catch(error => error.response.data)
+    return axios.delete(`${baseUrl}/${id}`, config).then(response => response).catch(error => error.response.data)
 }
 
 export default { get, add, deleteBacterium, update }
