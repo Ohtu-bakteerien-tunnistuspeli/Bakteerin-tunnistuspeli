@@ -25,28 +25,17 @@ router.post('/reset_cases', async (request, response) => {
 })
 
 router.post('/cases', async (request, response) => {
-    const bacterium = new Bacterium({ name: 'Streptococcus agalactiae' })
-    await bacterium.save()
-    const veriagar = new Test({ name: 'Veriagar, +37 C, aerobinen kasvatus', type: 'Viljely' })
-    await veriagar.save()
-    const gram = new Test({ name: 'Gramvärjäys', type: 'Värjäys' })
-    await gram.save()
-    const katalaasi = new Test({ name: 'Katalaasitesti', type: 'Testi' })
-    await katalaasi.save()
-    const hirs = new Test({ name: 'HIRS-sarja', type: 'Testi' })
-    await hirs.save()
-    const eskuliini = new Test({ name: 'Eskuliiniveriagar', type: 'Viljely' })
-    await eskuliini.save()
-    const edwards = new Test({ name: 'Edwardsin agar', type: 'Viljely' })
-    await edwards.save()
-    const camp = new Test({ name: 'CAMP-testi', type: 'Testi' })
-    await camp.save()
-    const lancefield = new Test({ name: 'Lancefield määritys', type: 'Testi' })
-    await lancefield.save()
-    const penisilliini = new Test({ name: 'Penisilliinin sietokoe agarvaluamenetelmällä', type: 'Testi' })
-    await penisilliini.save()
-    const notInTestsGroups = new Test({ name: 'Testi ei kuulu testiryhmiin', type: 'Testi' })
-    await notInTestsGroups.save()
+    const bacterium = await new Bacterium({ name: 'Streptococcus agalactiae' }).save()
+    const veriagar = await new Test({ name: 'Veriagar, +37 C, aerobinen kasvatus', type: 'Viljely' }).save()
+    const gram = await new Test({ name: 'Gramvärjäys', type: 'Värjäys' }).save()
+    const katalaasi = await new Test({ name: 'Katalaasitesti', type: 'Testi' }).save()
+    const hirs = await new Test({ name: 'HIRS-sarja', type: 'Testi' }).save()
+    const eskuliini = await new Test({ name: 'Eskuliiniveriagar', type: 'Viljely' }).save()
+    const edwards = await new Test({ name: 'Edwardsin agar', type: 'Viljely' }).save()
+    const camp = await  new Test({ name: 'CAMP-testi', type: 'Testi' }).save()
+    const lancefield = await new Test({ name: 'Lancefield määritys', type: 'Testi' }).save()
+    const penisilliini = await new Test({ name: 'Penisilliinin sietokoe agarvaluamenetelmällä', type: 'Testi' }).save()
+    await new Test({ name: 'Testi ei kuulu testiryhmiin', type: 'Testi' }).save()
 
     const textForAnamesis = 'Tilalla on 27 lypsävää lehmää parsinavetassa ja lisäksi nuorkarjaa. Kuivikkeena käytetään kutteria, vesi tulee omasta kaivosta. Pääosa lehmistä on omaa tuotantoa, mutta navetan laajennuksen yhteydessä edellisenä kesänä hankittiin muutama uusi tiine eläin, jotka poikivat loppusyksystä.'
     'Yleisesti utareterveys on ollut tilalla hyvä; yksi lehmä on solutellut jo pidempään. Muurikki on alkanut oireilla vasta hiljan. Varsinaisia yleisoireita ei ole aivan hienoista vaisuutta lukuun ottamatta. Utare on kuitenkin selvästi turvonnut, soluluku noussut kaikissa neljänneksissä ja maitomäärä pudonnut.'
@@ -144,10 +133,8 @@ router.post('/cases', async (request, response) => {
         ],
     ]
     case1.testGroups = testGroups
-    const newCase1 = await new Case(case1)
-    const newCase2 = await new Case(case2)
-    await newCase1.save()
-    await newCase2.save()
+    await new Case(case1).save()
+    await new Case(case2).save()
 
     response.status(200).json()
 })
