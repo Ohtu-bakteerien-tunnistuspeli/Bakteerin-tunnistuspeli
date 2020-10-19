@@ -3,3 +3,5 @@
 *.env
 backend/app.json
 */images/*
+*/cypress/screenshots/*
+*/cypress/videos/*
