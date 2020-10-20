@@ -38,7 +38,7 @@ jobs:
         SECRET: 'salainen'
       uses: cypress-io/github-action@v2
       with:
-        start: npm run start:testServer
+        build: npm run start:testServer
         start: npm run start
         wait-on: http://localhost:3000 && http://localhost:3001
   backend:
