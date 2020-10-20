@@ -33,7 +33,7 @@ jobs:
       uses: supercharge/mongodb-github-action@1.3.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}  
-    - run: cd ../backend && nohup npm run start:testServer &
+    - run: cd ../backend && npm run start:testServer
       env: 
         SECRET: 'salainen'
         PORT: 3001
