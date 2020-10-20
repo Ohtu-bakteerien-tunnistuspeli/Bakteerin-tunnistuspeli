@@ -1,7 +1,7 @@
 describe('Game', function() {
     beforeEach(function() {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.visit('http://localhost:3000')
+        cy.visit('http://localhost:3001')
     })
 
     it('Login page can be opened', function() {
