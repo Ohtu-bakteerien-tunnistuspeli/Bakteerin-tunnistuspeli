@@ -44,8 +44,8 @@ jobs:
       uses: cypress-io/github-action@v1
       with:
         working-directory: frontend
-        wait-on: http://localhost/
-        wait-on-timeout: 600
+        wait-on: http://localhost:3000
+        wait-on-timeout: 300
   backend:
     runs-on: ubuntu-latest
     defaults:
