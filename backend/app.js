@@ -168,7 +168,7 @@ app.use('/api/case', caseRouter)
 const gameRouter = require('./controllers/game')
 app.use('/api/game', gameRouter)
 app.use(security.authorizationHandler)
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'testserver' ) {
     app.get('*', (req, res) => {
         res.sendFile(`${__dirname}/build/index.html`, (err) => {
             if (err) {
