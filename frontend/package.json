@@ -21,8 +21,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "cypress:open": "cypress open",
-    "test:e2e": "cypress run",
-    "start:testServer": "cd ../backend && nohup npm run start:testServer && cd ../frontend && nohup npm start &"
+    "test:e2e": "cypress run"
   },
   "eslintConfig": {
     "extends": "react-app"
