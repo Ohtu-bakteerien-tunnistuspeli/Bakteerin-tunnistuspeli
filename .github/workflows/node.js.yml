@@ -34,7 +34,7 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
     - name: Run backend
-      run: cd ../backend && npm install && nohup node backend/index.js
+      run: cd ../backend && npm install && nohup node index.js &
       env: 
         SECRET: 'salainen'
     - name: Cypress run
