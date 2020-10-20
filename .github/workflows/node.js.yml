@@ -34,15 +34,15 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
     - name: Run backend
-      run: cd ../backend && npm install && nohup npm start:testServer &
+      run: cd ../backend && npm ci && nohup npm start:testServer &
       env: 
         SECRET: 'salainen'
     - name: Cypress run
       uses: cypress-io/github-action@v1
       with:
         working-directory: frontend
-        start: npm run start
-        wait-on: http://localhost:3000 && http://localhost:3001
+        start: npm start
+        wait-on: http://localhost:3000
   backend:
     runs-on: ubuntu-latest
     defaults:
