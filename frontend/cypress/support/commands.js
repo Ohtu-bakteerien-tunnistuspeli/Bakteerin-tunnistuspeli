@@ -4,7 +4,7 @@ Cypress.Commands.add('login', ({ username, password }) => {
     }).then(({ body }) => {
         body.token = `bearer ${body.token}`
         window.localStorage.setItem('loggedUser', JSON.stringify(body))
-        cy.visit('http://localhost:3001')
+        cy.visit('http://localhost:3000')
     })
 })
 
@@ -18,7 +18,7 @@ Cypress.Commands.add('addBacterium', ( { name } ) => {
         }
     })
 
-    cy.visit('http://localhost:3001')
+    cy.visit('http://localhost:3000')
 })
 
 Cypress.Commands.add('getBacterium', ( { name } ) => {
@@ -29,7 +29,7 @@ Cypress.Commands.add('getBacterium', ( { name } ) => {
             'Authorization': `${JSON.parse(window.localStorage.getItem('loggedUser')).token}`
         }
     }).then(({ body }) => {
-        cy.visit('http://localhost:3001')
+        cy.visit('http://localhost:3000')
         console.log(body)
         return body.filter(b => b.name === name)
     })
@@ -45,7 +45,7 @@ Cypress.Commands.add('addTest', ( { name, type } ) => {
         }
     })
 
-    cy.visit('http://localhost:3001')
+    cy.visit('http://localhost:3000')
 })
 
 Cypress.Commands.add('addCase', ( { name, bacterium, anamnesis, samples, testGroups } ) => {
@@ -58,5 +58,5 @@ Cypress.Commands.add('addCase', ( { name, bacterium, anamnesis, samples, testGro
         }
     })
 
-    cy.visit('http://localhost:3001')
+    cy.visit('http://localhost:3000')
 })

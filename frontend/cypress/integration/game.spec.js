@@ -5,7 +5,7 @@ describe('Palying game', function () {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
         cy.request('POST', 'http://localhost:3001/api/testing/cases')
-        cy.visit('http://localhost:3001')
+        cy.visit('http://localhost:3000')
     })
     describe('Game can be played', function () {
         it('Admin can choose a case which to play', function () {
