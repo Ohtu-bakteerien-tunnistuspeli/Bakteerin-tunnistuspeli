@@ -126,13 +126,11 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 bacteriaSpecificImages: testToEdit.bacteriaSpecificImages,
             }
             const deletePhotos = { ctrl: request.body.deleteCtrl, pos: request.body.deletePos, neg: request.body.deleteNeg }
-            console.log(deletePhotos)
             const oldLinks = []
 
             if (request.files) {
                 if (request.files.controlImage) {
                     oldLinks.push(testToEdit.controlImage.url)
-                    console.log('control image')
                     // fs.unlink(`${imageDir}/${testToEdit.controlImage.url}`, (err) => err)
                     testToUpdate.controlImage = { url: request.files.controlImage[0].filename, contentType: request.files.controlImage[0].mimetype }
                 }
@@ -158,7 +156,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                         if (imageToDelete.length > 0) {
                             oldLinks.push(imageToDelete[0].url)
                             //fs.unlink(`${imageDir}/${imageToDelete[0].url}`, (err) => err)
-                            testToUpdate.bacteriaSpecificImages.map(image => image.bacterium.name === bacterium.name ? { url: file.filename, contentType: file.mimetype, bacterium } : image)
+                            testToUpdate.bacteriaSpecificImages = testToUpdate.bacteriaSpecificImages.map(image => image.bacterium.name === bacterium.name ? { url: file.filename, contentType: file.mimetype, bacterium } : image)
                         } else {
                             testToUpdate.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
                         }
@@ -166,7 +164,6 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 }
             }
             if (deletePhotos.ctrl === 'true') {
-                console.log('delete ctrl')
                 oldLinks.push(testToEdit.controlImage.url)
                 testToUpdate.controlImage = null
             }
@@ -179,8 +176,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 testToUpdate.negativeResultImage = null
             }
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
-            var i
-            for (i = 0; i < oldLinks.length; i++) {
+            for (let i = 0; i < oldLinks.length; i++) {
                 fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
             }
             return response.status(200).json(updatetTest)

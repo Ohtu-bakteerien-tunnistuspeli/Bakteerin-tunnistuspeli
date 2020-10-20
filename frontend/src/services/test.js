@@ -8,8 +8,6 @@ const get = (token) => {
 }
 
 const add = async (name, type, contImg, posImg, negImg, bacteriaSpes, token) => {
-    console.log('täällä löytyy')
-    console.log({ name, type, contImg, posImg, negImg, token })
     const formData = new FormData()
     formData.append('name', name.value )
     formData.append('type', type.value )
@@ -17,14 +15,11 @@ const add = async (name, type, contImg, posImg, negImg, bacteriaSpes, token) => 
     formData.append('positiveResultImage', posImg )
     formData.append('negativeResultImage', negImg)
     bacteriaSpes.forEach(bact => formData.append('bacteriaSpecificImages', bact))
-    console.log(formData)
-    console.log('-----------------------------------------------')
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
     return axios.post(baseUrl, formData , config).then(response => response.data).catch(error => error.response.data)
 }
 
 const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, token) => {
-    console.log('edit to service ', name, id, bacteriaSpesif)
     const formData = new FormData()
     formData.append('id', id )
     formData.append('name', name )
@@ -32,13 +27,11 @@ const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesi
     formData.append('controlImage', contImg)
     formData.append('positiveResultImage', photoPos )
     formData.append('negativeResultImage', photoNeg)
-    Array.from(bacteriaSpesif).forEach(bact => formData.append('bacteriaSpecificImages', bact))
+    bacteriaSpesif.forEach(bact => formData.append('bacteriaSpecificImages', bact))
     formData.append('deleteCtrl', photosToDelete.ctrl)
     formData.append('deletePos', photosToDelete.pos)
     formData.append('deleteNeg', photosToDelete.neg)
     const config = { headers: { Authorization: token, 'Content-Type' : 'multipart/form-data' } }
-    console.log(formData)
-    console.log(bacteriaSpesif[0])
     return axios.put(`${baseUrl}/${id}`, formData, config)
         .then(response => response.data)
         .catch(error => error.response.data)
@@ -46,7 +39,6 @@ const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesi
 
 const deleteTest = async (id, token) => {
     const config = { headers: { Authorization: token } }
-    console.log('deletion to service ', id)
     return axios.delete(`${baseUrl}/${id}`, config)
         .then(response => response)
         .catch(error => error.response.data)
