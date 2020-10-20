@@ -60,7 +60,6 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
     }
 
     const handleSpecificImg = (event) => {
-        console.log('in handle', bacterium)
         if (event.target.files[0]) {
             const file = event.target.files[0]
             const blob = file.slice(0, file.size, file.type)

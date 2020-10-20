@@ -8,13 +8,11 @@ const CaseListing = ({ c, admin, deleteCase }) => {
     if(c.completionImage) {
         completionUrl = btoa(String.fromCharCode.apply(null, c.completionImage.data.data))
     }*/
-    console.log(c)
     return (
         <ListGroup>
             <ListGroup.Item key={c.id} >
                 {admin ?
                     <div>
-                        { console.log(c.completionImage)}
                         {c.name} {c.completionImage ? <ModalImage imageUrl={c.completionImage.url} width={'10%'} height={'10%'} /> : <></>}
                         <div>
                             <Button variant='danger' style={{ float: 'right' }} id='deleteCase' onClick={() => deleteCase(c)}>Poista
