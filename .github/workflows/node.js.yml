@@ -39,8 +39,7 @@ jobs:
         env: 
           SECRET: 'salainen'
         frontend: npm run start
-        wait-on: http://localhost:3000
-        wait-on: http://localhost:3001
+        wait-on: http://localhost:3000 && http://localhost:3001
   backend:
     runs-on: ubuntu-latest
     defaults:
