@@ -41,7 +41,7 @@ jobs:
       with:
         working-directory: frontend
         start: npm run start:testServer
-        wait-on: http://localhost:3000
+        wait-on: http://localhost:3001
         wait-on-timeout: 600
   backend:
     runs-on: ubuntu-latest
