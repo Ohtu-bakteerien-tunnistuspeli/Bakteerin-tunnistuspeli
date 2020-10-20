@@ -57,7 +57,7 @@ const GamePage = () => {
                                 !game.samplesCorrect ?
                                     <>
                                         <h1>Näytteenotto</h1>
-                                        <Form id='samples' onSubmit={(event) => sampleSubmit(event)} style={{ backgroundColor: "#F5F5F5" }}>
+                                        <Form id='samples' onSubmit={(event) => sampleSubmit(event)} style={{ backgroundColor: '#F5F5F5' }}>
                                             <Form.Label>Millaisen näytteen otat?</Form.Label>
                                             {game.case.samples.map((sample, i) => <Form.Check  key={i} label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)}></Form.Check>)}
                                             <Button
@@ -72,7 +72,7 @@ const GamePage = () => {
                                     :
                                     <>
                                         <h1>Laboratoriotutkimukset</h1>
-                                        <div id='testView' style={{ backgroundColor: "#F5F5F5" }}>
+                                        <div id='testView' style={{ backgroundColor: '#F5F5F5' }}>
                                             {
                                                 (cultivationsToShow && cultivationsToShow.length > 0) ?
                                                     <>
@@ -180,7 +180,7 @@ const GamePage = () => {
                                     type="submit"
                                     id="checkDiagnosis">
                                     Tarkasta diagnoosi
-                        </Button>
+                                </Button>
                             </Form>
                         </>
                     }

@@ -106,7 +106,7 @@ const AddTestGroup = ({ testForAlternativeTests,
                     type='button'
                     id='addTestGroup'
                     onClick={() => addTestGroup()}>Lisää testiryhmä
-                                </Button>
+                </Button>
             </ButtonGroup>
         </div>
     )
