@@ -42,7 +42,7 @@ jobs:
       with:
         working-directory: frontend
         start: npm run start
-        wait-on: http://localhost:3000
+        wait-on: http://localhost:3000 && http://localhost:3000
   backend:
     runs-on: ubuntu-latest
     defaults:
