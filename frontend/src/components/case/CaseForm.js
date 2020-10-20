@@ -11,13 +11,13 @@ const CaseForm = () => {
         image: undefined
     }
 
-    const tableWidth = { 
+    const tableWidth = {
         tableLayout: 'fixed',
-        width: '100%' 
+        width: '100%'
     }
 
-    const cellWidth = { 
-        width: '100%' 
+    const cellWidth = {
+        width: '100%'
     }
 
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
@@ -177,21 +177,21 @@ const CaseForm = () => {
 
                         <Form.Group>
                             <Form.Label>Testiryhmät</Form.Label>
-                            { !addingAlt && !addingTest ?
+                            {!addingAlt && !addingTest ?
                                 <>
-                                <Form.Control
-                                    as='select'
-                                    id='testSelect'
-                                    onChange={(event) => setTestForAlternativeTests({ ...testForAlternativeTests, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
-                                    {tests.map(test =>
-                                        <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
-                                    )}
-                                </Form.Control>
-                                <Form.Check
-                                    type='checkbox'
-                                    id='positive'
-                                    label='Positiivinen'
-                                    onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
+                                    <Form.Control
+                                        as='select'
+                                        id='testSelect'
+                                        onChange={(event) => setTestForAlternativeTests({ ...testForAlternativeTests, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
+                                        {tests.map(test =>
+                                            <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
+                                        )}
+                                    </Form.Control>
+                                    <Form.Check
+                                        type='checkbox'
+                                        id='positive'
+                                        label='Positiivinen'
+                                        onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
                                 </>
                                 :
                                 <></>
@@ -212,7 +212,7 @@ const CaseForm = () => {
                                             <tr key={i}>
                                                 <td>{alternativeTest.testName}</td>
                                                 <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
-                                                <td>{ i === 0 && !addingAlt ?
+                                                <td>{i === 0 && !addingAlt ?
                                                     <Button
                                                         type='button'
                                                         id='addAlternativeTestForTest'
@@ -225,7 +225,7 @@ const CaseForm = () => {
                                             </tr>
                                         )}
                                         <tr>
-                                            { addingAlt ? 
+                                            {addingAlt ?
                                                 <>
                                                     <td>
                                                         <select
@@ -266,7 +266,7 @@ const CaseForm = () => {
                                         <Button
                                             type='button'
                                             id='addAlternativeTestForTest'
-                                            onClick={() => {addAlternativeTestToTestForCase(); setAddingTest(true)}}>Lisää testi</Button>
+                                            onClick={() => { addAlternativeTestToTestForCase(); setAddingTest(true) }}>Lisää testi</Button>
                                     </>
                                 }
                                 <Form.Check

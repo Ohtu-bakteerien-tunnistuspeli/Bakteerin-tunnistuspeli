@@ -5,7 +5,7 @@ import BacteriumListing from './BacteriumListing'
 import { deleteBacterium, updateBacterium } from '../reducers/bacteriaReducer'
 
 const BacteriaList = () => {
-    const style = {margin: '10px', fontSize: '40px'}
+    const style = { margin: '10px', fontSize: '40px' }
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
