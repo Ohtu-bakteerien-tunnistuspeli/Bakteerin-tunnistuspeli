@@ -29,23 +29,18 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
 
-    console.log(bacteria[0])
     //Is this needed?
     //const testList = [...test.bacteriaSpecificImages]
 
-    console.log('test at start', test)
-    console.log('id at start', test.id)
-
     // Get test.id from parameter 'test'
     const removeTest = () => {
-        console.log('deletion form ', test.id)
         dispatch(deleteTest(test.id, user.token))
     }
     const editTest = (event) => {
         event.preventDefault()
         const photosToDelete = deletePhotos
-        var token = user.token
-        var id = test.id
+        const token = user.token
+        const id = test.id
         done()
         dispatch(updateTest(id, newName, newType, photoControl, photoPos, photoNeg, bacteriaSpecificImages, photosToDelete, token))
     }
@@ -55,12 +50,10 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
     }
 
     const addBacteriumSpecificImage = () => {
-        console.log('add', bacteriaSpecificImage)
         if (bacteriaSpecificImage.image !== 'undefined' && bacteriaSpecificImage.bacterium !== '' ) {
             if (bacteriaSpecificImage.name !== '' && !bacteriaSpecificImages.map(b => b.name).includes(bacteriaSpecificImage.name)) {
                 //testList.push(bacteriaSpecificImage)
                 setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
-                console.log('after adding', bacteriaSpecificImages)
                 setBacteriaImage(INITIAL_STATE)
             }
         }
@@ -69,9 +62,9 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
     const handleSpecificImg = (event) => {
         console.log('in handle', bacterium)
         if (event.target.files[0]) {
-            var file = event.target.files[0]
-            var blob = file.slice(0, file.size, file.type)
-            var newFile = new File([blob], bacterium, { type: file.type })
+            const file = event.target.files[0]
+            const blob = file.slice(0, file.size, file.type)
+            const newFile = new File([blob], bacterium, { type: file.type })
             setBacteriaImage(newFile)
         }
     }

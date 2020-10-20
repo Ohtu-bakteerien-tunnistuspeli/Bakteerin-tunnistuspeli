@@ -5,6 +5,7 @@ import AddTestGroup from './AddTestGroup.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Button, Form, Table, ListGroup } from 'react-bootstrap'
 import { updateCase } from '../../reducers/caseReducer'
+import { setNotification } from '../../reducers/notificationReducer'
 
 
 const CaseEditForm = ({ caseToEdit }) => {
@@ -19,8 +20,8 @@ const CaseEditForm = ({ caseToEdit }) => {
 
     const saveUpdatedCase = (event) => {
         event.preventDefault()
-        var token = user.token
-        var id = caseToEdit.id
+        const token = user.token
+        const id = caseToEdit.id
         dispatch(updateCase(id, caseName,
             bacterium, caseAnamnesis, completionImage, samples,
             testGroups, deleteEndImage, token))
@@ -46,8 +47,6 @@ const CaseEditForm = ({ caseToEdit }) => {
     /* bacterium control end */
 
     /*Image control */
-console.group(caseToEdit)
-
     const INITIAL_STATE = {
         id: '',
         image: undefined,
@@ -66,18 +65,23 @@ console.group(caseToEdit)
     const [sampleDescription, setSampleDescription] = useState('')
     const [sampleRightAnswer, setSampleRightAnswer] = useState(false)
     const handleSampleName = (event) => setSampleDescription(event.target.value)
-    const handleSampleRightAnswer = (event) => setSampleRightAnswer(!sampleRightAnswer)
+    const handleSampleRightAnswer = () => setSampleRightAnswer(!sampleRightAnswer)
 
     const addSample = (event) => {
         event.preventDefault()
-        const newSample = {
-            description: sampleDescription,
-            rightAnswer: sampleRightAnswer
+        if (sampleDescription !== '') {
+            if (samples.map(sample => sample.description).includes(sampleDescription)) {
+                dispatch(setNotification({ message: 'Näytteen kuvaus on jo käytössä', success: false }))
+            } else {
+                const newSample = {
+                    description: sampleDescription,
+                    rightAnswer: sampleRightAnswer
+                }
+                setSamples(samples.concat(newSample))
+                setSampleDescription('')
+                setSampleRightAnswer(false)
+            }
         }
-        setSamples(samples.concat(newSample))
-        setSampleDescription('')
-        setSampleRightAnswer(false)
-
     }
     /* samples control end */
 

@@ -44,13 +44,6 @@ const App = () => {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" >
                     <Nav className="mr-auto">
-                        {/*HUOM Tarkista polku ennen käyttöön ottoa<Nav.Link href="#" as span>
-                            {user 
-                                ? <Link style={padding} to="/bakteeripeli">Bakteeripeli</Link>
-                                : null
-                            }
-                        </Nav.Link>
-                        */}
                         <Nav.Link href="#" as="span">
                             {user
                                 ? <Link style={padding} to="/">Etusivu</Link>

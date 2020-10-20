@@ -71,16 +71,17 @@ const CaseForm = () => {
     }
 
     const addSample = (description, rightAnswer) => {
-        if (samples.map(sample => sample.description).includes(description)) {
-            dispatch(setNotification({ message: 'Näytteen kuvaus on jo käytössä', success: false }))
-        } else {
-            setSamples(samples.concat({ description, rightAnswer }))
-            setSample({
-                ...sample,
-                description: ''
-            })
+        if (description !== '') {
+            if (samples.map(sample => sample.description).includes(description)) {
+                dispatch(setNotification({ message: 'Näytteen kuvaus on jo käytössä', success: false }))
+            } else {
+                setSamples(samples.concat({ description, rightAnswer }))
+                setSample({
+                    ...sample,
+                    description: ''
+                })
+            }
         }
-
     }
 
     const addTestGroup = () => {
