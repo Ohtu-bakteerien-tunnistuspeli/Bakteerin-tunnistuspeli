@@ -33,14 +33,15 @@ jobs:
       uses: supercharge/mongodb-github-action@1.3.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}  
-    - name: Cypress run
-      uses: cypress-io/github-action@v1
+    - run: cd ../backend && nohup npm run start:testServer &
       env: 
         SECRET: 'salainen'
         PORT: 3001
+    - run: cd ../frontend && nohup npm start &
+    - name: Cypress run
+      uses: cypress-io/github-action@v1
       with:
         working-directory: frontend
-        start: npm run start:testServer
         wait-on: http://localhost:3000
         wait-on-timeout: 600
   backend:
@@ -64,7 +65,7 @@ jobs:
       uses: supercharge/mongodb-github-action@1.3.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
-    - run: npm install
+    - run: npm ci
     - run: npm run test-githubactions
       env: 
         SECRET: 'salainen'
