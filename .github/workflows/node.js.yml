@@ -38,8 +38,8 @@ jobs:
       with:
         working-directory: backend
         run: npm run start
-          env: 
-            SECRET: 'salainen'
+        env: 
+          SECRET: 'salainen'
     - name: Run cypress
       run: npm run test:e2e
       with:
