@@ -37,14 +37,13 @@ jobs:
       env: 
         SECRET: 'salainen'
         PORT: 3001
-    - run: cd ../frontend && nohup npm start &
-      env:
-        PORT: 3000
     - name: Cypress run
       uses: cypress-io/github-action@v1
       with:
+        start: npm start
+        env: PORT=3000
         working-directory: frontend
-        wait-on: http://localhost:3001
+        wait-on: http://localhost:3000
         wait-on-timeout: 300
   backend:
     runs-on: ubuntu-latest
