@@ -37,11 +37,12 @@ jobs:
       uses: cypress-io/github-action@v1
       env: 
         SECRET: 'salainen'
+        PORT: 3001
       with:
         working-directory: frontend
         start: npm run start:testServer
         wait-on: http://localhost:3000
-        wait-on-timeout: 300
+        wait-on-timeout: 600
   backend:
     runs-on: ubuntu-latest
     defaults:
