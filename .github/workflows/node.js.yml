@@ -35,8 +35,7 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
     - name: Run backend
-      run: npm run start
-      working-directory: backend
+      run: npm run start:testServer
       env: 
         SECRET: 'salainen'
     - name: Run cypress
