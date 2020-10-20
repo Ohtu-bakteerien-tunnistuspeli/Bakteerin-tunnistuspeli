@@ -22,7 +22,7 @@
     "lint": "eslint .",
     "cypress:open": "cypress open",
     "test:e2e": "cypress run",
-    "start:testServer": "cd ../backend && npm run start:testServer"
+    "start:testServer": "cd ../backend && npm install && npm run start:testServer"
   },
   "eslintConfig": {
     "extends": "react-app"
