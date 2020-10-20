@@ -33,11 +33,11 @@ jobs:
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
     - name: Cypress run
+      env: 
+        SECRET: 'salainen'
       uses: cypress-io/github-action@v2
       with:
         backend: npm run start:testServer
-        env: 
-          SECRET: 'salainen'
         frontend: npm run start
         wait-on: http://localhost:3000 && http://localhost:3001
   backend:
