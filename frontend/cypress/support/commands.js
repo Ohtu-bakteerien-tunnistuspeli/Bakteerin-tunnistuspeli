@@ -60,17 +60,3 @@ Cypress.Commands.add('addCase', ( { name, bacterium, anamnesis, samples, testGro
 
     cy.visit('http://localhost:3000')
 })
-
-const COMMAND_DELAY = 500;
-
-
-for (const command of ['visit', 'click', 'trigger', 'type', 'clear', 'reload', 'contains', 'request']) {
-    Cypress.Commands.overwrite(command, (originalFn, ...args) => {
-        const origVal = originalFn(...args)
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve(origVal)
-            }, COMMAND_DELAY)
-        });
-    });
-} 
