@@ -1,5 +1,5 @@
-describe('Case management', function () {
-    beforeEach(function () {
+describe('Case management', () => {
+    beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.login({ username: 'admin', password: 'admin' })
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
@@ -9,14 +9,19 @@ describe('Case management', function () {
         cy.addTest({ name: 'Testi', type: 'Viljely' })
     })
 
-    it('Cases can be modified', function () {
+    it('Cases can be modified', () => {
         // cy.contains('Tapausten hallinta').click()
     })
-    describe('Add case', function () {
-        beforeEach(function () {
+    describe('Add case', () => {
+        beforeEach(() => {
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+            cy.addBacterium({ name: 'Tetanus' })
+            cy.addTest({ name: 'Testi', type: 'Viljely' })
         })
 
-        it('A new case with correct data without image can be added', function () {
+        it('A new case with correct data without image can be added', () => {
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
             cy.get('#caseModalButton').click()
@@ -42,7 +47,7 @@ describe('Case management', function () {
             cy.contains('Maatila')
         })
 
-        it('If the validation of the field name, case is not added and error is reported', function () {
+        it('If the validation of the field name, case is not added and error is reported', () => {
             cy.contains('Tapausten hallinta').click()
             cy.get('#caseModalButton').click()
             cy.get('#name').type('M')
@@ -62,7 +67,7 @@ describe('Case management', function () {
             cy.contains('Tapauksen nimen tulee olla vähintään 2 merkkiä pitkä.')
         })
 
-        it('If the field name is not unique, case is not added and error is reported', function () {
+        it('If the field name is not unique, case is not added and error is reported', () => {
             cy.contains('Tapausten hallinta').click()
             cy.get('#caseModalButton').click()
             cy.get('#name').type('Maatila')
@@ -89,15 +94,15 @@ describe('Case management', function () {
             cy.contains('Case validation failed: name: Tapauksen nimen tulee olla uniikki.')
         })
 
-        it('A user can not add a case', function () {
+        it('A user can not add a case', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.get('div').should('not.contain', 'Tapausten hallinta')
         })
 
     })
 
-    describe('Modify a case', function () {
-        beforeEach(function () {
+    describe('Modify a case', () => {
+        beforeEach(() => {
             cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
             cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
             cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
@@ -105,7 +110,7 @@ describe('Case management', function () {
             cy.addTest({ name: 'Testi', type: 'Viljely' })
         })
 
-        it('The case Tapaus can be modified', function () {
+        it('The case Tapaus can be modified', () => {
             cy.login({ username: 'admin', password: 'admin' })
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
@@ -136,12 +141,12 @@ describe('Case management', function () {
 
     })
 
-    describe('Remove a case', function () {
-        beforeEach(function () {
+    describe('Remove a case', () => {
+        beforeEach(() => {
             cy.login({ username: 'admin', password: 'admin' })
         })
 
-        it('The case Tapaus can be deleted', function () {
+        it('The case Tapaus can be deleted', () => {
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
             cy.get('#caseModalButton').click()
@@ -169,7 +174,7 @@ describe('Case management', function () {
 
 
     })
-    after(function () {
+    after(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')

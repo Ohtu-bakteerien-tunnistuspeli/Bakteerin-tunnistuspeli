@@ -1,5 +1,5 @@
-describe('Test management', function () {
-    beforeEach(function () {
+describe('Test management', () => {
+    beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.login({ username: 'admin', password: 'admin' })
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
@@ -9,13 +9,13 @@ describe('Test management', function () {
         cy.addTest({ name: 'Cypress Testi', type: 'Viljely' })
     })
 
-    it('User cannot access test management', function () {
+    it('User cannot access test management', () => {
         cy.login({ username: 'user', password: 'user' })
         cy.get('div').should('not.contain', 'Testien hallinta')
     })
 
-    describe('Tests can be added', function () {
-        beforeEach(function () {
+    describe('Tests can be added', () => {
+        beforeEach(() => {
             cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
             cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
             cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
@@ -23,7 +23,7 @@ describe('Test management', function () {
             cy.addTest({ name: 'Cypress Testi', type: 'Viljely' })
         })
 
-        it('A new test without images can be added', function () {
+        it('A new test without images can be added', () => {
             cy.contains('Testien hallinta').click()
             cy.should('not.contain', 'Katalaasitesti')
             cy.get('#testModalButton').click()
@@ -34,7 +34,7 @@ describe('Test management', function () {
             cy.contains('Katalaasitesti')
         })
 
-        it('If test name is not unique, test is not added and error is reported', function () {
+        it('If test name is not unique, test is not added and error is reported', () => {
             cy.contains('Testien hallinta').click()
             cy.get('#testModalButton').click()
             cy.get('#name').type('Katalaasitesti')
@@ -49,7 +49,7 @@ describe('Test management', function () {
             cy.contains('Testin nimen tulee olla uniikki')
         })
 
-        it('If name validation fails, test is not added and error is reported', function () {
+        it('If name validation fails, test is not added and error is reported', () => {
             cy.contains('Testien hallinta').click()
             cy.get('#testModalButton').click()
             cy.get('#name').type('a')
@@ -58,7 +58,7 @@ describe('Test management', function () {
             cy.contains('Testin nimen tulee olla vähintään 2 merkkiä pitkä')
         })
 
-        it('If type validation fails, test is not added and error is reported', function () {
+        it('If type validation fails, test is not added and error is reported', () => {
             cy.contains('Testien hallinta').click()
             cy.get('#testModalButton').click()
             cy.get('#name').type('Katalaasitesti')
@@ -68,11 +68,11 @@ describe('Test management', function () {
         })
     })
 
-    describe('Tests can be deleted', function () {
-        beforeEach(function () {
+    describe('Tests can be deleted', () => {
+        beforeEach(() => {
         })
 
-        it('Test can be deleted', function () {
+        it('Test can be deleted', () => {
             cy.contains('Testien hallinta').click()
             cy.contains('Cypress Testi')
             cy.get('#edit').click()
@@ -82,11 +82,11 @@ describe('Test management', function () {
         })
     })
 
-    describe('Tests can be modified', function () {
-        beforeEach(function () {
+    describe('Tests can be modified', () => {
+        beforeEach(() => {
         })
 
-        it('Test name can be edited', function () {
+        it('Test name can be edited', () => {
             cy.contains('Testien hallinta').click()
             cy.get('#edit').click()
             cy.get('#newNameInput').type(' edited')
@@ -94,7 +94,7 @@ describe('Test management', function () {
             cy.contains('Cypress Testi edited')
         })
 
-        it('Test type can be edited', function () {
+        it('Test type can be edited', () => {
             cy.contains('Testien hallinta').click()
             cy.get('#edit').click()
             cy.get('#newTypeInput').type(' edited')
@@ -103,7 +103,7 @@ describe('Test management', function () {
         })
     })
 
-    after(function () {
+    after(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')

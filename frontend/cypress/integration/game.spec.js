@@ -1,5 +1,5 @@
-describe('Playing game', function () {
-    beforeEach(function () {
+describe('Playing game', () => {
+    beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.login({ username: 'admin', password: 'admin' })
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
@@ -8,8 +8,8 @@ describe('Playing game', function () {
         cy.request('POST', 'http://localhost:3001/api/testing/cases')
         cy.visit('http://localhost:3000')
     })
-    describe('Game can be played', function () {
-        it('Admin can choose a case which to play', function () {
+    describe('Game can be played', () => {
+        it('Admin can choose a case which to play', () => {
             cy.contains('Etusivu').click()
             cy.get('div').should('contain', 'Maitotila 1')
             cy.get('div').should('contain', 'Maitotila 2')
@@ -20,7 +20,7 @@ describe('Playing game', function () {
             cy.get('#samples').should('contain', 'Virtsanäyte Muurikilta')
         })
 
-        it('Normal user can choose a case which to play', function () {
+        it('Normal user can choose a case which to play', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.visit('http://localhost:3000')
             cy.contains('Etusivu').click()
@@ -33,7 +33,7 @@ describe('Playing game', function () {
             cy.get('#samples').should('contain', 'Virtsanäyte Muurikilta')
         })
 
-        it('A valid samplingmethod can be chosen', function () {
+        it('A valid samplingmethod can be chosen', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
@@ -44,7 +44,7 @@ describe('Playing game', function () {
             cy.contains('Oikea vastaus')
         })
 
-        it('If wrong samplingmethod is chosen, user is informed and right method can be chosen', function () {
+        it('If wrong samplingmethod is chosen, user is informed and right method can be chosen', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
@@ -60,7 +60,7 @@ describe('Playing game', function () {
             cy.contains('Oikea vastaus')
         })
 
-        it('After choosing right samplingmethod, user can choose all tests in required order', function () {
+        it('After choosing right samplingmethod, user can choose all tests in required order', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
@@ -89,7 +89,7 @@ describe('Playing game', function () {
             cy.contains('Oikea vastaus. Kaikki testit tehty.')
         })
 
-        it('After choosing right samplingmethod, user can choose only required tests in required order', function () {
+        it('After choosing right samplingmethod, user can choose only required tests in required order', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
@@ -105,7 +105,7 @@ describe('Playing game', function () {
             cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.')
         })
 
-        it('User can check control images of all tests', function () {
+        it('User can check control images of all tests', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
@@ -123,7 +123,7 @@ describe('Playing game', function () {
             cy.get('#controlImgTable').should('contain', 'Testi ei kuulu testiryhmiin')
         })
 
-        it('User can see results after clicking a right test', function () {
+        it('User can see results after clicking a right test', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
@@ -141,7 +141,7 @@ describe('Playing game', function () {
             cy.get('#resultTable').should('contain', 'Gramvärjäys')
         })
 
-        it('User can give diagnosis after choosing at least the required tests', function () {
+        it('User can give diagnosis after choosing at least the required tests', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
@@ -165,7 +165,7 @@ describe('Playing game', function () {
         })
     })
 
-    after(function () {
+    after(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
