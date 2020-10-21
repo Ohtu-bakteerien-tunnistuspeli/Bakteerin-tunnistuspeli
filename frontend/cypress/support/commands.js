@@ -1,5 +1,4 @@
 Cypress.Commands.add('login', ({ username, password }) => {
-    cy.request('POST', 'http://localhost:3001/api/testing/init')
     cy.request('POST', 'http://localhost:3001/api/user/login', {
         username, password
     }).then(({ body }) => {
