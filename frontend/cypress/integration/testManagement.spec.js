@@ -16,6 +16,11 @@ describe('Test management', function () {
 
     describe('Tests can be added', function () {
         beforeEach(function () {
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+            cy.addBacterium({ name: 'Tetanus' })
+            cy.addTest({ name: 'Cypress Testi', type: 'Viljely' })
         })
 
         it('A new test without images can be added', function () {

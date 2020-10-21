@@ -98,6 +98,11 @@ describe('Case management', function () {
 
     describe('Modify a case', function () {
         beforeEach(function () {
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+            cy.addBacterium({ name: 'Tetanus' })
+            cy.addTest({ name: 'Testi', type: 'Viljely' })
         })
 
         it('The case Tapaus can be modified', function () {
