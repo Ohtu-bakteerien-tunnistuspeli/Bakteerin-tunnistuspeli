@@ -14,6 +14,15 @@ const CaseEditForm = ({ caseToEdit }) => {
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
     const [show, setShow] = useState(false)
+
+    const tableWidth = {
+        tableLayout: 'fixed',
+        width: '100%'
+    }
+
+    const cellWidth = {
+        width: '100%'
+    }
     /*end of modal config*/
 
     const user = useSelector(state => state.user)
@@ -79,6 +88,8 @@ const CaseEditForm = ({ caseToEdit }) => {
     /* samples control end */
 
     /* testgroup control */
+    const [addingAlt, setAddingAlt] = useState(false)
+    const [addingTest, setAddingTest] = useState(false)
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const [testForAlternativeTests, setTestForAlternativeTests] = useState({ name: tests[0].name, testId: tests[0].id, positive: false })
     const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
@@ -178,16 +189,21 @@ const CaseEditForm = ({ caseToEdit }) => {
                         )}
                     </ListGroup>
                     <Form.Label>Lisää Testiryhmä</Form.Label>
-                    <AddTestGroup
+                    <AddTestGroup addingAlt={addingAlt}
+                        setAddingAlt={setAddingAlt}
+                        addingTest={addingTest}
+                        setAddingTest={setAddingTest}
+                        setTestForAlternativeTests={setTestForAlternativeTests}
                         testForAlternativeTests={testForAlternativeTests}
-                        testForCase={testForCase}
-                        addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
                         tests={tests}
+                        tableWidth={tableWidth}
+                        cellWidth={cellWidth}
+                        testForCase={testForCase}
                         setTestForCase={setTestForCase}
+                        addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
+                        addTestForCaseToTestGroup={addTestForCaseToTestGroup}
                         testGroup={testGroup}
                         addTestGroup={addTestGroup}
-                        addTestForCaseToTestGroup={addTestForCaseToTestGroup}
-                        setTestForAlternativeTests={setTestForAlternativeTests}
                     ></AddTestGroup>
                     <Button id="saveEdit" variant="primary" type="submit">
                         Tallenna
