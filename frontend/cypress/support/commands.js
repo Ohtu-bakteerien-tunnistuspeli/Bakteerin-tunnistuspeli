@@ -64,7 +64,7 @@ Cypress.Commands.add('addCase', ( { name, bacterium, anamnesis, samples, testGro
 const COMMAND_DELAY = 500;
 
 
-for (const command of ['visit', 'click', 'trigger', 'type', 'clear', 'reload', 'contains', 'login', 'addBacterium', 'addTest', 'addCase']) {
+for (const command of ['visit', 'click', 'trigger', 'type', 'clear', 'reload', 'contains', 'request']) {
     Cypress.Commands.overwrite(command, (originalFn, ...args) => {
         const origVal = originalFn(...args)
         return new Promise((resolve) => {
