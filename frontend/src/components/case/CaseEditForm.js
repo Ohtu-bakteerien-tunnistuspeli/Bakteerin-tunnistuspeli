@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Sample from './Sample.js'
 import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
+import AddSample from './AddSample.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Button, Form, Table, ListGroup } from 'react-bootstrap'
 import { updateCase } from '../../reducers/caseReducer'
@@ -59,27 +60,19 @@ const CaseEditForm = ({ caseToEdit }) => {
     /*image control end*/
 
     /* samples control*/
+    const [sample, setSample] = useState({ description: '', rightAnswer: false })
     const [samples, setSamples] = useState(caseToEdit.samples)
     const deleteSample = (sampleToDelete) => setSamples(samples.filter(s => s.description !== sampleToDelete.description))
-
-    const [sampleDescription, setSampleDescription] = useState('')
-    const [sampleRightAnswer, setSampleRightAnswer] = useState(false)
-    const handleSampleName = (event) => setSampleDescription(event.target.value)
-    const handleSampleRightAnswer = () => setSampleRightAnswer(!sampleRightAnswer)
-
-    const addSample = (event) => {
-        event.preventDefault()
-        if (sampleDescription !== '') {
-            if (samples.map(sample => sample.description).includes(sampleDescription)) {
+    const addSample = (description, rightAnswer) => {
+        if (description !== '') {
+            if (samples.map(sample => sample.description).includes(description)) {
                 dispatch(setNotification({ message: 'Näytteen kuvaus on jo käytössä', success: false }))
             } else {
-                const newSample = {
-                    description: sampleDescription,
-                    rightAnswer: sampleRightAnswer
-                }
-                setSamples(samples.concat(newSample))
-                setSampleDescription('')
-                setSampleRightAnswer(false)
+                setSamples(samples.concat({ description, rightAnswer }))
+                setSample({
+                    description: '',
+                    rightAnswer: false
+                })
             }
         }
     }
@@ -171,14 +164,7 @@ const CaseEditForm = ({ caseToEdit }) => {
                         </tbody>
                     </Table>
 
-                    <Form.Control onChange={handleSampleName}
-                        placeholder="Näytteen kuvaus"
-                        value={sampleDescription} />
-                    <Form.Check onChange={handleSampleRightAnswer}
-                        type="checkbox"
-                        label="Oikea vastaus"
-                        checked={sampleRightAnswer} />
-                    <Button onClick={addSample}>Lisää näytevaihtoehto</Button><br></br>
+                    <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
                     <br></br>
                     <ListGroup>
                         <Form.Label> Testiryhmät</Form.Label>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import Sample from './Sample.js'
+import AddSample from './AddSample.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { setNotification } from '../../reducers/notificationReducer'
-import { Modal, Button, ButtonGroup, Form, ListGroup, Table } from 'react-bootstrap'
+import { Modal, Button, ButtonGroup, Form, Table } from 'react-bootstrap'
 
 const CaseForm = () => {
 
@@ -28,8 +30,7 @@ const CaseForm = () => {
     const [bacterium, setBacterium] = useState(bacteria[0])
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
-    const [sample, setSample] = useState({ description: '', rightAnswer: false })
-    const [samples, setSamples] = useState([])
+
     const [testForAlternativeTests, setTestForAlternativeTests] = useState({ testName: tests[0].name, testId: tests[0].id, positive: false })
     const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
     const [testGroup, setTestGroup] = useState([])
@@ -42,6 +43,7 @@ const CaseForm = () => {
 
     const addNewCase = (event) => {
         event.preventDefault()
+        console.log(samples)
         dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
         handleClose()
     }
@@ -70,6 +72,9 @@ const CaseForm = () => {
         resetCaseForm()
     }
 
+    const [sample, setSample] = useState({ description: '', rightAnswer: false })
+    const [samples, setSamples] = useState([])
+    const deleteSample = (sampleToDelete) => setSamples(samples.filter(s => s.description !== sampleToDelete.description))
     const addSample = (description, rightAnswer) => {
         if (description !== '') {
             if (samples.map(sample => sample.description).includes(description)) {
@@ -77,8 +82,8 @@ const CaseForm = () => {
             } else {
                 setSamples(samples.concat({ description, rightAnswer }))
                 setSample({
-                    ...sample,
-                    description: ''
+                    description: '',
+                    rightAnswer: false
                 })
             }
         }
@@ -157,24 +162,18 @@ const CaseForm = () => {
 
                         <Form.Group controlId='samples'>
                             <Form.Label>Näytevaihtoehdot</Form.Label>
-                            <Form.Control
-                                value={sample.description}
-                                onChange={({ target }) => setSample({ ...sample, description: target.value })}
-                            />
-                            <Form.Check
-                                type='checkbox'
-                                id='isRightAnswer'
-                                label='Oikea vastaus'
-                                onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
-                            <Button type='button' id='addSample' onClick={() => addSample(sample.description, sample.rightAnswer)}>+</Button>
-                            <ListGroup>
-                                {samples.map(sample => sample.rightAnswer ?
-                                    <ListGroup.Item variant='success' key={sample.description}>{sample.description}</ListGroup.Item> :
-                                    <ListGroup.Item variant='danger' key={sample.description}>{sample.description}</ListGroup.Item>
-                                )}
-                            </ListGroup>
+                            <Table>
+                                <tbody>
+                                    {samples.map(s =>
+                                        <Sample key={s.description}
+                                            sample={s}
+                                            sampleChange={deleteSample} >
+                                        </Sample>
+                                    )}
+                                </tbody>
+                            </Table>
                         </Form.Group>
-
+                        <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
                         <Form.Group>
                             <Form.Label>Testiryhmät</Form.Label>
                             {!addingAlt && !addingTest ?
