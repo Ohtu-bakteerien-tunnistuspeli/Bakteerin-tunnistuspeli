@@ -61,7 +61,7 @@ const CaseEditForm = ({ caseToEdit }) => {
 
     /* samples control*/
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
-    const [samples, setSamples] = useState([])
+    const [samples, setSamples] = useState(caseToEdit.samples)
     const deleteSample = (sampleToDelete) => setSamples(samples.filter(s => s.description !== sampleToDelete.description))
     const addSample = (description, rightAnswer) => {
         if (description !== '') {
