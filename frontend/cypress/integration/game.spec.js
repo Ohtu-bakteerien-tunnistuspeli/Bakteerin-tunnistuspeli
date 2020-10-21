@@ -1,4 +1,4 @@
-describe('Palying game', function () {
+describe('Playing game', function () {
     beforeEach(function () {
         cy.login({ username: 'admin', password: 'admin' })
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
