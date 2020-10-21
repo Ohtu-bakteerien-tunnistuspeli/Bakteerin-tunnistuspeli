@@ -14,11 +14,6 @@ describe('Case management', () => {
     })
     describe('Add case', () => {
         beforeEach(() => {
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-            cy.addBacterium({ name: 'Tetanus' })
-            cy.addTest({ name: 'Testi', type: 'Viljely' })
         })
 
         it('A new case with correct data without image can be added', () => {
@@ -103,11 +98,6 @@ describe('Case management', () => {
 
     describe('Modify a case', () => {
         beforeEach(() => {
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-            cy.addBacterium({ name: 'Tetanus' })
-            cy.addTest({ name: 'Testi', type: 'Viljely' })
         })
 
         it('The case Tapaus can be modified', () => {
