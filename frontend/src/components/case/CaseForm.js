@@ -155,9 +155,10 @@ const CaseForm = () => {
                                 onChange={handleCompletionImageChange} />
                         </Form.Group>
 
-                        <Form.Group controlId='samples'>
+                        <Form.Group>
                             <Form.Label>Näytevaihtoehdot</Form.Label>
                             <Form.Control
+                                controlId='samples'
                                 value={sample.description}
                                 onChange={({ target }) => setSample({ ...sample, description: target.value })}
                             />
