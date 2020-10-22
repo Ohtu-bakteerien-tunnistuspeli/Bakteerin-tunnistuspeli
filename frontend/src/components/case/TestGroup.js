@@ -27,7 +27,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup }) => {
                     </Row>
                 </Container>
 
-                <Table>
+                <Table id='testGroupsTable'>
                     <thead>
                         <tr>
                             <th>Testit</th>
