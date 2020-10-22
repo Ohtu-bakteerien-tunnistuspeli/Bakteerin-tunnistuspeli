@@ -2,6 +2,7 @@ const caseRouter = require('express').Router()
 const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
+const config = require('../utils/config')
 
 const isCompletionDone = (caseToCheck) => {
     if ((caseToCheck.completionImage && caseToCheck.completionImage.url) || caseToCheck.completionText) {
@@ -29,12 +30,11 @@ const fileFilter = (req, file, cb) => {
 }
 const storage = multer.diskStorage({
     destination: function (req, res, cb) {
-        cb(null, 'images')
+        cb(null, config.IMAGEURL)
     }
 })
 const upload = multer({ storage, fileFilter })
-const path = require('path')
-const imageDir = path.join(__dirname, '../images')
+const imageDir = config.IMAGEURL
 const fs = require('fs')
 const deleteUploadedImages = (request) => {
     if (request.files && request.files.completionImage) {

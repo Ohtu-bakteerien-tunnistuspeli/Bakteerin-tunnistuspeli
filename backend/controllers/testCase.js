@@ -2,6 +2,7 @@ const testRouter = require('express').Router()
 const Test = require('../models/testCase')
 const Bacterium = require('../models/bacterium')
 const Case = require('../models/case')
+const config = require('../utils/config')
 const multer = require('multer')
 const fileFilter = (req, file, cb) => {
     if (req.user && req.user.admin) {
@@ -17,12 +18,13 @@ const fileFilter = (req, file, cb) => {
 }
 const storage = multer.diskStorage({
     destination: function (req, res, cb) {
-        cb(null, 'images')
+        cb(null, config.IMAGEURL)
     }
 })
+
 const upload = multer({ storage, fileFilter })
 const path = require('path')
-const imageDir = path.join(__dirname, '../images')
+const imageDir = config.IMAGEURL
 const fs = require('fs')
 const deleteUploadedImages = (request) => {
     if (request.files) {
