@@ -91,33 +91,35 @@ const CaseEditForm = ({ caseToEdit }) => {
     const [addingAlt, setAddingAlt] = useState(false)
     const [addingTest, setAddingTest] = useState(false)
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
-    const [testForAlternativeTests, setTestForAlternativeTests] = useState({ name: tests[0].name, testId: tests[0].id, positive: false })
+    const [test, setTest] = useState({ name: '', testId: '', positive: false })
     const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
     const [testGroup, setTestGroup] = useState([])
     const [testGroups, setTestGroups] = useState(caseToEdit.testGroups)
 
-    const addTestGroup = () => {
-        if (testGroup.length > 0) {
-            setTestGroups([...testGroups, testGroup])
-            setTestGroup([])
-        }
-    }
-
-    const addTestForCaseToTestGroup = () => {
-        if (testForCase.tests.length > 0) {
-            setTestGroup([...testGroup, testForCase])
-            setTestForCase({ isRequired: testForCase.isRequired, tests: [] })
-        }
-    }
-
-    const addAlternativeTestToTestForCase = () => {
-        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(testForAlternativeTests) })
-    }
-
-
-
     const removeTestGroup = (tg) => {
         setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
+    }
+
+    const addTestGroup = () => {
+        setTestGroups([...testGroups, testGroup])
+        setTestGroup([])
+        setAddingAlt(false)
+        setAddingTest(false)
+    }
+
+    const addTestToTestGroup = () => {
+        setTest({ name: '', testId: '', positive: false })
+        setTestGroup([...testGroup, testForCase])
+        setTestForCase({ isRequired: false, tests: [] })
+        setAddingAlt(false)
+        setAddingTest(false)
+    }
+
+    const addTest = () => {
+        console.log(test)
+        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
+        setAddingAlt(false)
+        setTest({ name: '', testId: '', positive: false })
     }
     /* testgroup control end */
     return (<div>
@@ -176,7 +178,23 @@ const CaseEditForm = ({ caseToEdit }) => {
                     </Table>
 
                     <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
-                    <br></br>
+                    <AddTestGroup addingAlt={addingAlt}
+                        setAddingAlt={setAddingAlt}
+                        addingTest={addingTest}
+                        setAddingTest={setAddingTest}
+                        setTest={setTest}
+                        test={test}
+                        tests={tests}
+                        tableWidth={tableWidth}
+                        cellWidth={cellWidth}
+                        testForCase={testForCase}
+                        setTestForCase={setTestForCase}
+                        addTest={addTest}
+                        addTestToTestGroup={addTestToTestGroup}
+                        testGroup={testGroup}
+                        addTestGroup={addTestGroup}
+                    ></AddTestGroup>
+                   
                     <ListGroup>
                         <Form.Label> Testiryhmät</Form.Label>
                         {testGroups.map((tg, i) =>
@@ -188,24 +206,8 @@ const CaseEditForm = ({ caseToEdit }) => {
                             </TestGroup>
                         )}
                     </ListGroup>
-                    <Form.Label>Lisää Testiryhmä</Form.Label>
-                    <AddTestGroup addingAlt={addingAlt}
-                        setAddingAlt={setAddingAlt}
-                        addingTest={addingTest}
-                        setAddingTest={setAddingTest}
-                        setTestForAlternativeTests={setTestForAlternativeTests}
-                        testForAlternativeTests={testForAlternativeTests}
-                        tests={tests}
-                        tableWidth={tableWidth}
-                        cellWidth={cellWidth}
-                        testForCase={testForCase}
-                        setTestForCase={setTestForCase}
-                        addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
-                        addTestForCaseToTestGroup={addTestForCaseToTestGroup}
-                        testGroup={testGroup}
-                        addTestGroup={addTestGroup}
-                    ></AddTestGroup>
-                    <Button id="saveEdit" variant="primary" type="submit">
+                    
+                     <Button id="saveEdit" variant="primary" type="submit">
                         Tallenna
                     </Button>
                 </Form>
