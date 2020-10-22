@@ -25,21 +25,12 @@ const CaseForm = () => {
     }
 
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
-    const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const user = useSelector(state => state.user)
 
     const [caseName, setCaseName] = useState('')
     const [bacterium, setBacterium] = useState(bacteria[0])
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
-
-    const [testForAlternativeTests, setTestForAlternativeTests] = useState({ testName: tests[0].name, testId: tests[0].id, positive: false })
-    const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
-    const [testGroup, setTestGroup] = useState([])
-    const [testGroups, setTestGroups] = useState([])
-
-    const [addingAlt, setAddingAlt] = useState(false)
-    const [addingTest, setAddingTest] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -57,7 +48,7 @@ const CaseForm = () => {
         setCompletionImage(INITIAL_STATE)
         setSample({ description: '', rightAnswer: false })
         setSamples([])
-        setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
+        setTest({ name: '', testId: tests[0].id, positive: false })
         setTestForCase({ isRequired: false, tests: [] })
         setTestGroup([])
         setTestGroups([])
@@ -91,33 +82,41 @@ const CaseForm = () => {
         }
     }
 
+    /* testgroup control */
+    const [addingAlt, setAddingAlt] = useState(false)
+    const [addingTest, setAddingTest] = useState(false)
+    const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const [test, setTest] = useState({ name: '', testId: '', positive: false })
+    const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
+    const [testGroup, setTestGroup] = useState([])
+    const [testGroups, setTestGroups] = useState([])
+
     const removeTestGroup = (tg) => {
         setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
     }
+
     const addTestGroup = () => {
-        if (testGroup.length > 0) {
-            setTestGroups([...testGroups, testGroup])
-            setTestGroup([])
-        }
+        setTestGroups([...testGroups, testGroup])
+        setTestGroup([])
         setAddingAlt(false)
         setAddingTest(false)
     }
 
-    const addTestForCaseToTestGroup = () => {
-        if (testForCase.tests.length > 0) {
-            setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
-            setTestGroup([...testGroup, testForCase])
-            setTestForCase({ isRequired: testForCase.isRequired, tests: [] })
-        }
+    const addTestToTestGroup = () => {
+        setTest({ name: '', testId: '', positive: false })
+        setTestGroup([...testGroup, testForCase])
+        setTestForCase({ isRequired: false, tests: [] })
         setAddingAlt(false)
         setAddingTest(false)
     }
 
-    const addAlternativeTestToTestForCase = () => {
-        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(testForAlternativeTests) })
+    const addTest = () => {
+        console.log(test)
+        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
         setAddingAlt(false)
-        //setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
+        setTest({ name: '', testId: '', positive: false })
     }
+    /* testgroup control end */
 
     const handleCompletionImageChange = (event) => {
         setCompletionImage(event.target.files[0])
@@ -183,15 +182,15 @@ const CaseForm = () => {
                             setAddingAlt={setAddingAlt}
                             addingTest={addingTest}
                             setAddingTest={setAddingTest}
-                            setTestForAlternativeTests={setTestForAlternativeTests}
-                            testForAlternativeTests={testForAlternativeTests}
+                            setTest={setTest}
+                            test={test}
                             tests={tests}
                             tableWidth={tableWidth}
                             cellWidth={cellWidth}
                             testForCase={testForCase}
                             setTestForCase={setTestForCase}
-                            addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
-                            addTestForCaseToTestGroup={addTestForCaseToTestGroup}
+                            addTest={addTest}
+                            addTestToTestGroup={addTestToTestGroup}
                             testGroup={testGroup}
                             addTestGroup={addTestGroup}
                         ></AddTestGroup>
