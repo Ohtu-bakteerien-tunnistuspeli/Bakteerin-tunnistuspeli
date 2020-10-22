@@ -15,7 +15,7 @@ describe('Case management', () => {
     describe('Add case', () => {
         beforeEach(() => {
         })
-/*
+
         it('A new case with correct data without image can be added', () => {
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
@@ -41,7 +41,7 @@ describe('Case management', () => {
             cy.contains('Tapauksen Maatila lisäys onnistui.')
             cy.contains('Maatila')
         })
-*/
+
         it('If the validation of the field name, case is not added and error is reported', () => {
             cy.contains('Tapausten hallinta').click()
             cy.get('#caseModalButton').click()
@@ -61,7 +61,7 @@ describe('Case management', () => {
             cy.get('#addCase').click()
             cy.contains('Tapauksen nimen tulee olla vähintään 2 merkkiä pitkä.')
         })
-/*
+
         it('If the field name is not unique, case is not added and error is reported', () => {
             cy.contains('Tapausten hallinta').click()
             cy.get('#caseModalButton').click()
@@ -88,7 +88,7 @@ describe('Case management', () => {
             cy.get('#addCase').click()
             cy.contains('Case validation failed: name: Tapauksen nimen tulee olla uniikki.')
         })
-*/
+
         it('A user can not add a case', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.get('div').should('not.contain', 'Tapausten hallinta')
@@ -99,7 +99,7 @@ describe('Case management', () => {
     describe('Modify a case', () => {
         beforeEach(() => {
         })
-/*
+
         it('The case Tapaus can be modified', () => {
             cy.login({ username: 'admin', password: 'admin' })
             cy.contains('Tapausten hallinta').click()
@@ -128,7 +128,7 @@ describe('Case management', () => {
             cy.get('#saveEdit').click()
             cy.contains('MaatilaMaatila2')
         })
-*/
+
     })
 
     describe('Remove a case', () => {

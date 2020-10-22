@@ -37,7 +37,7 @@ describe('Playing game', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
-            cy.get('div').should('contain', 'Tilalla on 27 lypsävää lehmää parsinavetassa ja lisäksi nuorkarjaa. Kuivikkeena käytetään kutteria, vesi tulee omasta kaivosta. Pääosa lehmistä on omaa tuotantoa, mutta navetan laajennuksen yhteydessä edellisenä kesänä hankittiin muutama uusi tiine eläin, jotka poikivat loppusyksystä.')
+            cy.get('div').should('contain','Tilalla on 27 lypsävää lehmää parsinavetassa ja lisäksi nuorkarjaa. Kuivikkeena käytetään kutteria, vesi tulee omasta kaivosta. Pääosa lehmistä on omaa tuotantoa, mutta navetan laajennuksen yhteydessä edellisenä kesänä hankittiin muutama uusi tiine eläin, jotka poikivat loppusyksystä.')
             cy.contains('Toiminnot').click()
             cy.get('[type="checkbox"]').eq('2').check()
             cy.get('#checkSamples').click()
@@ -59,7 +59,7 @@ describe('Playing game', () => {
             cy.get('#checkSamples').click()
             cy.contains('Oikea vastaus')
         })
-/*
+
         it('After choosing right samplingmethod, user can choose all tests in required order', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
@@ -104,7 +104,7 @@ describe('Playing game', () => {
             cy.contains('Penisilliinin sietokoe agarvaluamenetelmällä').click()
             cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.')
         })
-*/
+
         it('User can check control images of all tests', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
