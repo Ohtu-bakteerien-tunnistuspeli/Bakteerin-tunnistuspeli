@@ -59,7 +59,7 @@ describe('Playing game', () => {
             cy.get('#checkSamples').click()
             cy.contains('Oikea vastaus')
         })
-
+/*
         it('After choosing right samplingmethod, user can choose all tests in required order', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
@@ -88,7 +88,7 @@ describe('Playing game', () => {
             cy.contains('CAMP-testi').click()
             cy.contains('Oikea vastaus. Kaikki testit tehty.')
         })
-/*
+
         it('After choosing right samplingmethod, user can choose only required tests in required order', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
