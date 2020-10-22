@@ -128,9 +128,9 @@ describe('Case management', () => {
             cy.get('#saveEdit').click()
             cy.contains('MaatilaMaatila2')
         })
-
-    })
 */
+    })
+
     describe('Remove a case', () => {
         beforeEach(() => {
             cy.login({ username: 'admin', password: 'admin' })
