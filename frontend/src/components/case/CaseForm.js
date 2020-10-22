@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
+import Sample from './Sample.js'
+import AddSample from './AddSample.js'
+import TestGroup from './TestGroup.js'
+import AddTestGroup from './AddTestGroup.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { setNotification } from '../../reducers/notificationReducer'
-import { Modal, Button, ButtonGroup, Form, ListGroup, Table } from 'react-bootstrap'
+import { Modal, Button, Form, Table } from 'react-bootstrap'
 
 const CaseForm = () => {
 
@@ -11,13 +15,13 @@ const CaseForm = () => {
         image: undefined
     }
 
-    const tableWidth = { 
+    const tableWidth = {
         tableLayout: 'fixed',
-        width: '100%' 
+        width: '100%'
     }
 
-    const cellWidth = { 
-        width: '100%' 
+    const cellWidth = {
+        width: '100%'
     }
 
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
@@ -28,8 +32,7 @@ const CaseForm = () => {
     const [bacterium, setBacterium] = useState(bacteria[0])
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
-    const [sample, setSample] = useState({ description: '', rightAnswer: false })
-    const [samples, setSamples] = useState([])
+
     const [testForAlternativeTests, setTestForAlternativeTests] = useState({ testName: tests[0].name, testId: tests[0].id, positive: false })
     const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
     const [testGroup, setTestGroup] = useState([])
@@ -42,6 +45,7 @@ const CaseForm = () => {
 
     const addNewCase = (event) => {
         event.preventDefault()
+        console.log(samples)
         dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
         handleClose()
     }
@@ -70,6 +74,9 @@ const CaseForm = () => {
         resetCaseForm()
     }
 
+    const [sample, setSample] = useState({ description: '', rightAnswer: false })
+    const [samples, setSamples] = useState([])
+    const deleteSample = (sampleToDelete) => setSamples(samples.filter(s => s.description !== sampleToDelete.description))
     const addSample = (description, rightAnswer) => {
         if (description !== '') {
             if (samples.map(sample => sample.description).includes(description)) {
@@ -77,13 +84,16 @@ const CaseForm = () => {
             } else {
                 setSamples(samples.concat({ description, rightAnswer }))
                 setSample({
-                    ...sample,
-                    description: ''
+                    description: '',
+                    rightAnswer: false
                 })
             }
         }
     }
 
+    const removeTestGroup = (tg) => {
+        setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
+    }
     const addTestGroup = () => {
         if (testGroup.length > 0) {
             setTestGroups([...testGroups, testGroup])
@@ -157,217 +167,41 @@ const CaseForm = () => {
 
                         <Form.Group>
                             <Form.Label>Näytevaihtoehdot</Form.Label>
-                            <Form.Control
-                                controlId='samples'
-                                value={sample.description}
-                                onChange={({ target }) => setSample({ ...sample, description: target.value })}
-                            />
-                            <Form.Check
-                                type='checkbox'
-                                id='isRightAnswer'
-                                label='Oikea vastaus'
-                                onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
-                            <Button type='button' id='addSample' onClick={() => addSample(sample.description, sample.rightAnswer)}>+</Button>
-                            <ListGroup>
-                                {samples.map(sample => sample.rightAnswer ?
-                                    <ListGroup.Item variant='success' key={sample.description}>{sample.description}</ListGroup.Item> :
-                                    <ListGroup.Item variant='danger' key={sample.description}>{sample.description}</ListGroup.Item>
-                                )}
-                            </ListGroup>
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label>Testiryhmät</Form.Label>
-                            { !addingAlt && !addingTest ?
-                                <>
-                                <Form.Control
-                                    as='select'
-                                    id='testSelect'
-                                    onChange={(event) => setTestForAlternativeTests({ ...testForAlternativeTests, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
-                                    {tests.map(test =>
-                                        <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
+                            <Table>
+                                <tbody>
+                                    {samples.map(s =>
+                                        <Sample key={s.description}
+                                            sample={s}
+                                            sampleChange={deleteSample} >
+                                        </Sample>
                                     )}
-                                </Form.Control>
-                                <Form.Check
-                                    type='checkbox'
-                                    id='positive'
-                                    label='Positiivinen'
-                                    onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
-                                </>
-                                :
-                                <></>
-                            }
-                            <ButtonGroup vertical>
-                                <Table style={tableWidth} striped bordered hover id='alternativeTestsTable'>
-                                    {testForCase.tests.length > 0 ?
-                                        <thead>
-                                            <tr>
-                                                <th>Testi</th>
-                                                <th>Positiivinen</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        : <thead></thead>}
-                                    <tbody>
-                                        {testForCase.tests.map((alternativeTest, i) =>
-                                            <tr key={i}>
-                                                <td>{alternativeTest.testName}</td>
-                                                <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
-                                                <td>{ i === 0 && !addingAlt ?
-                                                    <Button
-                                                        type='button'
-                                                        id='addAlternativeTestForTest'
-                                                        onClick={() => setAddingAlt(true)}>Lisää vaihtoehtoinen testi
-                                                        {/*</td>onClick={() => addAlternativeTestToTestForCase()}>Lisää vaihtoehtoinen testi */}
-                                                    </Button>
-                                                    :
-                                                    <></>
-                                                }</td>
-                                            </tr>
-                                        )}
-                                        <tr>
-                                            { addingAlt ? 
-                                                <>
-                                                    <td>
-                                                        <select
-                                                            style={cellWidth}
-                                                            name='select2'
-                                                            id='testSelect2'
-                                                            onChange={(event) => setTestForAlternativeTests({ ...testForAlternativeTests, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
-                                                            {tests.map(test =>
-                                                                <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
-                                                            )}
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <Form.Check
-                                                            type='checkbox'
-                                                            id='positive2'
-                                                            label='Positiivinen'
-                                                            onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
-                                                    </td>
-                                                    <td>
-                                                        <Button
-                                                            type='button'
-                                                            id='addAlternativeTestForTest'
-                                                            onClick={() => { addAlternativeTestToTestForCase() }}>Lisää
-                                                        </Button>
-                                                    </td>
-                                                </>
-                                                :
-                                                <></>
-                                            }
-                                        </tr>
-                                    </tbody>
-                                </Table>
-                                {testForCase.tests.length > 0 ?
-                                    <></>
-                                    :
-                                    <>
-                                        <Button
-                                            type='button'
-                                            id='addAlternativeTestForTest'
-                                            onClick={() => {addAlternativeTestToTestForCase(); setAddingTest(true)}}>Lisää testi</Button>
-                                    </>
-                                }
-                                <Form.Check
-                                    type='checkbox'
-                                    id='required'
-                                    label='Pakollinen'
-                                    onChange={() => setTestForCase({ ...testForCase, isRequired: !testForCase.isRequired })} />
-                                {testForCase.tests.length > 0 ?
-                                    <Button
-                                        type='button'
-                                        id='addTestForGroup'
-                                        onClick={() => addTestForCaseToTestGroup()}>Lisää testi(t) ryhmään</Button>
-                                    :
-                                    <></>
-                                }
-                                <Table striped bordered hover id='testGroupTable'>
-                                    {testGroup.length > 0 ?
-                                        <thead>
-                                            <tr>
-                                                <th>Testit</th>
-                                                <th>Pakollinen</th>
-                                            </tr>
-                                        </thead>
-                                        : <thead></thead>}
-                                    <tbody>
-                                        {testGroup.map((testForCase, i) =>
-                                            <tr key={i}>
-                                                <td>
-                                                    <Table striped bordered hover id='testGroupTable'>
-                                                        {testForCase.tests.length > 0 ?
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Testi</th>
-                                                                    <th>Positiivinen</th>
-                                                                </tr>
-                                                            </thead>
-                                                            : <thead></thead>}
-                                                        <tbody>
-                                                            {testForCase.tests.map((alternativeTest, j) =>
-                                                                <tr key={j}>
-                                                                    <td>{alternativeTest.testName}</td>
-                                                                    <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
-                                                                </tr>
-                                                            )}
-                                                        </tbody>
-                                                    </Table>
-                                                </td>
-                                                <td>{testForCase.isRequired ? 'Kyllä' : 'Ei'}</td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </Table>
-                                <Button
-                                    type='button'
-                                    id='addTestGroup'
-                                    onClick={() => addTestGroup()}>Lisää testiryhmä
-                                </Button>
-                            </ButtonGroup>
+                                </tbody>
+                            </Table>
                         </Form.Group>
-
-
+                        <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
+                        <AddTestGroup addingAlt={addingAlt}
+                            setAddingAlt={setAddingAlt}
+                            addingTest={addingTest}
+                            setAddingTest={setAddingTest}
+                            setTestForAlternativeTests={setTestForAlternativeTests}
+                            testForAlternativeTests={testForAlternativeTests}
+                            tests={tests}
+                            tableWidth={tableWidth}
+                            cellWidth={cellWidth}
+                            testForCase={testForCase}
+                            setTestForCase={setTestForCase}
+                            addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
+                            addTestForCaseToTestGroup={addTestForCaseToTestGroup}
+                            testGroup={testGroup}
+                            addTestGroup={addTestGroup}
+                        ></AddTestGroup>
                         {testGroups.map((testGroup, i) =>
-                            <div key={i} >
-                                <div>{`Testiryhmä: ${i + 1}`}</div>
-                                <Table striped bordered hover id='testGroupsTable'>
-                                    <thead>
-                                        <tr>
-                                            <th>Testit</th>
-                                            <th>Pakollinen</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {testGroup.map((testForCase, j) =>
-                                            <tr key={j}>
-                                                <td>
-                                                    <Table striped bordered hover id='testGroupTable'>
-                                                        {testForCase.tests.length > 0 ?
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Testi</th>
-                                                                    <th>Positiivinen</th>
-                                                                </tr>
-                                                            </thead>
-                                                            : <thead></thead>}
-                                                        <tbody>
-                                                            {testForCase.tests.map((alternativeTest, k) =>
-                                                                <tr key={k}>
-                                                                    <td>{alternativeTest.testName}</td>
-                                                                    <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
-                                                                </tr>
-                                                            )}
-                                                        </tbody>
-                                                    </Table>
-                                                </td>
-                                                <td>{testForCase.isRequired ? 'Kyllä' : 'Ei'}</td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </Table>
-                            </div>
+                            <TestGroup key={i}
+                                testgroup={testGroup}
+                                index={i}
+                                removeTestGroup={removeTestGroup}
+                            >
+                            </TestGroup>
                         )}
                         <Button
                             variant='primary'

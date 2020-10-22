@@ -11,7 +11,7 @@ const GDPRForm = () => {
                 Rekisteröitymällä näissä käyttöehdoissa mainittuihin palveluihin hyväksyt palvelun käytön kannalta tarpeellisen tiedon tallentamisen ja käsittelyn tietosuojaselosteemme mukaisessa muodossa. Henkilötiedon ylläpitämisessä noudatetaan henkilötietolakia, emmekä kerää pelaamisen ja pelaajan opintosuorituksen kirjaamisen kannalta tarpeettomia ylimääräisiä henkilötietoja. Pelin pelaamisesta syntyvien henkilörekisterien avulla kurssien vastuuopettajat pystyvät antamaan opiskelijalle suorituksia ja seuraamaan opiskelijan osaamista. Edellä mainittua tarkoitusta varten tietoja säilytetään Yliopistolain (24.7.2009/558) 44 §:n mukaan vähintään kuuden kuukauden ajan tulosten julkistamisesta. Jos peleistä tehdään akateemista tutkimusta, kun opiskelijalta on saatu siihen lupa, tietoja säilytetään tutkimukseen tarvittava aika. Voit lukea lisää tietosuojasta palveluiden Tietosuojaselosteesta.
                 <p></p>
                 <h4>Tekijänoikeudet</h4>
-                Palvelun materiaalin, kuten tehtävien ja niihin liittyvien kuvien tekijänoikeudet kuuluvat Helsingin yliopistolle tai materiaalin tuottaneille henkilöille, ellei toisin mainita. 
+                Palvelun materiaalin, kuten tehtävien ja niihin liittyvien kuvien tekijänoikeudet kuuluvat Helsingin yliopistolle tai materiaalin tuottaneille henkilöille, ellei toisin mainita.
                 <p></p>
                 <h4>Tiedon ajantasaisuus ja lainmukaisuus</h4>
                 Käyttäjä vastaa ilmoittamiensa tietojen oikeellisuudesta. Opintosuoritukset voidaan kirjata palveluun ilmoitettujen tietojen pohjalta, eikä Helsingin yliopisto ole vastuussa väärin ilmoitettujen henkilötietojen johdosta kirjaamatta jääneistä opintosuorituksista.
@@ -22,12 +22,12 @@ const GDPRForm = () => {
 
             <div>
                 <input type="checkbox" id="consentBox" name="consentBox" />
-                <label for="consentBox">Olen lukenut ja hyväksyn ylläolevat ehdot</label>
+                <label htmlFor="consentBox">Olen lukenut ja hyväksyn ylläolevat ehdot</label>
             </div>
 
             <div>
                 <input type="checkbox" id="consentAnalytics" name="consentAnalytics" />
-                <label for="consentAnalytics">Sallin analytiikkadatan keräämisen, mikä Bakteerien tunnistuspelissä koskee etenemisestä tallentuneita logitietoja.</label>
+                <label htmlFor="consentAnalytics">Sallin analytiikkadatan keräämisen, mikä Bakteerien tunnistuspelissä koskee etenemisestä tallentuneita logitietoja.</label>
             </div>
         </form>
     )

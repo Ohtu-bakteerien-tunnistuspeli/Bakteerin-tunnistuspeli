@@ -23,7 +23,7 @@ describe('Case management', () => {
             cy.get('#name').type('Maatila')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#bacterium').select('Tetanus')
-            cy.get('#samples', { timeout: 5000}).type('Verinäyte')
+            cy.get('#samples').type('Verinäyte')
             cy.get('#isRightAnswer').click()
             cy.get('#addSample').click()
             cy.contains('Verinäyte')

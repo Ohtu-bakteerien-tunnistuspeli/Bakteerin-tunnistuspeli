@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Switch, Route, Redirect,/* Link, useRouteMatch,*/ useHistory, Link } from 'react-router-dom'
-//import SkeletonComponent from './components/Skeleton'
 import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/Login'

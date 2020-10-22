@@ -8,7 +8,7 @@ const useField = (type) => {
     const onChange = (event) => {
         setValue(event.target.value)
     }
-    const reset = (event)=> {
+    const reset = () => {
         setValue('')
     }
     return {
@@ -43,7 +43,6 @@ const TestForm = () => {
 
     const addTests = (event) => {
         event.preventDefault()
-        console.log('dispatch')
         dispatch(addTest(TestName, TestType, controlImage, positiveResultImage, negativeResultImage, bacteriaSpecificImages, user.token, resetTestForm))
         handleClose()
     }
@@ -61,35 +60,28 @@ const TestForm = () => {
     const handleClose = () => setShow(false)
 
     const handleChange = (event) => {
-        console.log(event.target)
         setPhotoPos(event.target.files[0])
     }
 
     const handleChange2 = (event) => {
-        console.log(event.target)
         setPhotoNeg(event.target.files[0])
     }
 
     const handleChange3 = (event) => {
-        console.log(event.target)
         setControlImage(event.target.files[0])
     }
 
     const addBacteriumSpecificImage = () => {
-        console.log(bacteriaSpecificImage.bacterium)
-        console.log(bacteriaSpecificImage.image)
-        if (bacteriaSpecificImage.image !== 'undefined' && bacteriaSpecificImage.bacterium !== '' ) {
+        if (bacteriaSpecificImage.image !== 'undefined' && bacteriaSpecificImage.bacterium !== '') {
             if (bacteriaSpecificImage.name !== '') {
                 setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
-                console.log('after adding', bacteriaSpecificImages)
                 setBacteriaImage(INITIAL_STATE)
             }
         }
     }
 
     const handleSpecificImg = (event) => {
-        console.log('in handle', bacterium)
-        if (event.target.files[0]){
+        if (event.target.files[0]) {
             var file = event.target.files[0]
             var blob = file.slice(0, file.size, file.type)
             var newFile = new File([blob], bacterium, { type: file.type })
@@ -99,7 +91,7 @@ const TestForm = () => {
 
     return (
         <div>
-            <Button style={ style } id="testModalButton" variant="primary" onClick={handleShow}>
+            <Button style={style} id="testModalButton" variant="primary" onClick={handleShow}>
                 Luo uusi testi
             </Button>
             <Modal show={show} size='lg' onHide={handleClose} >
@@ -113,10 +105,10 @@ const TestForm = () => {
                         <Form.Group controlId="type">
                             <Form.Label>Tyyppi</Form.Label>
                             <Form.Control type={TestType.type} value={TestType.value} onChange={TestType.onChange} reset='' />
-                                {/* This can be added if accepted of all
+                            {/* This can be added if accepted of all
                                 <Form.Control as="select" type={TestType.type} value={TestType.value} onClick={TestType.onChange} onChange={TestType.onChange}>
                                     <option key="1">Valitse testin tyyppi</option>
-                                    <option key="2" value="Värjäys">Värjäys</option> 
+                                    <option key="2" value="Värjäys">Värjäys</option>
                                     <option key="3" value="Testi">Testi</option>
                                     <option key="4" value="Viljely">Viljely</option>
                                 </Form.Control>*/}

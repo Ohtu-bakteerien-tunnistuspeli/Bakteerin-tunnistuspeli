@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Sample from './Sample.js'
 import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
+import AddSample from './AddSample.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal, Button, Form, Table, ListGroup } from 'react-bootstrap'
 import { updateCase } from '../../reducers/caseReducer'
@@ -13,6 +14,15 @@ const CaseEditForm = ({ caseToEdit }) => {
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
     const [show, setShow] = useState(false)
+
+    const tableWidth = {
+        tableLayout: 'fixed',
+        width: '100%'
+    }
+
+    const cellWidth = {
+        width: '100%'
+    }
     /*end of modal config*/
 
     const user = useSelector(state => state.user)
@@ -54,38 +64,32 @@ const CaseEditForm = ({ caseToEdit }) => {
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
     const [deleteEndImage, setDeleteEndImage] = useState(false)
     const [img, setImg] = useState(caseToEdit.completionImage ? true : false)
-    const borderStyle = { borderStyle:'solid', borderColor: 'black', borderWidth: 'thin' }
+    const borderStyle = { borderStyle: 'solid', borderColor: 'black', borderWidth: 'thin' }
     const marginStyle = { margin: '10px' }
     /*image control end*/
 
     /* samples control*/
+    const [sample, setSample] = useState({ description: '', rightAnswer: false })
     const [samples, setSamples] = useState(caseToEdit.samples)
     const deleteSample = (sampleToDelete) => setSamples(samples.filter(s => s.description !== sampleToDelete.description))
-
-    const [sampleDescription, setSampleDescription] = useState('')
-    const [sampleRightAnswer, setSampleRightAnswer] = useState(false)
-    const handleSampleName = (event) => setSampleDescription(event.target.value)
-    const handleSampleRightAnswer = () => setSampleRightAnswer(!sampleRightAnswer)
-
-    const addSample = (event) => {
-        event.preventDefault()
-        if (sampleDescription !== '') {
-            if (samples.map(sample => sample.description).includes(sampleDescription)) {
+    const addSample = (description, rightAnswer) => {
+        if (description !== '') {
+            if (samples.map(sample => sample.description).includes(description)) {
                 dispatch(setNotification({ message: 'Näytteen kuvaus on jo käytössä', success: false }))
             } else {
-                const newSample = {
-                    description: sampleDescription,
-                    rightAnswer: sampleRightAnswer
-                }
-                setSamples(samples.concat(newSample))
-                setSampleDescription('')
-                setSampleRightAnswer(false)
+                setSamples(samples.concat({ description, rightAnswer }))
+                setSample({
+                    description: '',
+                    rightAnswer: false
+                })
             }
         }
     }
     /* samples control end */
 
     /* testgroup control */
+    const [addingAlt, setAddingAlt] = useState(false)
+    const [addingTest, setAddingTest] = useState(false)
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const [testForAlternativeTests, setTestForAlternativeTests] = useState({ name: tests[0].name, testId: tests[0].id, positive: false })
     const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
@@ -121,7 +125,7 @@ const CaseEditForm = ({ caseToEdit }) => {
             Muokkaa
         </Button>
         <Modal show={show} size="lg" onHide={handleClose} >
-            <Modal.Header closeButton>Muokkaat tapausta "{caseToEdit.name}"</Modal.Header>
+            <Modal.Header closeButton>Muokkaat tapausta {caseToEdit.name}</Modal.Header>
             <Modal.Body>
                 <Form onSubmit={saveUpdatedCase} >
 
@@ -141,20 +145,20 @@ const CaseEditForm = ({ caseToEdit }) => {
                     <Form.Group controlId="editCompletionImage">
                         <Form.Label style={marginStyle}>Loppukuva</Form.Label>
                         {img ?
-                        <p style={borderStyle}>Loppukuva on annettu</p>
-                        : <></>
+                            <p style={borderStyle}>Loppukuva on annettu</p>
+                            : <></>
                         }
                         <Form.Control
                             style={marginStyle}
                             name='editCompletionImg'
                             value={completionImage.image}
                             type='file'
-                            onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false)}}
+                            onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false) }}
                         />
-                        <Button style={marginStyle} id='deleteImage' onClick={ () => {setImg(false); setDeleteEndImage(true)} }>Poista loppukuva
+                        <Button style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>Poista loppukuva
                             <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
-                                <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                             </svg>
                         </Button>
                     </Form.Group>
@@ -171,14 +175,7 @@ const CaseEditForm = ({ caseToEdit }) => {
                         </tbody>
                     </Table>
 
-                    <Form.Control onChange={handleSampleName}
-                        placeholder="Näytteen kuvaus"
-                        value={sampleDescription} />
-                    <Form.Check onChange={handleSampleRightAnswer}
-                        type="checkbox"
-                        label="Oikea vastaus"
-                        checked={sampleRightAnswer} />
-                    <Button onClick={addSample}>Lisää näytevaihtoehto</Button><br></br>
+                    <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
                     <br></br>
                     <ListGroup>
                         <Form.Label> Testiryhmät</Form.Label>
@@ -192,16 +189,21 @@ const CaseEditForm = ({ caseToEdit }) => {
                         )}
                     </ListGroup>
                     <Form.Label>Lisää Testiryhmä</Form.Label>
-                    <AddTestGroup
+                    <AddTestGroup addingAlt={addingAlt}
+                        setAddingAlt={setAddingAlt}
+                        addingTest={addingTest}
+                        setAddingTest={setAddingTest}
+                        setTestForAlternativeTests={setTestForAlternativeTests}
                         testForAlternativeTests={testForAlternativeTests}
-                        testForCase={testForCase}
-                        addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
                         tests={tests}
+                        tableWidth={tableWidth}
+                        cellWidth={cellWidth}
+                        testForCase={testForCase}
                         setTestForCase={setTestForCase}
+                        addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
+                        addTestForCaseToTestGroup={addTestForCaseToTestGroup}
                         testGroup={testGroup}
                         addTestGroup={addTestGroup}
-                        addTestForCaseToTestGroup={addTestForCaseToTestGroup}
-                        setTestForAlternativeTests={setTestForAlternativeTests}
                     ></AddTestGroup>
                     <Button id="saveEdit" variant="primary" type="submit">
                         Tallenna
