@@ -37,6 +37,7 @@ jobs:
       env: 
         SECRET: 'salainen'
         PORT: 3001
+        IMAGEURL: 'images'
     - name: Cypress run
       uses: cypress-io/github-action@v1
       with:
@@ -68,4 +69,6 @@ jobs:
     - run: npm ci
     - run: npm run test-githubactions
       env: 
+        PORT: 3001
         SECRET: 'salainen'
+        IMAGEURL: 'images'
