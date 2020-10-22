@@ -15,7 +15,7 @@ describe('Case management', () => {
     describe('Add case', () => {
         beforeEach(() => {
         })
-
+/*
         it('A new case with correct data without image can be added', () => {
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
@@ -41,7 +41,7 @@ describe('Case management', () => {
             cy.contains('Tapauksen Maatila lisäys onnistui.')
             cy.contains('Maatila')
         })
-
+*/
         it('If the validation of the field name, case is not added and error is reported', () => {
             cy.contains('Tapausten hallinta').click()
             cy.get('#caseModalButton').click()
