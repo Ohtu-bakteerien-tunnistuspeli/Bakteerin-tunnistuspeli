@@ -15,6 +15,9 @@ const caseSchema = mongoose.Schema({
     anamnesis: {
         type: String
     },
+    completionText: {
+        type: String,
+    },
     completionImage: {
         url: {
             type: String

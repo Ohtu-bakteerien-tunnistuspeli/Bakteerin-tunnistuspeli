@@ -2,8 +2,15 @@ const caseRouter = require('express').Router()
 const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
+
+const isCompletionDone = (caseToCheck) => {
+    if ((caseToCheck.completionImage && caseToCheck.completionImage.url) || caseToCheck.completionText) {
+        return true
+    }
+    return false
+}
 const isComplete = (caseToCheck) => {
-    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.completionImage.url && caseToCheck.samples && caseToCheck.testGroups) {
+    if (caseToCheck.bacterium && caseToCheck.anamnesis && isCompletionDone(caseToCheck) && caseToCheck.samples && caseToCheck.testGroups) {
         return true
     }
     return false
@@ -76,6 +83,9 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
             }
             if (request.body.anamnesis) {
                 newCase.anamnesis = request.body.anamnesis
+            }
+            if (request.body.completionText) {
+                newCase.completionText = request.body.completionText
             }
             if (request.files && request.files.completionImage) {
                 newCase.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
@@ -194,9 +204,11 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             if (request.body.anamnesis) {
                 changes.anamnesis = request.body.anamnesis
             }
+            if (request.body.completionText) {
+                changes.completionText = request.body.completionText
+            }
             if (request.files && request.files.completionImage && deleteEndImage === 'false') {
                 oldLinks.push(caseToUpdate.completionImage.url)
-                //fs.unlink(`${imageDir}/${caseToUpdate.completionImage.url}`, (err) => err)
                 changes.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {

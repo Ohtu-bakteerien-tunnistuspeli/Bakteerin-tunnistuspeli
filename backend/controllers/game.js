@@ -142,7 +142,7 @@ gameRouter.post('/:id/checkBacterium', async (request, response) => {
         try {
             const caseToCheck = await Case.findById(request.params.id).populate('bacterium', { name: 1 })
             if (request.body.bacteriumName && caseToCheck.bacterium.name.toLowerCase() === request.body.bacteriumName.toLowerCase()) {
-                return response.status(200).json({ correct: true, completionImageUrl: caseToCheck.completionImage.url })
+                return response.status(200).json({ correct: true, completionImageUrl: caseToCheck.completionImage.url, completionText: caseToCheck.completionText })
             } else {
                 return response.status(200).json({ correct: false })
             }
