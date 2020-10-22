@@ -21,6 +21,7 @@ const storage = multer.diskStorage({
         cb(null, config.IMAGEURL)
     }
 })
+
 const upload = multer({ storage, fileFilter })
 const path = require('path')
 const imageDir = config.IMAGEURL
