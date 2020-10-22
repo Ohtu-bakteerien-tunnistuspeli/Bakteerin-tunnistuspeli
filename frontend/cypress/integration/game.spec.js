@@ -88,7 +88,7 @@ describe('Playing game', () => {
             cy.contains('CAMP-testi').click()
             cy.contains('Oikea vastaus. Kaikki testit tehty.')
         })
-
+/*
         it('After choosing right samplingmethod, user can choose only required tests in required order', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
@@ -102,9 +102,9 @@ describe('Playing game', () => {
             cy.contains('HIRS-sarja').click()
             cy.contains('Edwardsin agar').click()
             cy.contains('Penisilliinin sietokoe agarvaluamenetelmällä').click()
-            cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.', { timeout: 10000 })
+            cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.')
         })
-
+*/
         it('User can check control images of all tests', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
