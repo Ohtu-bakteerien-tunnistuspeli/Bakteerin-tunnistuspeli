@@ -3,6 +3,7 @@ import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkSamples, checkTests, checkBacterium } from '../reducers/gameReducer'
 import ModalImage from './ModalImage'
+
 const GamePage = () => {
     const [tab, setTab] = useState('anamneesi')
     const [testTab, setTestTab] = useState('testejä')
@@ -162,6 +163,8 @@ const GamePage = () => {
                     <h1>Diagnoosi</h1>
                     {game.bacteriumCorrect ?
                         <>
+                            { game.case.completionText }
+                            <p></p>
                             {game.completionImageUrl ?
                                 <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
                                 :
