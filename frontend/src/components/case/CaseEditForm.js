@@ -116,7 +116,6 @@ const CaseEditForm = ({ caseToEdit }) => {
     }
 
     const addTest = () => {
-        console.log(test)
         setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
         setAddingAlt(false)
         setTest({ name: '', testId: '', positive: false })
@@ -176,7 +175,6 @@ const CaseEditForm = ({ caseToEdit }) => {
                             )}
                         </tbody>
                     </Table>
-
                     <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
                     <AddTestGroup addingAlt={addingAlt}
                         setAddingAlt={setAddingAlt}
@@ -201,8 +199,7 @@ const CaseEditForm = ({ caseToEdit }) => {
                             <TestGroup key={i}
                                 testgroup={tg}
                                 index={i}
-                                removeTestGroup={removeTestGroup}
-                            >
+                                removeTestGroup={removeTestGroup}>
                             </TestGroup>
                         )}
                     </ListGroup>
