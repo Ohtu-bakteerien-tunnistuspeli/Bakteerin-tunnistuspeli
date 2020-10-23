@@ -37,7 +37,7 @@ const CaseForm = () => {
     const addNewCase = (event) => {
         event.preventDefault()
         console.log(samples)
-        dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
+        dispatch(addCase(caseName, bacterium.id, anamnesis, '', completionImage, samples, testGroups, user.token, resetCaseForm))
         handleClose()
     }
 

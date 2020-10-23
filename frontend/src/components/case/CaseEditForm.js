@@ -33,7 +33,7 @@ const CaseEditForm = ({ caseToEdit }) => {
         const token = user.token
         const id = caseToEdit.id
         dispatch(updateCase(id, caseName,
-            bacterium, caseAnamnesis, completionImage, samples,
+            bacterium, caseAnamnesis, '', completionImage, samples,
             testGroups, deleteEndImage, token))
     }
 
