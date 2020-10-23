@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import BacteriumForm from './BacteriumForm'
 import BacteriumListing from './BacteriumListing'
-import { deleteBacterium, updateBacterium } from '../reducers/bacteriaReducer'
+import { deleteBacterium, updateBacterium } from '../../reducers/bacteriaReducer'
 
 const BacteriaList = () => {
     const style = { margin: '10px', fontSize: '40px' }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { register } from '../reducers/userReducer'
+import { register } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { Form, Button, Modal } from 'react-bootstrap'
-import { setNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../../reducers/notificationReducer'
 import GDBRText from './GDPRText'
 import PrivacyText from './PrivacyText'
 
