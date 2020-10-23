@@ -33,30 +33,40 @@ const CaseForm = () => {
     const [bacterium, setBacterium] = useState(bacteria[0])
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
+    const [completionText, setCompletionText] = useState('')
 
     const dispatch = useDispatch()
 
-    const [errorText, setErrorText] = useState()
+    const [validated, setValidated] = useState(false)
+    const [errorText, setErrorText] = useState('')
 
     const checkValidation = (event) => {
-        const form = event.currentTarget;
-        if(cases.map(c => c.name).includes(caseName)){
-            setErrorText('nimi on jo käytössä')
-            event.preventDefault();
-            event.stopPropagation();
+        const form = event.currentTarget
+        if (cases.map(c => c.name).includes(caseName)) {
+            setErrorText('Nimi on jo käytössä')
+            event.preventDefault()
+            event.stopPropagation()
+        } else if (caseName.length < 2 || caseName.length > 100) {
+            setErrorText('Syötteen pitää olla vähintään 2 merkkiä ja korkeintaan 100 merkkiä pitkä')
+            event.preventDefault()
+            event.stopPropagation()
+        } else {
+            setValidated(true)
         }
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
+
+        if (form.checkValidity()) {
+            setValidated(true)
+        } else {
+            event.preventDefault()
+            event.stopPropagation()
         }
-        setValidated(true);
     }
 
     const addNewCase = (event) => {
         event.preventDefault()
         checkValidation(event)
         if (validated) {
-            dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
+            dispatch(addCase(caseName, bacterium.id, anamnesis, completionText, completionImage, samples, testGroups, user.token, resetCaseForm))
             handleClose()
             setValidated(false)
         }
@@ -66,6 +76,7 @@ const CaseForm = () => {
         setCaseName('')
         setBacterium(bacteria[0])
         setAnamnesis('')
+        setCompletionText('')
         setCompletionImage(INITIAL_STATE)
         setSample({ description: '', rightAnswer: false })
         setSamples([])
@@ -85,6 +96,7 @@ const CaseForm = () => {
         setAddingAlt(false)
         resetCaseForm()
         setValidated(false)
+        setErrorText('')
     }
 
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
@@ -143,8 +155,6 @@ const CaseForm = () => {
         setCompletionImage(event.target.files[0])
     }
 
-    const [validated, setValidated] = useState(false);
-
     return (
         <div>
             <Button id='caseModalButton' variant='primary' onClick={handleShow}>
@@ -158,11 +168,11 @@ const CaseForm = () => {
 
                         <Form.Group controlId='name'>
                             <Form.Label>Nimi</Form.Label>
-                            <Form.Control 
-                            type="text"
-                            isInvalid={validated} 
-                            value={caseName} 
-                            onChange={(event) => setCaseName(event.target.value)} 
+                            <Form.Control
+                                type="text"
+                                isInvalid={validated}
+                                value={caseName}
+                                onChange={(event) => setCaseName(event.target.value)}
                             />
                             <Form.Control.Feedback type="invalid">
                                 {errorText}
@@ -185,6 +195,15 @@ const CaseForm = () => {
                                 as='textarea'
                                 rows='3' value={anamnesis}
                                 onChange={(event) => setAnamnesis(event.target.value)}
+                            />
+                        </Form.Group>
+
+                        <Form.Group controlId='completionText'>
+                            <Form.Label>Lopputeksti</Form.Label>
+                            <Form.Control
+                                as='textarea'
+                                rows='3' value={completionText}
+                                onChange={(event) => setCompletionText(event.target.value)}
                             />
                         </Form.Group>
 
@@ -234,11 +253,15 @@ const CaseForm = () => {
                             >
                             </TestGroup>
                         )}
+                        { validated ?
+                            <p style={{ color:'red' }}>Tapausta ei voida lisätä, tarkista lisäämäsi syötteet.</p>
+                            : null
+                        }
                         <Button
                             variant='primary'
                             type='submit'
                             id='addCase'>
-                            Lisää
+                            Lisää tapaus
                         </Button>
                     </Form>
                 </Modal.Body>

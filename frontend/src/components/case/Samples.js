@@ -4,4 +4,4 @@ const Samples = () => {
 
 }
 
-import default Samples
+export default Samples

@@ -23,7 +23,6 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage, fileFilter })
-const path = require('path')
 const imageDir = config.IMAGEURL
 const fs = require('fs')
 const deleteUploadedImages = (request) => {

@@ -33,7 +33,7 @@ const CaseEditForm = ({ caseToEdit }) => {
         const token = user.token
         const id = caseToEdit.id
         dispatch(updateCase(id, caseName,
-            bacterium, caseAnamnesis, '', completionImage, samples,
+            bacterium, caseAnamnesis, completionText, completionImage, samples,
             testGroups, deleteEndImage, token))
     }
 
@@ -46,6 +46,11 @@ const CaseEditForm = ({ caseToEdit }) => {
     const [caseAnamnesis, setCaseAnamnesis] = useState(caseToEdit.anamnesis)
     const handleAnamnesisChange = (event) => setCaseAnamnesis(event.target.value)
     /*case anamnesis control end */
+
+    /* case completionText control */
+    const [completionText, setCompletionText] = useState(caseToEdit.completionText)
+    const handleCompletionTextChange = (event) => setCompletionText(event.target.value)
+    /*case completionText control end */
 
     /*bacterium control*/
     const bacteria = useSelector(state => state.bacteria)
@@ -143,6 +148,12 @@ const CaseEditForm = ({ caseToEdit }) => {
                         )}
                     </Form.Control><br></br>
 
+                    <Form.Label>Lopputeksti:</Form.Label><br></br>
+                    <Form.Control
+                        onChange={handleCompletionTextChange}
+                        defaultValue={caseToEdit.completionText}
+                    /><br></br>
+
                     <Form.Group controlId="editCompletionImage">
                         <Form.Label style={marginStyle}>Loppukuva</Form.Label>
                         {img ?
@@ -192,7 +203,7 @@ const CaseEditForm = ({ caseToEdit }) => {
                         testGroup={testGroup}
                         addTestGroup={addTestGroup}
                     ></AddTestGroup>
-                   
+
                     <ListGroup>
                         <Form.Label> Testiryhmät</Form.Label>
                         {testGroups.map((tg, i) =>
@@ -203,9 +214,9 @@ const CaseEditForm = ({ caseToEdit }) => {
                             </TestGroup>
                         )}
                     </ListGroup>
-                    
-                     <Button id="saveEdit" variant="primary" type="submit">
-                        Tallenna
+
+                    <Button id="saveEdit" variant="primary" type="submit">
+                        Tallenna muutokset
                     </Button>
                 </Form>
             </Modal.Body>
