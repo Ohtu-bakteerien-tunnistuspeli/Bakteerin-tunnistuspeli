@@ -54,7 +54,6 @@ const CaseForm = () => {
             setValidated(true)
         }
 
-        console.log(form.checkValidity())
         if (form.checkValidity()) {
             setValidated(true)
         } else {
