@@ -204,7 +204,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             if (request.body.anamnesis) {
                 changes.anamnesis = request.body.anamnesis
             }
-            if (request.body.completionText) {
+            if (request.body.completionText || request.body.completionText === '') {
                 changes.completionText = request.body.completionText
             }
             if (request.files && request.files.completionImage && deleteEndImage === 'false') {
