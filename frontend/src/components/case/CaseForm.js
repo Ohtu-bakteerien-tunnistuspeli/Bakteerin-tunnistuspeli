@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { setNotification } from '../../reducers/notificationReducer'
 import { Modal, Button, Form, Table } from 'react-bootstrap'
+import Notification from '../Notification.js'
 
 const CaseForm = () => {
 
@@ -26,6 +27,7 @@ const CaseForm = () => {
 
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
+    const cases = useSelector(state => state.case)
 
     const [caseName, setCaseName] = useState('')
     const [bacterium, setBacterium] = useState(bacteria[0])
@@ -34,11 +36,30 @@ const CaseForm = () => {
 
     const dispatch = useDispatch()
 
+    const [errorText, setErrorText] = useState()
+
+    const checkValidation = (event) => {
+        const form = event.currentTarget;
+        if(cases.map(c => c.name).includes(caseName)){
+            setErrorText('nimi on jo käytössä')
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        setValidated(true);
+    }
+
     const addNewCase = (event) => {
         event.preventDefault()
-        console.log(samples)
-        dispatch(addCase(caseName, bacterium.id, anamnesis, '', completionImage, samples, testGroups, user.token, resetCaseForm))
-        handleClose()
+        checkValidation(event)
+        if (validated) {
+            dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
+            handleClose()
+            setValidated(false)
+        }
     }
 
     const resetCaseForm = () => {
@@ -63,6 +84,7 @@ const CaseForm = () => {
         setShow(false)
         setAddingAlt(false)
         resetCaseForm()
+        setValidated(false)
     }
 
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
@@ -111,7 +133,6 @@ const CaseForm = () => {
     }
 
     const addTest = () => {
-        console.log(test)
         setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
         setAddingAlt(false)
         setTest({ name: '', testId: '', positive: false })
@@ -122,6 +143,8 @@ const CaseForm = () => {
         setCompletionImage(event.target.files[0])
     }
 
+    const [validated, setValidated] = useState(false);
+
     return (
         <div>
             <Button id='caseModalButton' variant='primary' onClick={handleShow}>
@@ -130,11 +153,20 @@ const CaseForm = () => {
             <Modal show={show} size='lg' onHide={handleClose} backdrop='static'>
                 <Modal.Header closeButton>Luo uusi tapaus</Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={addNewCase}>
+                    <Notification></Notification>
+                    <Form noValidate onSubmit={addNewCase}>
 
                         <Form.Group controlId='name'>
                             <Form.Label>Nimi</Form.Label>
-                            <Form.Control value={caseName} onChange={(event) => setCaseName(event.target.value)} />
+                            <Form.Control 
+                            type="text"
+                            isInvalid={validated} 
+                            value={caseName} 
+                            onChange={(event) => setCaseName(event.target.value)} 
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errorText}
+                            </Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group controlId='bacterium'>
