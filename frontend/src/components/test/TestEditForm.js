@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteTest, updateTest } from '../reducers/testReducer'
+import { deleteTest, updateTest } from '../../reducers/testReducer'
 import { Button, Form } from 'react-bootstrap'
 
 const INITIAL_STATE = {

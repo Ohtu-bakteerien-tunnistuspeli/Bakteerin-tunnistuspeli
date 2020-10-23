@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
-import ModalImage from './ModalImage'
+import ModalImage from '../ModalImage'
 import TestEditForm from './TestEditForm'
 import { useSelector } from 'react-redux'
 

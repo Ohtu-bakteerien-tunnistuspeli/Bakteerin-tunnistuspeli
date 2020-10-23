@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addTest } from '../reducers/testReducer'
+import { addTest } from '../../reducers/testReducer'
 import { Modal, Button, Form } from 'react-bootstrap'
 
 const useField = (type) => {
