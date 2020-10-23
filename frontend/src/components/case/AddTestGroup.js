@@ -3,7 +3,7 @@ import SelectTest from './SelectTest.js'
 import { Button, ButtonGroup, Form, Table } from 'react-bootstrap'
 
 const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setTest,
-    test, tests, tableWidth, cellWidth, testForCase, setTestForCase, addTest,
+    test, tests, tableWidth, testForCase, setTestForCase, addTest,
     addTestToTestGroup, testGroup, addTestGroup }) => {
 
     return (
@@ -65,7 +65,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                                             type='button'
                                             id='addAlternativeTestForTest'
                                             onClick={() => { addTest() }}>Lisää
-                                    </Button>
+                                        </Button>
                                     </td>
                                 </>
                                 :
@@ -138,7 +138,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                     type='button'
                     id='addTestGroup'
                     onClick={() => addTestGroup()}>Lisää testiryhmä
-            </Button>
+                </Button>
             </ButtonGroup>
         </Form.Group>
     )
