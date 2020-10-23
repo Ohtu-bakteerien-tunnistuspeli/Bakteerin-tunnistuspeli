@@ -71,14 +71,27 @@ describe('addition of a case ', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
-        await api
+        const addingRes = await api
             .post('/api/case')
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newCase)
             .expect(201)
             .expect('Content-Type', /application\/json/)
+        expect(addingRes.body.name).toEqual('testing case')
+        expect(addingRes.body.bacterium.name).toEqual('koli')
+        expect(addingRes.body.testGroups[0][0].tests[0].test.name).toEqual('testName')
+        expect(addingRes.body.testGroups[0][0].tests[0].positive).toBeTruthy()
+        expect(addingRes.body.testGroups[0][0].isRequired).toBeTruthy()
+        expect(addingRes.body.samples[0].description).toEqual('desc 1')
+        expect(addingRes.body.samples[0].rightAnswer).toBeTruthy()
+        expect(addingRes.body.samples[1].description).toEqual('desc 2')
+        expect(addingRes.body.samples[1].rightAnswer).toBeFalsy()
+        expect(addingRes.body.anamnesis).toEqual('test anamnesis')
+        expect(addingRes.body.completionText).toEqual('test completion text')
+        expect(addingRes.body.complete).toBeTruthy()
         const resAfterAdding = await api
             .get('/api/case')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -113,7 +126,8 @@ describe('addition of a case ', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
         await api
             .post('/api/case')
@@ -139,25 +153,29 @@ describe('addition of a case ', () => {
             bacterium: 'false-id',
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }, {
             name: 'testing case',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups2
+            testGroups: testGroups2,
+            completionText: 'test completion text'
         }, {
             name: 't',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }, {
             name: 'oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo',
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }]
         let addResponse = await api
             .post('/api/case')
@@ -303,7 +321,8 @@ describe('deletion of a case', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
         await api
             .post('/api/case')
@@ -359,7 +378,8 @@ describe('deletion of a case', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
         await api
             .post('/api/case')
@@ -413,7 +433,8 @@ describe('modify a case', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
         await api
             .post('/api/case')
@@ -424,9 +445,11 @@ describe('modify a case', () => {
         const res = await api
             .get('/api/case')
             .set('Authorization', `bearer ${user.body.token}`)
-        const caseToUpdate = {}
-        caseToUpdate.name = 'case testing'
-        caseToUpdate.anamnesis = 'anamnesis test'
+        const caseToUpdate = {
+            name: 'case testing',
+            anamnesis: 'anamnesis test',
+            completionText: ''
+        }
         const updatedCase = await api
             .put(`/api/case/${res.body[0].id}`)
             .set('Authorization', `bearer ${user.body.token}`)
@@ -437,9 +460,11 @@ describe('modify a case', () => {
         expect(res.body[0].id).toEqual(updatedCase.body.id)
         expect(updatedCase.body.name).toEqual('case testing')
         expect(updatedCase.body.anamnesis).toEqual('anamnesis test')
+        expect(updatedCase.body.completionText).toEqual('')
+        expect(updatedCase.body.complete).toBeFalsy()
     })
 
-    test('user can not modify an existing case', async () => {
+    test('user cannot modify an existing case', async () => {
         const user = await api
             .post('/api/user/login')
             .send({
@@ -474,7 +499,8 @@ describe('modify a case', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
         await api
             .post('/api/case')
@@ -527,7 +553,8 @@ describe('modify a case', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
         await api
             .post('/api/case')
@@ -541,7 +568,8 @@ describe('modify a case', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis2',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
         const postedCase = await api
             .post('/api/case')
@@ -631,7 +659,8 @@ describe('modify a case', () => {
             bacterium: bacterium.id,
             anamnesis: 'test anamnesis',
             samples: samples,
-            testGroups: testGroups
+            testGroups: testGroups,
+            completionText: 'test completion text'
         }
         const res = await api
             .put('/api/case/doesnotexist')
