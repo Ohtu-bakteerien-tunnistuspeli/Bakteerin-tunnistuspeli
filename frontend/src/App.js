@@ -36,10 +36,13 @@ const App = () => {
     }
 
     const footerStyle = {
-        position: 'absolute',
+        position: 'fixed',
         left: 0,
         bottom: 0,
-        right: 0
+        right: 0,
+        zIndex: 100,
+        height: '55px',
+        backgroundColor: 'gainsboro'
     }
 
     const marginBot = {
@@ -52,7 +55,7 @@ const App = () => {
 
     return (
         <div style={ paddingBot }>
-            <div className="container">
+            <div style={ paddingBot } className="container">
                 <Navbar style={ marginBot } collapseOnSelect expand="lg" bg="light" variant="light">
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav" >
