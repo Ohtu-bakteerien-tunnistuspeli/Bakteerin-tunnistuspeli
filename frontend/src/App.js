@@ -21,11 +21,18 @@ const App = () => {
     const user = useSelector(state => state.user)
     const game = useSelector(state => state.game)
     useEffect(() => {
-        dispatch(returnUser())
-    }, [dispatch])
+        dispatch(returnUser(history))
+    }, [dispatch, history])
     const logoutButton = async () => {
         dispatch(logout(history))
     }
+
+    const handleOnBeforeUnload = () => {
+        console.log(window.location.pathname)
+        window.localStorage.setItem('lastPage', window.location.pathname)
+    }
+
+    window.onbeforeunload = handleOnBeforeUnload
 
     const padding = {
         padding: 5

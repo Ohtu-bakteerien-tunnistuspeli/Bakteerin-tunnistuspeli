@@ -61,14 +61,17 @@ export const logout = (history) => {
     }
 }
 
-export const returnUser = () => {
+export const returnUser = (history) => {
     return async dispatch => {
         const userText = window.localStorage.getItem('loggedUser')
+        if (window.localStorage.getItem('lastPage')) {
+            history.push(window.localStorage.getItem('lastPage'))
+        }
         let user = null
         if (userText) {
             user = JSON.parse(userText)
             if (user.admin) {
-                dispatch(getBacteria(user.token))
+                await dispatch(getBacteria(user.token))
             }
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
