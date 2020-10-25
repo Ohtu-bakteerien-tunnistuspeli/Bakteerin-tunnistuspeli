@@ -1,5 +1,6 @@
 const gameRouter = require('express').Router()
 const Case = require('../models/case')
+const Credit = require('../models/credit')
 
 gameRouter.get('/:id', async (request, response) => {
     if (request.user) {
@@ -142,6 +143,22 @@ gameRouter.post('/:id/checkBacterium', async (request, response) => {
         try {
             const caseToCheck = await Case.findById(request.params.id).populate('bacterium', { name: 1 })
             if (request.body.bacteriumName && caseToCheck.bacterium.name.toLowerCase() === request.body.bacteriumName.toLowerCase()) {
+                let creditToUpdate = await Credit.findOne({ user: request.user.id })
+                if (creditToUpdate) {
+                    if (!creditToUpdate.testCases.includes(caseToCheck.name)) {
+                        let newTestCases = [...creditToUpdate.testCases, caseToCheck.name]
+                        await Credit.findByIdAndUpdate(creditToUpdate.id, { testCases: newTestCases }, { new: true, runValidators: true, context: 'query' })
+                    }
+                } else {
+                    const newCredit = new Credit({
+                        user: request.user.id,
+                        testCases: [
+                            caseToCheck.name
+                        ]
+                    })
+                    await newCredit.save()
+                }
+
                 return response.status(200).json({ correct: true, completionImageUrl: caseToCheck.completionImage.url, completionText: caseToCheck.completionText })
             } else {
                 return response.status(200).json({ correct: false })

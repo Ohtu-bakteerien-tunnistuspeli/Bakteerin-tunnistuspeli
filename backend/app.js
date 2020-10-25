@@ -14,6 +14,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     const Bacterium = require('./models/bacterium')
     const TestCase = require('./models/testCase')
     const Case = require('./models/case')
+    const Credit = require('./models/credit')
     const bcrypt = require('bcrypt')
     mongoose.Promise = Promise
     mongoServer.getUri().then((mongoUri) => {
@@ -50,6 +51,15 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 passwordHash
             })
             await admin.save()
+
+            const cred1 = new Credit({
+                user: user,
+                testCases: [
+                    'Maitotila 3',
+                    'Maitotila 5'
+                ]
+            })
+            await cred1.save()
 
             const bac1 = new Bacterium({
                 name: 'Streptococcus agalactiae'
@@ -165,6 +175,8 @@ const caseRouter = require('./controllers/case')
 app.use('/api/case', caseRouter)
 const gameRouter = require('./controllers/game')
 app.use('/api/game', gameRouter)
+const creditRouter = require('./controllers/credit')
+app.use('/api/credits', creditRouter)
 app.use(security.authorizationHandler)
 if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
