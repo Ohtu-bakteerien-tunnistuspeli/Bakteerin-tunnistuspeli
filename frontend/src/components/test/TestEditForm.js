@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteTest, updateTest } from '../../reducers/testReducer'
-import { Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form } from 'react-bootstrap'
 
 const INITIAL_STATE = {
     id: '',
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 const borderStyle = { borderStyle: 'solid', borderColor: 'black', borderWidth: 'thin' }
 const marginStyle = { margin: '10px' }
 
-const TestEditForm = ({ test, stopModify, bacteria }) => {
+const TestEditForm = ({ test, show, handleHide, stopModify, bacteria }) => {
     // Get info of this test from parameter 'test'
     // and set that info as staring value for fields
     const [newName, setNewName] = useState(test.name)
@@ -72,117 +72,121 @@ const TestEditForm = ({ test, stopModify, bacteria }) => {
         <div>
             <p></p>
             <p></p>
-            <Button variant='danger' id='deleteTest' onClick={() => removeTest(test)}>POISTA testi
-                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                    <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                </svg>
-            </Button>
-            <p></p>
-            <Form onSubmit={editTest} encType="multipart/form-data">
-                <Form.Group>
-                    <Form.Label>Uusi nimi</Form.Label>
-                    <Form.Control id="newNameInput" type='input' value={newName} onChange={({ target }) => setNewName(target.value)} />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label>Tyyppi</Form.Label>
-                    <Form.Control id="newTypeInput" type='input' value={newType} onChange={({ target }) => setNewType(target.value)} />
-                </Form.Group>
-                <Form.Group controlId="editControlImage">
-                    <Form.Label style={marginStyle}>Kontrollikuva</Form.Label>
-                    {ctrl ?
-                        <p style={borderStyle}>Kontrollikuva on annettu</p>
-                        : <></>
-                    }
-                    <Form.Control
-                        style={marginStyle}
-                        name='editCtrlImg'
-                        value={photoControl.image}
-                        type='file'
-                        onChange={({ target }) => { setPhotoControl(target.files[0]); setCtrl(true) }}
-                    />
-                    <Button style={marginStyle} id='deleteControl' onClick={() => { setCtrl(false); setDeletePhotos({ ...deletePhotos, ctrl: true }) }}>Poista kontrollikuva
+            <Modal show={show} size='lg' onHide={handleHide}>
+                <Modal.Header closeButton></Modal.Header>
+                <Modal.Body>
+                    <Button variant='danger' id='deleteTest' onClick={() => removeTest(test)}>POISTA testi
                         <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
                             <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                         </svg>
                     </Button>
-                </Form.Group>
-                <Form.Group controlId="editPositiveResultImage">
-                    <Form.Label style={marginStyle}>Positiivinen oletus</Form.Label>
-                    {pos ?
-                        <p style={borderStyle}>Positiivinen on annettu</p>
-                        : <></>
-                    }
-                    <Form.Control
-                        style={marginStyle}
-                        name='editTestPosImg'
-                        value={photoPos.image}
-                        type='file'
-                        onChange={({ target }) => { setPhotoPos(target.files[0]); setPos(true) }}
-                    />
-                    <Button style={marginStyle} id='deletePositive' onClick={() => { setPos(false); setDeletePhotos({ ...deletePhotos, pos: true }) }} >Poista positiivinen kuva
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                            <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                        </svg>
-                    </Button>
-                </Form.Group>
-                <Form.Group controlId="editNegativeResultImage">
-                    <Form.Label style={marginStyle}>Negatiivinen oletus</Form.Label>
-                    {neg ?
-                        <p style={borderStyle}>Negatiivinen kuva on annettu</p>
-                        : <></>
-                    }
-                    <Form.Control
-                        style={marginStyle}
-                        name='editTestNegImg'
-                        value={photoNeg.image}
-                        type='file'
-                        onChange={({ target }) => { setPhotoNeg(target.files[0]); setNeg(true) }}
-                    />
-                    <Button style={marginStyle} id='deleteNegative' onClick={() => { setNeg(false); setDeletePhotos({ ...deletePhotos, neg: true }) }}>Poista negatiivinen kuva
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                            <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                        </svg>
-                    </Button>
-                </Form.Group>
-
-                <Form.Group controlId="editBacteriaSpecificImages">
-                    <Form.Label>Bakteerikohtaiset tulokset</Form.Label>
-                    <div></div>
-                    <ul>
-                        {bacteriaSpecificImages.map((image, i) =>
-                            <li key={i}>{image.name}</li>
-                        )}
-                    </ul>
-                    <Form.Label style={marginStyle}>Bakteeri</Form.Label>
-                    <Form.Control as="select"
-                        style={marginStyle}
-                        value={bacterium} onClick={({ target }) => setBacterium(target.value)}
-                        onChange={({ target }) => setBacterium(target.value)}>
-                        {bacteria.map(bact =>
-                            <option key={bact.id} value={bact.name}>{bact.name}</option>
-                        )}
-                    </Form.Control>
-                    <Form.Label style={marginStyle}>Bakteerikohtaiset Kuvat </Form.Label>
-                    <Form.Control
-                        style={marginStyle}
-                        name='bacteriaSpecificImage'
-                        type="file"
-                        value={bacteriaSpecificImage.image}
-                        onChange={handleSpecificImg}
-                    />
                     <p></p>
-                    <Button style={marginStyle} type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
-                    <Button type='button' variant="warning" onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaisten kuvien lista</Button>
-                </Form.Group>
-                <div></div>
+                    <Form onSubmit={editTest} encType="multipart/form-data">
+                        <Form.Group>
+                            <Form.Label>Uusi nimi</Form.Label>
+                            <Form.Control id="newNameInput" type='input' value={newName} onChange={({ target }) => setNewName(target.value)} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Tyyppi</Form.Label>
+                            <Form.Control id="newTypeInput" type='input' value={newType} onChange={({ target }) => setNewType(target.value)} />
+                        </Form.Group>
+                        <Form.Group controlId="editControlImage">
+                            <Form.Label style={marginStyle}>Kontrollikuva</Form.Label>
+                            {ctrl ?
+                                <p style={borderStyle}>Kontrollikuva on annettu</p>
+                                : <></>
+                            }
+                            <Form.Control
+                                style={marginStyle}
+                                name='editCtrlImg'
+                                value={photoControl.image}
+                                type='file'
+                                onChange={({ target }) => { setPhotoControl(target.files[0]); setCtrl(true) }}
+                            />
+                            <Button style={marginStyle} id='deleteControl' onClick={() => { setCtrl(false); setDeletePhotos({ ...deletePhotos, ctrl: true }) }}>Poista kontrollikuva
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                    <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg>
+                            </Button>
+                        </Form.Group>
+                        <Form.Group controlId="editPositiveResultImage">
+                            <Form.Label style={marginStyle}>Positiivinen oletus</Form.Label>
+                            {pos ?
+                                <p style={borderStyle}>Positiivinen on annettu</p>
+                                : <></>
+                            }
+                            <Form.Control
+                                style={marginStyle}
+                                name='editTestPosImg'
+                                value={photoPos.image}
+                                type='file'
+                                onChange={({ target }) => { setPhotoPos(target.files[0]); setPos(true) }}
+                            />
+                            <Button style={marginStyle} id='deletePositive' onClick={() => { setPos(false); setDeletePhotos({ ...deletePhotos, pos: true }) }} >Poista positiivinen kuva
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                    <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg>
+                            </Button>
+                        </Form.Group>
+                        <Form.Group controlId="editNegativeResultImage">
+                            <Form.Label style={marginStyle}>Negatiivinen oletus</Form.Label>
+                            {neg ?
+                                <p style={borderStyle}>Negatiivinen kuva on annettu</p>
+                                : <></>
+                            }
+                            <Form.Control
+                                style={marginStyle}
+                                name='editTestNegImg'
+                                value={photoNeg.image}
+                                type='file'
+                                onChange={({ target }) => { setPhotoNeg(target.files[0]); setNeg(true) }}
+                            />
+                            <Button style={marginStyle} id='deleteNegative' onClick={() => { setNeg(false); setDeletePhotos({ ...deletePhotos, neg: true }) }}>Poista negatiivinen kuva
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                    <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                </svg>
+                            </Button>
+                        </Form.Group>
 
-                <Button id="saveChanges" type='submit'>Tallenna muutokset</Button>
-                <p></p>
-            </Form>
+                        <Form.Group controlId="editBacteriaSpecificImages">
+                            <Form.Label>Bakteerikohtaiset tulokset</Form.Label>
+                            <div></div>
+                            <ul>
+                                {bacteriaSpecificImages.map((image, i) =>
+                                    <li key={i}>{image.name}</li>
+                                )}
+                            </ul>
+                            <Form.Label style={marginStyle}>Bakteeri</Form.Label>
+                            <Form.Control as="select"
+                                style={marginStyle}
+                                value={bacterium} onClick={({ target }) => setBacterium(target.value)}
+                                onChange={({ target }) => setBacterium(target.value)}>
+                                {bacteria.map(bact =>
+                                    <option key={bact.id} value={bact.name}>{bact.name}</option>
+                                )}
+                            </Form.Control>
+                            <Form.Label style={marginStyle}>Bakteerikohtaiset Kuvat </Form.Label>
+                            <Form.Control
+                                style={marginStyle}
+                                name='bacteriaSpecificImage'
+                                type="file"
+                                value={bacteriaSpecificImage.image}
+                                onChange={handleSpecificImg}
+                            />
+                            <p></p>
+                            <Button style={marginStyle} type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
+                            <Button type='button' variant="warning" onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaisten kuvien lista</Button>
+                        </Form.Group>
+                        <div></div>
+                        <Button id="saveChanges" type='submit'>Tallenna muutokset</Button>
+                        <p></p>
+                    </Form>
+                </Modal.Body>
+            </Modal>
         </div>
     )
 }

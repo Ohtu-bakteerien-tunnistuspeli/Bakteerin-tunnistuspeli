@@ -104,14 +104,12 @@ const TestForm = () => {
                         </Form.Group>
                         <Form.Group controlId="type">
                             <Form.Label>Tyyppi</Form.Label>
-                            <Form.Control type={TestType.type} value={TestType.value} onChange={TestType.onChange} reset='' />
-                            {/* This can be added if accepted of all
-                                <Form.Control as="select" type={TestType.type} value={TestType.value} onClick={TestType.onChange} onChange={TestType.onChange}>
-                                    <option key="1">Valitse testin tyyppi</option>
-                                    <option key="2" value="Värjäys">Värjäys</option>
-                                    <option key="3" value="Testi">Testi</option>
-                                    <option key="4" value="Viljely">Viljely</option>
-                                </Form.Control>*/}
+                            <Form.Control as="select" type={TestType.type} value={TestType.value} onClick={TestType.onChange} onChange={TestType.onChange}>
+                                <option key="1">Valitse testin tyyppi</option>
+                                <option key="2" value="Värjäys">Värjäys</option>
+                                <option key="3" value="Testi">Testi</option>
+                                <option key="4" value="Viljely">Viljely</option>
+                            </Form.Control>
                         </Form.Group>
                         <Form.Group controlId="controlImage">
                             <Form.Label>Kontrollikuva</Form.Label>
