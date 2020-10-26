@@ -12,6 +12,7 @@ gameRouter.get('/:id', async (request, response) => {
             delete caseToGet.complete
             delete caseToGet.testGroups
             delete caseToGet.completionImage
+            delete caseToGet.hints
             response.json(caseToGet)
         } catch (error) {
             return response.status(400).json({ error: error.message })
@@ -102,9 +103,9 @@ gameRouter.post('/:id/checkTests', async (request, response) => {
                     latestTestForCase = extraTests.filter(testForCase => testForCase.test.id === testToCheck)[0]
                     extraTests = extraTests.filter(testForCase => testForCase.test.id !== testToCheck)
                 } else {
-                    const hint = caseToCheck.hints.filter(testHint => testHint.testId === testToCheck)
+                    const hint = caseToCheck.hints.filter(testHint => String(testHint.test) === String(testToCheck))
                     if (hint.length === 1) {
-                        return response.status(200).json({ correct: false, hint: hint[0] })
+                        return response.status(200).json({ correct: false, hint: hint[0].hint })
                     } else {
                         return response.status(200).json({ correct: false })
                     }

@@ -51,6 +51,9 @@ caseRouter.get('/', async (request, response) => {
                 path: 'bacteriaSpecificImages.bacterium',
                 model: 'Bacterium'
             }
+        }).populate({
+            path:'hints.test',
+            model: 'Test'
         })
         response.json(cases.map(caseToMap => caseToMap.toJSON()))
     } else if (request.user) {
@@ -295,15 +298,35 @@ caseRouter.put('/:id/hints', async (request, response) => {
             let testsWithHints = []
             let hasMoreThanOneSame = false
             for (let i = 0; i < hints.length; i++) {
-                if (testsWithHints.includes(hints[i].testId)) {
+                if (testsWithHints.includes(hints[i].test)) {
                     hasMoreThanOneSame = true
                 }
-                testsWithHints.push(hints[i].testId)
+                let testFromDb
+                try {
+                    testFromDb = await Test.findById(hints[i].test)
+                } catch (e) {
+                    return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                }
+                if (!testFromDb) {
+                    return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                }
+                testsWithHints.push(hints[i].test)
             }
             if (hasMoreThanOneSame) {
                 return response.status(400).json({ error: 'Samalla testillä on useampia vinkkejä.' })
             }
-            const updatedCase = await Case.findByIdAndUpdate(request.params.id, { hints }, { new: true, runValidators: true, context: 'query' })
+            let updatedCase = await Case.findByIdAndUpdate(request.params.id, { hints }, { new: true, runValidators: true, context: 'query' })
+            updatedCase = await Case.findById(request.params.id).populate('bacterium', { name: 1 }).populate({
+                path: 'testGroups.tests.test',
+                model: 'Test',
+                populate: {
+                    path: 'bacteriaSpecificImages.bacterium',
+                    model: 'Bacterium'
+                }
+            }).populate({
+                path:'hints.test',
+                model: 'Test'
+            })
             return response.status(200).json(updatedCase)
         } catch (error) {
             return response.status(400).json({ error: error.message })

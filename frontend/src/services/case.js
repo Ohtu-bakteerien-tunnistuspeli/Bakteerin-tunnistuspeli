@@ -48,9 +48,16 @@ const update = async (id, name, bacterium, anamnesis, completionText, completion
         .catch(error => error.response.data)
 }
 
+const updateHints = async (id, hints, token) => {
+    const config = { headers: { Authorization: token} }
+    return axios.put(`${baseUrl}/${id}/hints`, hints, config)
+        .then(response => response.data)
+        .catch(error => error.response.data)
+}
+
 const deleteCase = (id, token) => {
     const config = { headers: { Authorization: token } }
     return axios.delete(`${baseUrl}/${id}`, config).then(response => response).catch(error => error)
 }
 
-export default { get, add, update, deleteCase }
+export default { get, add, update, updateHints, deleteCase }

@@ -53,7 +53,7 @@ const caseSchema = mongoose.Schema({
         }
     ]],
     hints: [{
-        testId: {
+        test: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Test'
         },
