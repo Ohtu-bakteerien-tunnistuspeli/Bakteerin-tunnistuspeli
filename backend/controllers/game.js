@@ -101,7 +101,12 @@ gameRouter.post('/:id/checkTests', async (request, response) => {
                     latestTestForCase = extraTests.filter(testForCase => testForCase.test.id === testToCheck)[0]
                     extraTests = extraTests.filter(testForCase => testForCase.test.id !== testToCheck)
                 } else {
-                    return response.status(200).json({ correct: false })
+                    const hint = caseToCheck.hints.filter(testHint => testHint.testId === testToCheck)
+                    if (hint.length === 1) {
+                        return response.status(200).json({ correct: false, hint: hint[0] })
+                    } else {
+                        return response.status(200).json({ correct: false })
+                    }
                 }
             }
 

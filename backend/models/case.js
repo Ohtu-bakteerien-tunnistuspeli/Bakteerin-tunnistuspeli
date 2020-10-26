@@ -52,6 +52,13 @@ const caseSchema = mongoose.Schema({
             }
         }
     ]],
+    hints: [{
+        testId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Test'
+        },
+        hint: String
+    }],
     complete: {
         type: Boolean
     }

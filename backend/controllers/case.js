@@ -147,6 +147,7 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
             }
 
             newCase.complete = isComplete(newCase)
+            newCase.hints = []
             const savedCase = await newCase.save()
             return response.status(201).json(savedCase)
         } catch (error) {
@@ -282,6 +283,32 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
         }
     } else {
         deleteUploadedImages(request)
+        throw Error('JsonWebTokenError')
+    }
+})
+
+
+caseRouter.put('/:id/hints', async (request, response) => {
+    if (request.user && request.user.admin) {
+        try {
+            const hints = request.body
+            let testsWithHints = []
+            let hasMoreThanOneSame = false
+            for (let i = 0; i < hints.length; i++) {
+                if (testsWithHints.includes(hints[i].testId)) {
+                    hasMoreThanOneSame = true
+                }
+                testsWithHints.push(hints[i].testId)
+            }
+            if (hasMoreThanOneSame) {
+                return response.status(400).json({ error: 'Samalla testillä on useampia vinkkejä.' })
+            }
+            const updatedCase = await Case.findByIdAndUpdate(request.params.id, { hints }, { new: true, runValidators: true, context: 'query' })
+            return response.status(200).json(updatedCase)
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
         throw Error('JsonWebTokenError')
     }
 })
