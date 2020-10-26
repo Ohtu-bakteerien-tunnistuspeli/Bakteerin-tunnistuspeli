@@ -5,8 +5,10 @@ creditRouter.get('/', async (request, response) => {
     if (request.user && request.user.admin) {
         const credits = await Credit.find({}).populate('user')
         response.json(credits.map(credit => credit.toJSON()))
-    }
-    else {
+    } else if (request.user && !request.user.admin) {
+        const credits = await Credit.find({ user: request.user.id }).populate('user')
+        response.json(credits.map(credit => credit.toJSON()))
+    } else {
         throw Error('JsonWebTokenError')
     }
 })
