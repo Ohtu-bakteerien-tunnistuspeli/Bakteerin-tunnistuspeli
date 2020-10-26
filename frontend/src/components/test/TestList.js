@@ -18,7 +18,7 @@ const TestList = () => {
                 :
                 <></>
             }
-            {tests ?
+            {tests.length !== 0 ?
                 <Table striped bordered hover>
                     <thead>
                         <tr>

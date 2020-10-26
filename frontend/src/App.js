@@ -8,6 +8,7 @@ import FrontPage from './components/FrontPage'
 import BacteriaList from './components/bacteria/BacteriaList'
 import CaseList from './components/case/CaseList'
 import TestList from './components/test/TestList'
+import CreditList from './components/credit/CreditList'
 import GamePage from './components/GamePage'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
@@ -61,9 +62,9 @@ const App = () => {
     }
 
     return (
-        <div style={ paddingBot }>
-            <div style={ paddingBot } className="container">
-                <Navbar style={ marginBot } collapseOnSelect expand="lg" bg="light" variant="light">
+        <div style={paddingBot}>
+            <div style={paddingBot} className="container">
+                <Navbar style={marginBot} collapseOnSelect expand="lg" bg="light" variant="light">
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav" >
                         <Nav className="mr-auto">
@@ -91,10 +92,16 @@ const App = () => {
                                     : null
                                 }
                             </Nav.Link>
+                            <Nav.Link href="#" as="span">
+                                {user?.admin
+                                    ? <Link style={padding} to="/suoritusLista">Suoritusten hallinta</Link>
+                                    : null
+                                }
+                            </Nav.Link>
                         </Nav>
                         <Nav.Link href="#" as="span">
                             {user
-                                ? <em><p style={ marginTop }>Tervetuloa {user.username}</p></em>
+                                ? <em><p style={marginTop}>Tervetuloa {user.username}</p></em>
                                 : <Link style={padding} to="/kirjautuminen">Kirjaudu sisään</Link>
                             }
                         </Nav.Link>
@@ -137,6 +144,13 @@ const App = () => {
                                     <Redirect to='/'></Redirect>
                                 }
                             </Route>
+                            <Route path='/suoritusLista'>
+                                {user.admin ?
+                                    <CreditList />
+                                    :
+                                    <Redirect to='/'></Redirect>
+                                }
+                            </Route>
                             <Route path='/peli'>
                                 {game ?
                                     <GamePage></GamePage>
@@ -167,7 +181,7 @@ const App = () => {
 
             </div>
 
-            <div style={ footerStyle } className="navbar navbar-inverse navbar-fixed-bottom">
+            <div style={footerStyle} className="navbar navbar-inverse navbar-fixed-bottom">
                 <Footer />
             </div>
         </div>
