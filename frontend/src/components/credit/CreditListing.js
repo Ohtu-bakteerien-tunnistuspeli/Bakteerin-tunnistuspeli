@@ -6,7 +6,7 @@ const CreditListing = ({ credit, admin }) => {
     const handleClose = () => setShow(false)
     const [show, setShow] = useState(false)
     return (
-        <tr kye={credit.id}>
+        <tr key={credit.id}>
             {admin ?
                 <>
                     <td>{credit.student.studentNumber}</td>
