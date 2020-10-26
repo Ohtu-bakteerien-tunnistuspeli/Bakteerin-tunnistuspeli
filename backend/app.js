@@ -177,7 +177,7 @@ app.use('/api/case', caseRouter)
 const gameRouter = require('./controllers/game')
 app.use('/api/game', gameRouter)
 const creditRouter = require('./controllers/credit')
-app.use('/api/credits', creditRouter)
+app.use('/api/credit', creditRouter)
 app.use(security.authorizationHandler)
 if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
