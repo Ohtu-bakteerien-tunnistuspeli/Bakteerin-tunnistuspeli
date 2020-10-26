@@ -1,23 +1,24 @@
 import userService from '../services/user'
 import { setNotification } from './notificationReducer'
 import { getBacteria, zeroBacteria } from './bacteriaReducer'
-import { getTests } from './testReducer'
-import { getCases } from './caseReducer'
+import { getTests, zeroTest } from './testReducer'
+import { getCases, zeroCase } from './caseReducer'
+import { getCredits, zeroCredit } from './creditReducer'
 const reducer = (state = null, action) => {
     switch (action.type) {
-    case 'LOGIN': {
-        return action.data
-    }
-    case 'LOGOUT': {
-        return action.data
-    }
-    case 'RETURN_USER': {
-        return action.data
-    }
-    case 'REGISTER': {
-        return action.data
-    }
-    default: return state
+        case 'LOGIN': {
+            return action.data
+        }
+        case 'LOGOUT': {
+            return action.data
+        }
+        case 'RETURN_USER': {
+            return action.data
+        }
+        case 'REGISTER': {
+            return action.data
+        }
+        default: return state
     }
 }
 
@@ -35,6 +36,7 @@ export const login = (username, password, history) => {
             })
             if (user.admin) {
                 dispatch(getBacteria(user.token))
+                dispatch(getCredits(user.token))
             }
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
@@ -58,6 +60,9 @@ export const logout = (history) => {
         })
         history.push('/kirjautuminen')
         dispatch(zeroBacteria())
+        dispatch(zeroCase())
+        dispatch(zeroCredit())
+        dispatch(zeroTest())
     }
 }
 
@@ -72,6 +77,7 @@ export const returnUser = (history) => {
             user = JSON.parse(userText)
             if (user.admin) {
                 await dispatch(getBacteria(user.token))
+                await dispatch(getCredits(user.token))
             }
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))

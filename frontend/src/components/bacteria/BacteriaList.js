@@ -19,14 +19,14 @@ const BacteriaList = () => {
     return (
         <div>
             <h2 style={style}>Bakteerit</h2>
-            {bacteria ?
+            {bacteria.length !== 0 ?
                 <ul>
                     {bacteria.map(bacterium =>
                         <BacteriumListing key={bacterium.id} bacterium={bacterium} deleteBact={deleteBact} updateBact={updateBact} isAdmin={user?.admin}></BacteriumListing>
                     )}
                 </ul>
                 :
-                <div>Bakteereja haetaan</div>
+                <div>Ei bakteereja</div>
             }
             {user?.admin ?
                 <BacteriumForm></BacteriumForm>

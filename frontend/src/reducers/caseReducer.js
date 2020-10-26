@@ -15,6 +15,9 @@ const reducer = (state = [], action) => {
     case 'UPDATE_CASE': {
         return state.map(c => c.id === action.data.id ? c = action.data : c)
     }
+    case 'ZERO_CASE': {
+        return action.data
+    }
     default: return state
     }
 }
@@ -78,6 +81,15 @@ export const updateCase = (id, name, bacterium, anamnesis, completionText, compl
                 data: caseToUpdate
             })
         }
+    }
+}
+
+export const zeroCase = () => {
+    return async dispatch => {
+        dispatch({
+            type: 'ZERO_CASE',
+            data: []
+        })
     }
 }
 
