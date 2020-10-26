@@ -9,22 +9,22 @@ const CreditListing = ({ credit, admin }) => {
         <tr key={credit.id}>
             {admin ?
                 <>
-                    <td>{credit.student.studentNumber}</td>
-                    <td>{credit.student.name}</td>
-                    <td>{credit.student.classGroup}</td>
+                    <td>{credit.user.studentNumber}</td>
+                    <td>{credit.user.name}</td>
+                    <td>{credit.user.classGroup}</td>
                     <td>
                         <Button id="creditShowLink" variant='primary' onClick={handleShow}>Näytä suoritukset</Button>
                         <Modal show={show} size="lg" onHide={handleClose} >
                             <Modal.Header closeButton></Modal.Header>
                             <Modal.Body>
-                                Opiskelija numero: {credit.student.studentNumber}<br />
-                                Käyttäjänimi: {credit.student.name}<br />
-                                Vuosikurssi: {credit.student.classGroup}<br />
-                                Sähköposti: {credit.student.email}<br />
+                                Opiskelija numero: {credit.user.studentNumber}<br />
+                                Käyttäjänimi: {credit.user.name}<br />
+                                Vuosikurssi: {credit.user.classGroup}<br />
+                                Sähköposti: {credit.user.email}<br />
                                 Suoritukset:
                                 <Table>
                                     <tbody>
-                                        {credit.completedCases.map(completedCase =>
+                                        {credit.testCases.map(completedCase =>
                                             <tr key={completedCase}>
                                                 <td>{completedCase}</td>
                                             </tr>

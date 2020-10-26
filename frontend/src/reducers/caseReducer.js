@@ -84,6 +84,21 @@ export const updateCase = (id, name, bacterium, anamnesis, completionText, compl
     }
 }
 
+export const updateCaseHints = (id, hints, handleClose, token) => {
+    return async dispatch => {
+        const caseToUpdate = await caseService.updateHints(id, hints, token)
+        if(caseToUpdate.error){
+            dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
+        } else {
+            dispatch({
+                type: 'UPDATE_CASE',
+                data: caseToUpdate
+            })
+            handleClose()
+        }
+    }
+}
+
 export const zeroCase = () => {
     return async dispatch => {
         dispatch({

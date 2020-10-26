@@ -206,6 +206,9 @@ testRouter.delete('/:id', async (request, response) => {
                     path: 'bacteriaSpecificImages.bacterium',
                     model: 'Bacterium'
                 }
+            }).populate({
+                path:'hints.test',
+                model: 'Test'
             })
             let testIsInUse = false
             cases.forEach(element => {
@@ -216,6 +219,13 @@ testRouter.delete('/:id', async (request, response) => {
                                 testIsInUse = true
                             }
                         }
+                    }
+                }
+            })
+            cases.forEach(element => {
+                for(let i = 0; i < element.hints.length; i++) {
+                    if(element.hints[i].name === testToDelete.name) {
+                        testIsInUse = true
                     }
                 }
             })

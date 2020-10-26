@@ -4,7 +4,7 @@ import CreditListing from './CreditListing'
 import { Button, Table } from 'react-bootstrap'
 
 const BacteriaList = () => {
-    const credits = useSelector(state => state.credit)?.sort((credit1, credit2) => credit1.student.studentNumber.localeCompare(credit2.student.studentNumber))
+    const credits = useSelector(state => state.credit)?.sort((credit1, credit2) => credit1.user.studentNumber.localeCompare(credit2.user.studentNumber))
     const [creditsToShow, setCreditsToShow] = useState(credits)
     const [filterByClassGroup, setFilterByClassGroup] = useState('')
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
@@ -15,11 +15,11 @@ const BacteriaList = () => {
             setCreditsToShow(credits)
         } else {
             if (filterByClassGroup === '') {
-                setCreditsToShow(credits.filter(credit => credit.student.studentNumber.startsWith(filterByStudentNumber)))
+                setCreditsToShow(credits.filter(credit => credit.user.studentNumber.startsWith(filterByStudentNumber)))
             } else if (filterByStudentNumber === '') {
-                setCreditsToShow(credits.filter(credit => credit.student.classGroup.substring(2, credit.student.classGroup.length) === filterByClassGroup))
+                setCreditsToShow(credits.filter(credit => credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup))
             } else {
-                setCreditsToShow(credits.filter(credit => credit.student.studentNumber.startsWith(filterByStudentNumber) && credit.student.classGroup.substring(2, credit.student.classGroup.length) === filterByClassGroup))
+                setCreditsToShow(credits.filter(credit => credit.user.studentNumber.startsWith(filterByStudentNumber) && credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup))
             }
         }
     }, [filterByClassGroup, filterByStudentNumber, credits])

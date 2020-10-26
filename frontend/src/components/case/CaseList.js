@@ -11,6 +11,7 @@ const CaseList = () => {
     const delCase = caseToDelete => {
         dispatch(deleteCase(caseToDelete, user.token))
     }
+    
     const style = { margin: '10px', fontSize: '40px' }
     return (
         <div>
@@ -18,7 +19,7 @@ const CaseList = () => {
             {cases.length !== 0 ?
                 <ul>
                     {cases.map(caseItem =>
-                        <CaseListing key={caseItem.id} caseItem={caseItem} admin={user?.admin} deleteCase={delCase} />
+                        <CaseListing key={caseItem.id} caseItem={caseItem} admin={user?.admin} deleteCase={delCase}  />
                     )}
                 </ul>
                 :

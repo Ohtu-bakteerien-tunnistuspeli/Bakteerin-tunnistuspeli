@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Switch, Route, Redirect,/* Link, useRouteMatch,*/ useHistory, Link } from 'react-router-dom'
+import { Switch, Route, Redirect, useHistory, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/user/Login'
@@ -15,8 +15,6 @@ import Footer from './components/Footer'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 
 const App = () => {
-    //const match = useRouteMatch('/hello/:name')
-    //const name = match ? match.params.name : ''
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
