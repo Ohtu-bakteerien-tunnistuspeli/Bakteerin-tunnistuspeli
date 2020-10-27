@@ -2,8 +2,16 @@ const caseRouter = require('express').Router()
 const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
+const config = require('../utils/config')
+
+const isCompletionDone = (caseToCheck) => {
+    if ((caseToCheck.completionImage && caseToCheck.completionImage.url) || caseToCheck.completionText) {
+        return true
+    }
+    return false
+}
 const isComplete = (caseToCheck) => {
-    if (caseToCheck.bacterium && caseToCheck.anamnesis && caseToCheck.completionImage && caseToCheck.completionImage.url && caseToCheck.samples && caseToCheck.testGroups) {
+    if (caseToCheck.bacterium && caseToCheck.anamnesis && isCompletionDone(caseToCheck) && caseToCheck.samples && caseToCheck.testGroups) {
         return true
     }
     return false
@@ -22,12 +30,11 @@ const fileFilter = (req, file, cb) => {
 }
 const storage = multer.diskStorage({
     destination: function (req, res, cb) {
-        cb(null, 'images')
+        cb(null, config.IMAGEURL)
     }
 })
 const upload = multer({ storage, fileFilter })
-const path = require('path')
-const imageDir = path.join(__dirname, '../images')
+const imageDir = config.IMAGEURL
 const fs = require('fs')
 const deleteUploadedImages = (request) => {
     if (request.files && request.files.completionImage) {
@@ -44,6 +51,9 @@ caseRouter.get('/', async (request, response) => {
                 path: 'bacteriaSpecificImages.bacterium',
                 model: 'Bacterium'
             }
+        }).populate({
+            path:'hints.test',
+            model: 'Test'
         })
         response.json(cases.map(caseToMap => caseToMap.toJSON()))
     } else if (request.user) {
@@ -76,6 +86,9 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
             }
             if (request.body.anamnesis) {
                 newCase.anamnesis = request.body.anamnesis
+            }
+            if (request.body.completionText) {
+                newCase.completionText = request.body.completionText
             }
             if (request.files && request.files.completionImage) {
                 newCase.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
@@ -137,6 +150,7 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
             }
 
             newCase.complete = isComplete(newCase)
+            newCase.hints = []
             const savedCase = await newCase.save()
             return response.status(201).json(savedCase)
         } catch (error) {
@@ -194,9 +208,11 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             if (request.body.anamnesis) {
                 changes.anamnesis = request.body.anamnesis
             }
+            if (request.body.completionText || request.body.completionText === '') {
+                changes.completionText = request.body.completionText
+            }
             if (request.files && request.files.completionImage && deleteEndImage === 'false') {
                 oldLinks.push(caseToUpdate.completionImage.url)
-                //fs.unlink(`${imageDir}/${caseToUpdate.completionImage.url}`, (err) => err)
                 changes.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
             }
             if (request.body.samples) {
@@ -270,6 +286,56 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
         }
     } else {
         deleteUploadedImages(request)
+        throw Error('JsonWebTokenError')
+    }
+})
+
+
+caseRouter.put('/:id/hints', async (request, response) => {
+    if (request.user && request.user.admin) {
+        try {
+            const caseToUpdate = await Case.findById(request.params.id)
+            if (!caseToUpdate) {
+                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
+            }
+            const hints = request.body
+            let testsWithHints = []
+            let hasMoreThanOneSame = false
+            for (let i = 0; i < hints.length; i++) {
+                if (testsWithHints.includes(hints[i].test)) {
+                    hasMoreThanOneSame = true
+                }
+                let testFromDb
+                try {
+                    testFromDb = await Test.findById(hints[i].test)
+                } catch (e) {
+                    return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                }
+                if (!testFromDb) {
+                    return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                }
+                testsWithHints.push(hints[i].test)
+            }
+            if (hasMoreThanOneSame) {
+                return response.status(400).json({ error: 'Samalla testillä on useampia vinkkejä.' })
+            }
+            let updatedCase = await Case.findByIdAndUpdate(request.params.id, { hints }, { new: true, runValidators: true, context: 'query' })
+            updatedCase = await Case.findById(request.params.id).populate('bacterium', { name: 1 }).populate({
+                path: 'testGroups.tests.test',
+                model: 'Test',
+                populate: {
+                    path: 'bacteriaSpecificImages.bacterium',
+                    model: 'Bacterium'
+                }
+            }).populate({
+                path:'hints.test',
+                model: 'Test'
+            })
+            return response.status(200).json(updatedCase)
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
         throw Error('JsonWebTokenError')
     }
 })

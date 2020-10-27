@@ -86,7 +86,11 @@ export const checkTests = (game, test, token) => {
                     data: { ...game, correctTests: [...game.correctTests, test], testResults: [...game.testResults, { imageUrl: checkTest.imageUrl, testName: checkTest.testName }], requiredTestsDone: checkTest.requiredDone, allTestsDone: checkTest.allDone }
                 })
             } else {
-                dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
+                if(checkTest.hint) {
+                    dispatch(setNotification({ message: checkTest.hint, success: false }))
+                } else {
+                    dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
+                }    
             }
 
         }

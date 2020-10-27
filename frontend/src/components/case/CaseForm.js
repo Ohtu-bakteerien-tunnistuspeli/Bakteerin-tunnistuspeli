@@ -1,14 +1,45 @@
 import React, { useState } from 'react'
-import Sample from './Sample.js'
+import Samples from './Samples.js'
 import AddSample from './AddSample.js'
 import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { setNotification } from '../../reducers/notificationReducer'
-import { Modal, Button, Form, Table } from 'react-bootstrap'
+import { Modal, Button, Form } from 'react-bootstrap'
+import Notification from '../Notification.js'
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+
+
+
 
 const CaseForm = () => {
+    const cases = useSelector(state => state.case)
+
+    const CaseSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(2, 'Nimi on liian lyhyt.')
+            .max(50, 'Nimi on liian pitkä')
+            .required('Pakollinen kenttä.')
+            .test('unique', 'Nimen tulee olla uniikki', function (name) {
+                if (cases.map(c => c.name).includes(name)) {
+                    return false
+                }
+                return true
+            }),
+        bacteriumId: Yup.string()
+            .required('Valitse bakteeri')
+            .test('test', 'asd', function (value) {
+                console.log(value)
+                return true
+            })
+    })
+
+    const onSuccess = (values) => {
+        console.object(values)
+        addNewCase(values.name)
+    };
 
     const INITIAL_STATE = {
         id: '',
@@ -25,39 +56,31 @@ const CaseForm = () => {
     }
 
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
-    const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const user = useSelector(state => state.user)
 
-    const [caseName, setCaseName] = useState('')
-    const [bacterium, setBacterium] = useState(bacteria[0])
+    const [bacterium, setBacterium] = useState('')
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
-
-    const [testForAlternativeTests, setTestForAlternativeTests] = useState({ testName: tests[0].name, testId: tests[0].id, positive: false })
-    const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
-    const [testGroup, setTestGroup] = useState([])
-    const [testGroups, setTestGroups] = useState([])
-
-    const [addingAlt, setAddingAlt] = useState(false)
-    const [addingTest, setAddingTest] = useState(false)
+    const [completionText, setCompletionText] = useState('')
 
     const dispatch = useDispatch()
 
-    const addNewCase = (event) => {
-        event.preventDefault()
-        console.log(samples)
-        dispatch(addCase(caseName, bacterium.id, anamnesis, completionImage, samples, testGroups, user.token, resetCaseForm))
+    const [validated, setValidated] = useState(false)
+
+
+    const addNewCase = (name) => {
+        dispatch(addCase(name, bacterium.id, anamnesis, completionText, completionImage, samples, testGroups, user.token, resetCaseForm))
         handleClose()
     }
 
     const resetCaseForm = () => {
-        setCaseName('')
-        setBacterium(bacteria[0])
+        setBacterium('')
         setAnamnesis('')
+        setCompletionText('')
         setCompletionImage(INITIAL_STATE)
         setSample({ description: '', rightAnswer: false })
         setSamples([])
-        setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
+        setTest({ name: '', testId: tests[0].id, positive: false })
         setTestForCase({ isRequired: false, tests: [] })
         setTestGroup([])
         setTestGroups([])
@@ -72,6 +95,7 @@ const CaseForm = () => {
         setShow(false)
         setAddingAlt(false)
         resetCaseForm()
+        setValidated(false)
     }
 
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
@@ -91,33 +115,40 @@ const CaseForm = () => {
         }
     }
 
+    /* testgroup control */
+    const [addingAlt, setAddingAlt] = useState(false)
+    const [addingTest, setAddingTest] = useState(false)
+    const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
+    const [test, setTest] = useState({ name: '', testId: '', positive: false })
+    const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
+    const [testGroup, setTestGroup] = useState([])
+    const [testGroups, setTestGroups] = useState([])
+
     const removeTestGroup = (tg) => {
         setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
     }
+
     const addTestGroup = () => {
-        if (testGroup.length > 0) {
-            setTestGroups([...testGroups, testGroup])
-            setTestGroup([])
-        }
+        setTestGroups([...testGroups, testGroup])
+        setTestGroup([])
         setAddingAlt(false)
         setAddingTest(false)
     }
 
-    const addTestForCaseToTestGroup = () => {
-        if (testForCase.tests.length > 0) {
-            setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
-            setTestGroup([...testGroup, testForCase])
-            setTestForCase({ isRequired: testForCase.isRequired, tests: [] })
-        }
+    const addTestToTestGroup = () => {
+        setTest({ name: '', testId: '', positive: false })
+        setTestGroup([...testGroup, testForCase])
+        setTestForCase({ isRequired: false, tests: [] })
         setAddingAlt(false)
         setAddingTest(false)
     }
 
-    const addAlternativeTestToTestForCase = () => {
-        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(testForAlternativeTests) })
+    const addTest = () => {
+        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
         setAddingAlt(false)
-        //setTestForAlternativeTests({ testName: tests[0].name, testId: tests[0].id, positive: false })
+        setTest({ name: '', testId: '', positive: false })
     }
+    /* testgroup control end */
 
     const handleCompletionImageChange = (event) => {
         setCompletionImage(event.target.files[0])
@@ -131,85 +162,114 @@ const CaseForm = () => {
             <Modal show={show} size='lg' onHide={handleClose} backdrop='static'>
                 <Modal.Header closeButton>Luo uusi tapaus</Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={addNewCase}>
+                    <Notification></Notification>
+                    <Formik
+                        validationSchema={CaseSchema}
+                        onSubmit={onSuccess}
+                        initialValues={{
+                            name: '',
+                        }}
+                    >
+                        {({
+                            handleSubmit,
+                            handleChange,
+                            values,
+                            errors,
+                        }) => {
+                            return (
+                                <Form noValidate onSubmit={handleSubmit}>
 
-                        <Form.Group controlId='name'>
-                            <Form.Label>Nimi</Form.Label>
-                            <Form.Control value={caseName} onChange={(event) => setCaseName(event.target.value)} />
-                        </Form.Group>
+                                    <Form.Group controlId='name'>
+                                        <Form.Label>Nimi</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            isInvalid={errors.name}
+                                            value={values.name}
+                                            onChange={handleChange}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.name}
+                                        </Form.Control.Feedback>
+                                    </Form.Group>
 
-                        <Form.Group controlId='bacterium'>
-                            <Form.Label>Bakteeri</Form.Label>
-                            <Form.Control as='select'
-                                onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
-                                {bacteria.map(bacterium =>
-                                    <option key={bacterium.id} value={JSON.stringify(bacterium)}>{bacterium.name}</option>
-                                )}
-                            </Form.Control>
-                        </Form.Group>
+                                    <Form.Group controlId='bacterium'>
+                                        <Form.Label>Bakteeri</Form.Label>
+                                        <Form.Control as='select'
+                                            onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
+                                            <option>Valitse bakteeri</option>
+                                            {bacteria.map(bacterium =>
+                                                <option key={bacterium.id} value={JSON.stringify(bacterium)}>{bacterium.name}</option>
+                                            )}
+                                        </Form.Control>
+                                    </Form.Group>
 
-                        <Form.Group controlId='anamnesis'>
-                            <Form.Label>Anamneesi</Form.Label>
-                            <Form.Control
-                                as='textarea'
-                                rows='3' value={anamnesis}
-                                onChange={(event) => setAnamnesis(event.target.value)}
-                            />
-                        </Form.Group>
+                                    <Form.Group controlId='anamnesis'>
+                                        <Form.Label>Anamneesi</Form.Label>
+                                        <Form.Control
+                                            as='textarea'
+                                            rows='3' value={anamnesis}
+                                            onChange={(event) => setAnamnesis(event.target.value)}
+                                        />
+                                    </Form.Group>
 
-                        <Form.Group controlId='completionImage'>
-                            <Form.Label>Loppukuva</Form.Label>
-                            <Form.Control
-                                name='completionImage'
-                                type='file' value={completionImage.image}
-                                onChange={handleCompletionImageChange} />
-                        </Form.Group>
+                                    <Form.Group controlId='completionText'>
+                                        <Form.Label>Lopputeksti</Form.Label>
+                                        <Form.Control
+                                            as='textarea'
+                                            rows='3' value={completionText}
+                                            onChange={(event) => setCompletionText(event.target.value)}
+                                        />
+                                    </Form.Group>
 
-                        <Form.Group>
-                            <Form.Label>Näytevaihtoehdot</Form.Label>
-                            <Table>
-                                <tbody>
-                                    {samples.map(s =>
-                                        <Sample key={s.description}
-                                            sample={s}
-                                            sampleChange={deleteSample} >
-                                        </Sample>
+                                    <Form.Group controlId='completionImage'>
+                                        <Form.Label>Loppukuva</Form.Label>
+                                        <Form.Control
+                                            name='completionImage'
+                                            type='file' value={completionImage.image}
+                                            onChange={handleCompletionImageChange} />
+                                    </Form.Group>
+
+                                    <Samples samples={samples}
+                                        deleteSample={deleteSample}></Samples>
+                                    <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
+                                    <AddTestGroup addingAlt={addingAlt}
+                                        setAddingAlt={setAddingAlt}
+                                        addingTest={addingTest}
+                                        setAddingTest={setAddingTest}
+                                        setTest={setTest}
+                                        test={test}
+                                        tests={tests}
+                                        tableWidth={tableWidth}
+                                        cellWidth={cellWidth}
+                                        testForCase={testForCase}
+                                        setTestForCase={setTestForCase}
+                                        addTest={addTest}
+                                        addTestToTestGroup={addTestToTestGroup}
+                                        testGroup={testGroup}
+                                        addTestGroup={addTestGroup}
+                                    ></AddTestGroup>
+                                    {testGroups.map((testGroup, i) =>
+                                        <TestGroup key={i}
+                                            testgroup={testGroup}
+                                            index={i}
+                                            removeTestGroup={removeTestGroup}
+                                        >
+                                        </TestGroup>
                                     )}
-                                </tbody>
-                            </Table>
-                        </Form.Group>
-                        <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
-                        <AddTestGroup addingAlt={addingAlt}
-                            setAddingAlt={setAddingAlt}
-                            addingTest={addingTest}
-                            setAddingTest={setAddingTest}
-                            setTestForAlternativeTests={setTestForAlternativeTests}
-                            testForAlternativeTests={testForAlternativeTests}
-                            tests={tests}
-                            tableWidth={tableWidth}
-                            cellWidth={cellWidth}
-                            testForCase={testForCase}
-                            setTestForCase={setTestForCase}
-                            addAlternativeTestToTestForCase={addAlternativeTestToTestForCase}
-                            addTestForCaseToTestGroup={addTestForCaseToTestGroup}
-                            testGroup={testGroup}
-                            addTestGroup={addTestGroup}
-                        ></AddTestGroup>
-                        {testGroups.map((testGroup, i) =>
-                            <TestGroup key={i}
-                                testgroup={testGroup}
-                                index={i}
-                                removeTestGroup={removeTestGroup}
-                            >
-                            </TestGroup>
-                        )}
-                        <Button
-                            variant='primary'
-                            type='submit'
-                            id='addCase'>
-                            Lisää
+                                    { validated ?
+                                        <p style={{ color: 'red' }}>Tapausta ei voida lisätä, tarkista lisäämäsi syötteet.</p>
+                                        : null
+                                    }
+                                    <Button
+                                        variant='primary'
+                                        type='submit'
+                                        id='addCase'>
+                                        Lisää tapaus
                         </Button>
-                    </Form>
+                                </Form>
+                            );
+                        }}
+                    </Formik>
                 </Modal.Body>
             </Modal>
         </div>

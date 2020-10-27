@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     const Bacterium = require('./models/bacterium')
     const TestCase = require('./models/testCase')
     const Case = require('./models/case')
+    const Credit = require('./models/credit')
     const bcrypt = require('bcrypt')
     mongoose.Promise = Promise
     mongoServer.getUri().then((mongoUri) => {
@@ -40,6 +41,8 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 username: 'user',
                 email: 'example@com',
                 admin: false,
+                studentNumber: '834183479234',
+                classGroup: 'C-13',
                 passwordHash
             })
             await user.save()
@@ -51,6 +54,15 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 passwordHash
             })
             await admin.save()
+
+            const cred1 = new Credit({
+                user: user,
+                testCases: [
+                    'Maitotila 3',
+                    'Maitotila 5'
+                ]
+            })
+            await cred1.save()
 
             const bac1 = new Bacterium({
                 name: 'Streptococcus agalactiae'
@@ -110,6 +122,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 bacterium: bac1,
                 anamnesis: 'Vasemman takaneljänneksen maito on hiukan kokkareista...',
                 //completitionText: 'You completed the initial case!',
+                hints: [],
                 samples: [
                     {
                         description: 'Maitonäyte Muurikin kaikista neljänneksistä',
@@ -152,7 +165,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
 const path = require('path')
-const dir = path.join(__dirname, 'images')
+const dir = path.join(__dirname, config.IMAGEURL)
 app.use(express.static(dir))
 const security = require('./utils/security')
 app.use(security.tokenExtractor)
@@ -166,6 +179,8 @@ const caseRouter = require('./controllers/case')
 app.use('/api/case', caseRouter)
 const gameRouter = require('./controllers/game')
 app.use('/api/game', gameRouter)
+const creditRouter = require('./controllers/credit')
+app.use('/api/credit', creditRouter)
 app.use(security.authorizationHandler)
 if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {

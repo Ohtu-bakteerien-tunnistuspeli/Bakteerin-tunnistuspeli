@@ -11,14 +11,15 @@ const CaseList = () => {
     const delCase = caseToDelete => {
         dispatch(deleteCase(caseToDelete, user.token))
     }
+    
     const style = { margin: '10px', fontSize: '40px' }
     return (
         <div>
             <h2 style={style}>Tapaukset</h2>
-            {cases ?
+            {cases.length !== 0 ?
                 <ul>
-                    {cases.map(c =>
-                        <CaseListing key={c.id} c={c} admin={user?.admin} deleteCase={delCase} />
+                    {cases.map(caseItem =>
+                        <CaseListing key={caseItem.id} caseItem={caseItem} admin={user?.admin} deleteCase={delCase}  />
                     )}
                 </ul>
                 :

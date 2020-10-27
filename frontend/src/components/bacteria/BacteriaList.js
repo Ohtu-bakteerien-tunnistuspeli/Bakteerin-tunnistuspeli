@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import BacteriumForm from './BacteriumForm'
 import BacteriumListing from './BacteriumListing'
-import { deleteBacterium, updateBacterium } from '../reducers/bacteriaReducer'
+import { deleteBacterium, updateBacterium } from '../../reducers/bacteriaReducer'
 
 const BacteriaList = () => {
     const style = { margin: '10px', fontSize: '40px' }
@@ -19,14 +19,14 @@ const BacteriaList = () => {
     return (
         <div>
             <h2 style={style}>Bakteerit</h2>
-            {bacteria ?
+            {bacteria.length !== 0 ?
                 <ul>
                     {bacteria.map(bacterium =>
                         <BacteriumListing key={bacterium.id} bacterium={bacterium} deleteBact={deleteBact} updateBact={updateBact} isAdmin={user?.admin}></BacteriumListing>
                     )}
                 </ul>
                 :
-                <div>Bakteereja haetaan</div>
+                <div>Ei bakteereja</div>
             }
             {user?.admin ?
                 <BacteriumForm></BacteriumForm>

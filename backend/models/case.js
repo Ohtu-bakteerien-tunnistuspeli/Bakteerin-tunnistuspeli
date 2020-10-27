@@ -15,6 +15,9 @@ const caseSchema = mongoose.Schema({
     anamnesis: {
         type: String
     },
+    completionText: {
+        type: String,
+    },
     completionImage: {
         url: {
             type: String
@@ -49,6 +52,13 @@ const caseSchema = mongoose.Schema({
             }
         }
     ]],
+    hints: [{
+        test: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Test'
+        },
+        hint: String
+    }],
     complete: {
         type: Boolean
     }

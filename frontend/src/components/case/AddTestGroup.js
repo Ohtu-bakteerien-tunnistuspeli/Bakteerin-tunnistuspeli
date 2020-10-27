@@ -1,28 +1,21 @@
 import React from 'react'
+import SelectTest from './SelectTest.js'
 import { Button, ButtonGroup, Form, Table } from 'react-bootstrap'
 
-const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setTestForAlternativeTests,
-    testForAlternativeTests, tests, tableWidth, cellWidth, testForCase, setTestForCase, addAlternativeTestToTestForCase,
-    addTestForCaseToTestGroup, testGroup, addTestGroup }) => {
+const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setTest,
+    test, tests, tableWidth, testForCase, setTestForCase, addTest,
+    addTestToTestGroup, testGroup, addTestGroup }) => {
 
     return (
         <Form.Group>
-            <Form.Label>Testiryhmät</Form.Label>
             {!addingAlt && !addingTest ?
                 <>
-                    <Form.Control
-                        as='select'
-                        id='testSelect'
-                        onChange={(event) => setTestForAlternativeTests({ ...testForAlternativeTests, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
-                        {tests.map(test =>
-                            <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
-                        )}
-                    </Form.Control>
+                    <SelectTest tests={tests} setTest={setTest} test={test}></SelectTest>
                     <Form.Check
                         type='checkbox'
                         id='positive'
                         label='Positiivinen'
-                        onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
+                        onChange={() => setTest({ ...test, positive: !test.positive })} />
                 </>
                 :
                 <></>
@@ -41,7 +34,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                     <tbody>
                         {testForCase.tests.map((alternativeTest, i) =>
                             <tr key={i}>
-                                <td>{alternativeTest.testName}</td>
+                                <td>{alternativeTest.name}</td>
                                 <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
                                 <td>{i === 0 && !addingAlt ?
                                     <Button
@@ -58,29 +51,21 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                             {addingAlt ?
                                 <>
                                     <td>
-                                        <select
-                                            style={cellWidth}
-                                            name='select2'
-                                            id='testSelect2'
-                                            onChange={(event) => setTestForAlternativeTests({ ...testForAlternativeTests, testName: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
-                                            {tests.map(test =>
-                                                <option key={test.id} value={JSON.stringify(test)}>{test.name}</option>
-                                            )}
-                                        </select>
+                                        <SelectTest tests={tests} setTest={setTest} test={test}></SelectTest>
                                     </td>
                                     <td>
                                         <Form.Check
                                             type='checkbox'
                                             id='positive2'
                                             label='Positiivinen'
-                                            onChange={() => setTestForAlternativeTests({ ...testForAlternativeTests, positive: !testForAlternativeTests.positive })} />
+                                            onChange={() => setTest({ ...test, positive: !test.positive })} />
                                     </td>
                                     <td>
                                         <Button
                                             type='button'
                                             id='addAlternativeTestForTest'
-                                            onClick={() => { addAlternativeTestToTestForCase() }}>Lisää
-                                    </Button>
+                                            onClick={() => { addTest() }}>Lisää
+                                        </Button>
                                     </td>
                                 </>
                                 :
@@ -96,7 +81,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                         <Button
                             type='button'
                             id='addAlternativeTestForTest'
-                            onClick={() => { addAlternativeTestToTestForCase(); setAddingTest(true) }}>Lisää testi</Button>
+                            onClick={() => {addTest(); setAddingTest(true) }}>Lisää testi</Button>
                     </>
                 }
                 <Form.Check
@@ -108,7 +93,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                     <Button
                         type='button'
                         id='addTestForGroup'
-                        onClick={() => addTestForCaseToTestGroup()}>Lisää testi(t) ryhmään</Button>
+                        onClick={() => addTestToTestGroup()}>Lisää testi(t) ryhmään</Button>
                     :
                     <></>
                 }
@@ -137,7 +122,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                                         <tbody>
                                             {testForCase.tests.map((alternativeTest, j) =>
                                                 <tr key={j}>
-                                                    <td>{alternativeTest.testName}</td>
+                                                    <td>{alternativeTest.name}</td>
                                                     <td>{alternativeTest.positive ? 'Kyllä' : 'Ei'}</td>
                                                 </tr>
                                             )}
@@ -153,7 +138,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                     type='button'
                     id='addTestGroup'
                     onClick={() => addTestGroup()}>Lisää testiryhmä
-            </Button>
+                </Button>
             </ButtonGroup>
         </Form.Group>
     )

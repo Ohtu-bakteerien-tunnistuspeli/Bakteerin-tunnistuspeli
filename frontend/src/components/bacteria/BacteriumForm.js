@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addBacteria } from '../reducers/bacteriaReducer'
+import { addBacteria } from '../../reducers/bacteriaReducer'
 import { Button, Form } from 'react-bootstrap'
 
 const BacteriumForm = () => {

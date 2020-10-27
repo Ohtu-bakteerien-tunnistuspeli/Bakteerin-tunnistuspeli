@@ -1,6 +1,6 @@
 import bacteriaService from '../services/bacteria'
 import { setNotification } from '../reducers/notificationReducer'
-const reducer = (state = null, action) => {
+const reducer = (state = [], action) => {
     switch (action.type) {
     case 'GET_BACTERIA': {
 
@@ -82,7 +82,7 @@ export const updateBacterium = (id, name, token) => {
 export const zeroBacteria = () => {
     return async dispatch => {
         dispatch({
-            type: 'GET_BACTERIA',
+            type: 'ZERO_BACTERIUM',
             data: []
         })
     }

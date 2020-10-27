@@ -1,7 +1,7 @@
 import testService from '../services/test'
 import { setNotification } from '../reducers/notificationReducer'
 
-const reducer = (state = null, action) => {
+const reducer = (state = [], action) => {
     switch (action.type) {
     case 'GET_TEST': {
         return action.data
@@ -14,6 +14,9 @@ const reducer = (state = null, action) => {
     }
     case 'UPDATE_TEST': {
         return state.map(test => test.id === action.data.id ? test = action.data : test)
+    }
+    case 'ZERO_TEST': {
+        return action.data
     }
     default: return state
     }
@@ -76,6 +79,15 @@ export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteria
                 data: test
             })
         }
+    }
+}
+
+export const zeroTest = () => {
+    return async dispatch => {
+        dispatch({
+            type: 'ZERO_TEST',
+            data: []
+        })
     }
 }
 

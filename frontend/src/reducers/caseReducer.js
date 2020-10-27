@@ -15,6 +15,9 @@ const reducer = (state = [], action) => {
     case 'UPDATE_CASE': {
         return state.map(c => c.id === action.data.id ? c = action.data : c)
     }
+    case 'ZERO_CASE': {
+        return action.data
+    }
     default: return state
     }
 }
@@ -33,11 +36,15 @@ export const getCases = (token) => {
     }
 }
 
-export const addCase = (name, bacterium, anamnesis, completionImage, samples, testGroups, token, resetCaseForm) => {
+export const addCase = (name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, token, resetCaseForm) => {
     return async dispatch => {
-        const caseToSave = await caseService.add(name, bacterium, anamnesis, completionImage, samples, testGroups, token)
+        const caseToSave = await caseService.add(name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, token)
         if (caseToSave.error) {
-            dispatch(setNotification({ message: caseToSave.error, success: false }))
+            if (caseToSave.error.includes('Case validation failed')) {
+                dispatch(setNotification({ message: caseToSave.error.substring(caseToSave.error.indexOf('name: ') + 6), success: false }))
+            } else {
+                dispatch(setNotification({ message: caseToSave.error, success: false }))
+            }
         } else {
             dispatch(setNotification({ message: `Tapauksen ${caseToSave.name} lisäys onnistui.`, success: true }))
             dispatch({
@@ -63,9 +70,9 @@ export const deleteCase = (caseToDelete, token) => {
     }
 }
 
-export const updateCase = (id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token) => {
+export const updateCase = (id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token) => {
     return async dispatch => {
-        const caseToUpdate = await caseService.update(id, name, bacterium, anamnesis, completionImage, samples, testGroups, deleteEndImage, token)
+        const caseToUpdate = await caseService.update(id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token)
         if(caseToUpdate.error){
             dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
         } else {
@@ -74,6 +81,30 @@ export const updateCase = (id, name, bacterium, anamnesis, completionImage, samp
                 data: caseToUpdate
             })
         }
+    }
+}
+
+export const updateCaseHints = (id, hints, handleClose, token) => {
+    return async dispatch => {
+        const caseToUpdate = await caseService.updateHints(id, hints, token)
+        if(caseToUpdate.error){
+            dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
+        } else {
+            dispatch({
+                type: 'UPDATE_CASE',
+                data: caseToUpdate
+            })
+            handleClose()
+        }
+    }
+}
+
+export const zeroCase = () => {
+    return async dispatch => {
+        dispatch({
+            type: 'ZERO_CASE',
+            data: []
+        })
     }
 }
 
