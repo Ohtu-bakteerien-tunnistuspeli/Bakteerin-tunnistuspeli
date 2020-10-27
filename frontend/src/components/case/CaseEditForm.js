@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Sample from './Sample.js'
+import Samples from './Samples.js'
 import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
 import AddSample from './AddSample.js'
@@ -175,18 +175,8 @@ const CaseEditForm = ({ caseToEdit }) => {
                                 </svg>
                             </Button>
                         </Form.Group>
-
-                        <Form.Label>Näytevaihtoehdot: </Form.Label><br></br>
-                        <Table>
-                            <tbody>
-                                {samples.map(s =>
-                                    <Sample key={s.description}
-                                        sample={s}
-                                        sampleChange={deleteSample} >
-                                    </Sample>
-                                )}
-                            </tbody>
-                        </Table>
+                        <Samples samples={samples} 
+                        deleteSample = {deleteSample}></Samples>
                         <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
                         <AddTestGroup addingAlt={addingAlt}
                             setAddingAlt={setAddingAlt}
