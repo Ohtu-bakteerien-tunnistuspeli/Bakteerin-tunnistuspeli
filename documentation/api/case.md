@@ -65,6 +65,10 @@ Response body contains array of Case objects, each returned object contains at l
 			],
 			isRequired: Boolean
 		}]],
+		hints: [{
+        		test: ObjectId
+        		hint: String
+    		}],
 		complete: Boolean
     }
 ]
@@ -136,6 +140,10 @@ Response body contains the saved Case object, which contains at least fields `id
 		],
 		isRequired: Boolean
 	}]],
+	hints: [{
+        	test: ObjectId
+        	hint: String
+    	}],
 	complete: Boolean
 }
 ```
@@ -223,6 +231,10 @@ Response body is modified Case object, which contains at least fields which cont
 		],
 		isRequired: Boolean
 	}]],
+	hints: [{
+        	test: ObjectId
+        	hint: String
+    	}],
 	complete: Boolean
 }
 ```
@@ -303,6 +315,10 @@ Response body is modified Case object, which contains at least fields which cont
 		],
 		isRequired: Boolean
 	}]],
+	hints: [{
+        	test: ObjectId
+        	hint: String
+    	}],
 	complete: Boolean
 }
 ```
