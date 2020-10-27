@@ -40,6 +40,8 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 username: 'user',
                 email: 'example@com',
                 admin: false,
+                studentNumber: '834183479234',
+                classGroup: 'C-13',
                 passwordHash
             })
             await user.save()
