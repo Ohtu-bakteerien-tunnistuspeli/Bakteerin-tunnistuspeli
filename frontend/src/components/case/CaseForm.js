@@ -11,16 +11,33 @@ import Notification from '../Notification.js'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const CaseSchema = Yup.object().shape({
-    name: Yup.string()
-        .min(2, 'Nimi on liian lyhyt.')
-        .max(50, 'Nimi on liian pitkä')
-        .required('Pakollinen kenttä.'),
-})
+
+
 
 const CaseForm = () => {
+    const cases = useSelector(state => state.case)
+
+    const CaseSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(2, 'Nimi on liian lyhyt.')
+            .max(50, 'Nimi on liian pitkä')
+            .required('Pakollinen kenttä.')
+            .test('unique', 'Nimen tulee olla uniikki', function (name) {
+                if (cases.map(c => c.name).includes(name)) {
+                    return false
+                }
+                return true
+            }),
+        bacteriumId: Yup.string()
+            .required('Valitse bakteeri')
+            .test('test', 'asd', function (value) {
+                console.log(value)
+                return true
+            })
+    })
 
     const onSuccess = (values) => {
+        console.object(values)
         addNewCase(values.name)
     };
 
@@ -41,7 +58,7 @@ const CaseForm = () => {
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
 
-    const [bacterium, setBacterium] = useState(bacteria[0])
+    const [bacterium, setBacterium] = useState('')
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
     const [completionText, setCompletionText] = useState('')
@@ -57,7 +74,7 @@ const CaseForm = () => {
     }
 
     const resetCaseForm = () => {
-        setBacterium(bacteria[0])
+        setBacterium('')
         setAnamnesis('')
         setCompletionText('')
         setCompletionImage(INITIAL_STATE)
@@ -157,7 +174,6 @@ const CaseForm = () => {
                             handleSubmit,
                             handleChange,
                             values,
-                            touched,
                             errors,
                         }) => {
                             return (
@@ -180,6 +196,7 @@ const CaseForm = () => {
                                         <Form.Label>Bakteeri</Form.Label>
                                         <Form.Control as='select'
                                             onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
+                                            <option>Valitse bakteeri</option>
                                             {bacteria.map(bacterium =>
                                                 <option key={bacterium.id} value={JSON.stringify(bacterium)}>{bacterium.name}</option>
                                             )}
