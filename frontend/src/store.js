@@ -1,5 +1,4 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import userReducer from './reducers/userReducer'
 import bacteriaReducer from './reducers/bacteriaReducer'
@@ -19,6 +18,6 @@ const reducer = combineReducers({
     credit: creditReducer
 })
 
-const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
+const store = createStore(reducer, applyMiddleware(thunk))
 
 export default store

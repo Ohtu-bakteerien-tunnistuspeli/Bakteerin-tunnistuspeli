@@ -5,4 +5,3 @@ backend/app.json
 */images/*
 */cypress/screenshots/*
 */cypress/videos/*
-Dockerfile
