@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import CreditListing from './CreditListing'
 import { Button, Table } from 'react-bootstrap'
+import { creditsDelete } from '../../reducers/creditReducer'
 
-const BacteriaList = () => {
+const CreditList = () => {
     const credits = useSelector(state => state.credit)?.sort((credit1, credit2) => credit1.user.studentNumber.localeCompare(credit2.user.studentNumber))
     const [creditsToShow, setCreditsToShow] = useState(credits)
     const [filterByClassGroup, setFilterByClassGroup] = useState('')
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
     const user = useSelector(state => state.user)
     const style = { margin: '10px', fontSize: '40px' }
+    const dispatch = useDispatch()
     useEffect(() => {
         if (filterByClassGroup === '' && filterByStudentNumber === '') {
             setCreditsToShow(credits)
@@ -26,11 +28,17 @@ const BacteriaList = () => {
     const exportCredits = () => {
         //exporttaa creditsToShow:n avulla
     }
+    const deleteCredits = () => {
+        if (window.confirm('Haluatko poistaa suoritukset?')) {
+            dispatch(creditsDelete(creditsToShow.map(credit => credit.id), user.token))
+        }
+    }
     return (
         <div>
             <h2 style={style}>Suoritukset</h2>
             Filtteröi vuosikurssilla <input type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
             Filtteröi opiskelijanumerolla <input type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
+            <Button variant='danger' onClick={deleteCredits}>Poista suoritukset</Button>
             <Button variant='primary' onClick={exportCredits}>Lataa suoritukset</Button>
             {credits.length !== 0 ?
                 <Table>
@@ -55,4 +63,4 @@ const BacteriaList = () => {
     )
 }
 
-export default BacteriaList
+export default CreditList

@@ -3,13 +3,16 @@ import { setNotification } from './notificationReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
-    case 'GET_CREDITS': {
-        return action.data
-    }
-    case 'ZERO_CREDIT': {
-        return action.data
-    }
-    default: return state
+        case 'GET_CREDITS': {
+            return action.data
+        }
+        case 'DELETE_CREDITS': {
+            return state.filter(credit => !action.data.includes(credit.id))
+        }
+        case 'ZERO_CREDIT': {
+            return action.data
+        }
+        default: return state
     }
 }
 
@@ -21,6 +24,20 @@ export const getCredits = (token) => {
         } else {
             dispatch({
                 type: 'GET_CREDITS',
+                data: credits
+            })
+        }
+    }
+}
+
+export const creditsDelete = (credits, token) => {
+    return async dispatch => {
+        const deletedCredits = await creditService.deleteCredits(credits, token)
+        if (deletedCredits.error) {
+            dispatch(setNotification({ message: deletedCredits.error, success: false }))
+        } else {
+            dispatch({
+                type: 'DELETE_CREDITS',
                 data: credits
             })
         }
