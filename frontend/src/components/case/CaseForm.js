@@ -40,9 +40,7 @@ const CaseForm = () => {
 
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
-    const cases = useSelector(state => state.case)
 
-    const [caseName, setCaseName] = useState('')
     const [bacterium, setBacterium] = useState(bacteria[0])
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
@@ -59,7 +57,6 @@ const CaseForm = () => {
     }
 
     const resetCaseForm = () => {
-        setCaseName('')
         setBacterium(bacteria[0])
         setAnamnesis('')
         setCompletionText('')
