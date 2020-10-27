@@ -294,6 +294,10 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
 caseRouter.put('/:id/hints', async (request, response) => {
     if (request.user && request.user.admin) {
         try {
+            const caseToUpdate = await Case.findById(request.params.id)
+            if (!caseToUpdate) {
+                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
+            }
             const hints = request.body
             let testsWithHints = []
             let hasMoreThanOneSame = false

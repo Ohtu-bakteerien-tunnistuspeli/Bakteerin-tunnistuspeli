@@ -672,6 +672,253 @@ describe('modify a case', () => {
     })
 })
 
+describe('add hints to a case', () => {
+    test('admin can add hint to an existing case', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const bacterium = await Bacterium.findOne({ name: 'koli' })
+        const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
+        }]])
+        const newCase = {
+            name: 'testing case',
+            bacterium: bacterium.id,
+            anamnesis: 'test anamnesis',
+            samples: samples,
+            testGroups: testGroups,
+            completionText: 'test completion text'
+        }
+        await api
+            .post('/api/case')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newCase)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        const res = await api
+            .get('/api/case')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const hints = [{
+            test: testCase.id,
+            hint: 'testHint'
+        }]
+        const hintedCase = await api
+            .put(`/api/case/${res.body[0].id}/hints`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(hints)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        expect(hintedCase.body.hints[0].test.name).toEqual('testName')
+        expect(hintedCase.body.hints[0].hint).toEqual('testHint')
+    })
+
+    test('user cannot add hints to an existing case', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+
+        const admin = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const bacterium = await Bacterium.findOne({ name: 'koli' })
+        const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
+        }]])
+        const newCase = {
+            name: 'testing case',
+            bacterium: bacterium.id,
+            anamnesis: 'test anamnesis',
+            samples: samples,
+            testGroups: testGroups,
+            completionText: 'test completion text'
+        }
+        await api
+            .post('/api/case')
+            .set('Authorization', `bearer ${admin.body.token}`)
+            .send(newCase)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        const res = await api
+            .get('/api/case')
+            .set('Authorization', `bearer ${admin.body.token}`)
+        const hints = [{
+            test: testCase.id,
+            hint: 'testHint'
+        }]
+        const hintedCase = await api
+            .put(`/api/case/${res.body[0].id}/hints`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(hints)
+            .expect(401)
+            .expect('Content-Type', /application\/json/)
+
+        expect(hintedCase.body.error).toEqual('token missing or invalid')
+    })
+
+    test('Cannot add hints to case that does not exist', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const testCase = await Test.findOne({ name: 'testName' })
+        const hints = [{
+            test: testCase.id,
+            hint: 'testHint'
+        }]
+        const res = await api
+            .put('/api/case/doesnotexist/hints')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(hints)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(res.body.error).toContain('Annettua tapausta ei löydy tietokannasta.')
+    })
+
+    test('cannot add hints to non existing test', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const bacterium = await Bacterium.findOne({ name: 'koli' })
+        const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
+        }]])
+        const newCase = {
+            name: 'testing case',
+            bacterium: bacterium.id,
+            anamnesis: 'test anamnesis',
+            samples: samples,
+            testGroups: testGroups,
+            completionText: 'test completion text'
+        }
+        await api
+            .post('/api/case')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newCase)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        const res = await api
+            .get('/api/case')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const hints = [{
+            test: 'does not exist',
+            hint: 'testHint'
+        }]
+        const hintedCase = await api
+            .put(`/api/case/${res.body[0].id}/hints`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(hints)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(hintedCase.body.error).toEqual('Annettua testiä ei löydy.')
+    })
+
+    test('cannot add more than one hint to a test', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        const bacterium = await Bacterium.findOne({ name: 'koli' })
+        const testCase = await Test.findOne({ name: 'testName' })
+        const samples = JSON.stringify([{
+            description: 'desc 1',
+            rightAnswer: true
+        }, {
+            description: 'desc 2',
+            rightAnswer: false
+        }])
+        const testGroups = JSON.stringify([[{
+            tests: [{
+                testId: testCase.id,
+                positive: true,
+            }],
+            isRequired: true
+        }]])
+        const newCase = {
+            name: 'testing case',
+            bacterium: bacterium.id,
+            anamnesis: 'test anamnesis',
+            samples: samples,
+            testGroups: testGroups,
+            completionText: 'test completion text'
+        }
+        await api
+            .post('/api/case')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(newCase)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        const res = await api
+            .get('/api/case')
+            .set('Authorization', `bearer ${user.body.token}`)
+        const hints = [{
+            test: testCase.id,
+            hint: 'testHint1'
+        },{
+            test: testCase.id,
+            hint: 'testHint2'
+        }]
+        const hintedCase = await api
+            .put(`/api/case/${res.body[0].id}/hints`)
+            .set('Authorization', `bearer ${user.body.token}`)
+            .send(hints)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        expect(hintedCase.body.error).toEqual('Samalla testillä on useampia vinkkejä.')
+    })
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
     await mongoose.disconnect()
