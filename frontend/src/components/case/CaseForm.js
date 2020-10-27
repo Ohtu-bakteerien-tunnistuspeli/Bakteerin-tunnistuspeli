@@ -82,7 +82,6 @@ const CaseForm = () => {
         setAddingAlt(false)
         resetCaseForm()
         setValidated(false)
-        setErrorText('')
     }
 
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
