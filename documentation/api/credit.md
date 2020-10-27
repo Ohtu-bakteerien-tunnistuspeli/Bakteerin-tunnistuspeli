@@ -16,9 +16,9 @@ Response body contains array of Credit objects, each returned object contains fi
     {
         id: ObjectId,
         user: ObjectId,
-		testCases: [{
-			type: String
-		}]
+	testCases: [{
+		type: String
+	}]
     }
 ]
 ```    
