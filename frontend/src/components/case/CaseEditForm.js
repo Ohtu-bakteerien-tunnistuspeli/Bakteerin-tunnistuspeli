@@ -4,7 +4,7 @@ import TestGroup from './TestGroup.js'
 import AddTestGroup from './AddTestGroup.js'
 import AddSample from './AddSample.js'
 import { useSelector, useDispatch } from 'react-redux'
-import { Modal, Button, Form, Table, ListGroup } from 'react-bootstrap'
+import { Modal, Button, Form, ListGroup } from 'react-bootstrap'
 import { updateCase } from '../../reducers/caseReducer'
 import { setNotification } from '../../reducers/notificationReducer'
 

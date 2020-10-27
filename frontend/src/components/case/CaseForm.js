@@ -6,7 +6,7 @@ import AddTestGroup from './AddTestGroup.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { setNotification } from '../../reducers/notificationReducer'
-import { Modal, Button, Form, Table } from 'react-bootstrap'
+import { Modal, Button, Form } from 'react-bootstrap'
 import Notification from '../Notification.js'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -51,29 +51,7 @@ const CaseForm = () => {
     const dispatch = useDispatch()
 
     const [validated, setValidated] = useState(false)
-    const [errorText, setErrorText] = useState('')
 
-    const checkValidation = (event) => {
-        const form = event.currentTarget
-        if (cases.map(c => c.name).includes(caseName)) {
-            setErrorText('Nimi on jo käytössä')
-            event.preventDefault()
-            event.stopPropagation()
-        } else if (caseName.length < 2 || caseName.length > 100) {
-            setErrorText('Syötteen pitää olla vähintään 2 merkkiä ja korkeintaan 100 merkkiä pitkä')
-            event.preventDefault()
-            event.stopPropagation()
-        } else {
-            setValidated(true)
-        }
-
-        if (form.checkValidity()) {
-            setValidated(true)
-        } else {
-            event.preventDefault()
-            event.stopPropagation()
-        }
-    }
 
     const addNewCase = (name) => {
         dispatch(addCase(name, bacterium.id, anamnesis, completionText, completionImage, samples, testGroups, user.token, resetCaseForm))
