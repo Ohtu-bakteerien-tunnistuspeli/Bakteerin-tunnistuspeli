@@ -27,8 +27,8 @@ const App = () => {
     }
 
     const handleOnBeforeUnload = () => {
-        console.log(window.location.pathname)
         window.localStorage.setItem('lastPage', window.location.pathname)
+        window.localStorage.setItem('gameState', JSON.stringify(game))
     }
 
     window.onbeforeunload = handleOnBeforeUnload
