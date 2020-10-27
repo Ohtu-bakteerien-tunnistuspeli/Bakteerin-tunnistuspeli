@@ -175,7 +175,11 @@ beforeEach(async () => {
                         isRequired: true
                     }
                 ]
-            ]
+            ],
+        hints: [{
+            test: addedTests[9],
+            hint: 'test hint'
+        }]
     })
     addedCaseId = await caseToAdd.save()
     addedCaseId = addedCaseId._id
@@ -250,6 +254,20 @@ describe('it is possible to do tests', () => {
             .send({ tests: data })
             .expect(200)
         expect(res.body.correct).toEqual(false)
+        expect(res.body.hint).toBeUndefined()
+    })
+
+    test('test with hint returns it when the test is wrong answer', async () => {
+        const data = [
+            testMap['test9']
+        ]
+        const res = await api
+            .post(`/api/game/${addedCaseId}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toEqual(false)
+        expect(res.body.hint).toEqual('test hint')
     })
 
     test('extra tests cannot be done too early', async () => {
