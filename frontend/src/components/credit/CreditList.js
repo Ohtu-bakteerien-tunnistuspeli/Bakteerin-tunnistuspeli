@@ -22,9 +22,9 @@ const CreditList = () => {
             if (filterByClassGroup === '') {
                 setCreditsToShow(credits.filter(credit => credit.user.studentNumber.startsWith(filterByStudentNumber)))
             } else if (filterByStudentNumber === '') {
-                setCreditsToShow(credits.filter(credit => credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup))
+                setCreditsToShow(credits.filter(credit => credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup || credit.user.classGroup === filterByClassGroup))
             } else {
-                setCreditsToShow(credits.filter(credit => credit.user.studentNumber.startsWith(filterByStudentNumber) && credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup))
+                setCreditsToShow(credits.filter(credit => credit.user.studentNumber.startsWith(filterByStudentNumber) && (credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup || credit.user.classGroup === filterByClassGroup)))
             }
         }
     }, [filterByClassGroup, filterByStudentNumber, credits])

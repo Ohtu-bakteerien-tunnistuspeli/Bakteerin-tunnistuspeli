@@ -143,7 +143,8 @@ const CaseEditForm = ({ caseToEdit }) => {
                         <Form.Control onChange={handleAnamnesisChange} defaultValue={caseToEdit.anamnesis} /><br></br>
 
                         <Form.Label>Bakteeri:</Form.Label><br></br>
-                        <Form.Control as="select" onChange={handleBacteriumChange} value={bacterium.id}>
+                        <Form.Control as="select" onChange={handleBacteriumChange} 
+                            value={bacterium ? bacterium.id : null}>
                             {bacteria.map(bac =>
                                 <option key={bac.id} value={bac.id}>{bac.name}</option>
                             )}

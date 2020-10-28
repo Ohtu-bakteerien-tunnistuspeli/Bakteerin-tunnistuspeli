@@ -31,7 +31,6 @@ const TestListing = ({ test }) => {
             {isModified ?
                 <td>
                     <TestEditForm test={test} show={show} handleHide={stopModify} stopModify={stopModify} bacteria={bacteria} />
-                    <Button variant='secondary' id='stopEdit' style={{ float: 'right' }} onClick={stopModify}>Muokattavana</Button>
                 </td>
                 :
                 <>

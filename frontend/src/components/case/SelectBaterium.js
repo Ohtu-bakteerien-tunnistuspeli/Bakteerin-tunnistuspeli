@@ -12,7 +12,7 @@ const SelectBacterium = ({ onChange, value, error, bacteria, touched}) => {
             isInvalid={error && touched}
             value={value}
         >
-            <option value="">Valitse bakteeri</option>
+            <option value='' disabled hidden>Valitse bakteeri</option>
             {bacteria.map(bacterium =>
                 <option key={bacterium.id} value={bacterium.id}>{bacterium.name}</option>
             )}
