@@ -32,6 +32,9 @@ const CaseForm = () => {
             .required('Valitse bakteeri'),
         sample: Yup.string()
             .test('unique', 'Näyte on jo lisätty listaan', function (sample) {
+                if(sample===""){
+                    return true
+                }
                 if (samples.map(s => s.description).includes(sample)) {
                     return false
                 }
