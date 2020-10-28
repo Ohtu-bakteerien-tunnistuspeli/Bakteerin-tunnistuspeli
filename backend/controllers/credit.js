@@ -13,4 +13,19 @@ creditRouter.get('/', async (request, response) => {
     }
 })
 
+creditRouter.delete('/', async (request, response) => {
+    if (request.user && request.user.admin) {
+        const creditsToDelete = request.body
+        try {
+            const promiseArray = creditsToDelete.map(credit => Credit.findByIdAndRemove(credit))
+            await Promise.all(promiseArray)
+        } catch (error) {
+            //do nothing
+        }
+        response.status(204).end()
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
 module.exports = creditRouter
