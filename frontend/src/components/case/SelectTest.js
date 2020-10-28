@@ -5,8 +5,9 @@ const SelectTest = ({ tests, setTest, test }) => {
         <Form.Control
             as='select'
             id='testSelect'
+            value={test ? test.name : ''}
             onChange={(event) => setTest({ ...test, name: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })}>
-            <option value='error'>Valitse testi</option>
+            <option value='' disabled hidden>Valitse testi</option>
             {
                 tests.map(t =>
                     <option key={t.id} value={JSON.stringify(t)}>{t.name}</option>

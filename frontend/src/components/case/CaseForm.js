@@ -70,7 +70,6 @@ const CaseForm = () => {
 
     const addNewCase = (name) => {
         dispatch(addCase(name, bacterium.id, anamnesis, completionText, completionImage, samples, testGroups, user.token, resetCaseForm))
-        handleClose()
     }
 
     const resetCaseForm = () => {
@@ -87,6 +86,7 @@ const CaseForm = () => {
         setAddingAlt(false)
         setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
+        handleClose()
     }
 
     const [show, setShow] = useState(false)
@@ -195,8 +195,9 @@ const CaseForm = () => {
                                     <Form.Group controlId='bacterium'>
                                         <Form.Label>Bakteeri</Form.Label>
                                         <Form.Control as='select'
+                                            value={bacterium ? bacterium.name : ''}
                                             onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
-                                            <option>Valitse bakteeri</option>
+                                            <option value='' disabled hidden>Valitse bakteeri</option>
                                             {bacteria.map(bacterium =>
                                                 <option key={bacterium.id} value={JSON.stringify(bacterium)}>{bacterium.name}</option>
                                             )}

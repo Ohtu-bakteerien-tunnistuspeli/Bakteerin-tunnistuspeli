@@ -2,35 +2,15 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTest } from '../../reducers/testReducer'
 import { Modal, Button, Form } from 'react-bootstrap'
-
-const useField = (type) => {
-    const [value, setValue] = useState('')
-    const onChange = (event) => {
-        setValue(event.target.value)
-    }
-    const reset = () => {
-        setValue('')
-    }
-    return {
-        type,
-        value,
-        onChange,
-        reset
-    }
-}
+import BacteriaSpecificImages from './BacteriaSpecificImages'
+import NameAndType from './NameAndType'
+import { useField, INITIAL_STATE, marginStyle } from './utility'
 
 const TestForm = () => {
-
-    const INITIAL_STATE = {
-        id: '',
-        bacterium: '',
-        image: undefined,
-    }
     const style = { margin: '10px' }
-
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
-    const TestName = useField('text')
-    const TestType = useField('text')
+    const TestName = useField('text', '')
+    const TestType = useField('text', '')
     const [bacterium, setBacterium] = useState(bacteria[0].name)
     const [controlImage, setControlImage] = useState(INITIAL_STATE)
     const [positiveResultImage, setPhotoPos] = useState(INITIAL_STATE)
@@ -91,82 +71,58 @@ const TestForm = () => {
 
     return (
         <div>
-            <Button style={style} id="testModalButton" variant="primary" onClick={handleShow}>
-                Luo uusi testi
-            </Button>
+            <Button style={style} id='testModalButton' variant='primary' onClick={handleShow}>Luo uusi testi</Button>
             <Modal show={show} size='lg' onHide={handleClose} >
-                <Modal.Header closeButton></Modal.Header>
+                <Modal.Header closeButton>Luo uusi testi</Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={addTests} encType="multipart/form-data">
-                        <Form.Group controlId="name">
-                            <Form.Label>Nimi</Form.Label>
-                            <Form.Control type={TestName.type} value={TestName.value} onChange={TestName.onChange} reset='' />
-                        </Form.Group>
-                        <Form.Group controlId="type">
-                            <Form.Label>Tyyppi</Form.Label>
-                            <Form.Control as="select" type={TestType.type} value={TestType.value} onClick={TestType.onChange} onChange={TestType.onChange}>
-                                <option key="1">Valitse testin tyyppi</option>
-                                <option key="2" value="Värjäys">Värjäys</option>
-                                <option key="3" value="Testi">Testi</option>
-                                <option key="4" value="Viljely">Viljely</option>
-                            </Form.Control>
-                        </Form.Group>
-                        <Form.Group controlId="controlImage">
+                    <Form onSubmit={addTests} encType='multipart/form-data'>
+                        <NameAndType
+                            nameControlId='name'
+                            typeControlId='type'
+                            TestName={TestName}
+                            TestType={TestType}
+                        />
+                        <Form.Group controlId='controlImage'>
                             <Form.Label>Kontrollikuva</Form.Label>
                             <Form.Control
                                 name='controlImage'
-                                type="file"
+                                type='file'
                                 value={controlImage.image}
                                 onChange={handleChange3}
                                 onClick={(event) => event.target.value = ''}
                             />
                         </Form.Group>
-                        <Form.Group controlId="positiveResultImage">
+                        <Form.Group controlId='positiveResultImage'>
                             <Form.Label>Positiivinen oletus</Form.Label>
                             <Form.Control
                                 name='positiveResultImage'
-                                type="file"
+                                type='file'
                                 value={positiveResultImage.image}
                                 onChange={handleChange}
                             />
                         </Form.Group>
-                        <Form.Group controlId="negativeResultImage">
+                        <Form.Group controlId='negativeResultImage'>
                             <Form.Label>Negatiivinen Oletus</Form.Label>
                             <Form.Control
-                                name="negativeResultImage"
-                                type="file"
+                                name='negativeResultImage'
+                                type='file'
                                 value={negativeResultImage.image}
                                 onChange={handleChange2}
                             />
                         </Form.Group>
-                        <Form.Group controlId="bacteriaSpecificImages">
-                            <Form.Label>Bakteerikohtaiset Tulokset</Form.Label>
-                            <div></div>
-                            <ul>
-                                {bacteriaSpecificImages.map((image, i) =>
-                                    <li key={i}>{image.name}</li>
-                                )}
-                            </ul>
-                            <Form.Label>Bakteeri</Form.Label>
-                            <Form.Control as="select" value={bacterium}
-                                onClick={({ target }) => setBacterium(target.value)}
-                                onChange={({ target }) => setBacterium(target.value)}>
-                                {bacteria.map(bact =>
-                                    <option key={bact.id} value={bact.name}>{bact.name}</option>
-                                )}
-                            </Form.Control>
-                            <Form.Label>Bakteerikohtaiset Kuvat </Form.Label>
-                            <Form.Control
-                                name='bacteriaSpecificImage'
-                                type="file"
-                                value={bacteriaSpecificImage.image}
-                                onChange={handleSpecificImg}
-                            />
-                            <Button type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
-                            <Button type='button' variant="warning" onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaiset kuvat lista</Button>
-                        </Form.Group>
-                        <div></div>
-                        <button id="addTest" type="submit">Lisää</button>
+                        <BacteriaSpecificImages
+                            controlId='bacteriaSpecificImages'
+                            setBacterium={setBacterium}
+                            bacteria={bacteria}
+                            bacterium={bacterium}
+                            setBacteriaImages={setBacteriaImages}
+                            handleSpecificImg={handleSpecificImg}
+                            bacteriaSpecificImages={bacteriaSpecificImages}
+                            bacteriaSpecificImage={bacteriaSpecificImage}
+                            addBacteriumSpecificImage={addBacteriumSpecificImage}
+                            marginStyle={marginStyle}
+                        />
+                        <Button id='addTest' type='submit'>Lisää</Button>
                     </Form>
                 </Modal.Body>
             </Modal>
