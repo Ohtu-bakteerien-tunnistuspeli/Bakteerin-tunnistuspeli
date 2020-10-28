@@ -26,13 +26,7 @@ const AddSample = ({ sample, setSample, addSample, error, onChange }) => {
                 checked={sample.rightAnswer}
                 onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
             <Button type='button' id='addSample' onClick={() => {
-<<<<<<< HEAD
                 addSample(sample.description, sample.rightAnswer, onChange)}}>+</Button>
-=======
-                addSample(sample.description, sample.rightAnswer)
-                onChange('sample','')}
-                }>+</Button>
->>>>>>> dc8ce4e560b7b68e793fee029843665b90f69099
         </Form.Group>
     )
 }
