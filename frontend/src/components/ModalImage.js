@@ -12,6 +12,10 @@ const ModalImage = ({ imageUrl, width, height }) => {
         dispatch(setNotification(''))
     }
 
+    const style = {
+        position:'absolute', padding: '0!important', margin: 0, border: 0
+    }
+
     return (
         <>
             <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={
@@ -19,10 +23,10 @@ const ModalImage = ({ imageUrl, width, height }) => {
             }>
                 <Image src={`/${imageUrl}`} onClick={handleShow} style={{ maxWidth: width, maxHeight: height }}></Image>
             </OverlayTrigger>
-            <Modal show={show} size="lg" onHide={handleClose} >
+            <Modal show={show} size='xl' onHide={handleClose} style={style} >
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body style={{ alignItems: 'center', padding: '0', position: 'absolute', maxWidth: 'max-content', height: 'auto', display: 'block' }} >
-                    <Image src={`/${imageUrl}`} style={{ maxWidth: 'max-content', height: 'auto', display: 'block' }} fluid ></Image >
+                    <Image src={`/${imageUrl}`} style={{ width: '100%', height: 'auto', display: 'block' }} fluid ></Image >
                 </Modal.Body>
             </Modal>
             <br />
