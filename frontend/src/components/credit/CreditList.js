@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CreditListing from './CreditListing'
-import { Button, Table } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
+import CSVExporter from '../CSVExporter'
 import { creditsDelete } from '../../reducers/creditReducer'
 
 const CreditList = () => {
@@ -11,7 +12,9 @@ const CreditList = () => {
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
     const user = useSelector(state => state.user)
     const style = { margin: '10px', fontSize: '40px' }
+    const exportStyle = { paddingTop: '20px', paddingBottom: '20px' }
     const dispatch = useDispatch()
+
     useEffect(() => {
         if (filterByClassGroup === '' && filterByStudentNumber === '') {
             setCreditsToShow(credits)
@@ -25,21 +28,22 @@ const CreditList = () => {
             }
         }
     }, [filterByClassGroup, filterByStudentNumber, credits])
-    const exportCredits = () => {
-        //exporttaa creditsToShow:n avulla
-    }
+
     const deleteCredits = () => {
         if (window.confirm('Haluatko poistaa suoritukset?')) {
             dispatch(creditsDelete(creditsToShow.map(credit => credit.id), user.token))
         }
     }
+
     return (
         <div>
             <h2 style={style}>Suoritukset</h2>
             Filtteröi vuosikurssilla <input type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
             Filtteröi opiskelijanumerolla <input type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
+            <div style={exportStyle}>
+                <CSVExporter data={creditsToShow} />
+            </div>
             <Button variant='danger' onClick={deleteCredits}>Poista suoritukset</Button>
-            <Button variant='primary' onClick={exportCredits}>Lataa suoritukset</Button>
             {credits.length !== 0 ?
                 <Table>
                     <thead>
