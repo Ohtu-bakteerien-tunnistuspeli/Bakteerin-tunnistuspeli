@@ -44,7 +44,6 @@ const CaseForm = () => {
     })
 
     const onSuccess = (values) => {
-        console.log(values)
         addNewCase(values.name, values.bacteriumId)
     };
 
@@ -75,8 +74,7 @@ const CaseForm = () => {
 
 
     const addNewCase = (name, bacteriumId) => {
-        dispatch(addCase(name, bacteriumId, anamnesis, completionText, completionImage, samples, testGroups, user.token, resetCaseForm))
-        handleClose()
+        dispatch(addCase(name, bacteriumId, anamnesis, completionText, completionImage, samples, testGroups, user.token, handleClose))
     }
 
     const resetCaseForm = () => {
@@ -92,6 +90,7 @@ const CaseForm = () => {
         setAddingAlt(false)
         setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
+        
     }
 
     const [show, setShow] = useState(false)
@@ -106,15 +105,15 @@ const CaseForm = () => {
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
     const [samples, setSamples] = useState([])
     const deleteSample = (sampleToDelete) => setSamples(samples.filter(s => s.description !== sampleToDelete.description))
-    const addSample = (description, rightAnswer) => {
+    const addSample = (description, rightAnswer, onChange) => {
         if (description !== '') {
             if (!samples.map(sample => sample.description).includes(description)) {
-
                 setSamples(samples.concat({ description, rightAnswer }))
                 setSample({
                     description: '',
                     rightAnswer: false
                 })
+                onChange('sample', '')
             }
         }
     }

@@ -6,11 +6,12 @@ const AddSample = ({ sample, setSample, addSample, error, onChange }) => {
     const handleChange = event => {
         event.preventDefault()
         setSample({ ...sample, description: event.target.value })
-        onChange('sample', event.target.value);
+        onChange('sample', event.target.value)
     }
     return (
         <Form.Group>
             <Form.Control
+                id='sample'
                 value={sample.description}
                 onChange={handleChange}
                 isInvalid={error}
@@ -25,9 +26,7 @@ const AddSample = ({ sample, setSample, addSample, error, onChange }) => {
                 checked={sample.rightAnswer}
                 onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
             <Button type='button' id='addSample' onClick={() => {
-                addSample(sample.description, sample.rightAnswer)
-                onChange('sample','')}
-                }>+</Button>
+                addSample(sample.description, sample.rightAnswer, onChange)}}>+</Button>
         </Form.Group>
     )
 }
