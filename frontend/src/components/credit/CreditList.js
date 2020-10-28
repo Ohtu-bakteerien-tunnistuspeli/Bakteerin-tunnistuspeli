@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import CreditListing from './CreditListing'
 import { Table } from 'react-bootstrap'
 import CSVExporter from '../CSVExporter'
+import { creditsDelete } from '../../reducers/creditReducer'
 
-const BacteriaList = () => {
+const CreditList = () => {
     const credits = useSelector(state => state.credit)?.sort((credit1, credit2) => credit1.user.studentNumber.localeCompare(credit2.user.studentNumber))
     const [creditsToShow, setCreditsToShow] = useState(credits)
     const [filterByClassGroup, setFilterByClassGroup] = useState('')
@@ -12,6 +13,7 @@ const BacteriaList = () => {
     const user = useSelector(state => state.user)
     const style = { margin: '10px', fontSize: '40px' }
     const exportStyle = { paddingTop: '20px', paddingBottom: '20px' }
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (filterByClassGroup === '' && filterByStudentNumber === '') {
@@ -27,6 +29,12 @@ const BacteriaList = () => {
         }
     }, [filterByClassGroup, filterByStudentNumber, credits])
 
+    const deleteCredits = () => {
+        if (window.confirm('Haluatko poistaa suoritukset?')) {
+            dispatch(creditsDelete(creditsToShow.map(credit => credit.id), user.token))
+        }
+    }
+
     return (
         <div>
             <h2 style={style}>Suoritukset</h2>
@@ -35,6 +43,7 @@ const BacteriaList = () => {
             <div style={exportStyle}>
                 <CSVExporter data={creditsToShow} />
             </div>
+            <Button variant='danger' onClick={deleteCredits}>Poista suoritukset</Button>
             {credits.length !== 0 ?
                 <Table>
                     <thead>
@@ -58,4 +67,4 @@ const BacteriaList = () => {
     )
 }
 
-export default BacteriaList
+export default CreditList
