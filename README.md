@@ -23,4 +23,3 @@ Software Engineering Lab, Fall 2020, University of Helsinki
 ## License
 
 This project is licensed under the terms of the [MIT license](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/blob/master/LICENSE)
-
