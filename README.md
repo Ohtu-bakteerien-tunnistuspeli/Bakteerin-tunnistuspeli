@@ -20,11 +20,7 @@ Software Engineering Lab, Fall 2020, University of Helsinki
 
 #### [Methods and procedures](https://docs.google.com/document/d/1cTWnJgth1c0F1vmdGZFoTWz-a0D2TMyhTx_XzweBJjY/edit)
 
-## Usage
-
 ## License
 
 This project is licensed under the terms of the [MIT license](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/blob/master/LICENSE)
-
-
 
