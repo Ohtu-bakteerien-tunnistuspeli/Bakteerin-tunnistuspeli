@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import Samples from './Samples.js'
 import AddSample from './AddSample.js'
 import TestGroup from './TestGroup.js'
+import SelectBacterium from './SelectBaterium.js'
 import AddTestGroup from './AddTestGroup.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
-import { setNotification } from '../../reducers/notificationReducer'
 import { Modal, Button, Form } from 'react-bootstrap'
 import Notification from '../Notification.js'
 import { Formik } from 'formik';
@@ -29,16 +29,19 @@ const CaseForm = () => {
                 return true
             }),
         bacteriumId: Yup.string()
-            .required('Valitse bakteeri')
-            .test('test', 'asd', function (value) {
-                console.log(value)
+            .required('Valitse bakteeri'),
+        sample: Yup.string()
+            .test('unique', 'Näyte on jo lisätty listaan', function (sample) {
+                if (samples.map(s => s.description).includes(sample)) {
+                    return false
+                }
                 return true
             })
+
     })
 
     const onSuccess = (values) => {
-        console.object(values)
-        addNewCase(values.name)
+        addNewCase(values.name, values.bacteriumId)
     };
 
     const INITIAL_STATE = {
@@ -58,7 +61,6 @@ const CaseForm = () => {
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
 
-    const [bacterium, setBacterium] = useState('')
     const [anamnesis, setAnamnesis] = useState('')
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
     const [completionText, setCompletionText] = useState('')
@@ -68,12 +70,11 @@ const CaseForm = () => {
     const [validated, setValidated] = useState(false)
 
 
-    const addNewCase = (name) => {
-        dispatch(addCase(name, bacterium.id, anamnesis, completionText, completionImage, samples, testGroups, user.token, resetCaseForm))
+    const addNewCase = (name, bacteriumId) => {
+        dispatch(addCase(name, bacteriumId, anamnesis, completionText, completionImage, samples, testGroups, user.token, handleClose))
     }
 
     const resetCaseForm = () => {
-        setBacterium('')
         setAnamnesis('')
         setCompletionText('')
         setCompletionImage(INITIAL_STATE)
@@ -86,7 +87,7 @@ const CaseForm = () => {
         setAddingAlt(false)
         setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
-        handleClose()
+        
     }
 
     const [show, setShow] = useState(false)
@@ -101,16 +102,15 @@ const CaseForm = () => {
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
     const [samples, setSamples] = useState([])
     const deleteSample = (sampleToDelete) => setSamples(samples.filter(s => s.description !== sampleToDelete.description))
-    const addSample = (description, rightAnswer) => {
+    const addSample = (description, rightAnswer, onChange) => {
         if (description !== '') {
-            if (samples.map(sample => sample.description).includes(description)) {
-                dispatch(setNotification({ message: 'Näytteen kuvaus on jo käytössä', success: false }))
-            } else {
+            if (!samples.map(sample => sample.description).includes(description)) {
                 setSamples(samples.concat({ description, rightAnswer }))
                 setSample({
                     description: '',
                     rightAnswer: false
                 })
+                onChange('sample', '')
             }
         }
     }
@@ -168,6 +168,8 @@ const CaseForm = () => {
                         onSubmit={onSuccess}
                         initialValues={{
                             name: '',
+                            bacteriumId: '',
+                            sample: ''
                         }}
                     >
                         {({
@@ -175,6 +177,9 @@ const CaseForm = () => {
                             handleChange,
                             values,
                             errors,
+                            setFieldValue,
+                            validateField,
+                            touched
                         }) => {
                             return (
                                 <Form noValidate onSubmit={handleSubmit}>
@@ -183,7 +188,7 @@ const CaseForm = () => {
                                         <Form.Label>Nimi</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            isInvalid={errors.name}
+                                            isInvalid={errors.name && touched.name}
                                             value={values.name}
                                             onChange={handleChange}
                                         />
@@ -194,14 +199,15 @@ const CaseForm = () => {
 
                                     <Form.Group controlId='bacterium'>
                                         <Form.Label>Bakteeri</Form.Label>
-                                        <Form.Control as='select'
-                                            value={bacterium ? bacterium.name : ''}
-                                            onChange={(event) => setBacterium(JSON.parse(event.target.value))}>
-                                            <option value='' disabled hidden>Valitse bakteeri</option>
-                                            {bacteria.map(bacterium =>
-                                                <option key={bacterium.id} value={JSON.stringify(bacterium)}>{bacterium.name}</option>
-                                            )}
-                                        </Form.Control>
+                                        <SelectBacterium onChange={setFieldValue}
+                                            value={values.bacteriumId}
+                                            error={errors.bacteriumId}
+                                            bacteria={bacteria}
+                                            touched={touched.bacteriumId}
+                                        />
+                                        <Form.Control.Feedback type="invalid">
+                                            {errors.bacteriumId}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
 
                                     <Form.Group controlId='anamnesis'>
@@ -232,7 +238,16 @@ const CaseForm = () => {
 
                                     <Samples samples={samples}
                                         deleteSample={deleteSample}></Samples>
-                                    <AddSample sample={sample} setSample={setSample} addSample={addSample} ></AddSample>
+                                    <AddSample
+                                        sample={sample}
+                                        setSample={setSample}
+                                        addSample={addSample}
+                                        error={errors.sample}
+                                        touched={touched.sample}
+                                        validateField={validateField}
+                                        onChange={setFieldValue}
+                                    ></AddSample>
+
                                     <AddTestGroup addingAlt={addingAlt}
                                         setAddingAlt={setAddingAlt}
                                         addingTest={addingTest}
