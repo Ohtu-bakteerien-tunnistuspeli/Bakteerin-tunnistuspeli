@@ -35,7 +35,7 @@ const update = async (id, name, bacterium, anamnesis, completionText, completion
     }
     const formData = new FormData()
     formData.append('name', name)
-    formData.append('bacterium', bacterium.id)
+    formData.append('bacterium', bacterium)
     formData.append('anamnesis', anamnesis)
     formData.append('completionText', completionText)
     formData.append('completionImage', completionImage)
