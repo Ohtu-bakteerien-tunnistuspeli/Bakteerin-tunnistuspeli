@@ -17,6 +17,7 @@ const BacteriaSpecificImages = ({controlId, setBacterium, bacteria, bacterium, s
                 value={bacterium}
                 onClick={({ target }) => setBacterium(target.value)}
                 onChange={({ target }) => setBacterium(target.value)}>
+                <option>Valitse bakteeri</option>
                 {bacteria.map(bact =>
                     <option key={bact.id} value={bact.name}>{bact.name}</option>
                 )}

@@ -11,7 +11,7 @@ const TestForm = () => {
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const TestName = useField('text', '')
     const TestType = useField('text', '')
-    const [bacterium, setBacterium] = useState(bacteria[0].name)
+    const [bacterium, setBacterium] = useState('')
     const [controlImage, setControlImage] = useState(INITIAL_STATE)
     const [positiveResultImage, setPhotoPos] = useState(INITIAL_STATE)
     const [negativeResultImage, setPhotoNeg] = useState(INITIAL_STATE)
