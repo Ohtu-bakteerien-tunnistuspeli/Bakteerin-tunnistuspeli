@@ -4,6 +4,7 @@ const SelectTest = ({ tests, setTest, test, onChange, value, error }) => {
 
     const handleChange = event => {
         event.preventDefault()
+        console.log(onChange)
         onChange('test', event.target.value)
     }
     return (

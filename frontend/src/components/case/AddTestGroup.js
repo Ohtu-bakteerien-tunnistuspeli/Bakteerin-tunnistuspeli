@@ -8,6 +8,8 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setTest,
     onChange, value, error, touched
 }) => {
 
+    console.log(onChange)
+
     return (
         <Form.Group>
             {!addingAlt && !addingTest ?
@@ -56,7 +58,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setTest,
                             {addingAlt ?
                                 <>
                                     <td>
-                                        <SelectTest tests={tests} setTest={setTest} test={test}></SelectTest>
+                                        <SelectTest tests={tests} setTest={setTest} test={test} onChange={onChange} error={error} touched={touched}></SelectTest>
                                     </td>
                                     <td>
                                         <Form.Check
