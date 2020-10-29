@@ -20,11 +20,11 @@ const CreditList = () => {
             setCreditsToShow(credits)
         } else {
             if (filterByClassGroup === '') {
-                setCreditsToShow(credits.filter(credit => credit.user.studentNumber.startsWith(filterByStudentNumber)))
+                setCreditsToShow(credits.filter(credit => credit.user.studentNumber && credit.user.studentNumber.startsWith(filterByStudentNumber)))
             } else if (filterByStudentNumber === '') {
-                setCreditsToShow(credits.filter(credit => credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup || credit.user.classGroup === filterByClassGroup))
+                setCreditsToShow(credits.filter(credit => credit.user.classGroup && credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup || credit.user.classGroup === filterByClassGroup))
             } else {
-                setCreditsToShow(credits.filter(credit => credit.user.studentNumber.startsWith(filterByStudentNumber) && (credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup || credit.user.classGroup === filterByClassGroup)))
+                setCreditsToShow(credits.filter(credit => credit.user.studentNumber && credit.user.studentNumber.startsWith(filterByStudentNumber) && credit.user.classGroup && (credit.user.classGroup.substring(2, credit.user.classGroup.length) === filterByClassGroup || credit.user.classGroup === filterByClassGroup)))
             }
         }
     }, [filterByClassGroup, filterByStudentNumber, credits])
