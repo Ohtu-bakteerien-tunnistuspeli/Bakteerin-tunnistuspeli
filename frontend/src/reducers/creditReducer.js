@@ -3,16 +3,16 @@ import { setNotification } from './notificationReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
-        case 'GET_CREDITS': {
-            return action.data
-        }
-        case 'DELETE_CREDITS': {
-            return state.filter(credit => !action.data.includes(credit.id))
-        }
-        case 'ZERO_CREDIT': {
-            return action.data
-        }
-        default: return state
+    case 'GET_CREDITS': {
+        return action.data
+    }
+    case 'DELETE_CREDITS': {
+        return state.filter(credit => !action.data.includes(credit.id))
+    }
+    case 'ZERO_CREDIT': {
+        return action.data
+    }
+    default: return state
     }
 }
 

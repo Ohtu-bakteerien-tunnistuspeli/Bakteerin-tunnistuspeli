@@ -93,7 +93,7 @@ const CaseForm = ({ caseToEdit }) => {
             .required('Valitse bakteeri'),
         sample: Yup.string()
             .test('unique', 'Näyte on jo lisätty listaan', function (sample) {
-                if (sample === "") {
+                if (sample === '') {
                     return true
                 }
                 if (samples.map(s => s.description).includes(sample)) {
@@ -196,7 +196,7 @@ const CaseForm = ({ caseToEdit }) => {
             setAddingTest(true)
             setAddingAlt(false)
             setTest({ name: '', testId: '', positive: false })
-            onChange('test', '');
+            onChange('test', '')
         }
     }
     /* testgroup control end */
@@ -356,7 +356,7 @@ const CaseForm = ({ caseToEdit }) => {
                                     }
 
                                 </Form>
-                            );
+                            )
                         }}
                     </Formik>
                 </Modal.Body>

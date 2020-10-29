@@ -6,6 +6,8 @@ describe('Case management', () => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
         cy.addBacterium({ name: 'Tetanus' })
         cy.addTest({ name: 'Testi', type: 'Viljely' })
+        cy.addTest({ name: 'Testi2', type: 'Viljely' })
+        cy.addTest({ name: 'Testi3', type: 'Viljely' })
     })
 
     it('Cases can be modified', () => {
@@ -37,7 +39,7 @@ describe('Case management', () => {
             cy.get('#testGroupsTable').contains('Testi')
             cy.get('#testGroupsTable').contains('Kyllä')
             cy.get('#addCase').click()
-            cy.contains('Tapauksen Maatila lisäys onnistui.', { timeout: 100})
+            cy.contains('Tapauksen Maatila lisäys onnistui.', { timeout: 100 })
             cy.contains('Maatila')
         })
 
@@ -128,6 +130,61 @@ describe('Case management', () => {
             cy.contains('MaatilaMaatila2')
         })
 
+        it('The user can add hints and see them only when answer is wrong', () => {
+            cy.login({ username: 'admin', password: 'admin' })
+            cy.contains('Tapausten hallinta').click()
+            cy.get('#caseModalButton').click()
+            cy.get('#name').type('Maatilatapaus')
+            cy.get('#anamnesis').type('Monta nautaa kipeänä.')
+            cy.get('#bacterium').select('Tetanus')
+            cy.get('#sample').type('Verinäyte')
+            cy.get('#isRightAnswer').click()
+            cy.get('#addSample').click()
+            cy.contains('Verinäyte')
+            cy.get('#testSelect').select('Testi')
+            cy.get('#required').click()
+            cy.get('#positive').click()
+            cy.get('#addAlternativeTestForTest').click()
+            cy.get('#addTestForGroup').click()
+            cy.get('#testGroupTable').contains('Testi')
+            cy.get('#testGroupTable').contains('Kyllä')
+            cy.get('#addTestGroup').click()
+            cy.get('#testGroupsTable').contains('Testi')
+            cy.get('#testGroupsTable').contains('Kyllä')
+            cy.get('#testSelect').select('Testi2')
+            cy.get('#addAlternativeTestForTest').click()
+            cy.get('#addTestForGroup').click()
+            cy.get('#addTestGroup').click()
+            cy.get('#testSelect').select('Testi3')
+            cy.get('#addAlternativeTestForTest').click()
+            cy.get('#addTestForGroup').click()
+            cy.get('#addTestGroup').click()
+            cy.get('#addCase').click()
+
+            cy.get('#addHint').click()
+            cy.get('#selectTest').select('Testi2')
+            cy.get('#testHint').type('Vinkkii')
+            cy.contains('Tallenna muutokset').click()
+
+            cy.get('#addHint').click()
+            cy.contains('Testi2')
+            cy.contains('Vinkkii')
+            cy.contains('Tallenna muutokset').click()
+
+            cy.contains('Etusivu').click()
+            cy.get('#caseTable').contains('Maatilatapaus').click()
+            cy.contains('Toiminnot').click()
+            cy.get('[type="checkbox"]').eq('0').check()
+            cy.get('#checkSamples').click()
+            cy.contains('Testi3').click()
+            cy.contains('Väärä vastaus')
+            cy.contains('Testi2').click()
+            cy.contains('Vinkkii')
+            cy.contains('Testi').click()
+            cy.contains('Testi2').click()
+            cy.contains('Oikea vastaus')
+            cy.should('not.contain', 'Vinkkii')
+        })
     })
 
     describe('Remove a case', () => {
@@ -160,8 +217,6 @@ describe('Case management', () => {
             cy.contains('Maatila')
             cy.get('#deleteCase').click()
         })
-
-
     })
     after(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')

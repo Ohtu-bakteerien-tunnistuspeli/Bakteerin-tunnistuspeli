@@ -49,7 +49,7 @@ const update = async (id, name, bacterium, anamnesis, completionText, completion
 }
 
 const updateHints = async (id, hints, token) => {
-    const config = { headers: { Authorization: token} }
+    const config = { headers: { Authorization: token } }
     return axios.put(`${baseUrl}/${id}/hints`, hints, config)
         .then(response => response.data)
         .catch(error => error.response.data)
