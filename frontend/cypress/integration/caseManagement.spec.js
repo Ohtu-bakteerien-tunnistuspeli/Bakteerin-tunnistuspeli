@@ -7,6 +7,7 @@ describe('Case management', () => {
         cy.addBacterium({ name: 'Tetanus' })
         cy.addTest({ name: 'Testi', type: 'Viljely' })
         cy.addTest({ name: 'Testi2', type: 'Viljely' })
+        cy.addTest({ name: 'Testi3', type: 'Viljely' })
     })
 
     it('Cases can be modified', () => {
@@ -154,6 +155,10 @@ describe('Case management', () => {
             cy.get('#addAlternativeTestForTest').click()
             cy.get('#addTestForGroup').click()
             cy.get('#addTestGroup').click()
+            cy.get('#testSelect').select('Testi3')
+            cy.get('#addAlternativeTestForTest').click()
+            cy.get('#addTestForGroup').click()
+            cy.get('#addTestGroup').click()
             cy.get('#addCase').click()
 
             cy.get('#addHint').click()
@@ -171,6 +176,8 @@ describe('Case management', () => {
             cy.contains('Toiminnot').click()
             cy.get('[type="checkbox"]').eq('0').check()
             cy.get('#checkSamples').click()
+            cy.contains('Testi3').click()
+            cy.contains('Väärä vastaus')
             cy.contains('Testi2').click()
             cy.contains('Vinkkii')
             cy.contains('Testi').click()
