@@ -15,6 +15,16 @@ describe('Game', () => {
         cy.get('#submit').should('contain', 'Kirjaudu')
     })
 
+    it('User can check the terms and conditions from the footer', () => {
+        cy.contains('Käyttöehdot').click()
+        cy.contains('Bakteerien tunnistuspelin käyttöehdot')
+    })
+
+    it('User can check the privacy policy from the footer', () => {
+        cy.contains('Tietosuojailmoitus').click()
+        cy.contains('Rekisterinpitäjä eli tietojesi käsittelystä vastuussa')
+    })
+
     it('User can log in', () => {
         cy.get('#username').type('admin')
         cy.get('#password').type('admin')
@@ -156,6 +166,16 @@ describe('Game', () => {
         it('user can log out', () => {
             cy.contains('Kirjaudu ulos').click()
             cy.contains('Kirjaudu Bakteeripeliin')
+        })
+
+        it('User can still check the terms and conditions from the footer', () => {
+            cy.contains('Käyttöehdot').click()
+            cy.contains('Bakteerien tunnistuspelin käyttöehdot')
+        })
+
+        it('User can still check the privacy policy from the footer', () => {
+            cy.contains('Tietosuojailmoitus').click()
+            cy.contains('Rekisterinpitäjä eli tietojesi käsittelystä vastuussa')
         })
     })
 
