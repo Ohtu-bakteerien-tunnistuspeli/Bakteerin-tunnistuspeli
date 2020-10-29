@@ -8,9 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { Modal, Button, Form } from 'react-bootstrap'
 import Notification from '../Notification.js'
-import { Formik } from 'formik';
 import * as Yup from 'yup';
-
+import { Formik } from 'formik';
 
 
 
@@ -32,10 +31,20 @@ const CaseForm = () => {
             .required('Valitse bakteeri'),
         sample: Yup.string()
             .test('unique', 'Näyte on jo lisätty listaan', function (sample) {
-                if(sample===""){
+                if (sample === "") {
                     return true
                 }
                 if (samples.map(s => s.description).includes(sample)) {
+                    return false
+                }
+                return true
+            }),
+        test: Yup.string()
+            .test('unique', 'Testi on jo lisätty', function (test) {
+                if (!test) {
+                    return true
+                }
+                if (addedTests.includes(JSON.parse(test).id)) {
                     return false
                 }
                 return true
@@ -70,9 +79,6 @@ const CaseForm = () => {
 
     const dispatch = useDispatch()
 
-    const [validated, setValidated] = useState(false)
-
-
     const addNewCase = (name, bacteriumId) => {
         dispatch(addCase(name, bacteriumId, anamnesis, completionText, completionImage, samples, testGroups, user.token, handleClose))
     }
@@ -83,14 +89,14 @@ const CaseForm = () => {
         setCompletionImage(INITIAL_STATE)
         setSample({ description: '', rightAnswer: false })
         setSamples([])
-        setTest({ name: '', testId: tests[0].id, positive: false })
+        setTest({ name: '', testId: '', positive: false })
         setTestForCase({ isRequired: false, tests: [] })
         setTestGroup([])
         setTestGroups([])
         setAddingAlt(false)
         setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
-        
+
     }
 
     const [show, setShow] = useState(false)
@@ -99,7 +105,6 @@ const CaseForm = () => {
         setShow(false)
         setAddingAlt(false)
         resetCaseForm()
-        setValidated(false)
     }
 
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
@@ -126,16 +131,19 @@ const CaseForm = () => {
     const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
     const [testGroup, setTestGroup] = useState([])
     const [testGroups, setTestGroups] = useState([])
+    const [addedTests, setAddedTests] = useState([])
 
     const removeTestGroup = (tg) => {
         setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
     }
 
     const addTestGroup = () => {
-        setTestGroups([...testGroups, testGroup])
-        setTestGroup([])
-        setAddingAlt(false)
-        setAddingTest(false)
+        if (testGroup.length > 0) {
+            setTestGroups([...testGroups, testGroup])
+            setTestGroup([])
+            setAddingAlt(false)
+            setAddingTest(false)
+        }
     }
 
     const addTestToTestGroup = () => {
@@ -146,10 +154,15 @@ const CaseForm = () => {
         setAddingTest(false)
     }
 
-    const addTest = () => {
-        setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
-        setAddingAlt(false)
-        setTest({ name: '', testId: '', positive: false })
+    const addTest = (onChange) => {
+        if (!addedTests.includes(test.testId)) {
+            setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
+            setAddedTests([...addedTests, test.testId])
+            setAddingTest(true)
+            setAddingAlt(false)
+            setTest({ name: '', testId: '', positive: false })
+            onChange('test', '');
+        }
     }
     /* testgroup control end */
 
@@ -172,7 +185,8 @@ const CaseForm = () => {
                         initialValues={{
                             name: '',
                             bacteriumId: '',
-                            sample: ''
+                            sample: '',
+                            test: ''
                         }}
                     >
                         {({
@@ -181,12 +195,11 @@ const CaseForm = () => {
                             values,
                             errors,
                             setFieldValue,
-                            validateField,
                             touched
                         }) => {
                             return (
-                                <Form noValidate onSubmit={handleSubmit}>
 
+                                <Form noValidate onSubmit={handleSubmit}>
                                     <Form.Group controlId='name'>
                                         <Form.Label>Nimi</Form.Label>
                                         <Form.Control
@@ -246,8 +259,6 @@ const CaseForm = () => {
                                         setSample={setSample}
                                         addSample={addSample}
                                         error={errors.sample}
-                                        touched={touched.sample}
-                                        validateField={validateField}
                                         onChange={setFieldValue}
                                     ></AddSample>
 
@@ -266,6 +277,10 @@ const CaseForm = () => {
                                         addTestToTestGroup={addTestToTestGroup}
                                         testGroup={testGroup}
                                         addTestGroup={addTestGroup}
+                                        onChange={setFieldValue}
+                                        value={values.test}
+                                        error={errors.test}
+                                        touched={touched.test}
                                     ></AddTestGroup>
                                     {testGroups.map((testGroup, i) =>
                                         <TestGroup key={i}
@@ -275,16 +290,19 @@ const CaseForm = () => {
                                         >
                                         </TestGroup>
                                     )}
-                                    { validated ?
-                                        <p style={{ color: 'red' }}>Tapausta ei voida lisätä, tarkista lisäämäsi syötteet.</p>
-                                        : null
-                                    }
+
+
                                     <Button
                                         variant='primary'
                                         type='submit'
                                         id='addCase'>
                                         Lisää tapaus
-                        </Button>
+                                    </Button>
+                                    { Object.keys(errors).length > 0 ?
+                                        <p style={{ color: 'red' }}>Tapausta ei voida lisätä, tarkista lisäämäsi syötteet.</p>
+                                        : null
+                                    }
+
                                 </Form>
                             );
                         }}
