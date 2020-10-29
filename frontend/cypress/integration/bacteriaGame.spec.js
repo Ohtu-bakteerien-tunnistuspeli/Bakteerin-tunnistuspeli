@@ -25,6 +25,11 @@ describe('Game', () => {
         cy.contains('Rekisterinpitäjä eli tietojesi käsittelystä vastuussa')
     })
 
+    it('User can check the image copyrights from the footer', () => {
+        cy.contains('Kuvien Käyttöoikeudet').click()
+        cy.contains('Bakteeripelin kuvien käyttöoikeude')
+    })
+
     it('User can log in', () => {
         cy.get('#username').type('admin')
         cy.get('#password').type('admin')
@@ -176,6 +181,11 @@ describe('Game', () => {
         it('User can still check the privacy policy from the footer', () => {
             cy.contains('Tietosuojailmoitus').click()
             cy.contains('Rekisterinpitäjä eli tietojesi käsittelystä vastuussa')
+        })
+
+        it('User can still check the image copyrights from the footer', () => {
+            cy.contains('Kuvien Käyttöoikeudet').click()
+            cy.contains('Bakteeripelin kuvien käyttöoikeude')
         })
     })
 

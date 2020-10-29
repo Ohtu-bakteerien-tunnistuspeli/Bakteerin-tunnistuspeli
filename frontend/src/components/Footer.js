@@ -11,7 +11,7 @@ const Footer = () => {
 
     return (
         <div className="container">
-            <p className="navbar-text">© Copyright 2020 ...
+            <p className="navbar-text">© Copyright 2020 Helsingin yliopisto.
                 &nbsp;{<a href="#" onClick={() => setShowGDPR(true)}>Käyttöehdot</a>//eslint-disable-line
                 }&nbsp;
                 ,&nbsp;{<a href="#" onClick={() => setShowPrivacy(true)}>Tietosuojailmoitus</a>//eslint-disable-line
