@@ -1,10 +1,10 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
-const SelectTest = ({ tests, setTest, test, onChange, value, error, touched }) => {
+const SelectTest = ({ tests, setTest, test, onChange, value, error }) => {
 
     const handleChange = event => {
         event.preventDefault()
-        onChange('test', event.target.value);
+        onChange('test', event.target.value)
     }
     return (
         <>

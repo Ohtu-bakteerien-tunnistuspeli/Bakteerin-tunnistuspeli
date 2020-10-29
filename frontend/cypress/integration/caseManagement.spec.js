@@ -39,7 +39,7 @@ describe('Case management', () => {
             cy.get('#testGroupsTable').contains('Testi')
             cy.get('#testGroupsTable').contains('Kyllä')
             cy.get('#addCase').click()
-            cy.contains('Tapauksen Maatila lisäys onnistui.', { timeout: 100})
+            cy.contains('Tapauksen Maatila lisäys onnistui.', { timeout: 100 })
             cy.contains('Maatila')
         })
 

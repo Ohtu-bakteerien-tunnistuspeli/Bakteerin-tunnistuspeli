@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { Modal, Button, Form } from 'react-bootstrap'
 import Notification from '../Notification.js'
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import * as Yup from 'yup'
+import { Formik } from 'formik'
 
 
 
@@ -31,7 +31,7 @@ const CaseForm = () => {
             .required('Valitse bakteeri'),
         sample: Yup.string()
             .test('unique', 'Näyte on jo lisätty listaan', function (sample) {
-                if (sample === "") {
+                if (sample === '') {
                     return true
                 }
                 if (samples.map(s => s.description).includes(sample)) {
@@ -54,7 +54,7 @@ const CaseForm = () => {
 
     const onSuccess = (values) => {
         addNewCase(values.name, values.bacteriumId)
-    };
+    }
 
     const INITIAL_STATE = {
         id: '',
@@ -161,7 +161,7 @@ const CaseForm = () => {
             setAddingTest(true)
             setAddingAlt(false)
             setTest({ name: '', testId: '', positive: false })
-            onChange('test', '');
+            onChange('test', '')
         }
     }
     /* testgroup control end */
@@ -304,7 +304,7 @@ const CaseForm = () => {
                                     }
 
                                 </Form>
-                            );
+                            )
                         }}
                     </Formik>
                 </Modal.Body>

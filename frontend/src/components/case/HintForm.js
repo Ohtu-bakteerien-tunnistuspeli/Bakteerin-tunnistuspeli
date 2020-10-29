@@ -15,7 +15,7 @@ const HintForm = ({ caseToUpdate }) => {
     }
     const handleHintChange = (event) => {
         if(hints.filter(hint => hint.test.name === currentTest.name).length > 0) {
-            setHints(hints.map(hintObj => hintObj.test.name === currentTest.name ? {hint: event.target.value, test: hintObj.test} : hintObj))
+            setHints(hints.map(hintObj => hintObj.test.name === currentTest.name ? { hint: event.target.value, test: hintObj.test } : hintObj))
         } else {
             setHints(hints.concat({ hint: event.target.value, test: currentTest }))
         }

@@ -2,7 +2,7 @@ import React from 'react'
 import SelectTest from './SelectTest.js'
 import { Button, ButtonGroup, Form, Table } from 'react-bootstrap'
 
-const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setTest,
+const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setTest,
     test, tests, tableWidth, testForCase, setTestForCase, addTest,
     addTestToTestGroup, testGroup, addTestGroup,
     onChange, value, error, touched
