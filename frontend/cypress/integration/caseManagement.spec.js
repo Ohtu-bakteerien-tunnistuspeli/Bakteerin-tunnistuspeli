@@ -129,7 +129,7 @@ describe('Case management', () => {
             cy.contains('MaatilaMaatila2')
         })
 
-        it('The user can add hints and see them when playing', () => {
+        it('The user can add hints and see them only when answer is wrong', () => {
             cy.login({ username: 'admin', password: 'admin' })
             cy.contains('Tapausten hallinta').click()
             cy.get('#caseModalButton').click()
@@ -173,6 +173,10 @@ describe('Case management', () => {
             cy.get('#checkSamples').click()
             cy.contains('Testi2').click()
             cy.contains('Vinkkii')
+            cy.contains('Testi').click()
+            cy.contains('Testi2').click()
+            cy.contains('Oikea vastaus')
+            cy.should('not.contain', 'Vinkkii')
         })
     })
 
