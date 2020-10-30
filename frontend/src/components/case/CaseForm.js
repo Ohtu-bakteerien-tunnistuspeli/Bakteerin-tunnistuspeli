@@ -135,6 +135,8 @@ const CaseForm = ({ caseToEdit }) => {
     }
 
     const resetCaseForm = () => {
+        setName('')
+        setBacteriumId('')
         setAnamnesis('')
         setCompletionText('')
         setCompletionImage(INITIAL_STATE)

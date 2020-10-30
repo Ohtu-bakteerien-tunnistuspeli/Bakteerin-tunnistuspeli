@@ -30,7 +30,6 @@ Cypress.Commands.add('getBacterium', ( { name } ) => {
         }
     }).then(({ body }) => {
         cy.visit('http://localhost:3000')
-        console.log(body)
         return body.filter(b => b.name === name)
     })
 })
