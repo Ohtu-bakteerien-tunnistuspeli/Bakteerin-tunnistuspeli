@@ -30,7 +30,7 @@ const FrontPage = () => {
             <div>
                 {
                     cases ?
-                        <Table borderless hover>
+                        <Table id='caseTable' borderless hover>
                             <tbody>
                                 {cases.map(c =>
                                     <tr key={c.id}>

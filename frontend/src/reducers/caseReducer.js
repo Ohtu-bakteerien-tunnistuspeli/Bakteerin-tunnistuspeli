@@ -62,6 +62,7 @@ export const deleteCase = (caseToDelete, token) => {
         if (res.status !== 204) {
             dispatch(setNotification({ message: res.error, success: false }))
         } else {
+            dispatch(setNotification({ message: `Tapauksen ${caseToDelete.name} poisto onnistui.`, success: true }))
             dispatch({
                 type: 'DELETE_CASE',
                 data: caseToDelete
@@ -70,7 +71,7 @@ export const deleteCase = (caseToDelete, token) => {
     }
 }
 
-export const updateCase = (id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token) => {
+export const updateCase = (id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token, resetCaseForm) => {
     return async dispatch => {
         const caseToUpdate = await caseService.update(id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token)
         if(caseToUpdate.error){

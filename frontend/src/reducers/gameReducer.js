@@ -17,6 +17,9 @@ const reducer = (state = null, action) => {
     case 'ZERO_GAME': {
         return action.data
     }
+    case 'PUT_GAME': {
+        return action.data
+    }
     default: return state
     }
 }
@@ -90,7 +93,7 @@ export const checkTests = (game, test, token) => {
                     dispatch(setNotification({ message: checkTest.hint, success: false }))
                 } else {
                     dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
-                }    
+                }
             }
 
         }
@@ -122,6 +125,15 @@ export const zeroGame = () => {
         dispatch({
             type: 'ZERO_GAME',
             data: null
+        })
+    }
+}
+
+export const recoverGame = (game) => {
+    return async dispatch => {
+        dispatch({
+            type: 'PUT_GAME',
+            data: game
         })
     }
 }

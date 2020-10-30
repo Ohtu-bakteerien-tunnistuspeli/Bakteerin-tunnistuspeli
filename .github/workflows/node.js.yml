@@ -69,6 +69,21 @@ jobs:
     - run: npm ci
     - run: npm run test-githubactions
       env: 
-        PORT: 3001
-        SECRET: 'salainen'
+        SECRET: ${{ secrets.SECRET }}
         IMAGEURL: 'images'
+  
+  build:
+    name: 'Publish to dockerhub'
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Publish to Dockerhub
+        uses: docker/build-push-action@v1.1.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: hybakteeripeli/app
+          tag_with_ref: true  
+      

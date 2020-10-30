@@ -1,6 +1,5 @@
 describe('Playing game', () => {
     beforeEach(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.login({ username: 'admin', password: 'admin' })
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')

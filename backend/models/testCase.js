@@ -12,7 +12,7 @@ const testSchema = mongoose.Schema({
         type: String,
         minlength: [2, 'Testin tyypin tulee olla vähintään 2 merkkiä pitkä.'],
         maxlength: [100, 'Testin tyypin tulee olla enintään 100 merkkiä pitkä.'],
-        required: true,
+        required: [true, 'Testin tyyppi on pakollinen.']
     },
     controlImage: {
         url: {

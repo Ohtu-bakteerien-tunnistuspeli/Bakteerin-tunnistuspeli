@@ -8,4 +8,11 @@ const get = (token) => {
         .catch(error => error.response.data)
 }
 
-export default { get }
+const deleteCredits = (credits, token) => {
+    const config = { headers: { Authorization: token }, data: credits }
+    return axios.delete(baseUrl, config)
+        .then(response => response.data)
+        .catch(error => error.response.data)
+}
+
+export default { get, deleteCredits }

@@ -4,21 +4,22 @@ import { getBacteria, zeroBacteria } from './bacteriaReducer'
 import { getTests, zeroTest } from './testReducer'
 import { getCases, zeroCase } from './caseReducer'
 import { getCredits, zeroCredit } from './creditReducer'
+import { recoverGame } from './gameReducer'
 const reducer = (state = null, action) => {
     switch (action.type) {
-        case 'LOGIN': {
-            return action.data
-        }
-        case 'LOGOUT': {
-            return action.data
-        }
-        case 'RETURN_USER': {
-            return action.data
-        }
-        case 'REGISTER': {
-            return action.data
-        }
-        default: return state
+    case 'LOGIN': {
+        return action.data
+    }
+    case 'LOGOUT': {
+        return action.data
+    }
+    case 'RETURN_USER': {
+        return action.data
+    }
+    case 'REGISTER': {
+        return action.data
+    }
+    default: return state
     }
 }
 
@@ -71,6 +72,9 @@ export const returnUser = (history) => {
         const userText = window.localStorage.getItem('loggedUser')
         if (window.localStorage.getItem('lastPage')) {
             history.push(window.localStorage.getItem('lastPage'))
+        }
+        if (window.localStorage.getItem('gameState')) {
+            dispatch(recoverGame(JSON.parse(window.localStorage.getItem('gameState'))))
         }
         let user = null
         if (userText) {
