@@ -75,12 +75,18 @@ export const updateCase = (id, name, bacterium, anamnesis, completionText, compl
     return async dispatch => {
         const caseToUpdate = await caseService.update(id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token)
         if(caseToUpdate.error){
-            dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
+            if (caseToUpdate.error.includes('Case validation failed')) {
+                dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
+            } else {
+                dispatch(setNotification({ message: caseToUpdate.error, success: false }))
+            }
         } else {
+            dispatch(setNotification({ message: `Tapauksen ${caseToUpdate.name} muokkaus onnistui.`, success: true }))
             dispatch({
                 type: 'UPDATE_CASE',
                 data: caseToUpdate
             })
+            resetCaseForm()
         }
     }
 }
