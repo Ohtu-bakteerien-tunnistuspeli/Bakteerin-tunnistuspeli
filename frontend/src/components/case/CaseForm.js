@@ -247,7 +247,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         bacteriumId={bacteriumId}
                                         setBacteriumId={setBacteriumId}
                                         bacteria={bacteria}
-                                        onChange={() => setFieldValue}
+                                        onChange={setFieldValue}
                                         error={errors.bacteriumId}
                                         touched={touched.bacteriumId}
                                     ></SelectBacterium>
