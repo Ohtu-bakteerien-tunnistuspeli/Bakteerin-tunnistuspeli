@@ -16,7 +16,6 @@ import { updateCase } from '../../reducers/caseReducer'
 
 const CaseForm = ({ caseToEdit }) => {
 
-
     /* intial parameters */
     const cases = useSelector(state => state.case)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
@@ -66,7 +65,9 @@ const CaseForm = ({ caseToEdit }) => {
     const handleClose = () => {
         setShow(false)
         setAddingAlt(false)
-        resetCaseForm()
+        if (!caseToEdit) {
+            resetCaseForm()
+        }
     }
     /* modal end */
 

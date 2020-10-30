@@ -1,8 +1,8 @@
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
-import CaseEditForm from './CaseEditForm'
 import HintForm from './HintForm'
 import ModalImage from '../ModalImage'
+import CaseForm from './CaseForm'
 
 const CaseListing = ({ caseItem, admin, deleteCase }) => {
     return (
@@ -19,7 +19,7 @@ const CaseListing = ({ caseItem, admin, deleteCase }) => {
                                 </svg>
                             </Button>
                             <HintForm caseToUpdate={caseItem}></HintForm>
-                            <CaseEditForm caseToEdit={caseItem}></CaseEditForm>
+                            <CaseForm caseToEdit={caseItem}></CaseForm>
                         </div>
                     </div>
                     :
