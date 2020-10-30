@@ -18,7 +18,6 @@ const authorizationHandler = (error, request, response, next) => {
     if (error.message === 'JsonWebTokenError') {
         return response.status(401).json({ error: 'token missing or invalid' })
     } else if(error){
-        console.log(error)
         return response.status(400).json({ error: error.message })
     }
     next(error)
