@@ -101,7 +101,7 @@ describe('Playing game', () => {
             cy.contains('HIRS-sarja').click()
             cy.contains('Edwardsin agar').click()
             cy.contains('Penisilliinin sietokoe agarvaluamenetelmällä').click()
-            cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.')
+            cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.', { timeout: 100 })
         })
 
         it('User can check control images of all tests', () => {
