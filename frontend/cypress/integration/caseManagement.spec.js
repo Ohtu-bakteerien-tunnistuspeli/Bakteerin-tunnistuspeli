@@ -10,9 +10,6 @@ describe('Case management', () => {
         cy.addTest({ name: 'Testi3', type: 'Viljely' })
     })
 
-    it('Cases can be modified', () => {
-        // cy.contains('Tapausten hallinta').click()
-    })
     describe('Add case', () => {
         beforeEach(() => {
         })
@@ -59,7 +56,6 @@ describe('Case management', () => {
             cy.get('#testGroupTable').contains('Testi')
             cy.get('#addTestGroup').click()
             cy.get('#testGroupsTable').contains('Testi')
-            cy.get('#addCase').click()
             cy.contains('Nimi on liian lyhyt.')
         })
 
@@ -124,7 +120,7 @@ describe('Case management', () => {
             cy.get('#testGroupsTable').contains('Kyllä')
             cy.get('#addCase').click()
             cy.get('#caseEditButton').click()
-            cy.get('#editName').type('Maatila2')
+            cy.get('#name').type('Maatila2')
             cy.get('#saveEdit').click()
             cy.contains('MaatilaMaatila2')
         })
