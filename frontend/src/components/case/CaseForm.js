@@ -39,7 +39,7 @@ const CaseForm = ({ caseToEdit }) => {
 
     /* states */
     const [name, setName] = useState(caseToEdit ? caseToEdit.name : '')
-    const [bacteriumId, setBacteriumId] = useState(caseToEdit ? caseToEdit.bacterium.id : '')
+    const [bacteriumId, setBacteriumId] = useState(caseToEdit ? caseToEdit.bacterium ? caseToEdit.bacterium.id : '' : '')
     const [anamnesis, setAnamnesis] = useState(caseToEdit ? caseToEdit.anamnesis : '')
     const [completionText, setCompletionText] = useState(caseToEdit ? caseToEdit.completionText : '')
     const INITIAL_STATE = {
