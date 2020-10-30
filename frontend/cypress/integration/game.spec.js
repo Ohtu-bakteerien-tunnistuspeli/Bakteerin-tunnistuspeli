@@ -95,7 +95,7 @@ describe('Playing game', () => {
             cy.contains('Toiminnot').click()
             cy.get('[type="checkbox"]').eq('2').check()
             cy.get('#checkSamples').click()
-            cy.contains('Veriagar, +37 C, aerobinen kasvatus').click()
+            cy.contains('Veriagar, +37 C, aerobinen kasvatus', { timeout: 5000 }).click()
             cy.contains('Gramvärjäys').click()
             cy.contains('Katalaasitesti').click()
             cy.contains('HIRS-sarja').click()
