@@ -78,10 +78,12 @@ describe('Case management', () => {
             cy.get('#bacterium').select('Tetanus')
             cy.get('#sample').type('Verinäyte')
             cy.get('#addSample').click()
+            /*
             cy.get('#testSelect').select('Testi')
             cy.get('#addAlternativeTestForTest').click()
             cy.get('#addTestForGroup').click()
             cy.get('#addTestGroup').click()
+            */
             cy.contains('Nimen tulee olla uniikki')
         })
 
