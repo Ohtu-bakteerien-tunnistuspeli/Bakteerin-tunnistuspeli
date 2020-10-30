@@ -86,7 +86,6 @@ describe('Case management', () => {
             cy.get('#addAlternativeTestForTest').click()
             cy.get('#addTestForGroup').click()
             cy.get('#addTestGroup').click()
-            cy.get('#addCase').click()
             cy.contains('Nimen tulee olla uniikki')
         })
 

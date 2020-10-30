@@ -211,7 +211,7 @@ const CaseForm = ({ caseToEdit }) => {
 
     return (
         <div>
-            <Button id='caseModalButton' variant='primary' onClick={handleShow}>
+            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} variant='primary' onClick={handleShow}>
                 {caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}
             </Button>
             <Modal show={show} size='lg' onHide={handleClose} backdrop='static'>
