@@ -4,10 +4,11 @@ const app = express()
 const config = require('./utils/config')
 require('express-async-errors')
 const mongoose = require('mongoose')
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+if(process.env.NODE_ENV === 'testserver' || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     const testingRouter = require('./controllers/testing')
     app.use('/api/testing', testingRouter)
-
+}
+if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     const { MongoMemoryServer } = require('mongodb-memory-server')
     const mongoServer = new MongoMemoryServer()
     const User = require('./models/user')

@@ -1,4 +1,4 @@
-describe('Palying game', () => {
+describe('Playing game', () => {
     beforeEach(() => {
         cy.login({ username: 'admin', password: 'admin' })
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
@@ -95,13 +95,13 @@ describe('Palying game', () => {
             cy.contains('Toiminnot').click()
             cy.get('[type="checkbox"]').eq('2').check()
             cy.get('#checkSamples').click()
-            cy.contains('Veriagar, +37 C, aerobinen kasvatus').click()
+            cy.contains('Veriagar, +37 C, aerobinen kasvatus', { timeout: 5000 }).click()
             cy.contains('Gramvärjäys').click()
             cy.contains('Katalaasitesti').click()
             cy.contains('HIRS-sarja').click()
             cy.contains('Edwardsin agar').click()
             cy.contains('Penisilliinin sietokoe agarvaluamenetelmällä').click()
-            cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.')
+            cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.', { timeout: 5000 })
         })
 
         it('User can check control images of all tests', () => {
