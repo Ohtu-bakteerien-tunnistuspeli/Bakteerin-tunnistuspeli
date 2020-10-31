@@ -167,17 +167,6 @@ describe('getting credits', () => {
         expect(creditList.body[0].testCases).toContain('Maitotila 4')
     })
 
-    /*
-    test('user that does not have credits gets empty list as return', async () => {
-        const creditList = await api
-            .get('/api/credit')
-            .set('Authorization', `bearer ${user2Token}`)
-            .expect(200)
-        expect(creditList.body.map(credit => credit.user.username)).toContain('user2New')
-        expect(creditList.body[0].testCases.length).toEqual(0)
-    })
-    */
-
     test('user only gets list of his own credits', async () => {
         const creditList = await api
             .get('/api/credit')
@@ -191,7 +180,6 @@ describe('getting credits', () => {
 
 
 describe('completing cases', () => {
-    /*
     test('points get correctly stored when completing first case', async () => {
         let casesBefore = await api
             .get('/api/credit')
@@ -212,47 +200,102 @@ describe('completing cases', () => {
         console.log(casesAfter)
         expect(casesAfter).toEqual(casesBefore + 1)
     })
-    */
 
     test('points get correctly stored when a case has already been completed previously', async () => {
         let casesBefore = await api
             .get('/api/credit')
-            .set('Authorization', `bearer ${user2Token}`)
+            .set('Authorization', `bearer ${user1Token}`)
             .expect(200)
         casesBefore = casesBefore.body[0].testCases
         const bacterium = { bacteriumName: 'test bacterium' }
         await api
-            .post(`/game/${caseAdded.id}/checkBacterium`)
-            .set('Authorization', `bearer ${user2Token}`)
+            .post(`/api/game/${caseAdded.id}/checkBacterium`)
+            .set('Authorization', `bearer ${user1Token}`)
             .send(bacterium)
+            .expect(200)
         let casesAfter = await api
             .get('/api/credit')
-            .set('Authorization', `bearer ${user2Token}`)
+            .set('Authorization', `bearer ${user1Token}`)
             .expect(200)
         casesAfter = casesAfter.body[0].testCases
-        console.log(casesBefore)
-        console.log(casesAfter)
-        expect(casesAfter).toEqual(casesBefore + 1)
+        expect(casesAfter.length).toEqual(casesBefore.length + 1)
+    })
+})
+
+describe('deleting credits', () => {
+    test('admin can delete credits', async () => {
+        let creditsBefore = await api
+            .get('/api/credit')
+            .set('Authorization', `bearer ${adminToken}`)
+            .expect(200)
+        creditsBefore = creditsBefore.body
+        const creditsToDelete = [
+            creditsBefore.filter(credit => credit.user.username === user1.username)[0].id,
+            creditsBefore.filter(credit => credit.user.username === user3.username)[0].id
+        ]
+        await api
+            .delete('/api/credit/')
+            .set('Authorization', `bearer ${adminToken}`)
+            .send(creditsToDelete)
+            .expect(204)
+        let creditsAfter = await api
+            .get('/api/credit')
+            .set('Authorization', `bearer ${adminToken}`)
+            .expect(200)
+        creditsAfter = creditsAfter.body
+        expect(creditsAfter.length).toEqual(creditsBefore.length - 2)
     })
 
-
-
-    describe('deleting credits', () => {
-        test('admin can delete credits', async () => {
-
-        })
-
-        test('user cannot delete credits', async () => {
-
-        })
-
-        test('only correct credits are deleted', async () => {
-
-        })
+    test('user cannot delete credits', async () => {
+        let creditsBefore = await api
+            .get('/api/credit')
+            .set('Authorization', `bearer ${adminToken}`)
+            .expect(200)
+        creditsBefore = creditsBefore.body
+        const creditsToDelete = [
+            creditsBefore.filter(credit => credit.user.username === user1.username)[0].id,
+            creditsBefore.filter(credit => credit.user.username === user3.username)[0].id
+        ]
+        await api
+            .delete('/api/credit/')
+            .set('Authorization', `bearer ${user1Token}`)
+            .send(creditsToDelete)
+            .expect(401)
+        let creditsAfter = await api
+            .get('/api/credit')
+            .set('Authorization', `bearer ${adminToken}`)
+            .expect(200)
+        creditsAfter = creditsAfter.body
+        expect(creditsAfter.length).toEqual(creditsBefore.length)
     })
 
-    afterAll(async () => {
-        await mongoose.connection.close()
-        await mongoose.disconnect()
+    test('only correct credits are deleted', async () => {
+        let creditsBefore = await api
+            .get('/api/credit')
+            .set('Authorization', `bearer ${adminToken}`)
+            .expect(200)
+        creditsBefore = creditsBefore.body
+        const creditsToDelete = [
+            creditsBefore.filter(credit => credit.user.username === user1.username)[0].id,
+            creditsBefore.filter(credit => credit.user.username === user3.username)[0].id
+        ]
+        await api
+            .delete('/api/credit/')
+            .set('Authorization', `bearer ${adminToken}`)
+            .send(creditsToDelete)
+            .expect(204)
+        let creditsAfter = await api
+            .get('/api/credit')
+            .set('Authorization', `bearer ${adminToken}`)
+            .expect(200)
+        creditsAfter = creditsAfter.body
+        expect(creditsAfter.map(credit => credit.user.username)).not.toContain(user1.username)
+        expect(creditsAfter.map(credit => credit.user.username)).not.toContain(user3.username)
+        expect(creditsAfter.map(credit => credit.user.username)).toContain(user4.username)
     })
+})
+
+afterAll(async () => {
+    await mongoose.connection.close()
+    await mongoose.disconnect()
 })
