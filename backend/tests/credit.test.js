@@ -9,15 +9,12 @@ const User = require('../models/user')
 const Test = require('../models/testCase')
 const Case = require('../models/case')
 const Credit = require('../models/credit')
-const testRouter = require('../controllers/testCase')
 
 
 // Users and needed user tokens.
 let user1
-let user2
 let user3
 let user4
-let adminUser
 
 let adminToken
 let user1Token
@@ -35,13 +32,13 @@ beforeEach(async () => {
     // Create users
     const adminPwd = await bcrypt.hash('admin', 10)
     const admin = new User({ username: 'adminNew', passwordHash: adminPwd, admin: true, email: 'example@com' })
-    adminUser = await admin.save()
+    await admin.save()
 
     const userPwd = await bcrypt.hash('user', 10)
     let user = new User({ username: 'user1New', passwordHash: userPwd, admin: false, email: 'example1@com' })
     user1 = await user.save()
-    user = new User({ username: 'user2New', passwordHash: userPwd, admin: false, email: 'example2@com' })
-    user2 = await user.save()
+    new User({ username: 'user2New', passwordHash: userPwd, admin: false, email: 'example2@com' })
+    await user.save()
     user = new User({ username: 'user3New', passwordHash: userPwd, admin: false, email: 'example3@com' })
     user3 = await user.save()
     user = new User({ username: 'user4New', passwordHash: userPwd, admin: false, email: 'example4@com' })

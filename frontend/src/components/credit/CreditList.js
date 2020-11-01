@@ -38,12 +38,12 @@ const CreditList = () => {
     return (
         <div>
             <h2 style={style}>Suoritukset</h2>
-            Filtteröi vuosikurssilla <input type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
-            Filtteröi opiskelijanumerolla <input type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
+            Filtteröi vuosikurssilla <input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
+            Filtteröi opiskelijanumerolla <input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
             <div style={exportStyle}>
                 <CSVExporter data={creditsToShow} />
             </div>
-            <Button variant='danger' onClick={deleteCredits}>Poista suoritukset</Button>
+            <Button id='deleteCredits' variant='danger' onClick={deleteCredits}>Poista suoritukset</Button>
             {credits.length !== 0 ?
                 <Table>
                     <thead>
