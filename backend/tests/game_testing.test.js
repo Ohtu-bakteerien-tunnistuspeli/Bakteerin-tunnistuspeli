@@ -195,7 +195,7 @@ describe('it is possible to do tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
+        expect(res.body.correct).toBeTruthy()
     })
 
     test('normal user can do tests', async () => {
@@ -217,7 +217,7 @@ describe('it is possible to do tests', () => {
             .set('Authorization', `bearer ${loginRes.body.token}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
+        expect(res.body.correct).toBeTruthy()
     })
 
     test('correct first required test can be done', async () => {
@@ -229,7 +229,7 @@ describe('it is possible to do tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
+        expect(res.body.correct).toBeTruthy()
     })
 
     test('correct first extra test can be done', async () => {
@@ -241,7 +241,7 @@ describe('it is possible to do tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
+        expect(res.body.correct).toBeTruthy()
     })
 
     test('required tests cannot be done too early', async () => {
@@ -253,7 +253,7 @@ describe('it is possible to do tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(false)
+        expect(res.body.correct).toBeFalsy()
         expect(res.body.hint).toBeUndefined()
     })
 
@@ -266,7 +266,7 @@ describe('it is possible to do tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(false)
+        expect(res.body.correct).toBeFalsy()
         expect(res.body.hint).toEqual('test hint')
     })
 
@@ -279,7 +279,7 @@ describe('it is possible to do tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(false)
+        expect(res.body.correct).toBeFalsy()
     })
 
     test('incorrect tests cannot be done', async () => {
@@ -291,7 +291,7 @@ describe('it is possible to do tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(false)
+        expect(res.body.correct).toBeFalsy()
     })
 })
 
@@ -306,7 +306,7 @@ describe('it is possible to do multiple tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
+        expect(res.body.correct).toBeTruthy()
     })
 
     test('alternative required test can be done as extra', async () => {
@@ -319,7 +319,7 @@ describe('it is possible to do multiple tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
+        expect(res.body.correct).toBeTruthy()
     })
 
     test('only required tests are required for completion', async () => {
@@ -335,8 +335,9 @@ describe('it is possible to do multiple tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
-        expect(res.body.requiredDone).toEqual(true)
+        expect(res.body.correct).toBeTruthy()
+        expect(res.body.requiredDone).toBeTruthy()
+        expect(res.body.allDone).toBeFalsy()
     })
 
     test('allDone is false if not all tests are done', async () => {
@@ -352,8 +353,8 @@ describe('it is possible to do multiple tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
-        expect(res.body.allDone).toEqual(false)
+        expect(res.body.correct).toBeTruthy()
+        expect(res.body.allDone).toBeFalsy()
     })
 
     test('allDone is true if all tests are done', async () => {
@@ -374,9 +375,9 @@ describe('it is possible to do multiple tests', () => {
             .set('Authorization', `bearer ${adminUserToken}`)
             .send({ tests: data })
             .expect(200)
-        expect(res.body.correct).toEqual(true)
-        expect(res.body.requiredDone).toEqual(true)
-        expect(res.body.allDone).toEqual(true)
+        expect(res.body.correct).toBeTruthy()
+        expect(res.body.requiredDone).toBeTruthy()
+        expect(res.body.allDone).toBeTruthy()
     })
 })
 

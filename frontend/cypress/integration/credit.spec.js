@@ -1,10 +1,6 @@
 describe('credit management', () => {
     beforeEach(() => {
         cy.login({ username: 'admin', password: 'admin' })
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-        cy.request('POST', 'http://localhost:3001/api/testing/credits')
     })
 
     describe('Filtering credits', () => {
@@ -24,6 +20,7 @@ describe('credit management', () => {
             cy.contains('user1')
             cy.should('not.contain', 'user2')
             cy.should('not.contain', 'user3')
+            cy.get('#classGroupFilter').clear()
         })
 
         it('Student number filter shows only correct results', () => {
@@ -45,11 +42,16 @@ describe('credit management', () => {
             cy.should('not.contain', 'user3')
             cy.get('#studentNumberFilter').type('15')
             cy.contains('user1')
+            cy.get('#studentNumberFilter').clear()
         })
     })
 
     describe('Deleting credits', () => {
         beforeEach(() => {
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+            cy.request('POST', 'http://localhost:3001/api/testing/credits')
         })
 
         it('Only filtered credits are deleted', () => {
@@ -68,6 +70,10 @@ describe('credit management', () => {
 
     describe('Showing individual stats in modal', () => {
         beforeEach(() => {
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+            cy.request('POST', 'http://localhost:3001/api/testing/credits')
         })
 
         it('modal can be opened', () => {
