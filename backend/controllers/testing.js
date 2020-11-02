@@ -27,18 +27,20 @@ router.post('/reset_cases', async (request, response) => {
     response.status(204).end()
 })
 
+router.post('/reset_credits', async (request, response) => {
+    await Credit.deleteMany({})
+    response.status(204).end()
+})
+
 router.post('/credits', async (request, response) => {
     await Credit.deleteMany({})
     await User.deleteOne({ username: 'user1' })
     await User.deleteOne({ username: 'user2' })
     await User.deleteOne({ username: 'user3' })
     const pwd = await bcrypt.hash('user', 10)
-    const user1 = new User({ username: 'user1', passwordHash: pwd, admin: false, email: 'example1@com', classGroup: 'C-15', studentNumber: '15678815' })
-    const user2 = new User({ username: 'user2', passwordHash: pwd, admin: false, email: 'example2@com', classGroup: 'C-21', studentNumber: '15678678' })
-    const user3 = new User({ username: 'user3', passwordHash: pwd, admin: false, email: 'example3@com', classGroup: 'C-21', studentNumber: '15674567' })
-    await user1.save()
-    await user2.save()
-    await user3.save()
+    const user1 = await new User({ username: 'user1', passwordHash: pwd, admin: false, email: 'example1@com', classGroup: 'C-15', studentNumber: '15678815' }).save()
+    const user2 = await new User({ username: 'user2', passwordHash: pwd, admin: false, email: 'example2@com', classGroup: 'C-21', studentNumber: '15678678' }).save()
+    const user3 = await new User({ username: 'user3', passwordHash: pwd, admin: false, email: 'example3@com', classGroup: 'C-21', studentNumber: '15674567' }).save()
     const user1Credit = new Credit({
         user: user1.id,
         testCases: [

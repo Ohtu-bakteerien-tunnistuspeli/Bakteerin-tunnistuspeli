@@ -1,14 +1,15 @@
 describe('credit management', () => {
     beforeEach(() => {
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_credits')
+        cy.request('POST', 'http://localhost:3001/api/testing/credits')
         cy.login({ username: 'admin', password: 'admin' })
     })
 
     describe('Filtering credits', () => {
         beforeEach(() => {
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-            cy.request('POST', 'http://localhost:3001/api/testing/credits')
         })
 
         it('Class group filter shows only correct credits', () => {
@@ -48,10 +49,6 @@ describe('credit management', () => {
 
     describe('Deleting credits', () => {
         beforeEach(() => {
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-            cy.request('POST', 'http://localhost:3001/api/testing/credits')
         })
 
         it('Only filtered credits are deleted', () => {
@@ -70,10 +67,6 @@ describe('credit management', () => {
 
     describe('Showing individual stats in modal', () => {
         beforeEach(() => {
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-            cy.request('POST', 'http://localhost:3001/api/testing/credits')
         })
 
         it('modal can be opened', () => {
