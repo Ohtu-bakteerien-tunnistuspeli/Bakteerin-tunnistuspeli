@@ -64,6 +64,7 @@ router.post('/credits', async (request, response) => {
     await user2Credit.save()
     await user3Credit.save()
     response.status(200).end()
+})
 
 router.post('/init', async (request, response) => {
     try {
