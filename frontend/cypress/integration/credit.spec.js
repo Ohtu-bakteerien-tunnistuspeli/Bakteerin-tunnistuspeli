@@ -9,6 +9,10 @@ describe('credit management', () => {
 
     describe('Filtering credits', () => {
         beforeEach(() => {
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
+            cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+            cy.request('POST', 'http://localhost:3001/api/testing/credits')
         })
 
         it('Class group filter shows only correct credits', () => {
@@ -48,7 +52,7 @@ describe('credit management', () => {
         beforeEach(() => {
         })
 
-        it('Only filtered credits are deleted', ()=> {
+        it('Only filtered credits are deleted', () => {
             cy.contains('Suoritusten hallinta').click()
             cy.contains('user1')
             cy.contains('user2')
@@ -66,7 +70,7 @@ describe('credit management', () => {
         beforeEach(() => {
         })
 
-        it('', ()=> {
+        it('modal can be opened', () => {
             cy.contains('Suoritusten hallinta').click()
             cy.contains('user1')
             cy.contains('user2')
