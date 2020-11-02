@@ -1,4 +1,4 @@
-import React , { useState } from "react"
+import React , { useState } from 'react'
 import { Modal, Form, Button, Table } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateCaseHints } from '../../reducers/caseReducer'
@@ -15,12 +15,12 @@ const HintForm = ({ caseToUpdate }) => {
     }
     const handleHintChange = (event) => {
         if(hints.filter(hint => hint.test.name === currentTest.name).length > 0) {
-            setHints(hints.map(hintObj => hintObj.test.name === currentTest.name ? {hint: event.target.value, test: hintObj.test} : hintObj))
+            setHints(hints.map(hintObj => hintObj.test.name === currentTest.name ? { hint: event.target.value, test: hintObj.test } : hintObj))
         } else {
             setHints(hints.concat({ hint: event.target.value, test: currentTest }))
         }
     }
-    
+
     const handleTestChange = (event) => {
         setCurrentTest(tests.filter(test => test.id === event.target.value)[0])
     }
@@ -31,9 +31,9 @@ const HintForm = ({ caseToUpdate }) => {
 
 
 
-    return ( 
+    return (
         <>
-            <Button variant='outline-primary' style={{ float: 'right' }} id='addHint' onClick={handleShow}>Lisää Vinkkejä</Button>              
+            <Button variant='outline-primary' style={{ float: 'right' }} id='addHint' onClick={handleShow}>Lisää Vinkkejä</Button>
             <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
                     Muokkaa testeihin liittyviä vinkkejä
@@ -41,29 +41,29 @@ const HintForm = ({ caseToUpdate }) => {
                 <Modal.Body>
                     <Form onSubmit={saveUpdatedHints} >
                         <Form.Label>Testikohtaiset virheviestit</Form.Label>
-                        { hints.filter(hint => hint.hint.length > 0).length > 0 ? 
-                                <Table>
-                                    <thead>
-                                        <tr>
-                                            <th>Testi</th>
-                                            <th>Vinkki</th>
+                        { hints.filter(hint => hint.hint.length > 0).length > 0 ?
+                            <Table>
+                                <thead>
+                                    <tr>
+                                        <th>Testi</th>
+                                        <th>Vinkki</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {hints.filter(hint => hint.hint.length > 0).map(hint =>
+                                        <tr key={hint.test.id}>
+                                            <td>{hint.test.name}</td>
+                                            <td>{hint.hint}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {hints.filter(hint => hint.hint.length > 0).map(hint => 
-                                            <tr key={hint.test.id}>
-                                                <td>{hint.test.name}</td>
-                                                <td>{hint.hint}</td>
-                                            </tr>
-                                            )}
-                                    </tbody>
-                                </Table>
+                                    )}
+                                </tbody>
+                            </Table>
                             :
                             <></>
-                            }
-                        { tests ? 
+                        }
+                        { tests ?
                             <div>
-                                <Form.Control as='select' onChange={ handleTestChange } defaultValue='default' >
+                                <Form.Control id='selectTest' as='select' onChange={ handleTestChange } defaultValue='default' >
                                     <option value='default' disabled hidden>Valitse testi</option>
                                     { tests.map(test =>
                                         <option key={test.id} value={test.id}>{test.name}</option>
@@ -72,7 +72,7 @@ const HintForm = ({ caseToUpdate }) => {
                                 { currentTest ?
                                     <div>
                                         <Form.Label>{ currentTest.name } - virheviesti:</Form.Label>
-                                        <Form.Control onChange={handleHintChange} value={hints.filter(pair => pair.test.id === currentTest.id).length > 0 ? hints.filter(hint => hint.test.name === currentTest.name)[0].hint : ''} />
+                                        <Form.Control id='testHint' onChange={handleHintChange} value={hints.filter(pair => pair.test.id === currentTest.id).length > 0 ? hints.filter(hint => hint.test.name === currentTest.name)[0].hint : ''} />
                                     </div>
                                     :
                                     <></>

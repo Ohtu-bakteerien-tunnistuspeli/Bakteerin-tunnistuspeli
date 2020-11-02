@@ -2,7 +2,6 @@ import React from 'react'
 import { CSVLink } from 'react-csv'
 
 const CSVExport = ({ data }) => {
-    console.log(data)
     const headers = [
         { label: 'Opiskelijanumero', key: 'studentNum' },
         { label: 'Sähköposti', key: 'email' },

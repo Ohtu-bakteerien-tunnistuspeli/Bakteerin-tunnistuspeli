@@ -1,16 +1,17 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-const SelectBacterium = ({ onChange, value, error, bacteria, touched}) => {
-    const handleChange = event => {
+const SelectBacterium = ({ bacteriumId, setBacteriumId, onChange, error, bacteria, touched }) => {
+    const handleChange = (event) => {
         event.preventDefault()
-        onChange('bacteriumId', event.target.value);
+        onChange('bacteriumId', event.target.value)
+        setBacteriumId(event.target.value)
     }
     return (
         <Form.Control as='select'
             onChange={handleChange}
             isInvalid={error && touched}
-            value={value}
+            value={bacteriumId}
         >
             <option value='' disabled hidden>Valitse bakteeri</option>
             {bacteria.map(bacterium =>

@@ -6,6 +6,7 @@ const Test = require('../models/testCase')
 const Case = require('../models/case')
 const Credit = require('../models/credit')
 
+
 router.post('/reset_bacteria', async (request, response) => {
     await Bacterium.deleteMany({})
     response.status(204).end()
@@ -63,6 +64,115 @@ router.post('/credits', async (request, response) => {
     await user2Credit.save()
     await user3Credit.save()
     response.status(200).end()
+
+router.post('/init', async (request, response) => {
+    try {
+        const saltRounds = 10
+        let passwordHash = await bcrypt.hash('user', saltRounds)
+        const user = new User({
+            username: 'user',
+            email: 'example@com',
+            admin: false,
+            passwordHash
+        })
+        await user.save()
+        passwordHash = await bcrypt.hash('admin', saltRounds)
+        const admin = new User({
+            username: 'admin',
+            email: 'example@com',
+            admin: true,
+            passwordHash
+        })
+        await admin.save()
+    } catch (error) {
+        //do nothing
+    }
+    try {
+        const bac1 = new Bacterium({
+            name: 'Streptococcus agalactiae'
+        })
+
+        const bac2 = new Bacterium({
+            name: 'Staphylococcus aureus'
+        })
+
+        await bac1.save()
+        await bac2.save()
+
+        const intialTestCase1 = new Test({
+            name: 'Veriagar, +37 °C, aerobinen kasvatus',
+            type: 'Viljely'
+        })
+
+        const intialTestCase2 = new Test({
+            name: 'Gram-värjäys',
+            type: 'Värjäys'
+        })
+
+        const intialTestCase3 = new Test({
+            name: 'Katalaasitesti',
+            type: 'Testi'
+        })
+        const intialTestCase4 = new Test({
+            name: 'HIRS-sarja (hippuraatti, inuliini, raffinoosi, sorbitoli)',
+            type: 'Testi'
+        })
+
+        const intialTestCase5 = new Test({
+            name: 'Eskuliiniveriagar',
+            type: 'Viljely'
+        })
+
+        const intialTestCase6 = new Test({
+            name: 'Edwardsin agar',
+            type: 'Viljely'
+        })
+
+        const intialTestCase7 = new Test({
+            name: 'CAMP-testi',
+            type: 'Testi'
+        })
+
+        await intialTestCase1.save()
+        await intialTestCase2.save()
+        await intialTestCase3.save()
+        await intialTestCase4.save()
+        await intialTestCase5.save()
+        await intialTestCase6.save()
+        await intialTestCase7.save()
+
+        const initialCase = new Case({
+            name: 'Maitotila 1',
+            bacterium: bac1,
+            anamnesis: 'Vasemman takaneljänneksen maito on hiukan kokkareista...',
+            samples: [
+                {
+                    description: 'Maitonäyte Muurikin kaikista neljänneksistä',
+                    rightAnswer: true
+                },
+                {
+                    description: 'Tankkimaitonäyte',
+                    rightAnswer: false
+                },
+                {
+                    description: 'Ulostenäyte Muurikilta',
+                    rightAnswer: false
+                },
+                {
+                    description: 'Virtsanäyte Muurikilta',
+                    rightAnswer: false
+                }
+            ],
+            testGroups: [
+                [{ tests: [{ test: intialTestCase1, positive: true }], isRequired: false }, { tests: [{ test: intialTestCase2, positive: true }, { test: intialTestCase4, positive: true }], isRequired: true }],
+                [{ tests: [{ test: intialTestCase3, positive: false }], isRequired: true }]
+            ]
+        })
+        await initialCase.save()
+    } catch (error) {
+        //do nothing
+    }
+    response.status(200).json()
 })
 
 router.post('/cases', async (request, response) => {

@@ -19,6 +19,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
+        mongodb-version: [4.0, 4.2]
 
     steps:
     - uses: actions/checkout@v2
@@ -26,10 +27,24 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
+    - run: npm ci && cd ../backend && npm ci && cd ../frontend
     - run: npm run build --if-present
-# no tests yet
-#    - run: npm test
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.3.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}  
+    - run: cd ../backend && nohup npm run start:testServer &
+      env: 
+        SECRET: 'salainen'
+        PORT: 3001
+        IMAGEURL: 'images'
+    - name: Cypress run
+      uses: cypress-io/github-action@v1
+      with:
+        start: npm start
+        working-directory: frontend
+        wait-on: http://localhost:3000
+        wait-on-timeout: 300
   backend:
     runs-on: ubuntu-latest
     defaults:
@@ -51,8 +66,24 @@ jobs:
       uses: supercharge/mongodb-github-action@1.3.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
-    - run: npm install
+    - run: npm ci
     - run: npm run test-githubactions
       env: 
-        SECRET: 'salainen'
+        SECRET: ${{ secrets.SECRET }}
         IMAGEURL: 'images'
+  
+  build:
+    name: 'Publish to dockerhub'
+    needs: [frontend, backend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Publish to Dockerhub
+        uses: docker/build-push-action@v1.1.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: hybakteeripeli/app
+          tag_with_ref: true  
+      

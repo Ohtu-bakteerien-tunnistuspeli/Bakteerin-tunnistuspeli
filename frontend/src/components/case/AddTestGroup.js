@@ -2,15 +2,20 @@ import React from 'react'
 import SelectTest from './SelectTest.js'
 import { Button, ButtonGroup, Form, Table } from 'react-bootstrap'
 
-const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setTest,
+const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setTest,
     test, tests, tableWidth, testForCase, setTestForCase, addTest,
-    addTestToTestGroup, testGroup, addTestGroup }) => {
+    addTestToTestGroup, testGroup, addTestGroup,
+    onChange, value, error, touched
+}) => {
 
     return (
         <Form.Group>
             {!addingAlt && !addingTest ?
                 <>
-                    <SelectTest tests={tests} setTest={setTest} test={test}></SelectTest>
+                    <SelectTest tests={tests} setTest={setTest} test={test} onChange={onChange} value={value}
+                        error={error} touched={touched}
+                    ></SelectTest>
+
                     <Form.Check
                         type='checkbox'
                         id='positive'
@@ -51,7 +56,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                             {addingAlt ?
                                 <>
                                     <td>
-                                        <SelectTest tests={tests} setTest={setTest} test={test}></SelectTest>
+                                        <SelectTest tests={tests} setTest={setTest} test={test} onChange={onChange} error={error} touched={touched}></SelectTest>
                                     </td>
                                     <td>
                                         <Form.Check
@@ -64,7 +69,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                                         <Button
                                             type='button'
                                             id='addAlternativeTestForTest'
-                                            onClick={() => { addTest() }}>Lisää
+                                            onClick={() => { addTest(onChange) }}>Lisää
                                         </Button>
                                     </td>
                                 </>
@@ -81,7 +86,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setAddingTest, setT
                         <Button
                             type='button'
                             id='addAlternativeTestForTest'
-                            onClick={() => {addTest(); setAddingTest(true) }}>Lisää testi</Button>
+                            onClick={() => addTest(onChange)}>Lisää testi</Button>
                     </>
                 }
                 <Form.Check

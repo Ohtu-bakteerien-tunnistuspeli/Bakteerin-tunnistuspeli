@@ -1,6 +1,7 @@
 describe('Game', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.visit('http://localhost:3000')
         cy.contains('Kirjaudu sisään').click()
     })
@@ -13,6 +14,21 @@ describe('Game', () => {
         cy.get('#username').should('be.visible')
         cy.get('#password').should('be.visible')
         cy.get('#submit').should('contain', 'Kirjaudu')
+    })
+
+    it('User can check the terms and conditions from the footer', () => {
+        cy.contains('Käyttöehdot').click()
+        cy.contains('Bakteerien tunnistuspelin käyttöehdot')
+    })
+
+    it('User can check the privacy policy from the footer', () => {
+        cy.contains('Tietosuojailmoitus').click()
+        cy.contains('Rekisterinpitäjä eli tietojesi käsittelystä vastuussa')
+    })
+
+    it('User can check the image copyrights from the footer', () => {
+        cy.contains('Kuvien Käyttöoikeudet').click()
+        cy.contains('Bakteeripelin kuvien käyttöoikeude')
     })
 
     it('User can log in', () => {
@@ -156,6 +172,21 @@ describe('Game', () => {
         it('user can log out', () => {
             cy.contains('Kirjaudu ulos').click()
             cy.contains('Kirjaudu Bakteeripeliin')
+        })
+
+        it('User can still check the terms and conditions from the footer', () => {
+            cy.contains('Käyttöehdot').click()
+            cy.contains('Bakteerien tunnistuspelin käyttöehdot')
+        })
+
+        it('User can still check the privacy policy from the footer', () => {
+            cy.contains('Tietosuojailmoitus').click()
+            cy.contains('Rekisterinpitäjä eli tietojesi käsittelystä vastuussa')
+        })
+
+        it('User can still check the image copyrights from the footer', () => {
+            cy.contains('Kuvien Käyttöoikeudet').click()
+            cy.contains('Bakteeripelin kuvien käyttöoikeude')
         })
     })
 

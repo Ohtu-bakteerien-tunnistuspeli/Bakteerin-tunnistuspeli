@@ -11,7 +11,7 @@ const CaseList = () => {
     const delCase = caseToDelete => {
         dispatch(deleteCase(caseToDelete, user.token))
     }
-    
+
     const style = { margin: '10px', fontSize: '40px' }
     return (
         <div>
