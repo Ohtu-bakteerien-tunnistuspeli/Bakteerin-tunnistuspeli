@@ -37,7 +37,7 @@ beforeEach(async () => {
     const userPwd = await bcrypt.hash('user', 10)
     let user = new User({ username: 'user1New', passwordHash: userPwd, admin: false, email: 'example1@com' })
     user1 = await user.save()
-    new User({ username: 'user2New', passwordHash: userPwd, admin: false, email: 'example2@com' })
+    user = new User({ username: 'user2New', passwordHash: userPwd, admin: false, email: 'example2@com' })
     await user.save()
     user = new User({ username: 'user3New', passwordHash: userPwd, admin: false, email: 'example3@com' })
     user3 = await user.save()
@@ -178,14 +178,9 @@ describe('getting credits', () => {
 
 describe('completing cases', () => {
     test('points get correctly stored when completing first case', async () => {
-        let casesBefore = await api
-            .get('/api/credit')
-            .set('Authorization', `bearer ${user2Token}`)
-            .expect(200)
-        casesBefore = casesBefore.body[0].testCases
         const bacterium = { bacteriumName: 'test bacterium' }
         await api
-            .post(`/game/${caseAdded.id}/checkBacterium`)
+            .post(`/api/game/${caseAdded.id}/checkBacterium`)
             .set('Authorization', `bearer ${user2Token}`)
             .send(bacterium)
         let casesAfter = await api
@@ -193,9 +188,7 @@ describe('completing cases', () => {
             .set('Authorization', `bearer ${user2Token}`)
             .expect(200)
         casesAfter = casesAfter.body[0].testCases
-        console.log(casesBefore)
-        console.log(casesAfter)
-        expect(casesAfter).toEqual(casesBefore + 1)
+        expect(casesAfter.length).toEqual(1)
     })
 
     test('points get correctly stored when a case has already been completed previously', async () => {
