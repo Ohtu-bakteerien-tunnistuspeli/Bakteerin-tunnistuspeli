@@ -62,7 +62,7 @@ const App = () => {
 
     return (
         <div style={paddingPage}>
-            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+            <Navbar style={{minHeight: '10vh' }} collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" >
                     <Nav className="mr-auto">
@@ -117,7 +117,7 @@ const App = () => {
                     </Nav.Item>
                 </Navbar.Collapse>
             </Navbar>
-            <div style={{minHeight: '82vh'}}>
+            <div style={{ minHeight: '82vh' }}>
                 <div style={paddingContainer} className="container">
                     <Notification></Notification>
                     {user ?
