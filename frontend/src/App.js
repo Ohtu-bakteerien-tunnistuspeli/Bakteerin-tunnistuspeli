@@ -53,7 +53,8 @@ const App = () => {
         right: 0,
         zIndex: 100,
         backgroundColor: 'gainsboro',
-        textAlign: 'center'
+        textAlign: 'center',
+        borderRadius: '5px'
     }
 
     const marginTop = {
@@ -62,7 +63,7 @@ const App = () => {
 
     return (
         <div style={paddingPage}>
-            <Navbar style={{minHeight: '10vh' }} collapseOnSelect expand="lg" bg="light" variant="light">
+            <Navbar style={{ minHeight: '10vh', borderRadius: '5px' }} collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" >
                     <Nav className="mr-auto">
