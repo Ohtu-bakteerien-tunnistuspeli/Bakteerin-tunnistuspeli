@@ -65,7 +65,7 @@ export const deleteBacterium = (bacterium, token) => {
     }
 }
 
-export const updateBacterium = (id, name, token) => {
+export const updateBacterium = (id, name, token, setIsModified, setNewName) => {
     return async dispatch => {
         const bacterium = await bacteriaService.update(id, name, token)
         if (bacterium.error) {
@@ -75,6 +75,8 @@ export const updateBacterium = (id, name, token) => {
                 type: 'UPDATE_BACTERIUM',
                 data: bacterium
             })
+            setIsModified(false)
+            setNewName(bacterium.name)
         }
     }
 }

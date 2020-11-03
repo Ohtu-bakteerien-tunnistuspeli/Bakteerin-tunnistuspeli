@@ -15,7 +15,7 @@ import { deleteTest, updateTest } from '../../reducers/testReducer'
 const TestForm = ({ testToEdit }) => {
 
     /* style parameters */
-    const style = { margin: '10px' }
+    const style = { margin: '10px', float: 'right' }
     const borderStyle = { borderStyle: 'solid', borderColor: 'black', borderWidth: 'thin' }
     /* style parameters end */
 
@@ -116,7 +116,7 @@ const TestForm = ({ testToEdit }) => {
                 onClick={handleShow}>
                 {testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
             </Button>
-            <Modal show={show} size='lg' onHide={handleClose} >
+            <Modal show={show} size='xl' scrollable='true' onHide={handleClose} >
                 <Modal.Header
                     closeButton>{testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
                 </Modal.Header>

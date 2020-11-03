@@ -15,15 +15,15 @@ const BacteriumForm = () => {
     }
 
     return (
-        <div>
+        <div style={{ float: 'right' }}>
             <Form onSubmit={addBacterium}>
                 <input
                     id="newBacterium"
                     value={newBacterium}
                     onChange={({ target }) => setNewBacterium(target.value)}
-                    style={ style }
+                    style={style}
                 />
-                <Button variant="primary" type="submit">Lisää</Button>
+                <Button variant="primary" type="submit">Lisää bakteeri</Button>
             </Form>
         </div>
     )
