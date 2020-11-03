@@ -68,7 +68,7 @@ describe('Test management', () => {
         it('Test can be deleted', () => {
             cy.contains('Testien hallinta').click()
             cy.contains('Cypress Testi')
-            cy.get('#edit').click()
+            cy.get('#testEditButton').click()
             cy.get('#deleteTest').click()
             cy.contains('Test successfully deleted')
             cy.should('not.contain', 'Cypress Testi')
@@ -81,16 +81,16 @@ describe('Test management', () => {
 
         it('Test name can be edited', () => {
             cy.contains('Testien hallinta').click()
-            cy.get('#edit').click()
-            cy.get('#newNameInput').type(' edited')
+            cy.get('#testEditButton').click()
+            cy.get('#name').type(' edited')
             cy.get('#saveChanges').click()
             cy.contains('Cypress Testi edited')
         })
 
         it('Test type can be edited', () => {
             cy.contains('Testien hallinta').click()
-            cy.get('#edit').click()
-            cy.get('#newTypeInput').select('Värjäys')
+            cy.get('#testEditButton').click()
+            cy.get('#type').select('Värjäys')
             cy.get('#saveChanges').click()
             cy.contains('Värjäys')
         })

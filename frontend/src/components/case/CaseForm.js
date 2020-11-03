@@ -16,12 +16,12 @@ import { updateCase } from '../../reducers/caseReducer'
 
 const CaseForm = ({ caseToEdit }) => {
 
-    /* intial parameters */
+    /* initial parameters */
     const cases = useSelector(state => state.case)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
-    /* intial parameters end*/
+    /* initial parameters end*/
 
     /* parameters for style */
     const tableWidth = {
