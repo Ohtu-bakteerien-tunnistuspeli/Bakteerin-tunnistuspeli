@@ -70,7 +70,7 @@ export const checkSamples = (game, samples, token) => {
     }
 }
 
-export const checkTests = (game, test, token) => {
+export const checkTests = (game, test, token, setTestTab) => {
     return async dispatch => {
         const checkTest = await gameService.testCheck(game.case.id, { tests: [...game.correctTests, test] }, token)
         if (checkTest.error) {
@@ -88,6 +88,7 @@ export const checkTests = (game, test, token) => {
                     type: 'CHECK_TESTS',
                     data: { ...game, correctTests: [...game.correctTests, test], testResults: [...game.testResults, { imageUrl: checkTest.imageUrl, testName: checkTest.testName }], requiredTestsDone: checkTest.requiredDone, allTestsDone: checkTest.allDone }
                 })
+                setTestTab('tuloksia')
             } else {
                 if(checkTest.hint) {
                     dispatch(setNotification({ message: checkTest.hint, success: false }))
