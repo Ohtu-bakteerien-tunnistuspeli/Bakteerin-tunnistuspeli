@@ -32,7 +32,7 @@ const TestForm = ({ testToEdit }) => {
     const [controlImage, setControlImage] = useState(INITIAL_STATE)
     const [positiveResultImage, setPositiveResultImage] = useState(INITIAL_STATE)
     const [negativeImage, setNegativeImage] = useState(INITIAL_STATE)
-    const [bacteriaSpecificImages, setBacteriaImages] = useState(testToEdit ? testToEdit.bacteriaSpecificImages.map(img => { return { ...img, name: img.bacterium.name }} ) : [])
+    const [bacteriaSpecificImages, setBacteriaImages] = useState(testToEdit && testToEdit.bacteriaSpecificImages.length > 0 ? testToEdit.bacteriaSpecificImages : [])
     const [bacteriaSpecificImage, setBacteriaImage] = useState(INITIAL_STATE)
     const [deletePhotos, setDeletePhotos] = useState({ ctrl: false, pos: false, neg: false })
     const [deleteSpecifics, setDeleteSpecifics] = useState([])
@@ -40,8 +40,6 @@ const TestForm = ({ testToEdit }) => {
     const [neg, setNeg] = useState(testToEdit ? testToEdit.negativeImage ? true : false : false)
     const [ctrl, setCtrl] = useState(testToEdit ? testToEdit.controlImage ? true : false : false)
     /* states end */
-
-    console.log(bacteriaSpecificImages)
 
     /* modal control */
     const [show, setShow] = useState(false)
@@ -67,9 +65,10 @@ const TestForm = ({ testToEdit }) => {
         setControlImage([])
         setPositiveResultImage([])
         setNegativeImage([])
-        setBacteriaImages([])
+        setBacteriaImages(testToEdit && testToEdit.bacteriaSpecificImages.length > 0 ? testToEdit.bacteriaSpecificImages : [])
         setTestName('')
         setTestType('')
+        setDeleteSpecifics([])
     }
 
     const removeTest = () => {
@@ -81,6 +80,7 @@ const TestForm = ({ testToEdit }) => {
         const photosToDelete = deletePhotos
         const token = user.token
         const id = testToEdit.id
+        setDeleteSpecifics([])
         dispatch(updateTest(id, testName,
             testType, controlImage,
             positiveResultImage, negativeImage,
@@ -95,14 +95,17 @@ const TestForm = ({ testToEdit }) => {
         if (bacteriaSpecificImage.image !== 'undefined' && bacteriaSpecificImage.bacterium !== '') {
             if (bacteriaSpecificImage.name !== '') {
                 setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
+                setDeleteSpecifics(deleteSpecifics.filter(img => img !== bacteriaSpecificImage.name))
                 setBacteriaImage(INITIAL_STATE)
             }
         }
     }
 
     const removeBacteriaSpecificImage = (image) => {
-        setDeleteSpecifics(deleteSpecifics.concat(image))
-        setBacteriaImages(bacteriaSpecificImages.filter(img => img.name !== image.name))
+        let name
+        image.name ? name = image.name : name = image.bacterium.name
+        setDeleteSpecifics(deleteSpecifics.concat(name))
+        setBacteriaImages(bacteriaSpecificImages.filter(img => img.name !== name))
     }
 
 
@@ -115,8 +118,6 @@ const TestForm = ({ testToEdit }) => {
             setBacteriaImage(newFile)
         }
     }
-
-
 
     return (
         <div>

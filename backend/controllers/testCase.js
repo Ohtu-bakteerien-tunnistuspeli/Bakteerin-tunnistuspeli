@@ -149,6 +149,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     for (let i = 0; i < request.files.bacteriaSpecificImages.length; i++) {
                         const file = request.files.bacteriaSpecificImages[i]
                         const bacterium = await Bacterium.findOne({ name: file.originalname })
+                        console.log('bacterium fetched', bacterium)
                         if (!bacterium) {
                             deleteUploadedImages(request)
                             return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
@@ -176,10 +177,31 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 oldLinks.push(testToEdit.negativeResultImage.url)
                 testToUpdate.negativeResultImage = null
             }
+            if (request.body.deleteSpecifics) {
+                const deleteSpecifics = JSON.parse(request.body.deleteSpecifics)
+                console.log('delets', deleteSpecifics)
+                console.log('!', testToUpdate.bacteriaSpecificImages)
+                if (deleteSpecifics && deleteSpecifics.length > 0) {
+                    for (let img of deleteSpecifics) {
+                        for (let i = 0; i < testToUpdate.bacteriaSpecificImages.length; i++) {
+                            if (testToUpdate.bacteriaSpecificImages[i] && testToUpdate.bacteriaSpecificImages[i].bacterium && img === testToUpdate.bacteriaSpecificImages[i].bacterium.name) {
+                                oldLinks.push(testToUpdate.bacteriaSpecificImages[i].url)
+                                testToUpdate.bacteriaSpecificImages[i] = null
+                            }
+                        }
+                    }
+                    testToUpdate.bacteriaSpecificImages = testToUpdate.bacteriaSpecificImages.filter(img => img !== null)
+                }
+            }
+
+            console.log('justbefore', testToUpdate.bacteriaSpecificImages)
+
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
             for (let i = 0; i < oldLinks.length; i++) {
+                console.log(oldLinks[i])
                 fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
             }
+            console.log('updated', updatetTest)
             return response.status(200).json(updatetTest)
         } catch (error) {
             deleteUploadedImages(request)

@@ -2,14 +2,14 @@ import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 
 const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, setBacteriaImages, handleSpecificImg, bacteriaSpecificImages, bacteriaSpecificImage, addBacteriumSpecificImage, removeBacteriaSpecificImage, marginStyle }) => {
+    console.log(bacteriaSpecificImages)
     return (
         <Form.Group controlId={controlId}>
             <Form.Label style={{ paddingTop:'40px' }}><h4>Bakteerikohtaiset kuvat</h4></Form.Label>
             <ul>
                 {bacteriaSpecificImages.map((image, i) => {
-                    console.log(image)
                     return (
-                        <li key={i}>{image.name} &ensp;&ensp;
+                        <li key={i}>{image.name ? image.name : image.bacterium.name} &ensp;&ensp;
                             <Button
                                 onClick={ () => removeBacteriaSpecificImage(image) }
                                 variant='danger'
