@@ -35,6 +35,7 @@ const TestForm = ({ testToEdit }) => {
     const [bacteriaSpecificImages, setBacteriaImages] = useState(testToEdit ? testToEdit.bacteriaSpecificImages.map(img => { return { ...img, name: img.bacterium.name }} ) : [])
     const [bacteriaSpecificImage, setBacteriaImage] = useState(INITIAL_STATE)
     const [deletePhotos, setDeletePhotos] = useState({ ctrl: false, pos: false, neg: false })
+    const [deleteSpecifics, setDeleteSpecifics] = useState([])
     const [pos, setPos] = useState(testToEdit ? testToEdit.positiveResultImage ? true : false : false)
     const [neg, setNeg] = useState(testToEdit ? testToEdit.negativeImage ? true : false : false)
     const [ctrl, setCtrl] = useState(testToEdit ? testToEdit.controlImage ? true : false : false)
@@ -84,7 +85,9 @@ const TestForm = ({ testToEdit }) => {
             testType, controlImage,
             positiveResultImage, negativeImage,
             bacteriaSpecificImages,
-            photosToDelete, token))
+            photosToDelete,
+            deleteSpecifics,
+            token))
     }
     /* form control end */
 
@@ -95,6 +98,11 @@ const TestForm = ({ testToEdit }) => {
                 setBacteriaImage(INITIAL_STATE)
             }
         }
+    }
+
+    const removeBacteriaSpecificImage = (image) => {
+        setDeleteSpecifics(deleteSpecifics.concat(image))
+        setBacteriaImages(bacteriaSpecificImages.filter(img => img.name !== image.name))
     }
 
 
@@ -228,6 +236,7 @@ const TestForm = ({ testToEdit }) => {
                             bacteriaSpecificImages={bacteriaSpecificImages}
                             bacteriaSpecificImage={bacteriaSpecificImage}
                             addBacteriumSpecificImage={addBacteriumSpecificImage}
+                            removeBacteriaSpecificImage={removeBacteriaSpecificImage}
                             marginStyle={marginStyle}
                         />
                         <Button id={testToEdit ? 'saveChanges' : 'addTest'} variant='success' type='submit'>{testToEdit ? 'Tallenna muutokset' : 'Tallenna'}</Button>
