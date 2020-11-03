@@ -7,6 +7,7 @@ import { Button, Table } from 'react-bootstrap'
 const FrontPage = () => {
     const user = useSelector(state => state.user)
     const cases = useSelector(state => state.case)?.sort((case1, case2) => case1.name.localeCompare(case2.name))
+    const credits = useSelector(state => state.credit)
     const dispatch = useDispatch()
     const history = useHistory()
     const startGame = (caseId) => {
@@ -35,7 +36,7 @@ const FrontPage = () => {
                                 {cases.map(c =>
                                     <tr key={c.id}>
                                         <td>
-                                            <Button variant='light' onClick={() => startGame(c.id)} block>{c.name}</Button>
+                                            <Button variant='light' onClick={() => startGame(c.id)} block>{c.name} {credits.length > 0 && credits[0].testCases.includes(c.name) ? <i className='fas fa-check'></i> : <></>}</Button>
                                         </td>
                                     </tr>)}
                             </tbody>

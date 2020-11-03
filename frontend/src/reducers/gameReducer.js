@@ -1,5 +1,7 @@
 import gameService from '../services/game'
 import { setNotification } from '../reducers/notificationReducer'
+import { getCredits } from './creditReducer'
+
 const reducer = (state = null, action) => {
     switch (action.type) {
     case 'GET_GAME': {
@@ -113,6 +115,7 @@ export const checkBacterium = (game, bacteriumName, token) => {
                     type: 'CHECK_BACTERIUM',
                     data: { ...game, bacteriumCorrect: true, completionImageUrl: checkBacterium.completionImageUrl }
                 })
+                dispatch(getCredits(token))
             } else {
                 dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
             }
