@@ -48,8 +48,8 @@ const CreditList = () => {
                             <th>Käyttäjänimi</th>
                             <th>Vuosikurssi</th>
                             <th>
-                                <CSVExporter data={creditsToShow} />
                                 <Button variant='danger' style={exportStyle} onClick={deleteCredits}>Poista suoritukset</Button>
+                                <CSVExporter data={creditsToShow} />
                             </th>
                         </tr>
                     </thead>

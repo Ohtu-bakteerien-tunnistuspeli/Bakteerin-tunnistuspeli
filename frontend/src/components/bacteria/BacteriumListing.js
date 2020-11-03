@@ -28,7 +28,7 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
                 {isModified ?
                     <div style={{ float: 'right' }}>
                         <Button variant='secondary' id='stopEdit' style={style} onClick={stopModify}>Lopeta muokkaus</Button>
-                        <Button variant='primary' id='saveEdit' style={style} onClick={modify}>Muuta nimi</Button>
+                        <Button variant='success' id='saveEdit' style={style} onClick={modify}>Tallenna</Button>
                     </div>
                     :
                     <>

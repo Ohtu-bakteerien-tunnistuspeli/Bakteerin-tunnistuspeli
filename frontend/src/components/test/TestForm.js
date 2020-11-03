@@ -228,7 +228,7 @@ const TestForm = ({ testToEdit }) => {
                             addBacteriumSpecificImage={addBacteriumSpecificImage}
                             marginStyle={marginStyle}
                         />
-                        <Button id={testToEdit ? 'saveChanges' : 'addTest'} type='submit'>{testToEdit ? 'Tallenna muutokset' : 'Tallenna'}</Button>
+                        <Button id={testToEdit ? 'saveChanges' : 'addTest'} variant='success' type='submit'>{testToEdit ? 'Tallenna muutokset' : 'Tallenna'}</Button>
                     </Form>
                 </Modal.Body>
             </Modal>

@@ -29,7 +29,7 @@ const CSVExport = ({ data }) => {
     return (
         <>
             <CSVLink {...csvReport}>
-                <Button style={{ margin: '2px', float: 'right' }}>Lataa Excel-muodossa</Button>
+                <Button variant='success' style={{ margin: '2px', float: 'right' }}>Tallenna Excel-muodossa</Button>
             </CSVLink>
         </>
     )

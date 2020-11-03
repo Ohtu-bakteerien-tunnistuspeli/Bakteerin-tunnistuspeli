@@ -79,7 +79,7 @@ const Register = () => {
                         </Form.Label>
                         <Form.Check type="checkbox" label="" id="acceptCheckBox" value={accept} onChange={() => setAccept(!accept)} />
                     </div>
-                    <Button id="submit" variant="primary" type="submit">
+                    <Button id="submit" variant="success" type="submit">
                         Rekisteröidy
                     </Button>
                 </Form.Group>

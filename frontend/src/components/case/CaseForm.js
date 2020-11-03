@@ -344,13 +344,13 @@ const CaseForm = ({ caseToEdit }) => {
                                         </TestGroup>
                                     )}
 
-                                    {caseToEdit ? <Button id="saveEdit" variant="primary" type="submit">
+                                    {caseToEdit ? <Button id="saveEdit" variant="success" type="submit">
                                         Tallenna muutokset
                                     </Button> : <Button
-                                            variant='primary'
+                                            variant='success'
                                             type='submit'
                                             id='addCase'>
-                                            Lisää tapaus
+                                            Tallenna tapaus
                                     </Button>}
 
                                     { Object.keys(errors).length > 0 ?
