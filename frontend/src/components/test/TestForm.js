@@ -32,13 +32,15 @@ const TestForm = ({ testToEdit }) => {
     const [controlImage, setControlImage] = useState(INITIAL_STATE)
     const [positiveResultImage, setPositiveResultImage] = useState(INITIAL_STATE)
     const [negativeImage, setNegativeImage] = useState(INITIAL_STATE)
-    const [bacteriaSpecificImages, setBacteriaImages] = useState([])
+    const [bacteriaSpecificImages, setBacteriaImages] = useState(testToEdit ? testToEdit.bacteriaSpecificImages.map(img => { return { ...img, name: img.bacterium.name }} ) : [])
     const [bacteriaSpecificImage, setBacteriaImage] = useState(INITIAL_STATE)
     const [deletePhotos, setDeletePhotos] = useState({ ctrl: false, pos: false, neg: false })
     const [pos, setPos] = useState(testToEdit ? testToEdit.positiveResultImage ? true : false : false)
     const [neg, setNeg] = useState(testToEdit ? testToEdit.negativeImage ? true : false : false)
     const [ctrl, setCtrl] = useState(testToEdit ? testToEdit.controlImage ? true : false : false)
     /* states end */
+
+    console.log(bacteriaSpecificImages)
 
     /* modal control */
     const [show, setShow] = useState(false)
@@ -183,7 +185,7 @@ const TestForm = ({ testToEdit }) => {
                                 <DeleteButton
                                     id='deletePositive'
                                     onClick={() => {
-                                        setPos(false);
+                                        setPos(false)
                                         setDeletePhotos({ ...deletePhotos, pos: true })
                                     }}
                                     text='Poista positiivinen kuva'
