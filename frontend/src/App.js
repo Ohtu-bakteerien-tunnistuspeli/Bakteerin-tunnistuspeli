@@ -37,8 +37,13 @@ const App = () => {
         padding: 5
     }
 
-    const paddingBot = {
-        paddingBottom: '60px'
+    const paddingContainer = {
+        paddingBottom: '60px',
+        paddingTop: '40px'
+    }
+
+    const paddingPage = {
+        paddingBottom: '60px',
     }
 
     const footerStyle = {
@@ -48,11 +53,8 @@ const App = () => {
         right: 0,
         zIndex: 100,
         height: '55px',
-        backgroundColor: 'gainsboro'
-    }
-
-    const marginBot = {
-        marginBottom: '20px'
+        backgroundColor: 'gainsboro',
+        textAlign: 'center'
     }
 
     const marginTop = {
@@ -60,9 +62,8 @@ const App = () => {
     }
 
     return (
-        <div style={paddingBot}>
-            <div style={paddingBot} className="container">
-                <Navbar style={marginBot} collapseOnSelect expand="lg" bg="light" variant="light">
+        <div style={paddingPage}>
+            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav" >
                         <Nav className="mr-auto">
@@ -117,6 +118,8 @@ const App = () => {
                         </Nav.Item>
                     </Navbar.Collapse>
                 </Navbar>
+            <div style={paddingContainer} className="container">
+                
                 <Notification></Notification>
                 {user ?
                     <>
