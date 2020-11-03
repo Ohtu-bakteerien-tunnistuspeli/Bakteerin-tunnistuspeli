@@ -9,8 +9,8 @@ const get = (token) => {
 
 const add = async (name, type, contImg, posImg, negImg, bacteriaSpes, token) => {
     const formData = new FormData()
-    formData.append('name', name.value )
-    formData.append('type', type.value )
+    formData.append('name', name )
+    formData.append('type', type )
     formData.append('controlImage', contImg)
     formData.append('positiveResultImage', posImg )
     formData.append('negativeResultImage', negImg)
