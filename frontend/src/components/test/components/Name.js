@@ -6,7 +6,7 @@ const Name = ({ nameControlId, testName, setTestName }) => {
     return (
         <>
             <Form.Group controlId={nameControlId}>
-                <Form.Label>Nimi</Form.Label>
+                <Form.Label style={{ paddingTop: '30px' }}>Nimi</Form.Label>
                 <Form.Control value={testName} onChange={(event) => setTestName(event.target.value)} reset='' />
             </Form.Group>
         </>
