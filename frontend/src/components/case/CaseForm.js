@@ -210,6 +210,13 @@ const CaseForm = ({ caseToEdit }) => {
     }
     /* image end */
 
+    const testGroupSwitch = (a, b) => {
+        let newTestGroups = testGroups.slice()
+        newTestGroups[a] = testGroups[b]
+        newTestGroups[b] = testGroups[a]
+        setTestGroups(newTestGroups)
+    }
+
     return (
         <div>
             <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} style={{ float: 'right', margin: '2px' }} variant='primary' onClick={handleShow}>
@@ -340,6 +347,8 @@ const CaseForm = ({ caseToEdit }) => {
                                             testgroup={testGroup}
                                             index={i}
                                             removeTestGroup={removeTestGroup}
+                                            testGroupsSize={testGroups.length}
+                                            testGroupSwitch={testGroupSwitch}
                                         >
                                         </TestGroup>
                                     )}

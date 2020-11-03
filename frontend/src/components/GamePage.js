@@ -36,7 +36,7 @@ const GamePage = () => {
 
     const handleTest = (testId) => {
         if (!game.correctTests.includes(testId) && !game.allTestsDone) {
-            dispatch(checkTests(game, testId, user.token))
+            dispatch(checkTests(game, testId, user.token, setTestTab))
         }
     }
 
@@ -127,10 +127,28 @@ const GamePage = () => {
                         <Tab eventKey='tuloksia' title='Tuloksia'>
                             <h4 style={style}>Tulokset</h4>
                             <Table id='resultTable'>
+                                <thead>
+                                    <tr>
+                                        <th>Testi</th>
+                                        <th>Kontrollikuva</th>
+                                        <th>Tulos</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     {game.testResults.map((result, i) =>
                                         <tr key={i}>
                                             <td>{result.testName}</td>
+                                            <td>
+                                                {tests.filter(test => test.name === result.testName).map(test =>
+                                                    <>
+                                                        {test.controlImage ?
+                                                            <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}></ModalImage>
+                                                            :
+                                                            <></>
+                                                        }
+                                                    </>
+                                                )}
+                                            </td>
                                             {result.imageUrl ?
                                                 <td><ModalImage imageUrl={result.imageUrl} width={'10%'} height={'10%'}></ModalImage></td>
                                                 :
@@ -141,25 +159,7 @@ const GamePage = () => {
                                 </tbody>
                             </Table>
                         </Tab>
-                        <Tab eventKey='kontrolleja' title='Kontrolleja'>
-                            <h4 style={style}>Kontrollit</h4>
-                            <Table id='controlImgTable'>
-                                <tbody>
-                                    {tests.map(test =>
-                                        <tr key={test.id}>
-                                            <td>{test.name}</td>
-                                            {test.controlImage ?
-                                                <td><ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}></ModalImage></td>
-                                                :
-                                                <td></td>
-                                            }
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </Table>
-                        </Tab>
                     </Tabs>
-
                 </Tab>
                 <Tab eventKey='diagnoosi' title='Diagnoosi' disabled={!game.requiredTestsDone}>
                     <h1>Diagnoosi</h1>

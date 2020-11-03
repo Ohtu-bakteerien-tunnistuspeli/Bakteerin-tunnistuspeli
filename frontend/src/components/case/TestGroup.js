@@ -3,14 +3,14 @@ import { Form, Table, Button, Container, Row, Col, ListGroup } from 'react-boots
 
 
 
-const TestGroup = ({ testgroup, index, removeTestGroup }) => {
+const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGroupSwitch }) => {
     return (
         <div>
             <ListGroup.Item>
                 <Container>
                     <Row>
                         <Col xs={10}>
-                            <Form.Label>Testiryhmä {index + 1}</Form.Label>
+                            <Form.Label>Testiryhmä {index + 1} {index > 0 ? <i className="fa fa-arrow-up" onClick={() => testGroupSwitch(index, index - 1)} /> : <></>}{index < testGroupsSize - 1 ? <i className="fa fa-arrow-down" onClick={() => testGroupSwitch(index, index + 1)} /> : <></>}</Form.Label>
                         </Col>
                         <Col>
                             <Button variant='danger'
