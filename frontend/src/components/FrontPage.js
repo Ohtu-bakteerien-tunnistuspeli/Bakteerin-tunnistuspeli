@@ -36,7 +36,7 @@ const FrontPage = () => {
                                 {cases.map(c =>
                                     <tr key={c.id}>
                                         <td>
-                                            <Button variant='light' onClick={() => startGame(c.id)} block>{c.name} {credits.length > 0 && credits[0].testCases.includes(c.name) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                            <Button variant='light' onClick={() => startGame(c.id)} block>{c.name} {!user.admin && credits.length > 0 && credits[0].testCases.includes(c.name) ? <i className='fas fa-check'></i> : <></>}</Button>
                                         </td>
                                     </tr>)}
                             </tbody>
