@@ -7,7 +7,7 @@ import NameAndType from './NameAndType'
 import { useField, INITIAL_STATE, marginStyle } from './utility'
 
 const TestForm = () => {
-    const style = { margin: '10px' }
+    const style = { margin: '10px', float: 'right' }
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const TestName = useField('text', '')
     const TestType = useField('text', '')
@@ -72,7 +72,7 @@ const TestForm = () => {
     return (
         <div>
             <Button style={style} id='testModalButton' variant='primary' onClick={handleShow}>Luo uusi testi</Button>
-            <Modal show={show} size='lg' onHide={handleClose} >
+            <Modal show={show} size='xl' scrollable='true' onHide={handleClose} >
                 <Modal.Header closeButton>Luo uusi testi</Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={addTests} encType='multipart/form-data'>

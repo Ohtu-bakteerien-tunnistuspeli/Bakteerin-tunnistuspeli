@@ -128,7 +128,7 @@ const CaseForm = ({ caseToEdit }) => {
         const id = caseToEdit.id
         dispatch(updateCase(id, name,
             bacteriumId, anamnesis, completionText, completionImage, samples,
-            testGroups, deleteEndImage,  user.token, handleClose))
+            testGroups, deleteEndImage, user.token, handleClose))
     }
 
     const addNewCase = () => {
@@ -212,10 +212,10 @@ const CaseForm = ({ caseToEdit }) => {
 
     return (
         <div>
-            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} variant='primary' onClick={handleShow}>
+            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} style={{ float: 'right', margin: '2px' }} variant='primary' onClick={handleShow}>
                 {caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}
             </Button>
-            <Modal show={show} size='lg' onHide={handleClose} backdrop='static'>
+            <Modal show={show} size='xl' scrollable='true' onHide={handleClose} backdrop='static'>
                 <Modal.Header closeButton>{caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}</Modal.Header>
                 <Modal.Body>
                     <Notification></Notification>
@@ -347,9 +347,9 @@ const CaseForm = ({ caseToEdit }) => {
                                     {caseToEdit ? <Button id="saveEdit" variant="primary" type="submit">
                                         Tallenna muutokset
                                     </Button> : <Button
-                                        variant='primary'
-                                        type='submit'
-                                        id='addCase'>
+                                            variant='primary'
+                                            type='submit'
+                                            id='addCase'>
                                             Lisää tapaus
                                     </Button>}
 

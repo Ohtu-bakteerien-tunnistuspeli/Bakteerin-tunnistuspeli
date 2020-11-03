@@ -12,12 +12,6 @@ const TestList = () => {
     return (
         <div>
             <h2 style={style}>Testit</h2>
-            <p></p>
-            {user?.admin ?
-                <TestForm></TestForm>
-                :
-                <></>
-            }
             {tests.length !== 0 ?
                 <Table striped bordered hover>
                     <thead>
@@ -27,7 +21,13 @@ const TestList = () => {
                             <th>Kontrollikuva</th>
                             <th>Positiivinen oletus</th>
                             <th>Negatiivinen oletus</th>
-                            <th></th>
+                            <th>
+                                {user?.admin ?
+                                    <TestForm></TestForm>
+                                    :
+                                    <></>
+                                }
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,7 +37,14 @@ const TestList = () => {
                     </tbody>
                 </Table>
                 :
-                <div>Ei Testejä</div>
+                <>
+                    {user?.admin ?
+                        <TestForm></TestForm>
+                        :
+                        <></>
+                    }
+                    <div>Ei Testejä</div>
+                </>
             }
         </div>
     )

@@ -7,19 +7,19 @@ import { getCredits, zeroCredit } from './creditReducer'
 import { recoverGame } from './gameReducer'
 const reducer = (state = null, action) => {
     switch (action.type) {
-    case 'LOGIN': {
-        return action.data
-    }
-    case 'LOGOUT': {
-        return action.data
-    }
-    case 'RETURN_USER': {
-        return action.data
-    }
-    case 'REGISTER': {
-        return action.data
-    }
-    default: return state
+        case 'LOGIN': {
+            return action.data
+        }
+        case 'LOGOUT': {
+            return action.data
+        }
+        case 'RETURN_USER': {
+            return action.data
+        }
+        case 'REGISTER': {
+            return action.data
+        }
+        default: return state
     }
 }
 
@@ -35,10 +35,8 @@ export const login = (username, password, history) => {
                 type: 'LOGIN',
                 data: user
             })
-            if (user.admin) {
-                dispatch(getBacteria(user.token))
-                dispatch(getCredits(user.token))
-            }
+            dispatch(getCredits(user.token))
+            dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
             history.push('/')
@@ -79,10 +77,8 @@ export const returnUser = (history) => {
         let user = null
         if (userText) {
             user = JSON.parse(userText)
-            if (user.admin) {
-                await dispatch(getBacteria(user.token))
-                await dispatch(getCredits(user.token))
-            }
+            dispatch(getCredits(user.token))
+            dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
         }

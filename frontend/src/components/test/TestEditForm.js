@@ -63,7 +63,7 @@ const TestEditForm = ({ test, show, handleHide, stopModify, bacteria }) => {
     return (
         <div>
             <Button variant='secondary' id='stopEdit' onClick={stopModify}>Muokattavana</Button>
-            <Modal show={show} size='lg' onHide={handleHide}>
+            <Modal show={show} size='xl' scrollable='true' onHide={handleHide}>
                 <Modal.Header closeButton>Muokkaat testiä {test.name}</Modal.Header>
                 <Modal.Body>
                     <Button variant='danger' id='deleteTest' onClick={() => {if(window.confirm('Tahdotko varmasti poistaa testin?')) {removeTest(test)}}}>POISTA testi

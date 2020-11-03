@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import BacteriumForm from './BacteriumForm'
 import BacteriumListing from './BacteriumListing'
 import { deleteBacterium, updateBacterium } from '../../reducers/bacteriaReducer'
+import { Table } from 'react-bootstrap'
 
 const BacteriaList = () => {
     const style = { margin: '10px', fontSize: '40px' }
@@ -12,28 +13,44 @@ const BacteriaList = () => {
     const deleteBact = bacterium => {
         dispatch(deleteBacterium(bacterium, user.token))
     }
-    const updateBact = (newName, id) => {
-        dispatch(updateBacterium(id, newName, user.token))
+    const updateBact = (newName, id, setIsModified, setNewName) => {
+        dispatch(updateBacterium(id, newName, user.token, setIsModified, setNewName))
     }
 
     return (
         <div>
             <h2 style={style}>Bakteerit</h2>
             {bacteria.length !== 0 ?
-                <ul>
-                    {bacteria.map(bacterium =>
-                        <BacteriumListing key={bacterium.id} bacterium={bacterium} deleteBact={deleteBact} updateBact={updateBact} isAdmin={user?.admin}></BacteriumListing>
-                    )}
-                </ul>
+                <Table id='bacteriumTable'>
+                    <thead>
+                        <tr>
+                            <th>Nimi</th>
+                            <th>
+                                {user?.admin ?
+                                    <BacteriumForm></BacteriumForm>
+                                    :
+                                    <></>
+                                }
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {bacteria.map(bacterium =>
+                            <BacteriumListing key={bacterium.id} bacterium={bacterium} deleteBact={deleteBact} updateBact={updateBact} isAdmin={user?.admin}></BacteriumListing>
+                        )}
+                    </tbody>
+                </Table>
                 :
-                <div>Ei bakteereja</div>
-            }
-            {user?.admin ?
-                <BacteriumForm></BacteriumForm>
-                :
-                <></>
-            }
+                <>
+                    {user?.admin ?
+                        <BacteriumForm></BacteriumForm>
+                        :
+                        <></>
+                    }
+                    <div>Ei bakteereja</div>
+                </>
 
+            }
         </div>
     )
 }

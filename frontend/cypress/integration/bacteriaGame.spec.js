@@ -221,25 +221,25 @@ describe('Game', () => {
             it('it can be deleted from the list', () => {
                 cy.addBacterium({ name: 'testdelete' })
                 cy.contains('Bakteerien hallinta').click()
-                cy.contains('testdelete').find('#delete').click()
+                cy.contains('testdelete').parent().find('#delete').click()
                 cy.get('div').should('not.contain', 'testdelete')
             })
 
             it('it can be edited', () => {
                 cy.contains('Bakteerien hallinta').click()
-                cy.contains('pneumokokki2').find('#edit').click()
+                cy.contains('pneumokokki2').parent().find('#edit').click()
 
-                cy.contains('pneumokokki2').find('#editField').type('pneumokokki3')
-                cy.contains('pneumokokki2').find('#saveEdit').click()
+                cy.get('#bacteriumTable').find('#editField').type('pneumokokki3')
+                cy.get('#bacteriumTable').find('#saveEdit').click()
 
                 cy.contains('pneumokokki3')
             })
 
             it('its edit field can be exited without saving changes', () => {
                 cy.contains('Bakteerien hallinta').click()
-                cy.contains('pneumokokki2').find('#edit').click()
-                cy.contains('pneumokokki2').find('#editField').type('pneumokokki3')
-                cy.contains('pneumokokki2').find('#stopEdit').click()
+                cy.contains('pneumokokki2').parent().find('#edit').click()
+                cy.get('#bacteriumTable').find('#editField').type('pneumokokki3')
+                cy.get('#bacteriumTable').find('#stopEdit').click()
 
                 cy.get('div').should('not.contain', 'pneumokokki3')
                 cy.contains('pneumokokki2')

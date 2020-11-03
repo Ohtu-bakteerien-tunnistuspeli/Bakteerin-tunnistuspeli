@@ -155,9 +155,11 @@ describe('Playing game', () => {
             cy.contains('Penisilliinin sietokoe agarvaluamenetelmällä').click()
             cy.contains('Diagnoosi').click()
             cy.get('#bacterium').type('Tetanus')
+            cy.contains('Diagnoosi').click()
             cy.get('#checkDiagnosis').click()
             cy.contains('Väärä vastaus')
             cy.get('#bacterium').clear().type('Streptococcus agalactiae')
+            cy.contains('Diagnoosi').click()
             cy.get('#checkDiagnosis').click()
             cy.contains('Oikea vastaus')
             // Add should contain info
