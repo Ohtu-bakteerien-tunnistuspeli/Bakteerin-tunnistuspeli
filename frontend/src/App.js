@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Switch, Route, Redirect, useHistory, Link } from 'react-router-dom'
+import Idle from 'react-idle'
 import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/user/Login'
@@ -11,6 +12,7 @@ import TestList from './components/test/TestList'
 import CreditList from './components/credit/CreditList'
 import UserList from './components/users/UserList'
 import GamePage from './components/GamePage'
+import ProfilePage from './components/ProfilePage'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 import { Button, Navbar, Nav } from 'react-bootstrap'
@@ -20,6 +22,7 @@ const App = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
     const game = useSelector(state => state.game)
+
     useEffect(() => {
         dispatch(returnUser(history))
     }, [dispatch, history])
@@ -64,6 +67,18 @@ const App = () => {
 
     return (
         <div style={paddingPage}>
+            {user ?
+                <Idle 
+                timeout={7200000} 
+                onChange={({ idle }) => {
+                    if (idle && user) {
+                        dispatch(logout(history))
+                        alert('Sinut kirjattiin ulos automaattisesti, koska olet ollut pitkään epäaktiivisena.')
+                    }
+                }} />
+                :
+                null
+            }
             <Navbar style={{ minHeight: '10vh', borderRadius: '5px' }} collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" >
@@ -107,7 +122,7 @@ const App = () => {
                     </Nav>
                     <Nav.Link href="#" as="span">
                         {user
-                            ? <em><p style={marginTop}>Tervetuloa {user.username}</p></em>
+                            ? <em><p style={marginTop}>Tervetuloa <Link style={padding} to="/profiilini">{user.username}</Link></p></em>
                             : <Link style={padding} to="/kirjautuminen">Kirjaudu sisään</Link>
                         }
                     </Nav.Link>
@@ -169,6 +184,13 @@ const App = () => {
                                 <Route path='/peli'>
                                     {game ?
                                         <GamePage></GamePage>
+                                        :
+                                        <Redirect to='/'></Redirect>
+                                    }
+                                </Route>
+                                <Route path='/profiilini'>
+                                    {user ? 
+                                        <ProfilePage />
                                         :
                                         <Redirect to='/'></Redirect>
                                     }
