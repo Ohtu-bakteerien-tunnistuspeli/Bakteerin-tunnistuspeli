@@ -93,6 +93,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setTest,
                     type='checkbox'
                     id='required'
                     label='Pakollinen'
+                    checked={testForCase.isRequired}
                     onChange={() => setTestForCase({ ...testForCase, isRequired: !testForCase.isRequired })} />
                 {testForCase.tests.length > 0 ?
                     <Button
