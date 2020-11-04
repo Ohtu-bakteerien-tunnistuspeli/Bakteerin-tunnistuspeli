@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const userRouter = require('express').Router()
 const User = require('../models/user')
+const Credit = require('../models/credit')
 const config = require('../utils/config')
 
 userRouter.post('/login', async (request, response) => {
@@ -56,6 +57,65 @@ userRouter.post('/register', async (request, response) => {
         } catch (error) {
             return response.status(400).json({ error: error.message })
         }
+    }
+})
+
+userRouter.get('/', async (request, response) => {
+    if (request.user && request.user.admin) {
+        const users = await User.find({ username: { $ne: request.user.username } })
+        response.json(users.map(user => user.toJSON()))
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
+userRouter.delete('/:id', async (request, response) => {
+    if (request.user && (request.user.admin || String(request.user.id) === String(request.params.id))) {
+        try {
+            const userToDelete = await User.findById(request.params.id)
+            const creditToDelete = await Credit.findOne({ user: userToDelete })
+            await User.findByIdAndRemove(request.params.id)
+            if (creditToDelete) {
+                await Credit.findByIdAndRemove(creditToDelete.id)
+            }
+            response.status(204).end()
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
+userRouter.put('/:id/promote', async (request, response) => {
+    if (request.user && request.user.admin) {
+        try {
+            const updatedUser = await User.findByIdAndUpdate(request.params.id, { admin: true }, { new: true, runValidators: true, context: 'query' })
+            if (!updatedUser) {
+                return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+            }
+            return response.status(200).json(updatedUser.toJSON())
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
+userRouter.put('/:id/demote', async (request, response) => {
+    if (request.user && request.user.admin) {
+        try {
+            const updatedUser = await User.findByIdAndUpdate(request.params.id, { admin: false }, { new: true, runValidators: true, context: 'query' })
+            if (!updatedUser) {
+                return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+            }
+            return response.status(200).json(updatedUser.toJSON())
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else {
+        throw Error('JsonWebTokenError')
     }
 })
 

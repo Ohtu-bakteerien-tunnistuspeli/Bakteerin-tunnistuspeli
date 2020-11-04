@@ -3,7 +3,6 @@ import ModalImage from '../ModalImage'
 import TestForm from './TestForm'
 
 const TestListing = ({ test }) => {
-    console.log(test.bacteriaSpecificImages[0])
     return (
         <tr key={test.id}>
             <td>{test.name}</td>

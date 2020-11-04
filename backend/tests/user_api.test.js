@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const User = require('../models/user')
+const Credit = require('../models/credit')
 const bcrypt = require('bcrypt')
 const api = supertest(app)
 
@@ -37,7 +38,7 @@ describe('login ', () => {
     })
 })
 describe('register ', () => {
-    test('valid user with compolsory fields can register', async () => {
+    test('valid user with compulsory fields can register', async () => {
         await api
             .post('/api/user/register')
             .send({
@@ -192,6 +193,254 @@ describe('register ', () => {
             .post('/api/user/login')
             .send(invalidUsers[8])
             .expect(400)
+    })
+})
+
+describe('delete', () => {
+    test('user can delete itself', async () => {
+        const user = await User.findOne({ username: 'usernameNew' })
+        const loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        await api
+            .delete(`/api/user/${user.id}`)
+            .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .expect(204)
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(400)
+    })
+
+    test('user cannot delete others', async () => {
+        const userPassword = await bcrypt.hash('password2', 10)
+        let user = new User({ username: 'usernameNew2', passwordHash: userPassword, admin: false, email: 'example@com' })
+        await user.save()
+        user = await User.findOne({ username: 'usernameNew2' })
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew2',
+                password: 'password2'
+            })
+            .expect(200)
+        const loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        await api
+            .delete(`/api/user/${user.id}`)
+            .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .expect(401)
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew2',
+                password: 'password2'
+            })
+            .expect(200)
+    })
+
+    test('admin can delete user', async () => {
+        const user = await User.findOne({ username: 'usernameNew' })
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        const admin = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        await api
+            .delete(`/api/user/${user.id}`)
+            .set('Authorization', `bearer ${admin.body.token}`)
+            .expect(204)
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(400)
+    })
+
+    test('deleting user deletes its credits', async () => {
+        const user = await User.findOne({ username: 'usernameNew' })
+        await Credit({ user, testCases: [] }).save()
+        let credit = await Credit.findOne({ user })
+        expect(credit).toBeDefined()
+        const loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        await api
+            .delete(`/api/user/${user.id}`)
+            .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .expect(204)
+        credit = await Credit.findOne({ user })
+        expect(credit).toBeNull()
+    })
+})
+
+describe('promote', () => {
+    test('admin can promote user', async () => {
+        const user = await User.findOne({ username: 'usernameNew' })
+        let loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        expect(loggedUser.body.admin).toBeFalsy()
+        const admin = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        await api
+            .put(`/api/user/${user.id}/promote`)
+            .set('Authorization', `bearer ${admin.body.token}`)
+            .expect(200)
+        loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        expect(loggedUser.body.admin).toBeTruthy()
+    })
+
+    test('admin cannot promote non existing user', async () => {
+        const admin = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        await api
+            .put('/api/user/does not exist/promote')
+            .set('Authorization', `bearer ${admin.body.token}`)
+            .expect(400)
+    })
+
+    test('user cannot promote', async () => {
+        const user = await User.findOne({ username: 'usernameNew' })
+        let loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        expect(loggedUser.body.admin).toBeFalsy()
+        await api
+            .put(`/api/user/${user.id}/promote`)
+            .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .expect(401)
+        loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        expect(loggedUser.body.admin).toBeFalsy()
+    })
+})
+
+describe('demote', () => {
+    test('admin can demote user', async () => {
+        await User.findOneAndUpdate({ username: 'usernameNew' }, { admin: true })
+        const user = await User.findOne({ username: 'usernameNew' })
+        let loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        expect(loggedUser.body.admin).toBeTruthy()
+        const admin = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        await api
+            .put(`/api/user/${user.id}/demote`)
+            .set('Authorization', `bearer ${admin.body.token}`)
+            .expect(200)
+        loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        expect(loggedUser.body.admin).toBeFalsy()
+    })
+
+    test('admin cannot demote non existing user', async () => {
+        const admin = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        await api
+            .put('/api/user/does not exist/demote')
+            .set('Authorization', `bearer ${admin.body.token}`)
+            .expect(400)
+    })
+
+    test('user cannot demote', async () => {
+        const user = await User.findOne({ username: 'adminNew' })
+        let loggedUser = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        let admin = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        expect(admin.body.admin).toBeTruthy()
+        await api
+            .put(`/api/user/${user.id}/promote`)
+            .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .expect(401)
+        admin = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+        expect(admin.body.admin).toBeTruthy()
     })
 })
 

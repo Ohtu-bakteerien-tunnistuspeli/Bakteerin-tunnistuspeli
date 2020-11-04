@@ -9,6 +9,7 @@ import BacteriaList from './components/bacteria/BacteriaList'
 import CaseList from './components/case/CaseList'
 import TestList from './components/test/TestList'
 import CreditList from './components/credit/CreditList'
+import UserList from './components/users/UserList'
 import GamePage from './components/GamePage'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
@@ -97,6 +98,12 @@ const App = () => {
                                 : null
                             }
                         </Nav.Link>
+                        <Nav.Link href="#" as="span">
+                            {user?.admin
+                                ? <Link style={padding} to="/käyttäjäLista">Käyttäjien hallinta</Link>
+                                : null
+                            }
+                        </Nav.Link>
                     </Nav>
                     <Nav.Link href="#" as="span">
                         {user
@@ -148,6 +155,13 @@ const App = () => {
                                 <Route path='/suoritusLista'>
                                     {user.admin ?
                                         <CreditList />
+                                        :
+                                        <Redirect to='/'></Redirect>
+                                    }
+                                </Route>
+                                <Route path='/käyttäjäLista'>
+                                    {user.admin ?
+                                        <UserList />
                                         :
                                         <Redirect to='/'></Redirect>
                                     }

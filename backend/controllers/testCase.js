@@ -193,15 +193,11 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     testToUpdate.bacteriaSpecificImages = testToUpdate.bacteriaSpecificImages.filter(img => img !== null)
                 }
             }
-
-            console.log('justbefore', testToUpdate.bacteriaSpecificImages)
-
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
             for (let i = 0; i < oldLinks.length; i++) {
                 console.log(oldLinks[i])
                 fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
             }
-            console.log('updated', updatetTest)
             return response.status(200).json(updatetTest)
         } catch (error) {
             deleteUploadedImages(request)

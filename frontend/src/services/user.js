@@ -1,6 +1,10 @@
 import axios from 'axios'
 const baseUrl = '/api/user'
 
+const get = (token) => {
+    const config = { headers: { Authorization: token } }
+    return axios.get(baseUrl, config).then(response => response.data).catch(error => error.response.data)
+}
 
 const login = (credentials) => {
     const request = axios.post(`${baseUrl}/login`, credentials)
@@ -14,4 +18,19 @@ const register = (credentials) => {
     return request.then(response => response).catch(error => error.response.data)
 }
 
-export default { login, register }
+const deleteUser = (id, token) => {
+    const config = { headers: { Authorization: token } }
+    return axios.delete(`${baseUrl}/${id}`, config).then(response => response).catch(error => error.response.data)
+}
+
+const promote = (id, token) => {
+    const config = { headers: { Authorization: token } }
+    return axios.put(`${baseUrl}/${id}/promote`, {}, config).then(response => response.data).catch(error => error.response.data)
+}
+
+const demote = (id, token) => {
+    const config = { headers: { Authorization: token } }
+    return axios.put(`${baseUrl}/${id}/demote`, {}, config).then(response => response.data).catch(error => error.response.data)
+}
+
+export default { get, login, register, deleteUser, promote, demote }
