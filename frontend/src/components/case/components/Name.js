@@ -21,6 +21,6 @@ const Name = ({ name, setName, onChange, error, touched }) => {
             </Form.Control.Feedback>
         </Form.Group>
     )
-} 
+}
 
 export default Name

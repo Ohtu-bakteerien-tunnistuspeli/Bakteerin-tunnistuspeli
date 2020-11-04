@@ -5,7 +5,7 @@ const SelectBacterium = ({ bacteriumId, setBacteriumId, onChange, error, bacteri
     const handleChange = event => {
         event.preventDefault()
         setBacteriumId(event.target.value)
-        onChange('bacteriumId', event.target.value);
+        onChange('bacteriumId', event.target.value)
     }
     return (
         <Form.Group controlId='bacterium'>

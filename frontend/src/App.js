@@ -68,14 +68,14 @@ const App = () => {
     return (
         <div style={paddingPage}>
             {user ?
-                <Idle 
-                timeout={7200000} 
-                onChange={({ idle }) => {
-                    if (idle && user) {
-                        dispatch(logout(history))
-                        alert('Sinut kirjattiin ulos automaattisesti, koska olet ollut pitkään epäaktiivisena.')
-                    }
-                }} />
+                <Idle
+                    timeout={7200000}
+                    onChange={({ idle }) => {
+                        if (idle && user) {
+                            dispatch(logout(history))
+                            alert('Sinut kirjattiin ulos automaattisesti, koska olet ollut pitkään epäaktiivisena.')
+                        }
+                    }} />
                 :
                 null
             }
@@ -189,7 +189,7 @@ const App = () => {
                                     }
                                 </Route>
                                 <Route path='/profiilini'>
-                                    {user ? 
+                                    {user ?
                                         <ProfilePage />
                                         :
                                         <Redirect to='/'></Redirect>
