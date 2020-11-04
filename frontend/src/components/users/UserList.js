@@ -5,7 +5,7 @@ import { Table } from 'react-bootstrap'
 import { deleteUser, promoteUser, demoteUser } from '../../reducers/usersReducer'
 
 const UserList = () => {
-    const users = useSelector(state => state.users)
+    const users = useSelector(state => state.users)?.sort((user1, user2) => user1.username.localeCompare(user2.username))
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const userDelete = (userToDelete) => {
@@ -21,7 +21,7 @@ const UserList = () => {
         <div>
             <h2>Käyttäjät</h2>
             {users.length !== 0 ?
-                <Table>
+                <Table id='userTable'>
                     <thead>
                         <tr>
                             <th>Opiskelijanumero</th>

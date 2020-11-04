@@ -22,7 +22,7 @@ const ConfirmWindow = ({ listedUser, buttonId, modalOpenButtonText, modalOpenBut
                                 id="confirmField"
                                 onChange={(event) => setConfirmText(event.target.value)}
                             />
-                            <Button id="submit" variant={executeButtonVariant} type="button" disabled={confirmText !== listedUser.username} onClick={() => {
+                            <Button id="confirm" variant={executeButtonVariant} type="button" disabled={confirmText !== listedUser.username} onClick={() => {
                                 functionToExecute(listedUser)
                                 handleClose()
                             }}>{executeButtonText}</Button>

@@ -46,6 +46,7 @@ export const deleteUser = (user, token) => {
                 type: 'DELETE_USER',
                 data: user
             })
+            dispatch(setNotification({ message: `Käyttäjän ${user.username} poisto onnistui.`, success: true }))
         }
     }
 }
@@ -60,6 +61,7 @@ export const promoteUser = (id, token) => {
                 type: 'PROMOTE_USER',
                 data: user
             })
+            dispatch(setNotification({ message: `Käyttäjän ${user.username} ylennys onnistui.`, success: true }))
         }
     }
 }
@@ -74,6 +76,7 @@ export const demoteUser = (id, token) => {
                 type: 'DEMOTE_USER',
                 data: user
             })
+            dispatch(setNotification({ message: `Käyttäjän ${user.username} alennus onnistui.`, success: true }))
         }
     }
 }
