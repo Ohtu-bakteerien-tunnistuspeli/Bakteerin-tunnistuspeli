@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import Samples from './Samples.js'
-import AddSample from './AddSample.js'
-import TestGroup from './TestGroup.js'
+import Samples from './components/Samples.js'
+import AddSample from './components/AddSample.js'
+import TestGroup from './components/TestGroup.js'
 import SelectBacterium from './components/SelectBaterium.js'
-import AddTestGroup from './AddTestGroup.js'
+import AddTestGroup from './components/AddTestGroup.js'
 import Name from './components/Name.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
@@ -147,6 +147,7 @@ const CaseForm = ({ caseToEdit }) => {
         setTestForCase({ isRequired: false, tests: [] })
         setTestGroup([])
         setTestGroups([])
+        setAddedTests([])
         setAddingAlt(false)
         setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
@@ -172,6 +173,13 @@ const CaseForm = ({ caseToEdit }) => {
 
     /* testgroup control */
     const removeTestGroup = (tg) => {
+        let newTests = addedTests
+        for (const testGroup of tg) {
+            for (const test of testGroup.tests) {
+                newTests = newTests.filter(testId => testId !== test.testId)
+            }
+        }
+        setAddedTests(newTests)
         setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
     }
 
@@ -193,7 +201,7 @@ const CaseForm = ({ caseToEdit }) => {
     }
 
     const addTest = (onChange) => {
-        if (!addedTests.includes(test.testId)) {
+        if (!addedTests.includes(test.testId) && test.testId) {
             setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
             setAddedTests([...addedTests, test.testId])
             setAddingTest(true)

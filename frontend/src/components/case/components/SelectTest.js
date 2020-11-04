@@ -13,8 +13,8 @@ const SelectTest = ({ tests, setTest, test, onChange, value, error }) => {
                 id='testSelect'
                 value={value}
                 isInvalid={error}
-                onChange={(event) => {
-                    setTest({ ...test, name: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id })
+                onChange={(event) => { event.target.value !== '' ?
+                    setTest({ ...test, name: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id }):setTest('')
                     handleChange(event)
                 }}>
                 <option value=''>Valitse testi</option>

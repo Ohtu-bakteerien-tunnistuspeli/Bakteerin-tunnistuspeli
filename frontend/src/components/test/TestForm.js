@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTest } from '../../reducers/testReducer'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, Image } from 'react-bootstrap'
 import BacteriaSpecificImages from './BacteriaSpecificImages'
 import Name from './components/Name.js'
 import Type from './components/Type.js'
@@ -16,8 +16,7 @@ const TestForm = ({ testToEdit }) => {
 
     /* style parameters */
     const style = { margin: '10px', float: 'right' }
-    const borderStyle = { borderStyle: 'solid', borderColor: 'black', borderWidth: 'thin' }
-    /* style parameters end */
+   /* style parameters end */
 
     /* initial parameters */
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
@@ -37,7 +36,7 @@ const TestForm = ({ testToEdit }) => {
     const [deletePhotos, setDeletePhotos] = useState({ ctrl: false, pos: false, neg: false })
     const [deleteSpecifics, setDeleteSpecifics] = useState([])
     const [pos, setPos] = useState(testToEdit ? testToEdit.positiveResultImage ? true : false : false)
-    const [neg, setNeg] = useState(testToEdit ? testToEdit.negativeImage ? true : false : false)
+    const [neg, setNeg] = useState(testToEdit ? (testToEdit.negativeResultImage ? true : false) : false)
     const [ctrl, setCtrl] = useState(testToEdit ? testToEdit.controlImage ? true : false : false)
     /* states end */
 
@@ -50,6 +49,7 @@ const TestForm = ({ testToEdit }) => {
     /* form control */
     const addTests = (event) => {
         event.preventDefault()
+        console.log(controlImage)
         dispatch(addTest(testName,
             testType,
             controlImage,
@@ -80,6 +80,7 @@ const TestForm = ({ testToEdit }) => {
         const photosToDelete = deletePhotos
         const token = user.token
         const id = testToEdit.id
+        console.log(controlImage)
         setDeleteSpecifics([])
         dispatch(updateTest(id, testName,
             testType, controlImage,
@@ -162,8 +163,8 @@ const TestForm = ({ testToEdit }) => {
                         {testToEdit ?
                             <Form.Group controlId='editControlImage'>
 
-                                {ctrl ?
-                                    <p style={borderStyle}>Kontrollikuva on annettu</p>
+                                {ctrl && testToEdit.controlImage ?
+                                    <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100}/>
                                     : <></>
                                 }
                                 <DeleteButton
@@ -187,8 +188,8 @@ const TestForm = ({ testToEdit }) => {
 
                         {testToEdit ?
                             <Form.Group controlId='editPositiveResultImage'>
-                                {pos ?
-                                    <p style={borderStyle}>Positiivinen on annettu</p>
+                                {pos && testToEdit.positiveResultImage ?
+                                    <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100}/>
                                     : <></>
                                 }
                                 <DeleteButton
@@ -213,8 +214,8 @@ const TestForm = ({ testToEdit }) => {
                         ></AddImage>
                         {testToEdit ?
                             <Form.Group controlId='editNegativeResultImage'>
-                                {neg ?
-                                    <p style={borderStyle}>Negatiivinen kuva on annettu</p>
+                                {neg && testToEdit.negativeResultImage ?
+                                    <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100}/>
                                     : <></>
                                 }
                                 <DeleteButton
