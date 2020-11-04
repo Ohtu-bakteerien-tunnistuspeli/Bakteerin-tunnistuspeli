@@ -13,12 +13,11 @@ const CaseList = () => {
         dispatch(deleteCase(caseToDelete, user.token))
     }
 
-    const style = { margin: '10px', fontSize: '40px' }
     return (
         <div>
-            <h2 style={style}>Tapaukset</h2>
+            <h2>Tapaukset</h2>
             {cases.length !== 0 ?
-                <Table id='caseTable'>
+                <Table id='caseTable' borderless hover>
                     <thead>
                         <tr>
                             <th>Nimi</th>
