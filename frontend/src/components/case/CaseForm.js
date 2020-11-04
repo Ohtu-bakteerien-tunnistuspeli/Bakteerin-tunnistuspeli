@@ -364,9 +364,9 @@ const CaseForm = ({ caseToEdit }) => {
                                     {caseToEdit ? <Button id="saveEdit" variant="success" type="submit">
                                         Tallenna muutokset
                                     </Button> : <Button
-                                            variant='success'
-                                            type='submit'
-                                            id='addCase'>
+                                        variant='success'
+                                        type='submit'
+                                        id='addCase'>
                                             Tallenna tapaus
                                     </Button>}
 

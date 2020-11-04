@@ -16,7 +16,7 @@ const TestForm = ({ testToEdit }) => {
 
     /* style parameters */
     const style = { margin: '10px', float: 'right' }
-   /* style parameters end */
+    /* style parameters end */
 
     /* initial parameters */
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
@@ -49,7 +49,6 @@ const TestForm = ({ testToEdit }) => {
     /* form control */
     const addTests = (event) => {
         event.preventDefault()
-        console.log(controlImage)
         dispatch(addTest(testName,
             testType,
             controlImage,
@@ -80,7 +79,6 @@ const TestForm = ({ testToEdit }) => {
         const photosToDelete = deletePhotos
         const token = user.token
         const id = testToEdit.id
-        console.log(controlImage)
         setDeleteSpecifics([])
         dispatch(updateTest(id, testName,
             testType, controlImage,
@@ -93,10 +91,23 @@ const TestForm = ({ testToEdit }) => {
     /* form control end */
 
     const addBacteriumSpecificImage = () => {
+        if (!bacterium) {
+            return
+        }
         if (bacteriaSpecificImage.image !== 'undefined' && bacteriaSpecificImage.bacterium !== '') {
-            if (bacteriaSpecificImage.name !== '') {
-                setBacteriaImages(bacteriaSpecificImages.concat(bacteriaSpecificImage))
-                setDeleteSpecifics(deleteSpecifics.filter(img => img !== bacteriaSpecificImage.name))
+            if (bacteriaSpecificImage.name !== '' && bacteriaSpecificImage.name !== 'default' && bacterium !== 'default') {
+                var newFile = null
+                if (bacteriaSpecificImages === undefined || bacteriaSpecificImage.name === 'undefined') {
+                    var file = bacteriaSpecificImage
+                    var blob = file.slice(0, file.size, file.type)
+                    newFile = new File([blob], bacterium, { type: file.type })
+                    setBacteriaImage(newFile)
+                }
+                if (!newFile) {
+                    newFile = bacteriaSpecificImage
+                }
+                setBacteriaImages(bacteriaSpecificImages.concat(newFile))
+                setDeleteSpecifics(deleteSpecifics.filter(img => img !== newFile.name))
                 setBacteriaImage(INITIAL_STATE)
             }
         }
