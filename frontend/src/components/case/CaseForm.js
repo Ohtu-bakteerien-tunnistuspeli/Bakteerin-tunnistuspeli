@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Samples from './components/Samples.js'
 import AddSample from './components/AddSample.js'
 import TestGroup from './components/TestGroup.js'
@@ -147,7 +147,7 @@ const CaseForm = ({ caseToEdit }) => {
         setTestForCase({ isRequired: false, tests: [] })
         setTestGroup([])
         setTestGroups([])
-        setAddedTests([])
+        setAddedTests(setAddedTests(caseToEdit ? testsFromTestGroups : []))
         setAddingAlt(false)
         setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
@@ -203,13 +203,32 @@ const CaseForm = ({ caseToEdit }) => {
     const addTest = (onChange) => {
         if (!addedTests.includes(test.testId) && test.testId) {
             setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
-            setAddedTests([...addedTests, test.testId])
+            setAddedTests(addedTests.concat(test.testId))
             setAddingTest(true)
             setAddingAlt(false)
             setTest({ name: '', testId: '', positive: false })
             onChange('test', '')
         }
     }
+
+    const testsFromTestGroups = () => {
+        const testIds = []
+
+        for (const testGroup of caseToEdit.testGroups) {
+            for (const testAlts of testGroup) {
+                for (const t of testAlts.tests) {
+                    testIds.push(t.test.id)
+                }
+            }
+        }
+
+        return testIds
+    }
+
+    useEffect(() => {
+        setAddedTests(caseToEdit ? testsFromTestGroups : [])
+        // eslint-disable-next-line
+    }, [])
     /* testgroup control end */
 
     /* image */
@@ -348,6 +367,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         onChange={setFieldValue}
                                         value={values.test}
                                         error={errors.test}
+                                        addedTests={addedTests}
                                         touched={touched.test}
                                     ></AddTestGroup>
                                     {testGroups.map((testGroup, i) =>

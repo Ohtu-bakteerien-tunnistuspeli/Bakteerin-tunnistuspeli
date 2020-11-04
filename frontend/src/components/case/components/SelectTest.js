@@ -1,11 +1,12 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
-const SelectTest = ({ tests, setTest, test, onChange, value, error }) => {
+const SelectTest = ({ tests, setTest, test, onChange, value, error, addedTests }) => {
 
     const handleChange = event => {
         event.preventDefault()
         onChange('test', event.target.value)
     }
+
     return (
         <>
             <Form.Control
@@ -19,7 +20,7 @@ const SelectTest = ({ tests, setTest, test, onChange, value, error }) => {
                 }}>
                 <option value=''>Valitse testi</option>
                 {
-                    tests.map(t =>
+                    tests.filter(t => !addedTests?.includes(t.id)).map(t =>
                         <option key={t.id} value={JSON.stringify(t)}>{t.name}</option>
                     )
                 }

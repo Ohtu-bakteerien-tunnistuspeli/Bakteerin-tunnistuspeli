@@ -5,7 +5,7 @@ import { Button, ButtonGroup, Form, Table } from 'react-bootstrap'
 const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setTest,
     test, tests, tableWidth, testForCase, setTestForCase, addTest,
     addTestToTestGroup, testGroup, addTestGroup,
-    onChange, value, error, touched
+    onChange, value, error, addedTests, touched
 }) => {
 
     return (
@@ -13,7 +13,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setTest,
             {!addingAlt && !addingTest ?
                 <>
                     <SelectTest tests={tests} setTest={setTest} test={test} onChange={onChange} value={value}
-                        error={error} touched={touched}
+                        error={error} addedTests={addedTests} touched={touched}
                     ></SelectTest>
 
                     <Form.Check
@@ -56,7 +56,7 @@ const AddTestGroup = ({ addingAlt, setAddingAlt, addingTest, setTest,
                             {addingAlt ?
                                 <>
                                     <td>
-                                        <SelectTest tests={tests} setTest={setTest} test={test} onChange={onChange} error={error} touched={touched}></SelectTest>
+                                        <SelectTest tests={tests} setTest={setTest} test={test} onChange={onChange} error={error} addedTests={addedTests} touched={touched}></SelectTest>
                                     </td>
                                     <td>
                                         <Form.Check

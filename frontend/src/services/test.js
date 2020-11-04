@@ -28,7 +28,6 @@ const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesi
     formData.append('positiveResultImage', photoPos )
     formData.append('negativeResultImage', photoNeg)
     bacteriaSpesif.forEach(bact => formData.append('bacteriaSpecificImages', bact))
-    console.log('delteete', deleteSpecifics)
     formData.append('deleteSpecifics', JSON.stringify(deleteSpecifics))
     formData.append('deleteCtrl', photosToDelete.ctrl)
     formData.append('deletePos', photosToDelete.pos)
