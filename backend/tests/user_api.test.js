@@ -196,6 +196,57 @@ describe('register ', () => {
     })
 })
 
+describe('getting users', () => {
+    test('users are returned as array', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+            .expect(200)
+        const usersRes = await api
+            .get('/api/user')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        expect(usersRes.body.length).toEqual(1)
+    })
+
+    test('returned users do not contain one getting them', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+            .expect(200)
+        const usersRes = await api
+            .get('/api/user')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        const users = usersRes.body.map(listUser => listUser.username)
+        expect(users).not.toContain('adminNew')
+        expect(users).toContain('usernameNew')
+    })
+
+    test('user cannot get users', async () => {
+        const user = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        await api
+            .get('/api/user')
+            .set('Authorization', `bearer ${user.body.token}`)
+            .expect(401)
+            .expect('Content-Type', /application\/json/)
+    })
+})
+
 describe('delete', () => {
     test('user can delete itself', async () => {
         const user = await User.findOne({ username: 'usernameNew' })
