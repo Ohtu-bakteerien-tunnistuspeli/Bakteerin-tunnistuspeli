@@ -10,6 +10,7 @@ import CaseList from './components/case/CaseList'
 import TestList from './components/test/TestList'
 import CreditList from './components/credit/CreditList'
 import GamePage from './components/GamePage'
+import ProfilePage from './components/ProfilePage'
 import Notification from './components/Notification'
 import Footer from './components/Footer'
 import { Button, Navbar, Nav } from 'react-bootstrap'
@@ -100,7 +101,7 @@ const App = () => {
                     </Nav>
                     <Nav.Link href="#" as="span">
                         {user
-                            ? <em><p style={marginTop}>Tervetuloa {user.username}</p></em>
+                            ? <em><p style={marginTop}>Tervetuloa <Link style={padding} to="/profiilini">{user.username}</Link></p></em>
                             : <Link style={padding} to="/kirjautuminen">Kirjaudu sisään</Link>
                         }
                     </Nav.Link>
@@ -155,6 +156,13 @@ const App = () => {
                                 <Route path='/peli'>
                                     {game ?
                                         <GamePage></GamePage>
+                                        :
+                                        <Redirect to='/'></Redirect>
+                                    }
+                                </Route>
+                                <Route path='/profiilini'>
+                                    {user ? 
+                                        <ProfilePage />
                                         :
                                         <Redirect to='/'></Redirect>
                                     }
