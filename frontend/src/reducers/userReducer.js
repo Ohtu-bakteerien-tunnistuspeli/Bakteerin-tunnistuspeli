@@ -5,21 +5,23 @@ import { getTests, zeroTest } from './testReducer'
 import { getCases, zeroCase } from './caseReducer'
 import { getCredits, zeroCredit } from './creditReducer'
 import { recoverGame } from './gameReducer'
+import { getUsers, zeroUsers } from './usersReducer'
+
 const reducer = (state = null, action) => {
     switch (action.type) {
-    case 'LOGIN': {
-        return action.data
-    }
-    case 'LOGOUT': {
-        return action.data
-    }
-    case 'RETURN_USER': {
-        return action.data
-    }
-    case 'REGISTER': {
-        return action.data
-    }
-    default: return state
+        case 'LOGIN': {
+            return action.data
+        }
+        case 'LOGOUT': {
+            return action.data
+        }
+        case 'RETURN_USER': {
+            return action.data
+        }
+        case 'REGISTER': {
+            return action.data
+        }
+        default: return state
     }
 }
 
@@ -35,6 +37,9 @@ export const login = (username, password, history) => {
                 type: 'LOGIN',
                 data: user
             })
+            if (user.admin) {
+                dispatch(getUsers(user.token))
+            }
             dispatch(getCredits(user.token))
             dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
@@ -58,6 +63,7 @@ export const logout = (history) => {
             data: null
         })
         history.push('/kirjautuminen')
+        dispatch(zeroUsers())
         dispatch(zeroBacteria())
         dispatch(zeroCase())
         dispatch(zeroCredit())
@@ -77,6 +83,9 @@ export const returnUser = (history) => {
         let user = null
         if (userText) {
             user = JSON.parse(userText)
+            if (user.admin) {
+                dispatch(getUsers(user.token))
+            }
             dispatch(getCredits(user.token))
             dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
