@@ -188,6 +188,7 @@ const GamePage = () => {
                                         onChange={(options) => setBacterium(options[0])}
                                         filterBy={(option, props) => option.toLowerCase().startsWith(props.text.toLowerCase())}
                                         options={bacteria}
+                                        emptyLabel='Vastaavia bakteereja ei löytynyt'
                                     />
                                 </Form.Group>
                                 <Button variant='info'
