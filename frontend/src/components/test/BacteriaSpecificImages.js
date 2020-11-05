@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Form, Image } from 'react-bootstrap'
-import AddImage from './components/AddImage.js'
 
 const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, setBacteriaImages, handleSpecificImg, bacteriaSpecificImages, bacteriaSpecificImage, addBacteriumSpecificImage, removeBacteriaSpecificImage, marginStyle }) => {
     return (
