@@ -176,6 +176,20 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                 oldLinks.push(testToEdit.negativeResultImage.url)
                 testToUpdate.negativeResultImage = null
             }
+            if (request.body.deleteSpecifics) {
+                const deleteSpecifics = JSON.parse(request.body.deleteSpecifics)
+                if (deleteSpecifics && deleteSpecifics.length > 0) {
+                    for (let img of deleteSpecifics) {
+                        for (let i = 0; i < testToUpdate.bacteriaSpecificImages.length; i++) {
+                            if (testToUpdate.bacteriaSpecificImages[i] && testToUpdate.bacteriaSpecificImages[i].bacterium && img === testToUpdate.bacteriaSpecificImages[i].bacterium.name) {
+                                oldLinks.push(testToUpdate.bacteriaSpecificImages[i].url)
+                                testToUpdate.bacteriaSpecificImages[i] = null
+                            }
+                        }
+                    }
+                    testToUpdate.bacteriaSpecificImages = testToUpdate.bacteriaSpecificImages.filter(img => img !== null)
+                }
+            }
             const updatetTest = await Test.findByIdAndUpdate(request.params.id, testToUpdate, { new: true, runValidators: true, context: 'query' })
             for (let i = 0; i < oldLinks.length; i++) {
                 fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)

@@ -10,7 +10,7 @@ const Footer = () => {
     const [showImageCopyright, setShowImageCopyright] = useState(false)
 
     return (
-        <div className="container">
+        <div className='footer'>
             <p className="navbar-text">© Copyright 2020 Helsingin yliopisto.
                 &nbsp;{<a href="#" onClick={() => setShowGDPR(true)}>Käyttöehdot</a>//eslint-disable-line
                 }&nbsp;

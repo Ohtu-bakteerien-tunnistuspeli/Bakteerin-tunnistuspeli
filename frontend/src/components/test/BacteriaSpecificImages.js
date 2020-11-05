@@ -1,13 +1,23 @@
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 
-const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, setBacteriaImages, handleSpecificImg, bacteriaSpecificImages, bacteriaSpecificImage, addBacteriumSpecificImage, marginStyle }) => {
+const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, setBacteriaImages, handleSpecificImg, bacteriaSpecificImages, bacteriaSpecificImage, addBacteriumSpecificImage, removeBacteriaSpecificImage, marginStyle }) => {
     return (
         <Form.Group controlId={controlId}>
-            <Form.Label>Bakteerikohtaiset tulokset</Form.Label>
+            <Form.Label style={{ paddingTop:'40px' }}><h4>Bakteerikohtaiset kuvat</h4></Form.Label>
             <ul>
-                {bacteriaSpecificImages.map((image, i) =>
-                    <li key={i}>{image.name}</li>
+                {bacteriaSpecificImages.map((image, i) => {
+                    return (
+                        <li key={i}>{image.name ? image.name : image.bacterium.name} &ensp;&ensp;
+                            <Button
+                                onClick={ () => removeBacteriaSpecificImage(image) }
+                                variant='danger'
+                                size='sm'>
+                                Poista kuva
+                            </Button>
+                        </li>
+                    )
+                }
                 )}
             </ul>
             <Form.Label style={marginStyle}>Bakteeri</Form.Label>
@@ -15,14 +25,14 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, 
                 as='select'
                 style={marginStyle}
                 value={bacterium}
+                defaultValue='default'
                 onClick={({ target }) => setBacterium(target.value)}
                 onChange={({ target }) => setBacterium(target.value)}>
-                <option>Valitse bakteeri</option>
+                <option value='default' disabled hidden>Valitse bakteeri</option>
                 {bacteria.map(bact =>
                     <option key={bact.id} value={bact.name}>{bact.name}</option>
                 )}
             </Form.Control>
-            <Form.Label style={marginStyle}>Bakteerikohtaiset Kuvat </Form.Label>
             <Form.Control
                 style={marginStyle}
                 name='bacteriaSpecificImage'
@@ -30,7 +40,7 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, 
                 value={bacteriaSpecificImage.image}
                 onChange={handleSpecificImg}
             />
-            <Button style={marginStyle} type='button' onClick={addBacteriumSpecificImage}>Lisää bakteerikohtainen kuva</Button>
+            <Button style={marginStyle} type='button' onClick={addBacteriumSpecificImage}>Tallenna bakteerikohtainen kuva</Button>
             <Button type='button' variant='warning' onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaisten kuvien lista</Button>
         </Form.Group>
     )

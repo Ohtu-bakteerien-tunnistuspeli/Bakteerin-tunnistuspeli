@@ -9,8 +9,8 @@ const get = (token) => {
 
 const add = async (name, type, contImg, posImg, negImg, bacteriaSpes, token) => {
     const formData = new FormData()
-    formData.append('name', name.value )
-    formData.append('type', type.value )
+    formData.append('name', name )
+    formData.append('type', type )
     formData.append('controlImage', contImg)
     formData.append('positiveResultImage', posImg )
     formData.append('negativeResultImage', negImg)
@@ -19,7 +19,7 @@ const add = async (name, type, contImg, posImg, negImg, bacteriaSpes, token) => 
     return axios.post(baseUrl, formData , config).then(response => response.data).catch(error => error.response.data)
 }
 
-const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, token) => {
+const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token) => {
     const formData = new FormData()
     formData.append('id', id )
     formData.append('name', name )
@@ -28,6 +28,7 @@ const update = async (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesi
     formData.append('positiveResultImage', photoPos )
     formData.append('negativeResultImage', photoNeg)
     bacteriaSpesif.forEach(bact => formData.append('bacteriaSpecificImages', bact))
+    formData.append('deleteSpecifics', JSON.stringify(deleteSpecifics))
     formData.append('deleteCtrl', photosToDelete.ctrl)
     formData.append('deletePos', photosToDelete.pos)
     formData.append('deleteNeg', photosToDelete.neg)

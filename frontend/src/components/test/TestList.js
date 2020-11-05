@@ -5,21 +5,14 @@ import TestListing from './TestListing'
 import { Table } from 'react-bootstrap'
 
 const TestList = () => {
-    const style = { margin: '10px', fontSize: '40px' }
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
     const user = useSelector(state => state.user)
 
     return (
         <div>
-            <h2 style={style}>Testit</h2>
-            <p></p>
-            {user?.admin ?
-                <TestForm></TestForm>
-                :
-                <></>
-            }
+            <h2>Testit</h2>
             {tests.length !== 0 ?
-                <Table striped bordered hover>
+                <Table borderless hover>
                     <thead>
                         <tr>
                             <th>Nimi</th>
@@ -27,7 +20,13 @@ const TestList = () => {
                             <th>Kontrollikuva</th>
                             <th>Positiivinen oletus</th>
                             <th>Negatiivinen oletus</th>
-                            <th></th>
+                            <th>
+                                {user?.admin ?
+                                    <TestForm></TestForm>
+                                    :
+                                    <></>
+                                }
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,7 +36,14 @@ const TestList = () => {
                     </tbody>
                 </Table>
                 :
-                <div>Ei Testejä</div>
+                <>
+                    {user?.admin ?
+                        <TestForm></TestForm>
+                        :
+                        <></>
+                    }
+                    <div>Ei Testejä</div>
+                </>
             }
         </div>
     )

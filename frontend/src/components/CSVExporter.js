@@ -1,6 +1,6 @@
 import React from 'react'
 import { CSVLink } from 'react-csv'
-
+import { Button } from 'react-bootstrap'
 const CSVExport = ({ data }) => {
     const headers = [
         { label: 'Opiskelijanumero', key: 'studentNum' },
@@ -27,9 +27,11 @@ const CSVExport = ({ data }) => {
     }
 
     return (
-        <div className="Export">
-            <CSVLink {...csvReport}>Lataa Excel-muodossa</CSVLink>
-        </div>
+        <>
+            <CSVLink {...csvReport}>
+                <Button variant='success' style={{ margin: '2px', float: 'right' }}>Tallenna Excel-muodossa</Button>
+            </CSVLink>
+        </>
     )
 }
 

@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import CaseListing from './CaseListing'
 import CaseForm from './CaseForm'
 import { deleteCase } from '../../reducers/caseReducer'
+import { Table } from 'react-bootstrap'
 
 const CaseList = () => {
     const cases = useSelector(state => state.case)?.sort((case1, case2) => case1.name.localeCompare(case2.name))
@@ -12,23 +13,39 @@ const CaseList = () => {
         dispatch(deleteCase(caseToDelete, user.token))
     }
 
-    const style = { margin: '10px', fontSize: '40px' }
     return (
         <div>
-            <h2 style={style}>Tapaukset</h2>
+            <h2>Tapaukset</h2>
             {cases.length !== 0 ?
-                <ul>
-                    {cases.map(caseItem =>
-                        <CaseListing key={caseItem.id} caseItem={caseItem} admin={user?.admin} deleteCase={delCase}  />
-                    )}
-                </ul>
+                <Table id='caseTable' borderless hover>
+                    <thead>
+                        <tr>
+                            <th>Nimi</th>
+                            <th>Lopetuskuva</th>
+                            <th>
+                                {user?.admin ?
+                                    <CaseForm></CaseForm>
+                                    :
+                                    <></>
+                                }
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {cases.map(caseItem =>
+                            <CaseListing key={caseItem.id} caseItem={caseItem} admin={user?.admin} deleteCase={delCase} />
+                        )}
+                    </tbody>
+                </Table>
                 :
-                <div>Ei tapauksia</div>
-            }
-            {user?.admin ?
-                <CaseForm></CaseForm>
-                :
-                <></>
+                <>
+                    {user?.admin ?
+                        <CaseForm></CaseForm>
+                        :
+                        <></>
+                    }
+                    <div>Ei tapauksia</div>
+                </>
             }
         </div>
     )

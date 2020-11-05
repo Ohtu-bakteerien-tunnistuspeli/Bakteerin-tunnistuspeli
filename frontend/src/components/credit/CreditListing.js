@@ -13,8 +13,8 @@ const CreditListing = ({ credit, admin }) => {
                     <td>{credit.user.username}</td>
                     <td>{credit.user.classGroup}</td>
                     <td>
-                        <Button id="creditShowLink" variant='primary' onClick={handleShow}>Näytä suoritukset</Button>
-                        <Modal show={show} size="lg" onHide={handleClose} >
+                        <Button id='creditShowLink' style={{ float: 'right' }} variant='primary' onClick={handleShow}>Näytä suoritukset</Button>
+                        <Modal show={show} size='lg' scrollable='true' onHide={handleClose} >
                             <Modal.Header closeButton></Modal.Header>
                             <Modal.Body>
                                 Opiskelija numero: {credit.user.studentNumber}<br />

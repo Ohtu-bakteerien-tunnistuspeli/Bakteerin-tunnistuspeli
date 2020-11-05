@@ -121,7 +121,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 name: 'Maitotila 1',
                 bacterium: bac1,
                 anamnesis: 'Vasemman takaneljänneksen maito on hiukan kokkareista...',
-                //completitionText: 'You completed the initial case!',
+                completionText: 'You completed the initial case!',
                 hints: [],
                 samples: [
                     {

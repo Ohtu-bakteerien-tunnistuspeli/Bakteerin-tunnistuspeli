@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import Samples from './Samples.js'
-import AddSample from './AddSample.js'
-import TestGroup from './TestGroup.js'
+import React, { useState, useEffect } from 'react'
+import Samples from './components/Samples.js'
+import AddSample from './components/AddSample.js'
+import TestGroup from './components/TestGroup.js'
 import SelectBacterium from './components/SelectBaterium.js'
-import AddTestGroup from './AddTestGroup.js'
+import AddTestGroup from './components/AddTestGroup.js'
 import Name from './components/Name.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
@@ -16,12 +16,12 @@ import { updateCase } from '../../reducers/caseReducer'
 
 const CaseForm = ({ caseToEdit }) => {
 
-    /* intial parameters */
+    /* initial parameters */
     const cases = useSelector(state => state.case)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
-    /* intial parameters end*/
+    /* initial parameters end*/
 
     /* parameters for style */
     const tableWidth = {
@@ -128,7 +128,7 @@ const CaseForm = ({ caseToEdit }) => {
         const id = caseToEdit.id
         dispatch(updateCase(id, name,
             bacteriumId, anamnesis, completionText, completionImage, samples,
-            testGroups, deleteEndImage,  user.token, handleClose))
+            testGroups, deleteEndImage, user.token, handleClose))
     }
 
     const addNewCase = () => {
@@ -147,6 +147,7 @@ const CaseForm = ({ caseToEdit }) => {
         setTestForCase({ isRequired: false, tests: [] })
         setTestGroup([])
         setTestGroups([])
+        setAddedTests(setAddedTests(caseToEdit ? testsFromTestGroups : []))
         setAddingAlt(false)
         setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
@@ -172,6 +173,13 @@ const CaseForm = ({ caseToEdit }) => {
 
     /* testgroup control */
     const removeTestGroup = (tg) => {
+        let newTests = addedTests
+        for (const testGroup of tg) {
+            for (const test of testGroup.tests) {
+                newTests = newTests.filter(testId => testId !== test.testId)
+            }
+        }
+        setAddedTests(newTests)
         setTestGroups(testGroups.filter(testgroup => testgroup !== tg))
     }
 
@@ -193,15 +201,34 @@ const CaseForm = ({ caseToEdit }) => {
     }
 
     const addTest = (onChange) => {
-        if (!addedTests.includes(test.testId)) {
+        if (!addedTests.includes(test.testId) && test.testId) {
             setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
-            setAddedTests([...addedTests, test.testId])
+            setAddedTests(addedTests.concat(test.testId))
             setAddingTest(true)
             setAddingAlt(false)
             setTest({ name: '', testId: '', positive: false })
             onChange('test', '')
         }
     }
+
+    const testsFromTestGroups = () => {
+        const testIds = []
+
+        for (const testGroup of caseToEdit.testGroups) {
+            for (const testAlts of testGroup) {
+                for (const t of testAlts.tests) {
+                    testIds.push(t.test.id)
+                }
+            }
+        }
+
+        return testIds
+    }
+
+    useEffect(() => {
+        setAddedTests(caseToEdit ? testsFromTestGroups : [])
+        // eslint-disable-next-line
+    }, [])
     /* testgroup control end */
 
     /* image */
@@ -210,12 +237,19 @@ const CaseForm = ({ caseToEdit }) => {
     }
     /* image end */
 
+    const testGroupSwitch = (a, b) => {
+        let newTestGroups = testGroups.slice()
+        newTestGroups[a] = testGroups[b]
+        newTestGroups[b] = testGroups[a]
+        setTestGroups(newTestGroups)
+    }
+
     return (
         <div>
-            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} variant='primary' onClick={handleShow}>
+            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} style={{ float: 'right', margin: '2px' }} variant='primary' onClick={handleShow}>
                 {caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}
             </Button>
-            <Modal show={show} size='lg' onHide={handleClose} backdrop='static'>
+            <Modal show={show} size='xl' scrollable='true' onHide={handleClose} backdrop='static'>
                 <Modal.Header closeButton>{caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}</Modal.Header>
                 <Modal.Body>
                     <Notification></Notification>
@@ -333,6 +367,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         onChange={setFieldValue}
                                         value={values.test}
                                         error={errors.test}
+                                        addedTests={addedTests}
                                         touched={touched.test}
                                     ></AddTestGroup>
                                     {testGroups.map((testGroup, i) =>
@@ -340,17 +375,19 @@ const CaseForm = ({ caseToEdit }) => {
                                             testgroup={testGroup}
                                             index={i}
                                             removeTestGroup={removeTestGroup}
+                                            testGroupsSize={testGroups.length}
+                                            testGroupSwitch={testGroupSwitch}
                                         >
                                         </TestGroup>
                                     )}
 
-                                    {caseToEdit ? <Button id="saveEdit" variant="primary" type="submit">
+                                    {caseToEdit ? <Button id="saveEdit" variant="success" type="submit">
                                         Tallenna muutokset
                                     </Button> : <Button
-                                        variant='primary'
+                                        variant='success'
                                         type='submit'
                                         id='addCase'>
-                                            Lisää tapaus
+                                            Tallenna tapaus
                                     </Button>}
 
                                     { Object.keys(errors).length > 0 ?

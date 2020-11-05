@@ -11,8 +11,7 @@ const CreditList = () => {
     const [filterByClassGroup, setFilterByClassGroup] = useState('')
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
     const user = useSelector(state => state.user)
-    const style = { margin: '10px', fontSize: '40px' }
-    const exportStyle = { paddingTop: '20px', paddingBottom: '20px' }
+    const exportStyle = { margin: '2px', float: 'right' }
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -37,21 +36,20 @@ const CreditList = () => {
 
     return (
         <div>
-            <h2 style={style}>Suoritukset</h2>
+            <h2>Suoritukset</h2>
             Filtteröi vuosikurssilla <input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
             Filtteröi opiskelijanumerolla <input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
-            <div style={exportStyle}>
-                <CSVExporter data={creditsToShow} />
-            </div>
-            <Button id='deleteCredits' variant='danger' onClick={deleteCredits}>Poista suoritukset</Button>
             {credits.length !== 0 ?
-                <Table>
+                <Table borderless hover>
                     <thead>
                         <tr>
                             <th>Opiskelijanumero</th>
                             <th>Käyttäjänimi</th>
                             <th>Vuosikurssi</th>
-                            <th></th>
+                            <th>
+                                <Button id='deleteCredits' variant='danger' style={exportStyle} onClick={deleteCredits}>Poista suoritukset</Button>
+                                <CSVExporter data={creditsToShow} />
+                            </th>
                         </tr>
                     </thead>
                     <tbody>

@@ -68,9 +68,9 @@ export const deleteTest = (id, token) => {
     }
 }
 
-export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, token) => {
+export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token) => {
     return async dispatch => {
-        const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, token)
+        const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {

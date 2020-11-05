@@ -7,6 +7,7 @@ import caseReducer from './reducers/caseReducer'
 import notificationReducer from './reducers/notificationReducer'
 import gameReducer from './reducers/gameReducer'
 import creditReducer from './reducers/creditReducer'
+import usersReducer from './reducers/usersReducer'
 
 const reducer = combineReducers({
     user: userReducer,
@@ -15,7 +16,8 @@ const reducer = combineReducers({
     test: testReducer,
     case: caseReducer,
     game: gameReducer,
-    credit: creditReducer
+    credit: creditReducer,
+    users: usersReducer
 })
 
 const store = createStore(reducer, applyMiddleware(thunk))

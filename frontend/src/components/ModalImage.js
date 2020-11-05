@@ -13,7 +13,7 @@ const ModalImage = ({ imageUrl, width, height }) => {
     }
 
     const style = {
-        position:'absolute', padding: '0!important', margin: 0, border: 0
+        position:'fixed', padding: '0!important', margin: 0, border: 0, top:'10px'
     }
 
     return (

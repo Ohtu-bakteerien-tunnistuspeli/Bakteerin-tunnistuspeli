@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap'
+import { Typeahead } from 'react-bootstrap-typeahead'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkSamples, checkTests, checkBacterium } from '../reducers/gameReducer'
 import ModalImage from './ModalImage'
@@ -10,6 +11,7 @@ const GamePage = () => {
     const dispatch = useDispatch()
     const game = useSelector(state => state.game)
     const user = useSelector(state => state.user)
+    const bacteria = useSelector(state => state.bacteria)?.map(bact => bact.name)
     const [bacterium, setBacterium] = useState('')
     const [selectedSamples, setSelectedSamples] = useState([])
     const tests = useSelector(state => state.test)?.sort((test1, test2) => test1.name.localeCompare(test2.name))
@@ -34,7 +36,7 @@ const GamePage = () => {
 
     const handleTest = (testId) => {
         if (!game.correctTests.includes(testId) && !game.allTestsDone) {
-            dispatch(checkTests(game, testId, user.token))
+            dispatch(checkTests(game, testId, user.token, setTestTab))
         }
     }
 
@@ -60,12 +62,12 @@ const GamePage = () => {
                                         <h1>Näytteenotto</h1>
                                         <Form id='samples' onSubmit={(event) => sampleSubmit(event)} style={{ backgroundColor: '#F5F5F5' }}>
                                             <Form.Label>Millaisen näytteen otat?</Form.Label>
-                                            {game.case.samples.map((sample, i) => <Form.Check  key={i} label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)}></Form.Check>)}
+                                            {game.case.samples.map((sample, i) => <Form.Check key={i} label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)}></Form.Check>)}
                                             <Button
                                                 variant='success'
                                                 type='submit'
                                                 id='checkSamples'
-                                                style={ style }>
+                                                style={style}>
                                                 Ota näyte
                                             </Button>
                                         </Form>
@@ -79,7 +81,7 @@ const GamePage = () => {
                                                     <>
                                                         <h2>Viljelyt</h2>
                                                         {cultivationsToShow.map(test =>
-                                                            <Button id='testButton' key={test.id} variant='warning' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className="fas fa-check"></i> : <></>}</Button>
+                                                            <Button id='testButton' key={test.id} variant='warning' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -90,7 +92,7 @@ const GamePage = () => {
                                                     <>
                                                         <h2>Testit</h2>
                                                         {testsToShow.map(test =>
-                                                            <Button key={test.id} variant='info' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className="fas fa-check"></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='info' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -101,7 +103,7 @@ const GamePage = () => {
                                                     <>
                                                         <h2>Värjäys</h2>
                                                         {stainingsToShow.map(test =>
-                                                            <Button key={test.id} variant='success' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className="fas fa-check"></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='success' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -112,7 +114,7 @@ const GamePage = () => {
                                                     <>
                                                         <h2>Muut</h2>
                                                         {othersToShow.map(test =>
-                                                            <Button key={test.id} variant='secondary' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className="fas fa-check"></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='secondary' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -123,12 +125,30 @@ const GamePage = () => {
                             }
                         </Tab>
                         <Tab eventKey='tuloksia' title='Tuloksia'>
-                            <h4 style={ style }>Tulokset</h4>
+                            <h4 style={style}>Tulokset</h4>
                             <Table id='resultTable'>
+                                <thead>
+                                    <tr>
+                                        <th>Testi</th>
+                                        <th>Kontrollikuva</th>
+                                        <th>Tulos</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                     {game.testResults.map((result, i) =>
                                         <tr key={i}>
                                             <td>{result.testName}</td>
+                                            <td>
+                                                {tests.filter(test => test.name === result.testName).map(test =>
+                                                    <>
+                                                        {test.controlImage ?
+                                                            <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}></ModalImage>
+                                                            :
+                                                            <></>
+                                                        }
+                                                    </>
+                                                )}
+                                            </td>
                                             {result.imageUrl ?
                                                 <td><ModalImage imageUrl={result.imageUrl} width={'10%'} height={'10%'}></ModalImage></td>
                                                 :
@@ -139,31 +159,13 @@ const GamePage = () => {
                                 </tbody>
                             </Table>
                         </Tab>
-                        <Tab eventKey='kontrolleja' title='Kontrolleja'>
-                            <h4 style={ style }>Kontrollit</h4>
-                            <Table id='controlImgTable'>
-                                <tbody>
-                                    {tests.map(test =>
-                                        <tr key={test.id}>
-                                            <td>{test.name}</td>
-                                            {test.controlImage ?
-                                                <td><ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}></ModalImage></td>
-                                                :
-                                                <td></td>
-                                            }
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </Table>
-                        </Tab>
                     </Tabs>
-
                 </Tab>
                 <Tab eventKey='diagnoosi' title='Diagnoosi' disabled={!game.requiredTestsDone}>
                     <h1>Diagnoosi</h1>
                     {game.bacteriumCorrect ?
                         <>
-                            { game.case.completionText }
+                            {game.case.completionText}
                             <p></p>
                             {game.completionImageUrl ?
                                 <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
@@ -175,13 +177,23 @@ const GamePage = () => {
                         <>
                             <p>Syötä alla olevaan kenttään oikea diagnoosi (=bakteeri) tekemiesi testien perusteella.</p>
                             <Form onSubmit={(event) => bacteriumSubmit(event)}>
-                                <Form.Group controlId="bacterium">
+                                <Form.Group>
                                     <Form.Label>Syötä bakteerin nimi</Form.Label>
-                                    <Form.Control value={bacterium} onChange={(event) => setBacterium(event.target.value)} />
+                                    <Typeahead
+                                        inputProps={{ id: 'bacterium' }}
+                                        value={bacterium}
+                                        minLength={1}
+                                        labelKey={option => option}
+                                        onInputChange={(value) => setBacterium(value)}
+                                        onChange={(options) => setBacterium(options[0])}
+                                        filterBy={(option, props) => option.toLowerCase().startsWith(props.text.toLowerCase())}
+                                        options={bacteria}
+                                        emptyLabel='Vastaavia bakteereja ei löytynyt'
+                                    />
                                 </Form.Group>
-                                <Button variant="info"
-                                    type="submit"
-                                    id="checkDiagnosis">
+                                <Button variant='info'
+                                    type='submit'
+                                    id='checkDiagnosis'>
                                     Tarkasta diagnoosi
                                 </Button>
                             </Form>
