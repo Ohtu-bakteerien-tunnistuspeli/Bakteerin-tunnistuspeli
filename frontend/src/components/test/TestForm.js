@@ -43,6 +43,7 @@ const TestForm = ({ testToEdit }) => {
     /* modal control */
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
+
     const handleClose = () => setShow(false)
     /* modal control end */
 
@@ -61,13 +62,19 @@ const TestForm = ({ testToEdit }) => {
     }
 
     const resetTestForm = () => {
-        setControlImage([])
-        setPositiveResultImage([])
-        setNegativeImage([])
-        setBacteriaImages(testToEdit && testToEdit.bacteriaSpecificImages.length > 0 ? testToEdit.bacteriaSpecificImages : [])
         setTestName('')
         setTestType('')
+        setBacterium('')
+        setControlImage(INITIAL_STATE)
+        setPositiveResultImage(INITIAL_STATE)
+        setNegativeImage(INITIAL_STATE)
+        setBacteriaImages([])
+        setBacteriaImage(INITIAL_STATE)
+        setDeletePhotos({ ctrl: false, pos: false, neg: false })
         setDeleteSpecifics([])
+        setPos(false)
+        setNeg(false)
+        setCtrl(false)
     }
 
     const removeTest = () => {
@@ -79,7 +86,6 @@ const TestForm = ({ testToEdit }) => {
         const photosToDelete = deletePhotos
         const token = user.token
         const id = testToEdit.id
-        setDeleteSpecifics([])
         dispatch(updateTest(id, testName,
             testType, controlImage,
             positiveResultImage, negativeImage,
@@ -87,6 +93,10 @@ const TestForm = ({ testToEdit }) => {
             photosToDelete,
             deleteSpecifics,
             token))
+        handleClose()
+        setDeletePhotos({ ctrl: false, pos: false, neg: false })
+        setDeleteSpecifics([])
+
     }
     /* form control end */
 
@@ -175,12 +185,16 @@ const TestForm = ({ testToEdit }) => {
                             <Form.Group controlId='editControlImage'>
 
                                 {ctrl && testToEdit.controlImage ?
-                                    <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100}/>
+                                    <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100} />
                                     : <></>
                                 }
                                 <DeleteButton
                                     id='deleteControl'
-                                    onClick={() => { setCtrl(false); setDeletePhotos({ ...deletePhotos, ctrl: true }) }}
+                                    onClick={() => {
+                                        setCtrl(false);
+                                        setDeletePhotos({ ...deletePhotos, ctrl: true })
+                                        console.log(ctrl)
+                                    }}
                                     text='Poista kontrollikuva'
                                 ></DeleteButton>
                             </Form.Group>
@@ -200,7 +214,7 @@ const TestForm = ({ testToEdit }) => {
                         {testToEdit ?
                             <Form.Group controlId='editPositiveResultImage'>
                                 {pos && testToEdit.positiveResultImage ?
-                                    <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100}/>
+                                    <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100} />
                                     : <></>
                                 }
                                 <DeleteButton
@@ -226,7 +240,7 @@ const TestForm = ({ testToEdit }) => {
                         {testToEdit ?
                             <Form.Group controlId='editNegativeResultImage'>
                                 {neg && testToEdit.negativeResultImage ?
-                                    <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100}/>
+                                    <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100} />
                                     : <></>
                                 }
                                 <DeleteButton

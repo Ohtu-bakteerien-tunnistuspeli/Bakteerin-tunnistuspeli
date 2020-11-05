@@ -68,16 +68,18 @@ export const deleteTest = (id, token) => {
     }
 }
 
-export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token) => {
+export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token, resetTestForm) => {
     return async dispatch => {
         const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {
+            dispatch(setNotification({ message: 'Testi muokattiin', success: true }))
             dispatch({
                 type: 'UPDATE_TEST',
                 data: test
             })
+            
         }
     }
 }

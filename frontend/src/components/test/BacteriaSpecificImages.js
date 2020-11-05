@@ -21,16 +21,13 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, 
                 )}
             </ul>
             <Form.Label style={marginStyle}>Bakteeri</Form.Label>
-            <Form.Control
-                as='select'
-                style={marginStyle}
+            <Form.Control as='select'
+                onChange={({ target }) => setBacterium(target.value)}
                 value={bacterium}
-                defaultValue='default'
-                onClick={({ target }) => setBacterium(target.value)}
-                onChange={({ target }) => setBacterium(target.value)}>
-                <option value='default' disabled hidden>Valitse bakteeri</option>
-                {bacteria.map(bact =>
-                    <option key={bact.id} value={bact.name}>{bact.name}</option>
+            >
+                <option value='' disabled hidden>Valitse bakteeri</option>
+                {bacteria.map(bacterium =>
+                    <option key={bacterium.id} value={bacterium.name}>{bacterium.name}</option>
                 )}
             </Form.Control>
             <Form.Control
