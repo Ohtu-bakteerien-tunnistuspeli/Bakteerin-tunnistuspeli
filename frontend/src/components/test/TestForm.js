@@ -38,13 +38,21 @@ const TestForm = ({ testToEdit }) => {
     const [pos, setPos] = useState(testToEdit ? testToEdit.positiveResultImage ? true : false : false)
     const [neg, setNeg] = useState(testToEdit ? (testToEdit.negativeResultImage ? true : false) : false)
     const [ctrl, setCtrl] = useState(testToEdit ? testToEdit.controlImage ? true : false : false)
+    const [imgPreviewCtrl, setImgPreviewCtrl] = useState('')
+    const [imgPreviewNeg, setImgPreviewNeg] = useState('')
+    const [imgPreviewPos, setImgPreviewPos] = useState('')
     /* states end */
 
     /* modal control */
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
 
-    const handleClose = () => setShow(false)
+    const handleClose = () => {
+        setShow(false)
+        setImgPreviewCtrl('')
+        setImgPreviewNeg('')
+        setImgPreviewPos('')
+    }
     /* modal control end */
 
     /* form control */
@@ -116,9 +124,11 @@ const TestForm = ({ testToEdit }) => {
                 if (!newFile) {
                     newFile = bacteriaSpecificImage
                 }
+                console.log(bacteriaSpecificImage)
                 setBacteriaImages(bacteriaSpecificImages.concat(newFile))
                 setDeleteSpecifics(deleteSpecifics.filter(img => img !== newFile.name))
                 setBacteriaImage(INITIAL_STATE)
+                setBacterium('')
             }
         }
     }
@@ -146,7 +156,9 @@ const TestForm = ({ testToEdit }) => {
             <Button style={style}
                 id={testToEdit ? 'testEditButton' : 'testModalButton'}
                 variant='primary'
-                onClick={handleShow}>
+                onClick={() => {handleShow()
+                console.log(bacteriaSpecificImages)
+                }}>
                 {testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
             </Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose} >
@@ -180,6 +192,8 @@ const TestForm = ({ testToEdit }) => {
                             value={controlImage.image}
                             setImage={setControlImage}
                             setAdded={setCtrl}
+                            imgPreview={imgPreviewCtrl}
+                            setImgPreview={setImgPreviewCtrl}
                         ></AddImage>
                         {testToEdit ?
                             <Form.Group controlId='editControlImage'>
@@ -209,6 +223,8 @@ const TestForm = ({ testToEdit }) => {
                             value={positiveResultImage.image}
                             setImage={setPositiveResultImage}
                             setAdded={setPos}
+                            imgPreview={imgPreviewPos}
+                            setImgPreview={setImgPreviewPos}
                         ></AddImage>
 
                         {testToEdit ?
@@ -236,6 +252,8 @@ const TestForm = ({ testToEdit }) => {
                             value={negativeImage.image}
                             setImage={setNegativeImage}
                             setAdded={setNeg}
+                            imgPreview={imgPreviewNeg}
+                            setImgPreview={setImgPreviewNeg}
                         ></AddImage>
                         {testToEdit ?
                             <Form.Group controlId='editNegativeResultImage'>
