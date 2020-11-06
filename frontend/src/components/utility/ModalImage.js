@@ -12,21 +12,17 @@ const ModalImage = ({ imageUrl, width, height }) => {
         dispatch(setNotification(''))
     }
 
-    const style = {
-        position:'fixed', padding: '0!important', margin: 0, border: 0, top:'10px'
-    }
-
     return (
         <>
             <OverlayTrigger placement="top" delay={{ show: 250, hide: 400 }} overlay={
                 <Tooltip>Klikkaa laajentaaksesi</Tooltip>
             }>
-                <Image src={`/${imageUrl}`} onClick={handleShow} style={{ maxWidth: width, maxHeight: height }}></Image>
+                <Image src={`/${imageUrl}`} onClick={handleShow} className="modal-image-preview"></Image>
             </OverlayTrigger>
-            <Modal show={show} size='xl' onHide={handleClose} style={style} >
+            <Modal show={show} size='xl' onHide={handleClose} className="modal-image" >
                 <Modal.Header closeButton></Modal.Header>
-                <Modal.Body style={{ alignItems: 'center', padding: '0', position: 'absolute', maxWidth: 'max-content', height: 'auto', display: 'block' }} >
-                    <Image src={`/${imageUrl}`} style={{ width: '100%', height: 'auto', display: 'block' }} fluid ></Image >
+                <Modal.Body className="modal-image-container" >
+                    <Image src={`/${imageUrl}`} className="modal-image-large" fluid ></Image >
                 </Modal.Body>
             </Modal>
             <br />

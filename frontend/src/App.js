@@ -37,36 +37,8 @@ const App = () => {
 
     window.onbeforeunload = handleOnBeforeUnload
 
-    const padding = {
-        padding: 5
-    }
-
-    const paddingContainer = {
-        paddingBottom: '60px',
-        paddingTop: '40px'
-    }
-
-    const paddingPage = {
-        paddingBottom: '0px'
-    }
-
-    const footerStyle = {
-        position: 'relative',
-        left: 0,
-        bottom: 0,
-        right: 0,
-        zIndex: 100,
-        backgroundColor: 'gainsboro',
-        textAlign: 'center',
-        borderRadius: '5px'
-    }
-
-    const marginTop = {
-        marginTop: '15px'
-    }
-
     return (
-        <div style={paddingPage}>
+        <div className="page">
             {user ?
                 <Idle
                     timeout={7200000}
@@ -79,57 +51,57 @@ const App = () => {
                 :
                 null
             }
-            <Navbar style={{ minHeight: '10vh', borderRadius: '5px' }} collapseOnSelect expand="lg" bg="light" variant="light">
+            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" >
                     <Nav className="mr-auto">
                         <Nav.Link href="#" as="span">
                             {user
-                                ? <Link style={padding} to="/">Etusivu</Link>
+                                ? <Link  to="/">Etusivu</Link>
                                 : null
                             }
                         </Nav.Link>
                         <Nav.Link href="#" as="span">
                             {user?.admin
-                                ? <Link style={padding} to="/bakteeriLista">Bakteerien hallinta</Link>
+                                ? <Link  to="/bakteeriLista">Bakteerien hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
                         <Nav.Link href="#" as="span">
                             {user?.admin
-                                ? <Link style={padding} to="/tapausLista" >Tapausten hallinta</Link>
+                                ? <Link to="/tapausLista" >Tapausten hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
                         <Nav.Link href="#" as="span">
                             {user?.admin
-                                ? <Link style={padding} to="/testiLista">Testien hallinta</Link>
+                                ? <Link to="/testiLista">Testien hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
                         <Nav.Link href="#" as="span">
                             {user?.admin
-                                ? <Link style={padding} to="/suoritusLista">Suoritusten hallinta</Link>
+                                ? <Link to="/suoritusLista">Suoritusten hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
                         <Nav.Link href="#" as="span">
                             {user?.admin
-                                ? <Link style={padding} to="/käyttäjäLista">Käyttäjien hallinta</Link>
+                                ? <Link to="/käyttäjäLista">Käyttäjien hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
                     </Nav>
                     <Nav.Link href="#" as="span">
                         {user
-                            ? <em><p style={marginTop}>Tervetuloa <Link style={padding} to="/profiilini">{user.username}</Link></p></em>
-                            : <Link style={padding} to="/kirjautuminen">Kirjaudu sisään</Link>
+                            ? <em><p className="nav-text">Tervetuloa <Link to="/profiilini">{user.username}</Link></p></em>
+                            : <Link to="/kirjautuminen">Kirjaudu sisään</Link>
                         }
                     </Nav.Link>
                     <Nav.Link href="#" as="span">
                         {user
                             ? null
-                            : <Link style={padding} to="/rekisteröityminen">Rekisteröidy</Link>
+                            : <Link to="/rekisteröityminen">Rekisteröidy</Link>
                         }
                     </Nav.Link>
                     <Nav.Item>
@@ -140,8 +112,8 @@ const App = () => {
                     </Nav.Item>
                 </Navbar.Collapse>
             </Navbar>
-            <div style={{ minHeight: '82vh' }}>
-                <div style={paddingContainer} className="container">
+            <div className="wrapper">
+                <div className="container">
                     <Notification></Notification>
                     {user ?
                         <>
@@ -219,7 +191,7 @@ const App = () => {
                 </div>
             </div>
 
-            <div style={footerStyle} className="navbar navbar-inverse navbar-fixed-bottom">
+            <div className="navbar navbar-inverse navbar-fixed-bottom footer">
                 <Footer />
             </div>
         </div>

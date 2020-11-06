@@ -19,7 +19,6 @@ const GamePage = () => {
     const cultivationsToShow = tests.filter(test => test.type === 'Viljely').sort((test1, test2) => test1.name.localeCompare(test2.name))
     const stainingsToShow = tests.filter(test => test.type === 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
     const othersToShow = tests.filter(test => test.type !== 'Testi' && test.type !== 'Viljely' && test.type !== 'Värjäys').sort((test1, test2) => test1.name.localeCompare(test2.name))
-    const style = { marginTop: '10px', marginBottom: '10px' }
 
     const sampleCheckBoxChange = (description) => {
         if (selectedSamples.includes(description)) {
@@ -60,14 +59,14 @@ const GamePage = () => {
                                 !game.samplesCorrect ?
                                     <>
                                         <h1>Näytteenotto</h1>
-                                        <Form id='samples' onSubmit={(event) => sampleSubmit(event)} style={{ backgroundColor: '#F5F5F5' }}>
+                                        <Form id='samples' onSubmit={(event) => sampleSubmit(event)}>
                                             <Form.Label>Millaisen näytteen otat?</Form.Label>
                                             {game.case.samples.map((sample, i) => <Form.Check key={i} label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)}></Form.Check>)}
                                             <Button
                                                 variant='success'
                                                 type='submit'
                                                 id='checkSamples'
-                                                style={style}>
+                                                className="game-margin">
                                                 Ota näyte
                                             </Button>
                                         </Form>
@@ -75,7 +74,7 @@ const GamePage = () => {
                                     :
                                     <>
                                         <h1>Laboratoriotutkimukset</h1>
-                                        <div id='testView' style={{ backgroundColor: '#F5F5F5' }}>
+                                        <div id='testView'>
                                             {
                                                 (cultivationsToShow && cultivationsToShow.length > 0) ?
                                                     <>
@@ -125,7 +124,7 @@ const GamePage = () => {
                             }
                         </Tab>
                         <Tab eventKey='tuloksia' title='Tuloksia'>
-                            <h4 style={style}>Tulokset</h4>
+                            <h4 className="game-margin">Tulokset</h4>
                             <Table id='resultTable'>
                                 <thead>
                                     <tr>
