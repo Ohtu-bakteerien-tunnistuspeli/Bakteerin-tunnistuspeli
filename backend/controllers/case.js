@@ -276,6 +276,17 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             let updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
             let completeChange = { complete: isComplete(updatedCase) }
             updatedCase = await Case.findByIdAndUpdate(request.params.id, completeChange, { new: true, runValidators: true, context: 'query' })
+            updatedCase = await Case.findById(request.params.id).populate('bacterium', { name: 1 }).populate({
+                path: 'testGroups.tests.test',
+                model: 'Test',
+                populate: {
+                    path: 'bacteriaSpecificImages.bacterium',
+                    model: 'Bacterium'
+                }
+            }).populate({
+                path:'hints.test',
+                model: 'Test'
+            })
             for (let i = 0; i < oldLinks.length; i++) {
                 fs.unlink(`${imageDir}/${oldLinks[i]}`, (err) => err)
             }

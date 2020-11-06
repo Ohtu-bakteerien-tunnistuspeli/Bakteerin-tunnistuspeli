@@ -37,36 +37,57 @@ const CaseForm = ({ caseToEdit }) => {
     /* parameters for style end*/
 
     /* states */
-    const [name, setName] = useState(caseToEdit ? caseToEdit.name : '')
-    const [bacteriumId, setBacteriumId] = useState(caseToEdit ? caseToEdit.bacterium ? caseToEdit.bacterium.id : '' : '')
-    const [anamnesis, setAnamnesis] = useState(caseToEdit ? caseToEdit.anamnesis : '')
-    const [completionText, setCompletionText] = useState(caseToEdit ? caseToEdit.completionText : '')
+    const [name, setName] = useState('')
+    const [bacteriumId, setBacteriumId] = useState('')
+    const [anamnesis, setAnamnesis] = useState('')
+    const [completionText, setCompletionText] = useState('')
     const INITIAL_STATE = {
         id: '',
         image: undefined,
     }
     const [completionImage, setCompletionImage] = useState(INITIAL_STATE)
     const [deleteEndImage, setDeleteEndImage] = useState(false)
-    const [img, setImg] = useState(caseToEdit ? caseToEdit.completionImage ? true : false : false)
+    const [img, setImg] = useState(false)
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
-    const [samples, setSamples] = useState(caseToEdit ? caseToEdit.samples : [])
+    const [samples, setSamples] = useState([])
     const [addingAlt, setAddingAlt] = useState(false)
     const [addingTest, setAddingTest] = useState(false)
     const [test, setTest] = useState({ name: '', testId: '', positive: false })
     const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
     const [testGroup, setTestGroup] = useState([])
-    const [testGroups, setTestGroups] = useState(caseToEdit ? caseToEdit.testGroups : [])
+    const [testGroups, setTestGroups] = useState([])
     const [addedTests, setAddedTests] = useState([])
     /* states end*/
 
+    /* Initialize editform with */
+    const initializeCase = (caseToEdit) => {
+        setName(caseToEdit.name)
+        setBacteriumId(caseToEdit.bacterium.id)
+        console.log(caseToEdit.bacterium)
+        console.log(caseToEdit.bacterium.id)
+        setAnamnesis(caseToEdit.anamnesis)
+        setCompletionText(caseToEdit.completionText)
+        setSamples(caseToEdit.samples)
+        setImg(caseToEdit.completionImage ? true : false)
+        setTestGroups(caseToEdit.testGroups)
+        setAddedTests(testsFromTestGroups)        
+    }
+
     /* modal */
     const [show, setShow] = useState(false)
-    const handleShow = () => setShow(true)
+    const handleShow = () => {
+        setShow(true)
+        if (caseToEdit) {
+            initializeCase(caseToEdit)
+        }
+    }
     const handleClose = () => {
         setShow(false)
         setAddingAlt(false)
         if (!caseToEdit) {
             resetCaseForm()
+        } else {
+            resetCaseEditForm()
         }
     }
     /* modal end */
@@ -135,6 +156,17 @@ const CaseForm = ({ caseToEdit }) => {
         dispatch(addCase(name, bacteriumId, anamnesis, completionText, completionImage, samples, testGroups, user.token, handleClose))
     }
 
+    const resetCaseEditForm = () => {
+        setSample({ description: '', rightAnswer: false })
+        setTest({ name: '', testId: '', positive: false })
+        setTestForCase({ isRequired: false, tests: [] })
+        setTestGroup([])
+        setTestGroups([])
+        setAddingAlt(false)
+        setAddingTest(false)
+        setCompletionImage(INITIAL_STATE)
+        document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
+    }
     const resetCaseForm = () => {
         setName('')
         setBacteriumId('')
@@ -147,7 +179,7 @@ const CaseForm = ({ caseToEdit }) => {
         setTestForCase({ isRequired: false, tests: [] })
         setTestGroup([])
         setTestGroups([])
-        setAddedTests(setAddedTests(caseToEdit ? testsFromTestGroups : []))
+        setAddedTests([])
         setAddingAlt(false)
         setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
