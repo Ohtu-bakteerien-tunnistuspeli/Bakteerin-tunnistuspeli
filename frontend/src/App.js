@@ -13,7 +13,7 @@ import CreditList from './components/credit/CreditList'
 import UserList from './components/users/UserList'
 import GamePage from './components/GamePage'
 import ProfilePage from './components/ProfilePage'
-import Notification from './components/Notification'
+import Notification from './components/utility/Notification'
 import Footer from './components/Footer'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 

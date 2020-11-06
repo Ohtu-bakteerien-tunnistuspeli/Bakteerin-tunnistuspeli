@@ -5,7 +5,7 @@ import { Modal, Button, Form, Image } from 'react-bootstrap'
 import BacteriaSpecificImages from './BacteriaSpecificImages'
 import Name from './components/Name.js'
 import Type from './components/Type.js'
-import DeleteButton from './components/DeleteButton.js'
+import DeleteButton from '../utility/DeleteButton.js'
 import AddImage from './components/AddImage.js'
 import { INITIAL_STATE, marginStyle } from './utility'
 import { deleteTest, updateTest } from '../../reducers/testReducer'
@@ -124,7 +124,6 @@ const TestForm = ({ testToEdit }) => {
                 if (!newFile) {
                     newFile = bacteriaSpecificImage
                 }
-                console.log(bacteriaSpecificImage)
                 setBacteriaImages(bacteriaSpecificImages.concat(newFile))
                 setDeleteSpecifics(deleteSpecifics.filter(img => img !== newFile.name))
                 setBacteriaImage(INITIAL_STATE)
@@ -156,9 +155,7 @@ const TestForm = ({ testToEdit }) => {
             <Button style={style}
                 id={testToEdit ? 'testEditButton' : 'testModalButton'}
                 variant='primary'
-                onClick={() => {handleShow()
-                console.log(bacteriaSpecificImages)
-                }}>
+                onClick={() => handleShow()}>
                 {testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
             </Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose} >
@@ -207,7 +204,6 @@ const TestForm = ({ testToEdit }) => {
                                     onClick={() => {
                                         setCtrl(false);
                                         setDeletePhotos({ ...deletePhotos, ctrl: true })
-                                        console.log(ctrl)
                                     }}
                                     text='Poista kontrollikuva'
                                 ></DeleteButton>

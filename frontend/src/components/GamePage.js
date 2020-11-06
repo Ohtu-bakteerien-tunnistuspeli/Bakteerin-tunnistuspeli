@@ -3,7 +3,7 @@ import { Tabs, Tab, Form, Button, Table } from 'react-bootstrap'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkSamples, checkTests, checkBacterium } from '../reducers/gameReducer'
-import ModalImage from './ModalImage'
+import ModalImage from './utility/ModalImage'
 
 const GamePage = () => {
     const [tab, setTab] = useState('anamneesi')

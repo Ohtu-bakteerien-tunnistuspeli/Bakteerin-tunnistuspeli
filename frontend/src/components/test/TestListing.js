@@ -1,5 +1,5 @@
 import React from 'react'
-import ModalImage from '../ModalImage'
+import ModalImage from '../utility/ModalImage'
 import TestForm from './TestForm'
 
 const TestListing = ({ test }) => {

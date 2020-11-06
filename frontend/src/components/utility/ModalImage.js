@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Image, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
+import { setNotification } from '../../reducers/notificationReducer'
 
 const ModalImage = ({ imageUrl, width, height }) => {
     const dispatch = useDispatch()

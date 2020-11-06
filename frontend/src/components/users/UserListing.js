@@ -1,5 +1,5 @@
 import React from 'react'
-import ConfirmWindow from './ConfirmWindow'
+import ConfirmWindow from '../utility/ConfirmWindow'
 
 const UserListing = ({ listedUser, userDelete, promote, demote }) => {
     return (

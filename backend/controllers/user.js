@@ -30,7 +30,12 @@ userRouter.post('/login', async (request, response) => {
     const token = jwt.sign(userForToken, config.SECRET)
     response
         .status(200)
-        .send({ token, username: user.username, admin: user.admin })
+        .send({
+            token,
+            username: user.username,
+            admin: user.admin,
+            id: user._id
+        })
 })
 
 userRouter.post('/register', async (request, response) => {

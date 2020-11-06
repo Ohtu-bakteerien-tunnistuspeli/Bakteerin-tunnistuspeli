@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import HintForm from './HintForm'
-import ModalImage from '../ModalImage'
+import ModalImage from '../utility/ModalImage'
 import CaseForm from './CaseForm'
 
 const CaseListing = ({ caseItem, admin, deleteCase }) => {
