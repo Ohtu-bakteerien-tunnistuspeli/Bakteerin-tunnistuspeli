@@ -3,22 +3,22 @@ import { setNotification } from './notificationReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
-        case 'GET_USERS': {
-            return action.data
-        }
-        case 'DELETE_USER': {
-            return state.filter(user => user.id !== action.data.id)
-        }
-        case 'PROMOTE_USER': {
-            return state.map(user => (user.id === action.data.id) ? { ...user, admin: true } : user)
-        }
-        case 'DEMOTE_USER': {
-            return state.map(user => (user.id === action.data.id) ? { ...user, admin: false } : user)
-        }
-        case 'ZERO_USERS': {
-            return action.data
-        }
-        default: return state
+    case 'GET_USERS': {
+        return action.data
+    }
+    case 'DELETE_USER': {
+        return state.filter(user => user.id !== action.data.id)
+    }
+    case 'PROMOTE_USER': {
+        return state.map(user => (user.id === action.data.id) ? { ...user, admin: true } : user)
+    }
+    case 'DEMOTE_USER': {
+        return state.map(user => (user.id === action.data.id) ? { ...user, admin: false } : user)
+    }
+    case 'ZERO_USERS': {
+        return action.data
+    }
+    default: return state
     }
 }
 

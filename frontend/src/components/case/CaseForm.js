@@ -63,14 +63,12 @@ const CaseForm = ({ caseToEdit }) => {
     const initializeCase = (caseToEdit) => {
         setName(caseToEdit.name)
         setBacteriumId(caseToEdit.bacterium.id)
-        console.log(caseToEdit.bacterium)
-        console.log(caseToEdit.bacterium.id)
         setAnamnesis(caseToEdit.anamnesis)
         setCompletionText(caseToEdit.completionText)
         setSamples(caseToEdit.samples)
         setImg(caseToEdit.completionImage ? true : false)
         setTestGroups(caseToEdit.testGroups)
-        setAddedTests(testsFromTestGroups)        
+        setAddedTests(testsFromTestGroups)
     }
 
     /* modal */
