@@ -72,7 +72,7 @@ gameRouter.post('/:id/checkTests', async (request, response) => {
             }
             let latestTestForCase
             for (let i = 0; i < testsToCheck.length; i++) {
-                if (currentRequiredTests.length === 0 && testGroups.length > groupIndex) {
+                while (currentRequiredTests.length === 0 && testGroups.length > groupIndex) {
                     const newGroups = testGroups[groupIndex]
                     const req = newGroups.filter(group => group.isRequired === true)
                     let extra = newGroups.filter(group => group.isRequired === false)
