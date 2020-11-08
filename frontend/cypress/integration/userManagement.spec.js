@@ -30,7 +30,7 @@ describe('User management', () => {
         it('Cannot delete wihout giving correct confirmation text', () => {
             cy.contains('Käyttäjien hallinta').click()
             cy.get('td').should('contain', 'user')
-            cy.get('#deleteUser').click()
+            cy.get('#deleteUser').click({ force: true })
             cy.get('#confirmField').type('use')
             cy.get('#confirm').should('be.disabled')
         })
@@ -38,7 +38,7 @@ describe('User management', () => {
         it('Can quit deleting', () => {
             cy.contains('Käyttäjien hallinta').click()
             cy.get('td').should('contain', 'user')
-            cy.get('#deleteUser').click()
+            cy.get('#deleteUser').click({ force: true })
             cy.get('#confirmField').type('use')
             cy.get('.close').click()
             cy.get('td').should('contain', 'user')
@@ -51,7 +51,7 @@ describe('User management', () => {
             cy.get('div').should('not.contain', 'Käyttäjien hallinta')
             cy.login({ username: 'admin', password: 'admin' })
             cy.contains('Käyttäjien hallinta').click()
-            cy.get('#promoteUser').click()
+            cy.get('#promoteUser').click({ force: true })
             cy.get('#confirmField').type('user')
             cy.get('#confirm').click()
             cy.contains('Käyttäjän user ylennys onnistui.')
@@ -83,7 +83,7 @@ describe('User management', () => {
     describe('Demote', () => {
         beforeEach(() => {
             cy.contains('Käyttäjien hallinta').click()
-            cy.get('#promoteUser').click()
+            cy.get('#promoteUser').click({ force: true })
             cy.get('#confirmField').type('user')
             cy.get('#confirm').click()
             cy.contains('Etusivu').click()
@@ -94,7 +94,7 @@ describe('User management', () => {
             cy.get('div').should('contain', 'Käyttäjien hallinta')
             cy.login({ username: 'admin', password: 'admin' })
             cy.contains('Käyttäjien hallinta').click()
-            cy.get('#demoteUser').click()
+            cy.get('#demoteUser').click({ force: true })
             cy.get('#confirmField').type('user')
             cy.get('#confirm').click()
             cy.contains('Käyttäjän user alennus onnistui.')
@@ -105,7 +105,7 @@ describe('User management', () => {
         it('Cannot demote wihout giving correct confirmation text', () => {
             cy.contains('Käyttäjien hallinta').click()
             cy.get('td').should('contain', 'user')
-            cy.get('#demoteUser').click()
+            cy.get('#demoteUser').click({ force: true })
             cy.get('#confirmField').type('use')
             cy.get('#confirm').should('be.disabled')
         })
@@ -115,7 +115,7 @@ describe('User management', () => {
             cy.get('div').should('contain', 'Käyttäjien hallinta')
             cy.login({ username: 'admin', password: 'admin' })
             cy.contains('Käyttäjien hallinta').click()
-            cy.get('#demoteUser').click()
+            cy.get('#demoteUser').click({ force: true })
             cy.get('#confirmField').type('user')
             cy.get('.close').click()
             cy.login({ username: 'user', password: 'user' })
