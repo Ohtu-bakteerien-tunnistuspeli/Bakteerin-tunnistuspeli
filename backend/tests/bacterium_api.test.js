@@ -33,10 +33,6 @@ beforeEach(async () => {
 })
 
 describe('bacteria format', () => {
-    test('test that will always fail', async () => {
-        expect(false).toBeTruthy()
-    })
-
     test('bacteria are returned as json', async () => {
         const user = await api
             .post('/api/user/login')
