@@ -106,6 +106,7 @@ describe('Case management', () => {
             cy.get('#addTestForGroup').click()
             cy.get('#addTestGroup').click()
             cy.get('#addCase').click()
+            cy.wait(500)
             cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('Maatila')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
