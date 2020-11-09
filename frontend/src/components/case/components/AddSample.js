@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 
 
-const AddSample = ({ sample, setSample, addSample, error, onChange }) => {
+const AddSample = ({ sample, setSample, addSample, error, onChange, touched, handleBlur }) => {
     const handleChange = event => {
         event.preventDefault()
         setSample({ ...sample, description: event.target.value })
@@ -15,8 +15,9 @@ const AddSample = ({ sample, setSample, addSample, error, onChange }) => {
                 value={sample.description}
                 onChange={handleChange}
                 isInvalid={error}
+                onBlur={handleBlur}
             />
-            <Form.Control.Feedback type="invalid">
+            <Form.Control.Feedback type='invalid' hidden={!touched}>
                 {error}
             </Form.Control.Feedback>
             <Form.Check

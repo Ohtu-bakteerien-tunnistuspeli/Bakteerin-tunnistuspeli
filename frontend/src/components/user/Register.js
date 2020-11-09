@@ -81,82 +81,89 @@ const Register = () => {
                     handleSubmit,
                     errors,
                     setFieldValue,
-                    touched
+                    touched,
+                    handleBlur
                 }) => {
                     return (
                         <Form onSubmit={handleSubmit}>
                             <Form.Group>
                                 <Form.Label>Käyttäjänimi:</Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    id="username"
-                                    name="username"
+                                    type='text'
+                                    id='username'
+                                    name='username'
                                     isInvalid={errors.username && touched.username}
                                     onChange={(event) => setFieldValue('username', event.target.value)}
+                                    onBlur={handleBlur}
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type='invalid' hidden={!touched.username}>
                                     {errors.username}
                                 </Form.Control.Feedback>
                                 <Form.Label>Sähköposti:</Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    id="email"
-                                    name="email"
+                                    type='text'
+                                    id='email'
+                                    name='email'
                                     isInvalid={errors.email && touched.email}
                                     onChange={(event) => setFieldValue('email', event.target.value)}
+                                    onBlur={handleBlur}
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type='invalid' hidden={!touched.email}>
                                     {errors.email}
                                 </Form.Control.Feedback>
                                 <Form.Label>Opiskelijanumero:</Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    id="studentNumber"
-                                    name="studentNumber"
+                                    type='text'
+                                    id='studentNumber'
+                                    name='studentNumber'
                                     isInvalid={errors.studentNumber && touched.studentNumber}
                                     onChange={(event) => setFieldValue('studentNumber', event.target.value)}
+                                    onBlur={handleBlur}
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type='invalid' hidden={!touched.studentNumber}>
                                     {errors.studentNumber}
                                 </Form.Control.Feedback>
                                 <Form.Label>Vuosikurssi:</Form.Label>
                                 <Form.Control
-                                    type="text"
-                                    id="classGroup"
-                                    name="classGroup"
-                                    defaultValue="C-"
+                                    type='text'
+                                    id='classGroup'
+                                    name='classGroup'
+                                    defaultValue='C-'
                                     isInvalid={errors.classGroup && touched.classGroup}
                                     onChange={(event) => setFieldValue('classGroup', event.target.value)}
+                                    onBlur={handleBlur}
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type='invalid' hidden={!touched.classGroup}>
                                     {errors.classGroup}
                                 </Form.Control.Feedback>
                                 <Form.Label>Salasana:</Form.Label>
                                 <Form.Control
-                                    type="password"
-                                    id="password"
+                                    type='password'
+                                    id='password'
                                     isInvalid={errors.password && touched.password}
                                     onChange={(event) => setFieldValue('password', event.target.value)}
+                                    onBlur={handleBlur}
                                 />
-                                <Form.Control.Feedback type="invalid">
+                                <Form.Control.Feedback type='invalid' hidden={!touched.password}>
                                     {errors.password}
                                 </Form.Control.Feedback>
                                 <Form.Label>Salasana toisen kerran:</Form.Label>
                                 <Form.Control
-                                    type="password"
-                                    id="passwordAgain"
+                                    type='password'
+                                    id='passwordAgain'
                                     isInvalid={errors.passwordAgain && touched.passwordAgain}
                                     onChange={(event) => setFieldValue('passwordAgain', event.target.value)}
+                                    onBlur={handleBlur}
                                 />
-                                <div className="form-group form-inline">
-                                    <Form.Label>Olen lukenut ja hyväksyn&nbsp;{<a href="#" onClick={() => setShowModal(true)}>käyttöehdot</a>//eslint-disable-line
+                                <div className='form-group form-inline'>
+                                    <Form.Label>Olen lukenut ja hyväksyn&nbsp;{<a href='#' onClick={() => setShowModal(true)}>käyttöehdot</a>//eslint-disable-line
                                     }&nbsp;
-                        ja&nbsp;{<a href="#" onClick={() => setShowModal2(true)}>tietosuojailmoituksen</a> //eslint-disable-line
+                        ja&nbsp;{<a href='#' onClick={() => setShowModal2(true)}>tietosuojailmoituksen</a> //eslint-disable-line
                                         }:&nbsp;
                         </Form.Label>
-                                    <Form.Check type="checkbox" label="" id="acceptCheckBox" value={accept} onChange={() => setAccept(!accept)} />
+                                    <Form.Check type='checkbox' label='' id='acceptCheckBox' value={accept} onChange={() => setAccept(!accept)} />
                                 </div>
-                                <Button id="submit" variant="success" type="submit">
+                                <Button id='submit' variant='success' type='submit'>
                                     Rekisteröidy
                     </Button>
                             </Form.Group>
@@ -164,13 +171,13 @@ const Register = () => {
                     )
                 }}
             </Formik>
-            <Modal show={showModal} size="lg" onHide={() => setShowModal(false)} >
+            <Modal show={showModal} size='lg' onHide={() => setShowModal(false)} >
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body >
                     <GDBRText></GDBRText>
                 </Modal.Body>
             </Modal>
-            <Modal show={showModal2} size="lg" onHide={() => setShowModal2(false)} >
+            <Modal show={showModal2} size='lg' onHide={() => setShowModal2(false)} >
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body >
                     <PrivacyText></PrivacyText>
