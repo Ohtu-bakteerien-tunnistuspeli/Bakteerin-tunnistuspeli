@@ -3,7 +3,7 @@ import { Image, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
 
-const ModalImage = ({ imageUrl, width, height }) => {
+const ModalImage = ({ imageUrl }) => {
     const dispatch = useDispatch()
     const [show, setShow] = useState(false)
     const handleClose = () => setShow(false)

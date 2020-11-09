@@ -8,10 +8,10 @@ const ConfirmWindow = ({ listedUser, buttonId, modalOpenButtonText, modalOpenBut
     const handleClose = () => setShow(false)
     return (
         <>
-            <Button variant={modalOpenButtonVariant} 
-            style={{ margin: '2px' }} 
-            id={buttonId} 
-            onClick={handleShow}>{modalOpenButtonText}</Button>
+            <Button variant={modalOpenButtonVariant}
+                style={{ margin: '2px' }}
+                id={buttonId}
+                onClick={handleShow}>{modalOpenButtonText}</Button>
             <Modal show={show} size='lg' scrollable='true' onHide={handleClose}>
                 <Modal.Header closeButton>
                     {modalHeader}

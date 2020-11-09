@@ -32,12 +32,12 @@ const UserList = () => {
                     </thead>
                     <tbody>
                         {users.map(listedUser =>
-                            <UserListing 
-                            key={listedUser.id} 
-                            listedUser={listedUser}
-                            userDelete={userDelete}
-                            promote={promote}
-                            demote={demote}
+                            <UserListing
+                                key={listedUser.id}
+                                listedUser={listedUser}
+                                userDelete={userDelete}
+                                promote={promote}
+                                demote={demote}
                             ></UserListing>
                         )}
                     </tbody>

@@ -13,7 +13,7 @@ const reducer = (state = [], action) => {
         return state.filter(ca => ca.id !== action.data.id)
     }
     case 'UPDATE_CASE': {
-        return state.map(c => c.id === action.data.id ? c = action.data : c)
+        return state.map(c => c.id === action.data.id ? action.data : c)
     }
     case 'ZERO_CASE': {
         return action.data

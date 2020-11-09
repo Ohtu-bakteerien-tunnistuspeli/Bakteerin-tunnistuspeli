@@ -202,7 +202,7 @@ const TestForm = ({ testToEdit }) => {
                                 <DeleteButton
                                     id='deleteControl'
                                     onClick={() => {
-                                        setCtrl(false);
+                                        setCtrl(false)
                                         setDeletePhotos({ ...deletePhotos, ctrl: true })
                                     }}
                                     text='Poista kontrollikuva'

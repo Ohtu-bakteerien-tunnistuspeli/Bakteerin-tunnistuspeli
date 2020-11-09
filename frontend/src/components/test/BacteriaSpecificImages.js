@@ -9,10 +9,10 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, 
                 {bacteriaSpecificImages.map((image, i) => {
                     return (
                         <li key={i}>{image.name ? image.name : image.bacterium.name} &ensp;&ensp;
-                        {image.url?
-                        <Image src={`/${image.url}`} thumbnail width={100} /> : 
-                        <Image src={URL.createObjectURL(image)} width={100}></Image>
-                        }
+                            {image.url?
+                                <Image src={`/${image.url}`} thumbnail width={100} /> :
+                                <Image src={URL.createObjectURL(image)} width={100}></Image>
+                            }
                             <Button
                                 onClick={() => removeBacteriaSpecificImage(image)}
                                 variant='danger'
@@ -42,10 +42,10 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, 
                 value={bacteriaSpecificImage.image}
                 onChange={handleSpecificImg}
             />
-            <Button style={marginStyle} type='button' 
-            onClick={() =>{
-                
-                addBacteriumSpecificImage()}}>Lisää bakteerikohtainen kuva</Button>
+            <Button style={marginStyle} type='button'
+                onClick={() => {
+
+                    addBacteriumSpecificImage()}}>Lisää bakteerikohtainen kuva</Button>
             <Button type='button' variant='warning' onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaisten kuvien lista</Button>
         </Form.Group>
     )
