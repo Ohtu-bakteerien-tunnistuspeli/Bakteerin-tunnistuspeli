@@ -20,7 +20,7 @@ describe('Test management', () => {
         it('A new test without images can be added', () => {
             cy.contains('Testien hallinta').click()
             cy.should('not.contain', 'Katalaasitesti')
-            cy.get('#testModalButton').click()
+            cy.get('#testModalButton').click({ force: true })
             cy.get('#name').type('Katalaasitesti')
             cy.get('#type').select('Viljely')
             cy.get('#addTest').click()
@@ -30,7 +30,7 @@ describe('Test management', () => {
 
         it('If test name is not unique, test is not added and error is reported', () => {
             cy.contains('Testien hallinta').click()
-            cy.get('#testModalButton').click()
+            cy.get('#testModalButton').click({ force: true })
             cy.get('#name').type('Katalaasitesti')
             cy.get('#type').select('Viljely')
             cy.get('#addTest').click()
@@ -45,7 +45,7 @@ describe('Test management', () => {
 
         it('If name validation fails, test is not added and error is reported', () => {
             cy.contains('Testien hallinta').click()
-            cy.get('#testModalButton').click()
+            cy.get('#testModalButton').click({ force: true })
             cy.get('#name').type('a')
             cy.get('#type').select('Viljely')
             cy.get('#addTest').click()
@@ -54,7 +54,7 @@ describe('Test management', () => {
 
         it('If type validation fails, test is not added and error is reported', () => {
             cy.contains('Testien hallinta').click()
-            cy.get('#testModalButton').click()
+            cy.get('#testModalButton').click({ force: true })
             cy.get('#name').type('Katalaasitesti')
             cy.get('#addTest').click()
             cy.contains('Testin tyyppi on pakollinen.')
@@ -68,7 +68,7 @@ describe('Test management', () => {
         it('Test can be deleted', () => {
             cy.contains('Testien hallinta').click()
             cy.contains('Cypress Testi')
-            cy.get('#testEditButton').click()
+            cy.get('#testEditButton').click({ force: true })
             cy.get('#deleteTest').click()
             cy.contains('Test successfully deleted')
             cy.should('not.contain', 'Cypress Testi')
@@ -81,7 +81,7 @@ describe('Test management', () => {
 
         it('Test name can be edited', () => {
             cy.contains('Testien hallinta').click()
-            cy.get('#testEditButton').click()
+            cy.get('#testEditButton').click({ force: true })
             cy.get('#name').type(' edited')
             cy.get('#saveChanges').click()
             cy.contains('Cypress Testi edited')
@@ -89,7 +89,7 @@ describe('Test management', () => {
 
         it('Test type can be edited', () => {
             cy.contains('Testien hallinta').click()
-            cy.get('#testEditButton').click()
+            cy.get('#testEditButton').click({ force: true })
             cy.get('#type').select('Värjäys')
             cy.get('#saveChanges').click()
             cy.contains('Värjäys')

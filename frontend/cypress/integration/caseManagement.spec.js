@@ -8,6 +8,7 @@ describe('Case management', () => {
         cy.addTest({ name: 'Testi', type: 'Viljely' })
         cy.addTest({ name: 'Testi2', type: 'Viljely' })
         cy.addTest({ name: 'Testi3', type: 'Viljely' })
+        cy.visit('http://localhost:3000')
     })
 
     describe('Add case', () => {
@@ -17,7 +18,8 @@ describe('Case management', () => {
         it('A new case with correct data without image can be added', () => {
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
-            cy.get('#caseModalButton').click()
+            cy.wait(500)
+            cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('Maatila')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#bacterium').select('Tetanus')
@@ -43,7 +45,8 @@ describe('Case management', () => {
         it('A new case with correct data with all the data fields be added', () => {
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
-            cy.get('#caseModalButton').click()
+            cy.wait(500)
+            cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('Maatila')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#completionText').type('monta nautaa oli kipeänä')
@@ -64,13 +67,15 @@ describe('Case management', () => {
             cy.get('#testGroupsTable').contains('Testi')
             cy.get('#testGroupsTable').contains('Kyllä')
             cy.get('#addCase').click()
+            cy.wait(500)
             cy.contains('Tapauksen Maatila lisäys onnistui.', { timeout: 100 })
             cy.contains('Maatila')
         })
 
         it('If the validation of the field name, case is not added and error is reported', () => {
             cy.contains('Tapausten hallinta').click()
-            cy.get('#caseModalButton').click()
+            cy.wait(500)
+            cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('M')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#bacterium').select('Tetanus')
@@ -89,7 +94,8 @@ describe('Case management', () => {
 
         it('If the field name is not unique, case is not added and error is reported', () => {
             cy.contains('Tapausten hallinta').click()
-            cy.get('#caseModalButton').click()
+            cy.wait(500)
+            cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('Maatila')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#bacterium').select('Tetanus')
@@ -100,7 +106,8 @@ describe('Case management', () => {
             cy.get('#addTestForGroup').click()
             cy.get('#addTestGroup').click()
             cy.get('#addCase').click()
-            cy.get('#caseModalButton').click()
+            cy.wait(500)
+            cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('Maatila')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#bacterium').select('Tetanus')
@@ -130,7 +137,8 @@ describe('Case management', () => {
             cy.login({ username: 'admin', password: 'admin' })
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
-            cy.get('#caseModalButton').click()
+            cy.wait(500)
+            cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('Maatila')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#bacterium').select('Tetanus')
@@ -158,7 +166,8 @@ describe('Case management', () => {
         it('The user can add hints and see them only when answer is wrong', () => {
             cy.login({ username: 'admin', password: 'admin' })
             cy.contains('Tapausten hallinta').click()
-            cy.get('#caseModalButton').click()
+            cy.wait(500)
+            cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('Maatilatapaus')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#bacterium').select('Tetanus')
@@ -220,7 +229,8 @@ describe('Case management', () => {
         it('The case Tapaus can be deleted', () => {
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
-            cy.get('#caseModalButton').click()
+            cy.wait(500)
+            cy.get('#caseModalButton').click({ force: true })
             cy.get('#name').type('Maatila')
             cy.get('#anamnesis').type('Monta nautaa kipeänä.')
             cy.get('#bacterium').select('Tetanus')

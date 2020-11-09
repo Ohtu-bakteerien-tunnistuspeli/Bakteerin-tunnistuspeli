@@ -8,6 +8,7 @@ const Bacterium = require('../models/bacterium')
 const User = require('../models/user')
 const Test = require('../models/testCase')
 const Case = require('../models/case')
+const Credit = require('../models/credit')
 
 const initialTests = [
     {
@@ -79,9 +80,19 @@ let adminUserToken // For easy access to token
 let testMap = {} // For easy access to IDs
 let addedCaseId // For easy access to case information
 let addedTests
+let initialBacterium
+
+beforeAll(async () => {
+    await Credit.deleteMany({})
+    await Bacterium.deleteMany({})
+    await User.deleteMany({})
+    await Test.deleteMany({})
+    await Case.deleteMany({})
+})
 
 beforeEach(async () => {
     // Clean db
+    await Credit.deleteMany({})
     await Bacterium.deleteMany({})
     await User.deleteMany({})
     await Test.deleteMany({})
@@ -100,10 +111,7 @@ beforeEach(async () => {
     adminUserToken = loginRes.body.token
     // Add all tests
     addedTests = initialTests.map(test => new Test(test))
-    for (let i = 0; i < addedTests.length; i++) {
-        addedTests[i].save()
-    }
-    await Promise.all(addedTests)
+    await Test.insertMany(addedTests)
     // Create name -> id map of tests
     testMap = {}
     const testsInDB = await api
@@ -113,7 +121,8 @@ beforeEach(async () => {
         testMap[testsInDB.body[i].name] = testsInDB.body[i].id
     }
     // Add initial bacterium
-    const initialBacterium = await new Bacterium(initialBacteriumForCase).save()
+    initialBacterium = new Bacterium(initialBacteriumForCase)
+    initialBacterium.save()
     // Add initial case
     const caseToAdd = new Case({
         name: 'Test case',
@@ -292,6 +301,59 @@ describe('it is possible to do tests', () => {
             .send({ tests: data })
             .expect(200)
         expect(res.body.correct).toBeFalsy()
+    })
+
+    test('test group that only contains extra tests is not required', async () => {
+        const caseToAdd = new Case({
+            name: 'Test case2',
+            anamnesis: 'Test case2',
+            bacterium: initialBacterium,
+            samples: initialSamples,
+            testGroups:
+                [
+                    [ // Group 1
+                        {
+                            tests: [
+                                { test: addedTests[0], positive: true },
+                                { test: addedTests[1], positive: false }
+                            ],
+                            isRequired: false
+                        },
+                        {
+                            tests: [
+                                { test: addedTests[2], positive: true }
+                            ],
+                            isRequired: false
+                        }
+                    ],
+                    [ // Group 2
+                        {
+                            tests: [
+                                { test: addedTests[3], positive: true }
+                            ],
+                            isRequired: true
+                        },
+                        {
+                            tests: [
+                                { test: addedTests[4], positive: false }
+                            ],
+                            isRequired: false
+                        }
+                    ]
+                ],
+        })
+        const testCaseAdded = await caseToAdd.save()
+
+        const data = [
+            testMap['test3'],
+            testMap['test4']
+        ]
+        let res = await api
+            .post(`/api/game/${testCaseAdded.id}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toBeTruthy()
     })
 })
 
