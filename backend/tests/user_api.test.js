@@ -188,7 +188,7 @@ describe('register ', () => {
             .post('/api/user/register')
             .send(invalidUsers[8])
             .expect(400)
-        expect(registerResponse.body.error).toContain('User validation failed: classGroup: Vuosikurssin tule alkaa merkeillä \'C-\'., email: Sähköpostiosoite on virheellinen., username: Käyttäjänimen tulee olla uniikki.')
+        expect(registerResponse.body.error).toContain('User validation failed: classGroup: Vuosikurssin tule alkaa merkeillä \'C-\' ja loppua lukuun., email: Sähköpostiosoite on virheellinen., username: Käyttäjänimen tulee olla uniikki.')
         await api
             .post('/api/user/login')
             .send(invalidUsers[8])

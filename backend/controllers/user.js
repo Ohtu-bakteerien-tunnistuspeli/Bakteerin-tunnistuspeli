@@ -45,6 +45,8 @@ userRouter.post('/register', async (request, response) => {
         return response.status(400).json({ error: 'Salasana on pakollinen.' })
     } else if (body.password.length < 3) {
         return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
+    } else if (body.password.length > 100) {
+        return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
     } else {
         try {
             const saltRounds = 10

@@ -93,7 +93,7 @@ const CaseForm = ({ caseToEdit }) => {
         bacteriumId: Yup.string()
             .required('Valitse bakteeri'),
         sample: Yup.string()
-            .test('unique', 'Näyte on jo lisätty listaan', function (sample) {
+            .test('unique', 'Näyte on jo lisätty listaan', (sample) => {
                 if (sample === '') {
                     return true
                 }
@@ -103,7 +103,7 @@ const CaseForm = ({ caseToEdit }) => {
                 return true
             }),
         test: Yup.string()
-            .test('unique', 'Testi on jo lisätty', function (test) {
+            .test('unique', 'Testi on jo lisätty', (test) => {
                 if (!test) {
                     return true
                 }

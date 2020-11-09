@@ -73,7 +73,7 @@ describe('Game', () => {
 
         cy.get('#username').type('newUser1')
         cy.get('#password').type('newpass1')
-        cy.get('#email').type('example@com')
+        cy.get('#email').type('example@e.com')
         cy.get('#classGroup').type('C-67')
         cy.get('#studentNumber').type('12345678')
 
@@ -97,7 +97,9 @@ describe('Game', () => {
         cy.get('#username').type('newUser')
         cy.get('#password').type('newpass')
         cy.get('#passwordAgain').type('newpass')
-
+        cy.get('#email').type('example@e.com')
+        cy.get('#classGroup').type('C-67')
+        cy.get('#studentNumber').type('12345678')
         cy.get('#submit').click()
 
         cy.contains('Käyttöehtojen hyväksyminen on pakollista')
@@ -112,6 +114,9 @@ describe('Game', () => {
         cy.get('#password').type('newpass')
         cy.get('#passwordAgain').type('newpass')
         cy.get('#acceptCheckBox').click()
+        cy.get('#email').type('example@e.com')
+        cy.get('#classGroup').type('C-67')
+        cy.get('#studentNumber').type('12345678')
 
         cy.get('#submit').click()
 
@@ -127,6 +132,9 @@ describe('Game', () => {
         cy.get('#password').type('newpass')
         cy.get('#passwordAgain').type('newpas')
         cy.get('#acceptCheckBox').click()
+        cy.get('#email').type('example@e.com')
+        cy.get('#classGroup').type('C-67')
+        cy.get('#studentNumber').type('12345678')
 
         cy.get('#submit').click()
 
