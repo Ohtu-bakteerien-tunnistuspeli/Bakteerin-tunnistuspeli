@@ -186,7 +186,41 @@ describe('Game', () => {
 
         it('User can still check the image copyrights from the footer', () => {
             cy.contains('Kuvien Käyttöoikeudet').click()
-            cy.contains('Bakteeripelin kuvien käyttöoikeude')
+            cy.contains('Bakteeripelin kuvien käyttöoikeudet')
+        })
+
+        it('User can go to own profile page', () => {
+            cy.contains('user').click()
+            cy.contains('Oma profiilini')
+        })
+
+        describe('When in profile page', () => {
+            beforeEach(() => {
+                cy.contains('user').click()
+            })
+            it('User can delete itself', () => {
+                cy.get('#deleteUser').click()
+                cy.get('#confirmField').type('user')
+                cy.get('#confirm').click()
+                cy.contains('Kirjaudu Bakteeripeliin')
+                cy.get('#username').type('user')
+                cy.get('#password').type('user')
+                cy.get('#submit').click()
+                cy.contains('Kirjaudu Bakteeripeliin')
+            })
+
+            it('Cannot delete itself wihout giving correct confirmation text', () => {
+                cy.get('#deleteUser').click()
+                cy.get('#confirmField').type('use')
+                cy.get('#confirm').should('be.disabled')
+            })
+
+            it('Can quit deleting itself', () => {
+                cy.get('#deleteUser').click()
+                cy.get('#confirmField').type('user')
+                cy.get('.close').click()
+                cy.contains('Oma profiilini')
+            })
         })
     })
 
