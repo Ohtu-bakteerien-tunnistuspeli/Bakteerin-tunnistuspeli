@@ -182,7 +182,6 @@ const TestForm = ({ testToEdit }) => {
         setDeleteSpecifics(deleteSpecifics.concat(name))
         setBacteriaImages(bacteriaSpecificImages.filter(img => img.name !== name))
         setAddedBacteriaImage(addedBacteriaImage.filter(bac => bac !== name))
-        console.log('nimi: ', name)
     }
 
 
