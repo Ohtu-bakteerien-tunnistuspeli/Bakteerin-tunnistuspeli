@@ -93,7 +93,7 @@ const CaseForm = ({ caseToEdit }) => {
         bacteriumId: Yup.string()
             .required('Valitse bakteeri'),
         sample: Yup.string()
-            .test('unique', 'Näyte on jo lisätty listaan', function (sample) {
+            .test('unique', 'Näyte on jo lisätty listaan', (sample) => {
                 if (sample === '') {
                     return true
                 }
@@ -103,7 +103,7 @@ const CaseForm = ({ caseToEdit }) => {
                 return true
             }),
         test: Yup.string()
-            .test('unique', 'Testi on jo lisätty', function (test) {
+            .test('unique', 'Testi on jo lisätty', (test) => {
                 if (!test) {
                     return true
                 }
@@ -268,7 +268,8 @@ const CaseForm = ({ caseToEdit }) => {
                             values,
                             errors,
                             setFieldValue,
-                            touched
+                            touched,
+                            handleBlur
                         }) => {
                             return (
                                 <Form noValidate onSubmit={handleSubmit}>
@@ -278,6 +279,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         onChange={setFieldValue}
                                         error={errors.name}
                                         touched={touched.name}
+                                        handleBlur={handleBlur}
                                     ></Name>
 
                                     <SelectBacterium
@@ -287,6 +289,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         onChange={setFieldValue}
                                         error={errors.bacteriumId}
                                         touched={touched.bacteriumId}
+                                        handleBlur={handleBlur}
                                     ></SelectBacterium>
 
                                     <Form.Group controlId='anamnesis'>
@@ -347,6 +350,8 @@ const CaseForm = ({ caseToEdit }) => {
                                         addSample={addSample}
                                         error={errors.sample}
                                         onChange={setFieldValue}
+                                        handleBlur={handleBlur}
+                                        touched={touched.sample}
                                     ></AddSample>
 
                                     <AddTestGroup addingAlt={addingAlt}
