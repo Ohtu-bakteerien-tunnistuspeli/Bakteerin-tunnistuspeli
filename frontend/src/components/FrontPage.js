@@ -24,7 +24,7 @@ const FrontPage = () => {
                 lähteä tutkimaan näytettä laboratoriossa.
                 <br></br>
                 Pelin tarkoituksena ei ole pelkästään oikean vastauksen löytäminen, vaan myös näytteen
-                johdonmukainen ja systemaattinen labotoriodiagnostiikka ilman suurempia kiertoteitä.
+                johdonmukainen ja systemaattinen laboratoriodiagnostiikka ilman suurempia kiertoteitä.
                 Ratkaisevaa on tällöin käytännönläheinen ajattelutapa ja olosuhteiden mukainen
                 eteneminen.
             </p>

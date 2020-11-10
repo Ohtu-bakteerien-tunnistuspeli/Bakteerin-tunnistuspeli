@@ -1,20 +1,28 @@
 import React from 'react'
-import { Button, Form, Image } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
 
-const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, setBacteriaImages, handleSpecificImg, bacteriaSpecificImages, bacteriaSpecificImage, addBacteriumSpecificImage, removeBacteriaSpecificImage, marginStyle }) => {
+const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, 
+                                bacterium, setBacteriaImages, handleSpecificImg, 
+                                bacteriaSpecificImages, bacteriaSpecificImage, 
+                                addBacteriumSpecificImage, removeBacteriaSpecificImage, 
+                                marginStyle, onChange, error, touched }) => {
+                                  
+    const handleChange = (event) => {
+        event.preventDefault()
+        setBacterium(event.target.value)
+        onChange('bacteriumName', event.target.value)
+    }
+    
+    
     return (
         <Form.Group controlId={controlId}>
-            <Form.Label style={{ paddingTop: '40px' }}><h4>Bakteerikohtaiset kuvat</h4></Form.Label>
+            <Form.Label style={{ paddingTop:'40px' }}><h4>Bakteerikohtaiset kuvat</h4></Form.Label>
             <ul>
                 {bacteriaSpecificImages.map((image, i) => {
                     return (
                         <li key={i}>{image.name ? image.name : image.bacterium.name} &ensp;&ensp;
-                            {image.url?
-                                <Image src={`/${image.url}`} thumbnail width={100} /> :
-                                <Image src={URL.createObjectURL(image)} width={100}></Image>
-                            }
                             <Button
-                                onClick={() => removeBacteriaSpecificImage(image)}
+                                onClick={ () => removeBacteriaSpecificImage(image) }
                                 variant='danger'
                                 size='sm'>
                                 Poista kuva
@@ -25,16 +33,20 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, 
                 )}
             </ul>
             <Form.Label style={marginStyle}>Bakteeri</Form.Label>
-            <Form.Control as='select'
+            <Form.Control
+                as='select'
                 style={marginStyle}
-                onChange={({ target }) => setBacterium(target.value)}
                 value={bacterium}
-            >
-                <option value=''>Valitse bakteeri</option>
-                {bacteria.map(bacterium =>
-                    <option key={bacterium.id} value={bacterium.name}>{bacterium.name}</option>
+                isInvalid={error}
+                onChange={(event) => handleChange(event) }>
+                <option value='default' disabled hidden>Valitse bakteeri</option>
+                {bacteria.map(bact =>
+                    <option key={bact.id} value={bact.name}>{bact.name}</option>
                 )}
             </Form.Control>
+            <Form.Control.Feedback type="invalid">
+                {error}
+            </Form.Control.Feedback>
             <Form.Control
                 style={marginStyle}
                 name='bacteriaSpecificImage'
@@ -42,10 +54,7 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria, bacterium, 
                 value={bacteriaSpecificImage.image}
                 onChange={handleSpecificImg}
             />
-            <Button style={marginStyle} type='button'
-                onClick={() => {
-
-                    addBacteriumSpecificImage()}}>Lisää bakteerikohtainen kuva</Button>
+            <Button style={marginStyle} type='button' onClick={addBacteriumSpecificImage}>Tallenna bakteerikohtainen kuva</Button>
             <Button type='button' variant='warning' onClick={() => setBacteriaImages([])}>Tyhjennä bakteerikohtaisten kuvien lista</Button>
         </Form.Group>
     )

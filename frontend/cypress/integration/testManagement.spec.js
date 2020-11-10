@@ -40,7 +40,7 @@ describe('Test management', () => {
             cy.get('#name').type('Katalaasitesti')
             cy.get('#type').select('Viljely')
             cy.get('#addTest').click()
-            cy.contains('Testin nimen tulee olla uniikki')
+            cy.contains('Nimen tulee olla uniikki')
         })
 
         it('If name validation fails, test is not added and error is reported', () => {
@@ -49,7 +49,7 @@ describe('Test management', () => {
             cy.get('#name').type('a')
             cy.get('#type').select('Viljely')
             cy.get('#addTest').click()
-            cy.contains('Testin nimen tulee olla vähintään 2 merkkiä pitkä')
+            cy.contains('Nimen tulee olla vähintään 2 merkkiä pitkä')
         })
 
         it('If type validation fails, test is not added and error is reported', () => {
@@ -57,7 +57,7 @@ describe('Test management', () => {
             cy.get('#testModalButton').click({ force: true })
             cy.get('#name').type('Katalaasitesti')
             cy.get('#addTest').click()
-            cy.contains('Testin tyyppi on pakollinen.')
+            cy.contains('Pakollinen kenttä')
         })
     })
 

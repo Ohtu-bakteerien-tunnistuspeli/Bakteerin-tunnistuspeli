@@ -75,12 +75,10 @@ describe('Playing game', () => {
             cy.get('#testView').should('contain', 'Värjäys')
             cy.contains('Testi ei kuulu testiryhmiin').click()
             cy.wait(500)
-            // FIX THIS AFTER MORE INFORMATIVE MESSAGES ARE SET
             cy.contains('Väärä vastaus')
             cy.contains('Testejä').click()
             cy.contains('CAMP-testi').click({ force: true })
             cy.wait(500)
-            // FIX THIS AFTER MORE INFORMATIVE MESSAGES ARE SET
             cy.contains('Väärä vastaus')
             cy.contains('Testejä').click()
             cy.contains('Veriagar, +37 C, aerobinen kasvatus').click({ force: true })
@@ -128,7 +126,7 @@ describe('Playing game', () => {
             cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.')
         })
 
-        it('User can see results after clicking a right test', () => {
+        it('User can see results after clicking a right test and without clicking "Tulokset" first', () => {
             cy.login({ username: 'user', password: 'user' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
@@ -136,16 +134,11 @@ describe('Playing game', () => {
             cy.get('[type="checkbox"]').eq('2').check()
             cy.get('#checkSamples').click()
             cy.contains('Veriagar, +37 C, aerobinen kasvatus').click({ force: true })
-            cy.contains('Tuloksia').click()
             cy.wait(500)
             cy.get('#resultTable').should('contain', 'Veriagar, +37 C, aerobinen kasvatus')
-            cy.contains('Tuloksia').click()
-            cy.wait(500)
             cy.get('#resultTable').should('not.contain', 'Gramvärjäys')
             cy.contains('Testejä').click()
-            cy.contains('Testejä').click()
             cy.contains('Gramvärjäys').click({ fore: true })
-            cy.contains('Tuloksia').click()
             cy.wait(500)
             cy.get('#resultTable').should('contain', 'Gramvärjäys')
         })
@@ -168,6 +161,7 @@ describe('Playing game', () => {
             cy.contains('Edwardsin agar').click({ fore: true })
             cy.contains('Testejä').click()
             cy.contains('Penisilliinin sietokoe agarvaluamenetelmällä').click({ fore: true })
+            cy.wait(500)
             cy.contains('Diagnoosi').click()
             cy.get('#bacterium').type('Tetanus')
             cy.contains('Diagnoosi').click()
@@ -179,7 +173,7 @@ describe('Playing game', () => {
             cy.get('#checkDiagnosis').click()
             cy.wait(500)
             cy.contains('Oikea vastaus')
-            // Add should contain info
+            cy.contains('Well Done!')
         })
     })
 
