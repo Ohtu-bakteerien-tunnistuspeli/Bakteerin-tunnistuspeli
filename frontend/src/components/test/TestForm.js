@@ -235,135 +235,135 @@ const TestForm = ({ testToEdit }) => {
                             touched
                         }) => {
                             return (
-                        <Form
-                            noValidate
-                            onSubmit={handleSubmit}
-                            encType='multipart/form-data'>
-                            <Name nameControlId='name'
-                                testName={testName}
-                                onChange={setFieldValue}
-                                error={errors.testName}
-                                touched={touched.testName}
-                                setTestName={setTestName}></Name>
+                                <Form
+                                    noValidate
+                                    onSubmit={handleSubmit}
+                                    encType='multipart/form-data'>
+                                    <Name nameControlId='name'
+                                        testName={testName}
+                                        onChange={setFieldValue}
+                                        error={errors.testName}
+                                        touched={touched.testName}
+                                        setTestName={setTestName}></Name>
 
-                            <Type typeControlId='type'
-                                testType={testType}
-                                onChange={setFieldValue}
-                                error={errors.testType}
-                                touched={touched.testType}     
-                                setTestType={setTestType}></Type>
+                                    <Type typeControlId='type'
+                                        testType={testType}
+                                        onChange={setFieldValue}
+                                        error={errors.testType}
+                                        touched={touched.testType}
+                                        setTestType={setTestType}></Type>
 
-                        <AddImage
-                            title='Kontrollikuva'
-                            name='controlImage'
-                            value={controlImage.image}
-                            setImage={setControlImage}
-                            setAdded={setCtrl}
-                            imgPreview={imgPreviewCtrl}
-                            setImgPreview={setImgPreviewCtrl}
-                        ></AddImage>
-                        {testToEdit ?
-                            <Form.Group controlId='editControlImage'>
+                                    <AddImage
+                                        title='Kontrollikuva'
+                                        name='controlImage'
+                                        value={controlImage.image}
+                                        setImage={setControlImage}
+                                        setAdded={setCtrl}
+                                        imgPreview={imgPreviewCtrl}
+                                        setImgPreview={setImgPreviewCtrl}
+                                    ></AddImage>
+                                    {testToEdit ?
+                                        <Form.Group controlId='editControlImage'>
 
-                                {ctrl && testToEdit.controlImage ?
-                                    <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100} />
-                                    : <></>
-                                }
-                                <DeleteButton
-                                    id='deleteControl'
-                                    onClick={() => {
-                                        setCtrl(false)
-                                        setDeletePhotos({ ...deletePhotos, ctrl: true })
-                                    }}
-                                    text='Poista kontrollikuva'
-                                ></DeleteButton>
-                            </Form.Group>
-                            :
-                            null
-                        }
+                                            {ctrl && testToEdit.controlImage ?
+                                                <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100} />
+                                                : <></>
+                                            }
+                                            <DeleteButton
+                                                id='deleteControl'
+                                                onClick={() => {
+                                                    setCtrl(false)
+                                                    setDeletePhotos({ ...deletePhotos, ctrl: true })
+                                                }}
+                                                text='Poista kontrollikuva'
+                                            ></DeleteButton>
+                                        </Form.Group>
+                                        :
+                                        null
+                                    }
 
 
-                        <AddImage
-                            title='Positiivinen oletus'
-                            name='posImg'
-                            value={positiveResultImage.image}
-                            setImage={setPositiveResultImage}
-                            setAdded={setPos}
-                            imgPreview={imgPreviewPos}
-                            setImgPreview={setImgPreviewPos}
-                        ></AddImage>
+                                    <AddImage
+                                        title='Positiivinen oletus'
+                                        name='posImg'
+                                        value={positiveResultImage.image}
+                                        setImage={setPositiveResultImage}
+                                        setAdded={setPos}
+                                        imgPreview={imgPreviewPos}
+                                        setImgPreview={setImgPreviewPos}
+                                    ></AddImage>
 
-                        {testToEdit ?
-                            <Form.Group controlId='editPositiveResultImage'>
-                                {pos && testToEdit.positiveResultImage ?
-                                    <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100} />
-                                    : <></>
-                                }
-                                <DeleteButton
-                                    id='deletePositive'
-                                    onClick={() => {
-                                        setPos(false)
-                                        setDeletePhotos({ ...deletePhotos, pos: true })
-                                    }}
-                                    text='Poista positiivinen kuva'
-                                ></DeleteButton>
-                            </Form.Group>
-                            :
-                            null
-                        }
+                                    {testToEdit ?
+                                        <Form.Group controlId='editPositiveResultImage'>
+                                            {pos && testToEdit.positiveResultImage ?
+                                                <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100} />
+                                                : <></>
+                                            }
+                                            <DeleteButton
+                                                id='deletePositive'
+                                                onClick={() => {
+                                                    setPos(false)
+                                                    setDeletePhotos({ ...deletePhotos, pos: true })
+                                                }}
+                                                text='Poista positiivinen kuva'
+                                            ></DeleteButton>
+                                        </Form.Group>
+                                        :
+                                        null
+                                    }
 
-                        <AddImage
-                            title='Negatiivinen oletus'
-                            name='negImg'
-                            value={negativeImage.image}
-                            setImage={setNegativeImage}
-                            setAdded={setNeg}
-                            imgPreview={imgPreviewNeg}
-                            setImgPreview={setImgPreviewNeg}
-                        ></AddImage>
-                        {testToEdit ?
-                            <Form.Group controlId='editNegativeResultImage'>
-                                {neg && testToEdit.negativeResultImage ?
-                                    <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100} />
-                                    : <></>
-                                }
-                                <DeleteButton
-                                    id='deleteNegative'
-                                    onClick={() => { setNeg(false); setDeletePhotos({ ...deletePhotos, neg: true }) }}
-                                    text='Poista negatiivinen kuva'
-                                ></DeleteButton>
-                            </Form.Group>
-                            :
-                            null
-                        }
+                                    <AddImage
+                                        title='Negatiivinen oletus'
+                                        name='negImg'
+                                        value={negativeImage.image}
+                                        setImage={setNegativeImage}
+                                        setAdded={setNeg}
+                                        imgPreview={imgPreviewNeg}
+                                        setImgPreview={setImgPreviewNeg}
+                                    ></AddImage>
+                                    {testToEdit ?
+                                        <Form.Group controlId='editNegativeResultImage'>
+                                            {neg && testToEdit.negativeResultImage ?
+                                                <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100} />
+                                                : <></>
+                                            }
+                                            <DeleteButton
+                                                id='deleteNegative'
+                                                onClick={() => { setNeg(false); setDeletePhotos({ ...deletePhotos, neg: true }) }}
+                                                text='Poista negatiivinen kuva'
+                                            ></DeleteButton>
+                                        </Form.Group>
+                                        :
+                                        null
+                                    }
 
-                        <BacteriaSpecificImages
-                            controlId={testToEdit ? 'editBacteriaSpecificImages' : 'bacteriaSpecificImages'}
-                            setBacterium={setBacterium}
-                            bacteria={bacteria}
-                            bacterium={bacterium}
-                            setBacteriaImages={setBacteriaImages}
-                            handleSpecificImg={handleSpecificImg}
-                            bacteriaSpecificImages={bacteriaSpecificImages}
-                            bacteriaSpecificImage={bacteriaSpecificImage}
-                            addBacteriumSpecificImage={addBacteriumSpecificImage}
-                            removeBacteriaSpecificImage={removeBacteriaSpecificImage}
-                            marginStyle={marginStyle}
-                            addedBacteriaImage={addedBacteriaImage}
-                            onChange={setFieldValue}
-                            error={errors.bacteriumName}
-                            touched={touched.bacteriumName}
-                        />
-                        <Button id={testToEdit ? 'saveChanges' : 'addTest'} variant='success' type='submit'>{testToEdit ? 'Tallenna muutokset' : 'Tallenna'}</Button>
-                    
-                        { Object.keys(errors).length > 0 ?
+                                    <BacteriaSpecificImages
+                                        controlId={testToEdit ? 'editBacteriaSpecificImages' : 'bacteriaSpecificImages'}
+                                        setBacterium={setBacterium}
+                                        bacteria={bacteria}
+                                        bacterium={bacterium}
+                                        setBacteriaImages={setBacteriaImages}
+                                        handleSpecificImg={handleSpecificImg}
+                                        bacteriaSpecificImages={bacteriaSpecificImages}
+                                        bacteriaSpecificImage={bacteriaSpecificImage}
+                                        addBacteriumSpecificImage={addBacteriumSpecificImage}
+                                        removeBacteriaSpecificImage={removeBacteriaSpecificImage}
+                                        marginStyle={marginStyle}
+                                        addedBacteriaImage={addedBacteriaImage}
+                                        onChange={setFieldValue}
+                                        error={errors.bacteriumName}
+                                        touched={touched.bacteriumName}
+                                    />
+                                    <Button id={testToEdit ? 'saveChanges' : 'addTest'} variant='success' type='submit'>{testToEdit ? 'Tallenna muutokset' : 'Tallenna'}</Button>
+
+                                    { Object.keys(errors).length > 0 ?
                                         <p style={{ color: 'red' }}>Testiä ei voida lisätä, tarkista lisäämäsi syötteet.</p>
                                         : null
                                     }
-                    </Form>
+                                </Form>
                             )
-                                }}
-                      </Formik>
+                        }}
+                    </Formik>
                 </Modal.Body>
             </Modal>
         </div>
