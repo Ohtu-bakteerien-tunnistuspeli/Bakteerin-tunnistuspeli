@@ -9,7 +9,8 @@ import DeleteButton from '../utility/DeleteButton.js'
 import AddImage from './components/AddImage.js'
 import { INITIAL_STATE, marginStyle } from './utility'
 import { deleteTest, updateTest } from '../../reducers/testReducer'
-
+import * as Yup from 'yup'
+import { Formik } from 'formik'
 
 
 const TestForm = ({ testToEdit }) => {
@@ -19,6 +20,7 @@ const TestForm = ({ testToEdit }) => {
     /* style parameters end */
 
     /* initial parameters */
+    const tests = useSelector(state => state.test)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -41,6 +43,7 @@ const TestForm = ({ testToEdit }) => {
     const [imgPreviewCtrl, setImgPreviewCtrl] = useState('')
     const [imgPreviewNeg, setImgPreviewNeg] = useState('')
     const [imgPreviewPos, setImgPreviewPos] = useState('')
+    const [addedBacteriaImage, setAddedBacteriaImage] = useState([])
     /* states end */
 
     /* modal control */
@@ -56,8 +59,7 @@ const TestForm = ({ testToEdit }) => {
     /* modal control end */
 
     /* form control */
-    const addTests = (event) => {
-        event.preventDefault()
+    const addTests = () => {
         dispatch(addTest(testName,
             testType,
             controlImage,
@@ -89,8 +91,7 @@ const TestForm = ({ testToEdit }) => {
         dispatch(deleteTest(testToEdit.id, user.token))
     }
 
-    const editTest = (event) => {
-        event.preventDefault()
+    const editTest = () => {
         const photosToDelete = deletePhotos
         const token = user.token
         const id = testToEdit.id
@@ -107,6 +108,48 @@ const TestForm = ({ testToEdit }) => {
 
     }
     /* form control end */
+
+
+    /* schema for validation */
+    const TestSchema = Yup.object().shape({
+        testName: Yup.string()
+            .min(2, 'Nimen tulee olla vähintään 2 merkkiä pitkä.')
+            .max(100, 'Nimen tulee olla enintään 100 merkkiä pitkä.')
+            .required('Pakollinen kenttä.')
+            .test('unique', 'Nimen tulee olla uniikki', function (name) {
+                if (testToEdit) {
+                    if (name === testToEdit.name) {
+                        return true
+                    }
+                }
+                if (tests.map(c => c.name).includes(name)) {
+                    return false
+                }
+                return true
+            }),
+        testType: Yup.string()
+            .required('Pakollinen kenttä'),
+        bacteriumName: Yup.string()
+            .test('unique', 'bakteerille on jo lisätty kuva', function (bacteriumName) {
+                if (!bacteriumName) {
+                    return true
+                }
+                if (addedBacteriaImage.includes(bacteriumName)) {
+                    return false
+                }
+                return true
+            })
+
+    })
+    /* schema for validation end */
+
+    const onSuccess = () => {
+        if (testToEdit) {
+            editTest()
+        } else {
+            addTests()
+        }
+    }
 
     const addBacteriumSpecificImage = () => {
         if (!bacterium) {
@@ -128,6 +171,7 @@ const TestForm = ({ testToEdit }) => {
                 setDeleteSpecifics(deleteSpecifics.filter(img => img !== newFile.name))
                 setBacteriaImage(INITIAL_STATE)
                 setBacterium('')
+                setAddedBacteriaImage(addedBacteriaImage.concat(bacterium))
             }
         }
     }
@@ -137,6 +181,7 @@ const TestForm = ({ testToEdit }) => {
         image.name ? name = image.name : name = image.bacterium.name
         setDeleteSpecifics(deleteSpecifics.concat(name))
         setBacteriaImages(bacteriaSpecificImages.filter(img => img.name !== name))
+        setAddedBacteriaImage(addedBacteriaImage.filter(bac => bac !== name))
     }
 
 
@@ -174,15 +219,40 @@ const TestForm = ({ testToEdit }) => {
                         ></DeleteButton>
                         : null
                     }
-                    <Form
-                        onSubmit={testToEdit ? editTest : addTests}
-                        encType='multipart/form-data'>
-                        <Name nameControlId='name'
-                            testName={testName}
-                            setTestName={setTestName}></Name>
-                        <Type typeControlId='type'
-                            testType={testType}
-                            setTestType={setTestType}></Type>
+                    <Formik
+                        validationSchema={TestSchema}
+                        onSubmit={onSuccess}
+                        initialValues={{
+                            testName: testName,
+                            testType: testType,
+                            bacteriumName: ''
+                        }}
+                    >
+                        {({
+                            handleSubmit,
+                            errors,
+                            setFieldValue,
+                            touched
+                        }) => {
+                            return (
+                        <Form
+                            noValidate
+                            onSubmit={handleSubmit}
+                            encType='multipart/form-data'>
+                            <Name nameControlId='name'
+                                testName={testName}
+                                onChange={setFieldValue}
+                                error={errors.testName}
+                                touched={touched.testName}
+                                setTestName={setTestName}></Name>
+
+                            <Type typeControlId='type'
+                                testType={testType}
+                                onChange={setFieldValue}
+                                error={errors.testType}
+                                touched={touched.testType}     
+                                setTestType={setTestType}></Type>
+
                         <AddImage
                             title='Kontrollikuva'
                             name='controlImage'
@@ -279,9 +349,21 @@ const TestForm = ({ testToEdit }) => {
                             addBacteriumSpecificImage={addBacteriumSpecificImage}
                             removeBacteriaSpecificImage={removeBacteriaSpecificImage}
                             marginStyle={marginStyle}
+                            addedBacteriaImage={addedBacteriaImage}
+                            onChange={setFieldValue}
+                            error={errors.bacteriumName}
+                            touched={touched.bacteriumName}
                         />
                         <Button id={testToEdit ? 'saveChanges' : 'addTest'} variant='success' type='submit'>{testToEdit ? 'Tallenna muutokset' : 'Tallenna'}</Button>
+                    
+                        { Object.keys(errors).length > 0 ?
+                                        <p style={{ color: 'red' }}>Testiä ei voida lisätä, tarkista lisäämäsi syötteet.</p>
+                                        : null
+                                    }
                     </Form>
+                            )
+                                }}
+                      </Formik>
                 </Modal.Body>
             </Modal>
         </div>
