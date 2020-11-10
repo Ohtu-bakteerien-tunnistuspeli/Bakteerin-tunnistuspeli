@@ -23,6 +23,8 @@ const App = () => {
     const user = useSelector(state => state.user)
     const game = useSelector(state => state.game)
 
+    console.log('TÄMÄ ON PULL REQUEST')
+
     useEffect(() => {
         dispatch(returnUser(history))
     }, [dispatch, history])
