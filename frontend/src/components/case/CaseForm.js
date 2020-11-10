@@ -417,7 +417,7 @@ const CaseForm = ({ caseToEdit }) => {
                                             addedTests={addedTests}
                                         />
                                     )}
-                                    <Button onClick={() => addTestGroup()} block>Lisää tyhjä testiryhmä</Button>
+                                    <Button id='addTestGroup' onClick={() => addTestGroup()} block>Lisää tyhjä testiryhmä</Button>
                                     {caseToEdit ? <Button id="saveEdit" variant="success" type="submit">
                                         Tallenna muutokset
                                     </Button> : <Button

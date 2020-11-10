@@ -8,7 +8,7 @@ const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tes
             <td>
                 <Form.Control
                     as='select'
-                    id='testSelect'
+                    id={testGroupIndex === 0 ? 'testSelect' : `testSelect${testGroupIndex}`}
                     value={test ? JSON.stringify(test) : ''}
                     onChange={(event) => event.target.value !== '' ? setTest(JSON.parse(event.target.value)) : setTest('')}
                 >
@@ -20,9 +20,11 @@ const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tes
                     }
                 </Form.Control>
             </td>
-            <td><Button onClick={() => {
-                addTest(testGroupIndex, testForCaseIndex, test)
-                setTest('')
+            <td><Button
+                id={testGroupIndex === 0 ? 'addTest' : `addTest${testGroupIndex}`}
+                onClick={() => {
+                    addTest(testGroupIndex, testForCaseIndex, test)
+                    setTest('')
                 }}>{hasAlternative ? 'Lisää vaihtoehtoinen testi' : 'Lisää testi'}</Button></td>
         </>
     )

@@ -28,7 +28,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGrou
                     </Row>
                 </Container>
 
-                <Table id='testGroupsTable'>
+                <Table id={index === 0 ? 'testGroupTable' : `testGroupTable${index}`}>
                     <thead>
                         <tr>
                             <th>Testit</th>
@@ -102,7 +102,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGrou
                             </tr>
                         )}
                         <tr>
-                            <td><Button onClick={() => addEmptyTestForCase(index)}>Lisää tyhjä testi</Button></td>
+                            <td><Button id={index === 0 ? 'addTestForCase' : `addTestForCase${index}`} onClick={() => addEmptyTestForCase(index)}>Lisää tyhjä testi</Button></td>
                         </tr>
                     </tbody>
                 </Table>
