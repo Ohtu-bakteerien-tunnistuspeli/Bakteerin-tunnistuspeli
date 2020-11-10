@@ -3,22 +3,22 @@ import { setNotification } from '../reducers/notificationReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
-    case 'GET_TEST': {
-        return action.data
-    }
-    case 'ADD_TEST': {
-        return [...state, action.data]
-    }
-    case 'DELETE_TEST': {
-        return state.filter(test => test.id !== action.data)
-    }
-    case 'UPDATE_TEST': {
-        return state.map(test => test.id === action.data.id ? test = action.data : test)
-    }
-    case 'ZERO_TEST': {
-        return action.data
-    }
-    default: return state
+        case 'GET_TEST': {
+            return action.data
+        }
+        case 'ADD_TEST': {
+            return [...state, action.data]
+        }
+        case 'DELETE_TEST': {
+            return state.filter(test => test.id !== action.data)
+        }
+        case 'UPDATE_TEST': {
+            return state.map(test => test.id === action.data.id ? test = action.data : test)
+        }
+        case 'ZERO_TEST': {
+            return action.data
+        }
+        default: return state
     }
 }
 
@@ -37,7 +37,7 @@ export const getTests = (token) => {
     }
 }
 
-export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token, resetTestForm) => {
+export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token, handleClose) => {
     return async dispatch => {
         const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpesif, token)
         if (test.error) {
@@ -48,7 +48,7 @@ export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, tok
                 type: 'ADD_TEST',
                 data: test
             })
-            resetTestForm()
+            handleClose()
         }
     }
 }
@@ -68,7 +68,7 @@ export const deleteTest = (id, token) => {
     }
 }
 
-export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token) => {
+export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token, handleClose, setDeletePhotos, setDeleteSpecifics) => {
     return async dispatch => {
         const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token)
         if (test.error) {
@@ -79,6 +79,9 @@ export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteria
                 type: 'UPDATE_TEST',
                 data: test
             })
+            handleClose()
+            setDeletePhotos({ ctrl: false, pos: false, neg: false })
+            setDeleteSpecifics([])
         }
     }
 }
