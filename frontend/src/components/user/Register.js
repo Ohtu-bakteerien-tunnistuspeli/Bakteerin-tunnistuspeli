@@ -159,13 +159,13 @@ const Register = () => {
                                     <Form.Label>Olen lukenut ja hyväksyn&nbsp;{<a href='#' onClick={() => setShowModal(true)}>käyttöehdot</a>//eslint-disable-line
                                     }&nbsp;
                         ja&nbsp;{<a href='#' onClick={() => setShowModal2(true)}>tietosuojailmoituksen</a> //eslint-disable-line
-                                        }:&nbsp;
-                        </Form.Label>
+                                    }:&nbsp;
+                                    </Form.Label>
                                     <Form.Check type='checkbox' label='' id='acceptCheckBox' value={accept} onChange={() => setAccept(!accept)} />
                                 </div>
                                 <Button id='submit' variant='success' type='submit'>
                                     Rekisteröidy
-                    </Button>
+                                </Button>
                             </Form.Group>
                         </Form>
                     )

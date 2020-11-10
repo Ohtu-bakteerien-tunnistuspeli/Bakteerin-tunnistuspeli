@@ -20,10 +20,10 @@ const Type = ({ typeControlId, testType, onChange, error, touched, setTestType }
                     <option key='3' value='Testi'>Testi</option>
                     <option key='4' value='Viljely'>Viljely</option>
                 </Form.Control>
-            <Form.Control.Feedback type="invalid">
-                {error}
-            </Form.Control.Feedback>
-        </Form.Group>
+                <Form.Control.Feedback type="invalid">
+                    {error}
+                </Form.Control.Feedback>
+            </Form.Group>
         </>
     )
 }
