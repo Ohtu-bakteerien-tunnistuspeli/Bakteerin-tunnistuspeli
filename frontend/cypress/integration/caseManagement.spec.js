@@ -12,8 +12,6 @@ describe('Case management', () => {
     })
 
     describe('Add case', () => {
-        beforeEach(() => {
-        })
 
         it('A new case with correct data without image can be added', () => {
             cy.contains('Tapausten hallinta').click()
@@ -124,8 +122,6 @@ describe('Case management', () => {
     })
 
     describe('Modify a case', () => {
-        beforeEach(() => {
-        })
 
         it('The case Tapaus can be modified', () => {
             cy.login({ username: 'admin', password: 'admin' })

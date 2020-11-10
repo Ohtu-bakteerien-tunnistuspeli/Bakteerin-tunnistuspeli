@@ -1,11 +1,11 @@
 import React from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Image } from 'react-bootstrap'
 
 const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
-    bacterium, setBacteriaImages, handleSpecificImg,
+    bacterium, handleSpecificImg,
     bacteriaSpecificImages, bacteriaSpecificImage,
     addBacteriumSpecificImage, removeBacteriaSpecificImage,
-    marginStyle, onChange, error, touched }) => {
+    marginStyle, onChange, error, addedBacteriaImage }) => {
 
     const handleChange = (event) => {
         event.preventDefault()
@@ -21,6 +21,10 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
                 {bacteriaSpecificImages.map((image, i) => {
                     return (
                         <li key={i}>{image.name ? image.name : image.bacterium.name} &ensp;&ensp;
+                            {image.url ?
+                                <Image src={`/${image.url}`} thumbnail width={100} /> :
+                                <Image src={URL.createObjectURL(image)} width={100}></Image>
+                            }
                             <Button
                                 onClick={() => removeBacteriaSpecificImage(image)}
                                 variant='danger'
@@ -39,8 +43,8 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
                 value={bacterium}
                 isInvalid={error}
                 onChange={(event) => handleChange(event)}>
-                <option value='default' disabled hidden>Valitse bakteeri</option>
-                {bacteria.map(bact =>
+                <option value='' disabled hidden>Valitse bakteeri</option>
+                {bacteria.filter(bact => !addedBacteriaImage.includes(bact.name)).map(bact =>
                     <option key={bact.id} value={bact.name}>{bact.name}</option>
                 )}
             </Form.Control>

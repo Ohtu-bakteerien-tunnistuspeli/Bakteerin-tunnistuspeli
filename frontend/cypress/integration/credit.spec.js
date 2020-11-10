@@ -9,8 +9,6 @@ describe('credit management', () => {
     })
 
     describe('Filtering credits', () => {
-        beforeEach(() => {
-        })
 
         it('Class group filter shows only correct credits', () => {
             cy.contains('Suoritusten hallinta').click()
@@ -48,8 +46,6 @@ describe('credit management', () => {
     })
 
     describe('Deleting credits', () => {
-        beforeEach(() => {
-        })
 
         it('Only filtered credits are deleted', () => {
             cy.contains('Suoritusten hallinta').click()
@@ -66,8 +62,6 @@ describe('credit management', () => {
     })
 
     describe('Showing individual stats in modal', () => {
-        beforeEach(() => {
-        })
 
         it('modal can be opened', () => {
             cy.contains('Suoritusten hallinta').click()

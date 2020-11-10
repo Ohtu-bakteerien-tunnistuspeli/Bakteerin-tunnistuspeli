@@ -29,7 +29,7 @@ const TestForm = ({ testToEdit }) => {
     /* states */
     const [testName, setTestName] = useState(testToEdit ? testToEdit.name : '')
     const [testType, setTestType] = useState(testToEdit ? testToEdit.type : '')
-    const [bacterium, setBacterium] = useState(testToEdit ? testToEdit.bacterium : '')
+    const [bacterium, setBacterium] = useState('')
     const [controlImage, setControlImage] = useState(INITIAL_STATE)
     const [positiveResultImage, setPositiveResultImage] = useState(INITIAL_STATE)
     const [negativeImage, setNegativeImage] = useState(INITIAL_STATE)
@@ -43,7 +43,7 @@ const TestForm = ({ testToEdit }) => {
     const [imgPreviewCtrl, setImgPreviewCtrl] = useState('')
     const [imgPreviewNeg, setImgPreviewNeg] = useState('')
     const [imgPreviewPos, setImgPreviewPos] = useState('')
-    const [addedBacteriaImage, setAddedBacteriaImage] = useState([])
+    const [addedBacteriaImage, setAddedBacteriaImage] = useState(testToEdit ? testToEdit.bacteriaSpecificImages.map(bacImg => bacImg.bacterium.name) : [])
     /* states end */
 
     /* modal control */
@@ -55,6 +55,7 @@ const TestForm = ({ testToEdit }) => {
         setImgPreviewCtrl('')
         setImgPreviewNeg('')
         setImgPreviewPos('')
+        resetTestForm()
     }
     /* modal control end */
 
@@ -67,24 +68,27 @@ const TestForm = ({ testToEdit }) => {
             negativeImage,
             bacteriaSpecificImages,
             user.token,
-            resetTestForm))
-        handleClose()
+            handleClose))
     }
 
     const resetTestForm = () => {
-        setTestName('')
-        setTestType('')
+        setTestName(testToEdit ? testToEdit.name : '')
+        setTestType(testToEdit ? testToEdit.type : '')
         setBacterium('')
         setControlImage(INITIAL_STATE)
         setPositiveResultImage(INITIAL_STATE)
         setNegativeImage(INITIAL_STATE)
-        setBacteriaImages([])
+        setBacteriaImages(testToEdit && testToEdit.bacteriaSpecificImages.length > 0 ? testToEdit.bacteriaSpecificImages : [])
         setBacteriaImage(INITIAL_STATE)
         setDeletePhotos({ ctrl: false, pos: false, neg: false })
         setDeleteSpecifics([])
-        setPos(false)
-        setNeg(false)
-        setCtrl(false)
+        setPos(testToEdit ? testToEdit.positiveResultImage ? true : false : false)
+        setNeg(testToEdit ? (testToEdit.negativeResultImage ? true : false) : false)
+        setCtrl(testToEdit ? testToEdit.controlImage ? true : false : false)
+        setImgPreviewCtrl('')
+        setImgPreviewNeg('')
+        setImgPreviewPos('')
+        setAddedBacteriaImage(testToEdit ? testToEdit.bacteriaSpecificImages.map(bacImg => bacImg.bacterium.name) : [])
     }
 
     const removeTest = () => {
@@ -101,10 +105,7 @@ const TestForm = ({ testToEdit }) => {
             bacteriaSpecificImages,
             photosToDelete,
             deleteSpecifics,
-            token))
-        handleClose()
-        setDeletePhotos({ ctrl: false, pos: false, neg: false })
-        setDeleteSpecifics([])
+            token, handleClose, setDeletePhotos, setDeleteSpecifics))
 
     }
     /* form control end */
@@ -203,7 +204,7 @@ const TestForm = ({ testToEdit }) => {
                 onClick={() => handleShow()}>
                 {testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
             </Button>
-            <Modal show={show} size='xl' scrollable='true' onHide={handleClose} >
+            <Modal show={show} size='xl' scrollable='true' onHide={handleClose} backdrop='static'>
                 <Modal.Header
                     closeButton>{testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
                 </Modal.Header>

@@ -14,8 +14,6 @@ describe('Test management', () => {
     })
 
     describe('Tests can be added', () => {
-        beforeEach(() => {
-        })
 
         it('A new test without images can be added', () => {
             cy.contains('Testien hallinta').click()
@@ -62,8 +60,6 @@ describe('Test management', () => {
     })
 
     describe('Tests can be deleted', () => {
-        beforeEach(() => {
-        })
 
         it('Test can be deleted', () => {
             cy.contains('Testien hallinta').click()
@@ -76,8 +72,6 @@ describe('Test management', () => {
     })
 
     describe('Tests can be modified', () => {
-        beforeEach(() => {
-        })
 
         it('Test name can be edited', () => {
             cy.contains('Testien hallinta').click()
