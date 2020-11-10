@@ -88,7 +88,7 @@ describe('Case management', () => {
             cy.get('#testGroupTable').contains('Testi')
             cy.get('#testGroupTable').get('#positive').should('not.be.checked')
             cy.get('#testGroupTable').get('#required').should('not.be.checked')
-            cy.contains('Nimi on liian lyhyt.')
+            cy.contains('Nimen tulee olla vähintään 2 merkkiä pitkä.')
         })
 
         it('If the field name is not unique, case is not added and error is reported', () => {

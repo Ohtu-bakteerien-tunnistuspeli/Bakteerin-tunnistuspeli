@@ -80,8 +80,8 @@ const CaseForm = ({ caseToEdit }) => {
     /* schema for validation */
     const CaseSchema = Yup.object().shape({
         name: Yup.string()
-            .min(2, 'Nimi on liian lyhyt.')
-            .max(50, 'Nimi on liian pitkä')
+            .min(2, 'Nimen tulee olla vähintään 2 merkkiä pitkä.')
+            .max(100, 'Nimen tulee olla korkeintaan 100 merkkiä pitkä')
             .required('Pakollinen kenttä.')
             .test('unique', 'Nimen tulee olla uniikki', function (name) {
                 if (caseToEdit) {
