@@ -37,7 +37,7 @@ jobs:
         PORT: 3001
         IMAGEURL: 'images'
     - name: Cypress run
-      uses: cypress-io/github-action@v1
+      uses: cypress-io/github-action@v2
       with:
         start: npm start
         working-directory: frontend
