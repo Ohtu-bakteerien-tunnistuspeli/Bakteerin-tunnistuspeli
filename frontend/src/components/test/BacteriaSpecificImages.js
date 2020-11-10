@@ -10,13 +10,20 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
     const handleChange = (event) => {
         event.preventDefault()
         setBacterium(event.target.value)
+        console.log(event.target.value)
         onChange('bacteriumName', event.target.value)
     }
 
+    const handleAdd = (event) => {
+        event.preventDefault()
+        onChange('bacteriumName', '')
+        addBacteriumSpecificImage()
+    }
 
     return (
         <Form.Group controlId={controlId}>
             <Form.Label style={{ paddingTop: '40px' }}><h4>Bakteerikohtaiset kuvat</h4></Form.Label>
+            {console.log('2', bacteriaSpecificImages)}
             <ul>
                 {bacteriaSpecificImages.map((image, i) => {
                     return (
@@ -58,7 +65,7 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
                 value={bacteriaSpecificImage.image}
                 onChange={handleSpecificImg}
             />
-            <Button style={marginStyle} type='button' onClick={addBacteriumSpecificImage}>Tallenna bakteerikohtainen kuva</Button>
+            <Button style={marginStyle} type='button' onClick={handleAdd}>Tallenna bakteerikohtainen kuva</Button>
         </Form.Group>
     )
 }

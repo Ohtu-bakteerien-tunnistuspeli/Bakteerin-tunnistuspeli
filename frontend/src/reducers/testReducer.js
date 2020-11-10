@@ -3,22 +3,22 @@ import { setNotification } from '../reducers/notificationReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
-        case 'GET_TEST': {
-            return action.data
-        }
-        case 'ADD_TEST': {
-            return [...state, action.data]
-        }
-        case 'DELETE_TEST': {
-            return state.filter(test => test.id !== action.data)
-        }
-        case 'UPDATE_TEST': {
-            return state.map(test => test.id === action.data.id ? test = action.data : test)
-        }
-        case 'ZERO_TEST': {
-            return action.data
-        }
-        default: return state
+    case 'GET_TEST': {
+        return action.data
+    }
+    case 'ADD_TEST': {
+        return [...state, action.data]
+    }
+    case 'DELETE_TEST': {
+        return state.filter(test => test.id !== action.data)
+    }
+    case 'UPDATE_TEST': {
+        return state.map(test => test.id === action.data.id ? test = action.data : test)
+    }
+    case 'ZERO_TEST': {
+        return action.data
+    }
+    default: return state
     }
 }
 

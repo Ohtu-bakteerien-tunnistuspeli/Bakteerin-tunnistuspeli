@@ -51,11 +51,8 @@ const TestForm = ({ testToEdit }) => {
     const handleShow = () => setShow(true)
 
     const handleClose = () => {
-        setShow(false)
-        setImgPreviewCtrl('')
-        setImgPreviewNeg('')
-        setImgPreviewPos('')
         resetTestForm()
+        setShow(false)
     }
     /* modal control end */
 
@@ -67,18 +64,17 @@ const TestForm = ({ testToEdit }) => {
             positiveResultImage,
             negativeImage,
             bacteriaSpecificImages,
-            user.token,
-            handleClose))
+            user.token, handleClose))
     }
 
     const resetTestForm = () => {
+        setBacteriaImages(testToEdit && testToEdit.bacteriaSpecificImages.length > 0 ? testToEdit.bacteriaSpecificImages : [])
         setTestName(testToEdit ? testToEdit.name : '')
         setTestType(testToEdit ? testToEdit.type : '')
         setBacterium('')
         setControlImage(INITIAL_STATE)
         setPositiveResultImage(INITIAL_STATE)
         setNegativeImage(INITIAL_STATE)
-        setBacteriaImages(testToEdit && testToEdit.bacteriaSpecificImages.length > 0 ? testToEdit.bacteriaSpecificImages : [])
         setBacteriaImage(INITIAL_STATE)
         setDeletePhotos({ ctrl: false, pos: false, neg: false })
         setDeleteSpecifics([])
@@ -89,6 +85,7 @@ const TestForm = ({ testToEdit }) => {
         setImgPreviewNeg('')
         setImgPreviewPos('')
         setAddedBacteriaImage(testToEdit ? testToEdit.bacteriaSpecificImages.map(bacImg => bacImg.bacterium.name) : [])
+        console.log(bacteriaSpecificImages)
     }
 
     const removeTest = () => {
@@ -106,7 +103,6 @@ const TestForm = ({ testToEdit }) => {
             photosToDelete,
             deleteSpecifics,
             token, handleClose, setDeletePhotos, setDeleteSpecifics))
-
     }
     /* form control end */
 
@@ -132,7 +128,7 @@ const TestForm = ({ testToEdit }) => {
             .required('Pakollinen kenttä'),
         bacteriumName: Yup.string()
             .test('unique', 'bakteerille on jo lisätty kuva', function (bacteriumName) {
-                if (!bacteriumName) {
+                if (!bacteriumName || bacteriumName === '') {
                     return true
                 }
                 if (addedBacteriaImage.includes(bacteriumName)) {
@@ -153,6 +149,7 @@ const TestForm = ({ testToEdit }) => {
     }
 
     const addBacteriumSpecificImage = () => {
+        console.log('addBacterium')
         if (!bacterium) {
             return
         }
@@ -168,7 +165,10 @@ const TestForm = ({ testToEdit }) => {
                 if (!newFile) {
                     newFile = bacteriaSpecificImage
                 }
+                console.log('before concat', bacteriaSpecificImages)
                 setBacteriaImages(bacteriaSpecificImages.concat(newFile))
+                console.log('concat', bacteriaSpecificImages)
+                console.log('newFile', newFile)
                 setDeleteSpecifics(deleteSpecifics.filter(img => img !== newFile.name))
                 setBacteriaImage(INITIAL_STATE)
                 setBacterium('')
@@ -178,14 +178,13 @@ const TestForm = ({ testToEdit }) => {
     }
 
     const removeBacteriaSpecificImage = (image) => {
+        console.log('at remove')
         let name
         image.name ? name = image.name : name = image.bacterium.name
         setDeleteSpecifics(deleteSpecifics.concat(name))
         setBacteriaImages(bacteriaSpecificImages.filter(img => img.name !== name))
         setAddedBacteriaImage(addedBacteriaImage.filter(bac => bac !== name))
     }
-
-
 
     const handleSpecificImg = (event) => {
         if (event.target.files[0]) {
@@ -198,6 +197,7 @@ const TestForm = ({ testToEdit }) => {
 
     return (
         <div>
+            {console.log(bacteriaSpecificImages)}
             <Button style={style}
                 id={testToEdit ? 'testEditButton' : 'testModalButton'}
                 variant='primary'
@@ -220,13 +220,14 @@ const TestForm = ({ testToEdit }) => {
                         ></DeleteButton>
                         : null
                     }
+                    {console.log(bacteriaSpecificImages)}
                     <Formik
                         validationSchema={TestSchema}
                         onSubmit={onSuccess}
                         initialValues={{
                             testName: testName,
                             testType: testType,
-                            bacteriumName: ''
+                            bacteriumName: bacterium
                         }}
                     >
                         {({
@@ -338,12 +339,13 @@ const TestForm = ({ testToEdit }) => {
                                         null
                                     }
 
+                                    {console.log(bacteriaSpecificImages)}
+
                                     <BacteriaSpecificImages
                                         controlId={testToEdit ? 'editBacteriaSpecificImages' : 'bacteriaSpecificImages'}
                                         setBacterium={setBacterium}
                                         bacteria={bacteria}
                                         bacterium={bacterium}
-                                        setBacteriaImages={setBacteriaImages}
                                         handleSpecificImg={handleSpecificImg}
                                         bacteriaSpecificImages={bacteriaSpecificImages}
                                         bacteriaSpecificImage={bacteriaSpecificImage}
