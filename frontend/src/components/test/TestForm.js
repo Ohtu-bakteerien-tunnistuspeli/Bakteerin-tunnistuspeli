@@ -113,8 +113,8 @@ const TestForm = ({ testToEdit }) => {
     /* schema for validation */
     const TestSchema = Yup.object().shape({
         testName: Yup.string()
-            .min(2, 'Nimi on liian lyhyt.')
-            .max(50, 'Nimi on liian pitkä')
+            .min(2, 'Testin nimen tulee olla vähintään 2 merkkiä pitkä.')
+            .max(100, 'Testin nimen tulee olla enintään 100 merkkiä pitkä.')
             .required('Pakollinen kenttä.')
             .test('unique', 'Nimen tulee olla uniikki', function (name) {
                 if (testToEdit) {
