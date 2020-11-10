@@ -3,7 +3,6 @@ import Samples from './components/Samples.js'
 import AddSample from './components/AddSample.js'
 import TestGroup from './components/TestGroup.js'
 import SelectBacterium from './components/SelectBaterium.js'
-import AddTestGroup from './components/AddTestGroup.js'
 import Name from './components/Name.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
@@ -24,14 +23,6 @@ const CaseForm = ({ caseToEdit }) => {
     /* initial parameters end*/
 
     /* parameters for style */
-    const tableWidth = {
-        tableLayout: 'fixed',
-        width: '100%'
-    }
-
-    const cellWidth = {
-        width: '100%'
-    }
     const borderStyle = { borderStyle: 'solid', borderColor: 'black', borderWidth: 'thin' }
     const marginStyle = { margin: '10px' }
     /* parameters for style end*/
@@ -50,11 +41,6 @@ const CaseForm = ({ caseToEdit }) => {
     const [img, setImg] = useState(false)
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
     const [samples, setSamples] = useState([])
-    const [addingAlt, setAddingAlt] = useState(false)
-    const [addingTest, setAddingTest] = useState(false)
-    const [test, setTest] = useState({ name: '', testId: '', positive: false })
-    const [testForCase, setTestForCase] = useState({ isRequired: false, tests: [] })
-    const [testGroup, setTestGroup] = useState([])
     const [testGroups, setTestGroups] = useState([])
     const [addedTests, setAddedTests] = useState([])
     /* states end*/
@@ -81,7 +67,6 @@ const CaseForm = ({ caseToEdit }) => {
     }
     const handleClose = () => {
         setShow(false)
-        setAddingAlt(false)
         if (!caseToEdit) {
             resetCaseForm()
         } else {
@@ -156,12 +141,7 @@ const CaseForm = ({ caseToEdit }) => {
 
     const resetCaseEditForm = () => {
         setSample({ description: '', rightAnswer: false })
-        setTest({ name: '', testId: '', positive: false })
-        setTestForCase({ isRequired: false, tests: [] })
-        setTestGroup([])
         setTestGroups([])
-        setAddingAlt(false)
-        setAddingTest(false)
         setCompletionImage(INITIAL_STATE)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
     }
@@ -173,13 +153,8 @@ const CaseForm = ({ caseToEdit }) => {
         setCompletionImage(INITIAL_STATE)
         setSample({ description: '', rightAnswer: false })
         setSamples([])
-        setTest({ name: '', testId: '', positive: false })
-        setTestForCase({ isRequired: false, tests: [] })
-        setTestGroup([])
         setTestGroups([])
         setAddedTests([])
-        setAddingAlt(false)
-        setAddingTest(false)
         document.querySelectorAll('input[type=checkbox]').forEach(el => el.checked = false)
 
     }
@@ -206,7 +181,7 @@ const CaseForm = ({ caseToEdit }) => {
         let newTests = addedTests
         for (const testGroup of tg) {
             for (const test of testGroup.tests) {
-                newTests = newTests.filter(testId => testId !== test.testId)
+                newTests = newTests.filter(testId => testId !== test.test.id)
             }
         }
         setAddedTests(newTests)
@@ -214,31 +189,50 @@ const CaseForm = ({ caseToEdit }) => {
     }
 
     const addTestGroup = () => {
-        if (testGroup.length > 0) {
-            setTestGroups([...testGroups, testGroup])
-            setTestGroup([])
-            setAddingAlt(false)
-            setAddingTest(false)
+        setTestGroups([...testGroups, []])
+    }
+
+    const addEmptyTestForCase = (testGroupIndex) => {
+        let newTestGroups = testGroups.slice()
+        newTestGroups[testGroupIndex].push({ tests: [], isRequired: false })
+        setTestGroups(newTestGroups)
+    }
+
+    const removeTestForCase = (testGroupIndex, testForCaseIndex) => {
+        let newTestGroups = testGroups.slice()
+        let removedTests = []
+        newTestGroups[testGroupIndex][testForCaseIndex].tests.forEach(test => removedTests.push(test.test.id))
+        setAddedTests(addedTests.filter(testId => !removedTests.includes(testId)))
+        newTestGroups[testGroupIndex] = newTestGroups[testGroupIndex].filter((testForCase, i) => i !== testForCaseIndex) //eslint-disable-line
+        setTestGroups(newTestGroups)
+    }
+
+    const changeTestForCaseIsRequired = (testGroupIndex, testForCaseIndex) => {
+        let newTestGroups = testGroups.slice()
+        newTestGroups[testGroupIndex][testForCaseIndex].isRequired = !testGroups[testGroupIndex][testForCaseIndex].isRequired
+        setTestGroups(newTestGroups)
+    }
+
+    const addTest = (testGroupIndex, testForCaseIndex, test) => {
+        if (!addedTests.includes(test.id) && test.id) {
+            let newTestGroups = testGroups.slice()
+            newTestGroups[testGroupIndex][testForCaseIndex].tests.push({ test, positive: false })
+            setTestGroups(newTestGroups)
+            setAddedTests(addedTests.concat(test.id))
         }
     }
 
-    const addTestToTestGroup = () => {
-        setTest({ name: '', testId: '', positive: false })
-        setTestGroup([...testGroup, testForCase])
-        setTestForCase({ isRequired: false, tests: [] })
-        setAddingAlt(false)
-        setAddingTest(false)
+    const removeTest = (testGroupIndex, testForCaseIndex, testIndex) => {
+        let newTestGroups = testGroups.slice()
+        setAddedTests(addedTests.filter(testId => testId !== newTestGroups[testGroupIndex][testForCaseIndex].tests[testIndex].test.id))
+        newTestGroups[testGroupIndex][testForCaseIndex].tests = newTestGroups[testGroupIndex][testForCaseIndex].tests.filter((test, i) => i !== testIndex) //eslint-disable-line
+        setTestGroups(newTestGroups)
     }
 
-    const addTest = (onChange) => {
-        if (!addedTests.includes(test.testId) && test.testId) {
-            setTestForCase({ ...testForCase, tests: testForCase.tests.concat(test) })
-            setAddedTests(addedTests.concat(test.testId))
-            setAddingTest(true)
-            setAddingAlt(false)
-            setTest({ name: '', testId: '', positive: false })
-            onChange('test', '')
-        }
+    const changeTestPositive = (testGroupIndex, testForCaseIndex, testIndex) => {
+        let newTestGroups = testGroups.slice()
+        newTestGroups[testGroupIndex][testForCaseIndex].tests[testIndex].positive = !testGroups[testGroupIndex][testForCaseIndex].tests[testIndex].positive
+        setTestGroups(newTestGroups)
     }
 
     const testsFromTestGroups = () => {
@@ -384,7 +378,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         touched={touched.sample}
                                     ></AddSample>
 
-                                    <AddTestGroup addingAlt={addingAlt}
+                                    {/*<AddTestGroup addingAlt={addingAlt}
                                         setAddingAlt={setAddingAlt}
                                         addingTest={addingTest}
                                         setAddingTest={setAddingTest}
@@ -404,7 +398,8 @@ const CaseForm = ({ caseToEdit }) => {
                                         error={errors.test}
                                         addedTests={addedTests}
                                         touched={touched.test}
-                                    ></AddTestGroup>
+                                ></AddTestGroup>*/}
+                                    <Form.Label>Testiryhmät</Form.Label>
                                     {testGroups.map((testGroup, i) =>
                                         <TestGroup key={i}
                                             testgroup={testGroup}
@@ -412,16 +407,23 @@ const CaseForm = ({ caseToEdit }) => {
                                             removeTestGroup={removeTestGroup}
                                             testGroupsSize={testGroups.length}
                                             testGroupSwitch={testGroupSwitch}
-                                        >
-                                        </TestGroup>
+                                            addEmptyTestForCase={addEmptyTestForCase}
+                                            removeTestForCase={removeTestForCase}
+                                            changeTestForCaseIsRequired={changeTestForCaseIsRequired}
+                                            addTest={addTest}
+                                            removeTest={removeTest}
+                                            changeTestPositive={changeTestPositive}
+                                            tests={tests}
+                                            addedTests={addedTests}
+                                        />
                                     )}
-
+                                    <Button id='addTestGroup' onClick={() => addTestGroup()} block>Lisää tyhjä testiryhmä</Button>
                                     {caseToEdit ? <Button id="saveEdit" variant="success" type="submit">
                                         Tallenna muutokset
                                     </Button> : <Button
-                                        variant='success'
-                                        type='submit'
-                                        id='addCase'>
+                                            variant='success'
+                                            type='submit'
+                                            id='addCase'>
                                             Tallenna tapaus
                                     </Button>}
 

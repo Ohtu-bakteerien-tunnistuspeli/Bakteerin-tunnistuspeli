@@ -9,6 +9,17 @@ const get = (token) => {
 }
 
 const add = async (name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, token) => {
+    for (let i = 0; i < testGroups.length; i++) {
+        let testGroup = testGroups[i]
+        for (let j = 0; j < testGroup.length; j++) {
+            let tests = testGroup[j].tests
+            for (let k = 0; k < tests.length; k++) {
+                if (tests[k].test) {
+                    tests[k] = { ...tests[k], testId: tests[k].test.id }
+                }
+            }
+        }
+    }
     const formData = new FormData()
     formData.append('name', name)
     formData.append('bacterium', bacterium)
