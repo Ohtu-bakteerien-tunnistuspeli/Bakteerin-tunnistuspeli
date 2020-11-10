@@ -11,7 +11,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGrou
                 <Container>
                     <Row>
                         <Col xs={10}>
-                            <Form.Label>Testiryhmä {index + 1} {index > 0 ? <i className='fa fa-arrow-up' onClick={() => testGroupSwitch(index, index - 1)} /> : <></>}{index < testGroupsSize - 1 ? <i className='fa fa-arrow-down' onClick={() => testGroupSwitch(index, index + 1)} /> : <></>}</Form.Label>
+                            <Form.Label><b>Testiryhmä {index + 1}</b>  {index > 0 ? <i className='fa fa-arrow-up' onClick={() => testGroupSwitch(index, index - 1)} /> : <></>}{index < testGroupsSize - 1 ? <i className='fa fa-arrow-down' onClick={() => testGroupSwitch(index, index + 1)} /> : <></>}</Form.Label>
                         </Col>
                         <Col>
                             <Button variant='danger'
@@ -77,6 +77,7 @@ const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGrou
                                                     testForCaseIndex={j}
                                                     addedTests={addedTests}
                                                     tests={tests}
+                                                    hasAlternative={testOfCase.tests.length > 0}
                                                 />
                                             </tr>
                                         </tbody>

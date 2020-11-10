@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 
-const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tests }) => {
+const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tests, hasAlternative }) => {
     const [test, setTest] = useState('')
     return (
         <>
@@ -23,7 +23,7 @@ const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tes
             <td><Button onClick={() => {
                 addTest(testGroupIndex, testForCaseIndex, test)
                 setTest('')
-                }}>Lisää testi</Button></td>
+                }}>{hasAlternative ? 'Lisää vaihtoehtoinen testi' : 'Lisää testi'}</Button></td>
         </>
     )
 }
