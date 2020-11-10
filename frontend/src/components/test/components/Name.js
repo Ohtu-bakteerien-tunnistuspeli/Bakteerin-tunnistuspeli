@@ -19,10 +19,10 @@ const Name = ({ nameControlId, error, onChange, testName, touched, setTestName }
                     value={testName}
                     onChange={handleChange}
                     reset='' />
-            <Form.Control.Feedback type="invalid">
-                {error}
-            </Form.Control.Feedback>
-        </Form.Group>
+                <Form.Control.Feedback type="invalid">
+                    {error}
+                </Form.Control.Feedback>
+            </Form.Group>
         </>
     )
 }
