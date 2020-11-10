@@ -2,10 +2,10 @@ import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 
 const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
-    bacterium, /*setBacteriaImages,*/ handleSpecificImg,
+    bacterium, setBacteriaImages, handleSpecificImg,
     bacteriaSpecificImages, bacteriaSpecificImage,
     addBacteriumSpecificImage, removeBacteriaSpecificImage,
-    marginStyle, onChange, error, /*touched*/ }) => {
+    marginStyle, onChange, error, touched }) => {
 
     const handleChange = (event) => {
         event.preventDefault()
