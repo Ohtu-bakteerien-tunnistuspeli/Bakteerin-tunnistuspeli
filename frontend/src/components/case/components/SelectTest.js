@@ -1,33 +1,29 @@
-import React from 'react'
-import { Form } from 'react-bootstrap'
-const SelectTest = ({ tests, setTest, test, onChange, value, error, addedTests }) => {
+import React, { useState } from 'react'
+import { Button, Form } from 'react-bootstrap'
 
-    const handleChange = event => {
-        event.preventDefault()
-        onChange('test', event.target.value)
-    }
-
+const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tests }) => {
+    const [test, setTest] = useState('')
     return (
         <>
-            <Form.Control
-                as='select'
-                id='testSelect'
-                value={value}
-                isInvalid={error}
-                onChange={(event) => { event.target.value !== '' ?
-                    setTest({ ...test, name: JSON.parse(event.target.value).name, testId: JSON.parse(event.target.value).id }):setTest('')
-                handleChange(event)
-                }}>
-                <option value=''>Valitse testi</option>
-                {
-                    tests.filter(t => !addedTests?.includes(t.id)).map(t =>
-                        <option key={t.id} value={JSON.stringify(t)}>{t.name}</option>
-                    )
-                }
-            </Form.Control>
-            <Form.Control.Feedback type="invalid">
-                {error}
-            </Form.Control.Feedback>
+            <td>
+                <Form.Control
+                    as='select'
+                    id='testSelect'
+                    value={test ? JSON.stringify(test) : ''}
+                    onChange={(event) => event.target.value !== '' ? setTest(JSON.parse(event.target.value)) : setTest('')}
+                >
+                    <option value='' disabled hidden>Valitse testi</option>
+                    {
+                        tests.filter(t => !addedTests?.includes(t.id)).map(t =>
+                            <option key={t.id} value={JSON.stringify(t)}>{t.name}</option>
+                        )
+                    }
+                </Form.Control>
+            </td>
+            <td><Button onClick={() => {
+                addTest(testGroupIndex, testForCaseIndex, test)
+                setTest('')
+                }}>Lisää testi</Button></td>
         </>
     )
 }
