@@ -212,6 +212,7 @@ router.post('/cases', async (request, response) => {
         name: 'Maitotila 1',
         bacterium: bacterium.id,
         anamnesis: textForAnamesis,
+        completionText: 'Well Done!',
         samples: samples,
         testGroups: [[]],
         complete: true
