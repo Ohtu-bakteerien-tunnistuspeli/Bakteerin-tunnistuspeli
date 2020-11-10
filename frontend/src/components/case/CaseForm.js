@@ -15,6 +15,20 @@ import { updateCase } from '../../reducers/caseReducer'
 
 const CaseForm = ({ caseToEdit }) => {
 
+    const testsFromTestGroups = () => {
+        const testIds = []
+
+        for (const testGroup of caseToEdit.testGroups) {
+            for (const testAlts of testGroup) {
+                for (const t of testAlts.tests) {
+                    testIds.push(t.test.id)
+                }
+            }
+        }
+
+        return testIds
+    }
+
     /* initial parameters */
     const cases = useSelector(state => state.case)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
@@ -207,20 +221,6 @@ const CaseForm = ({ caseToEdit }) => {
         let newTestGroups = testGroups.slice()
         newTestGroups[testGroupIndex][testForCaseIndex].tests[testIndex].positive = !testGroups[testGroupIndex][testForCaseIndex].tests[testIndex].positive
         setTestGroups(newTestGroups)
-    }
-
-    const testsFromTestGroups = () => {
-        const testIds = []
-
-        for (const testGroup of caseToEdit.testGroups) {
-            for (const testAlts of testGroup) {
-                for (const t of testAlts.tests) {
-                    testIds.push(t.test.id)
-                }
-            }
-        }
-
-        return testIds
     }
 
     /* testgroup control end */
