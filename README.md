@@ -1,5 +1,5 @@
 # Bakteerien tunnistuspeli 
-
+--------
 ## Description
 
 Software Engineering Lab, Fall 2020, University of Helsinki
