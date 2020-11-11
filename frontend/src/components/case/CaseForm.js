@@ -64,6 +64,7 @@ const CaseForm = ({ caseToEdit }) => {
     /* modal */
     const [show, setShow] = useState(false)
     const handleShow = () => {
+        resetCaseForm()
         setShow(true)
     }
     const handleClose = () => {
@@ -360,24 +361,24 @@ const CaseForm = ({ caseToEdit }) => {
                                                         id='showTestGroupManagement'
                                                         checked={testGroupManagement}
                                                         onChange={() => setTestGroupManagement(!testGroupManagement)} />
-                                                    {testGroups.map((testGroup, i) =>
-                                                        <TestGroup key={i}
-                                                            testgroup={testGroup}
-                                                            index={i}
-                                                            removeTestGroup={removeTestGroup}
-                                                            testGroupsSize={testGroups.length}
-                                                            testGroupSwitch={testGroupSwitch}
-                                                            addEmptyTestForCase={addEmptyTestForCase}
-                                                            removeTestForCase={removeTestForCase}
-                                                            changeTestForCaseIsRequired={changeTestForCaseIsRequired}
-                                                            addTest={addTest}
-                                                            removeTest={removeTest}
-                                                            changeTestPositive={changeTestPositive}
-                                                            tests={tests}
-                                                            addedTests={addedTests}
-                                                            testGroupManagement={testGroupManagement}
-                                                        />
-                                                    )}
+                                                        {testGroups.map((testGroup, i) =>
+                                                            <TestGroup key={i}
+                                                                testgroup={testGroup}
+                                                                index={i}
+                                                                removeTestGroup={removeTestGroup}
+                                                                testGroupsSize={testGroups.length}
+                                                                testGroupSwitch={testGroupSwitch}
+                                                                addEmptyTestForCase={addEmptyTestForCase}
+                                                                removeTestForCase={removeTestForCase}
+                                                                changeTestForCaseIsRequired={changeTestForCaseIsRequired}
+                                                                addTest={addTest}
+                                                                removeTest={removeTest}
+                                                                changeTestPositive={changeTestPositive}
+                                                                tests={tests}
+                                                                addedTests={addedTests}
+                                                                testGroupManagement={testGroupManagement}
+                                                            />
+                                                        )}
                                                     {testGroupManagement ? <Button id='addTestGroup' onClick={() => addTestGroup()} block>Aloita uusi testiryhmä</Button> : <></>}
                                                 </Card.Body>
                                             </Accordion.Collapse>
