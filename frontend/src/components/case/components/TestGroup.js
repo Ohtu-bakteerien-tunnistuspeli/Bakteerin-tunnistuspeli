@@ -4,16 +4,16 @@ import SelectTest from './SelectTest'
 
 
 
-const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGroupSwitch, addEmptyTestForCase, removeTestForCase, changeTestForCaseIsRequired, addTest, removeTest, changeTestPositive, tests, addedTests }) => {
+const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGroupSwitch, addEmptyTestForCase, removeTestForCase, changeTestForCaseIsRequired, addTest, removeTest, changeTestPositive, tests, addedTests, testGroupManagement }) => {
     return (
-        <div>
-            <ListGroup.Item>
-                <Container>
-                    <Row>
-                        <Col xs={10}>
-                            <Form.Label><b>Testiryhmä {index + 1}</b>  {index > 0 ? <i className='fa fa-arrow-up' onClick={() => testGroupSwitch(index, index - 1)} /> : <></>}{index < testGroupsSize - 1 ? <i className='fa fa-arrow-down' onClick={() => testGroupSwitch(index, index + 1)} /> : <></>}</Form.Label>
-                        </Col>
-                        <Col>
+        <ListGroup.Item>
+            <Container>
+                <Row>
+                    <Col xs={10}>
+                        <Form.Label><b>Testiryhmä {index + 1}</b>  {testGroupManagement ? <>{index > 0 ? <i className='fa fa-arrow-up' onClick={() => testGroupSwitch(index, index - 1)} /> : <></>}{index < testGroupsSize - 1 ? <i className='fa fa-arrow-down' onClick={() => testGroupSwitch(index, index + 1)} /> : <></>}</> : <></>}</Form.Label>
+                    </Col>
+                    <Col>
+                        {testGroupManagement ?
                             <Button variant='danger'
                                 onClick={(event) => {
                                     event.preventDefault()
@@ -24,42 +24,51 @@ const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGrou
                                     <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
                                 </svg>
                             </Button>
-                        </Col>
-                    </Row>
-                </Container>
-
-                <Table id={index === 0 ? 'testGroupTable' : `testGroupTable${index}`}>
-                    <thead>
-                        <tr>
-                            <th>Testit</th>
-                            <th>Pakollinen</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {testgroup.map((testOfCase, j) =>
-                            <tr key={j}>
-                                <td>
-                                    <Table>
-                                        <thead>
-                                            <tr>
-                                                <th>Testi</th>
-                                                <th>Positiivinen</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {testOfCase.tests.map((alternativeTest, k) =>
-                                                <tr key={k}>
-                                                    <td>{alternativeTest.test ? alternativeTest.test.name : alternativeTest.name}</td>
-                                                    <td>
+                            :
+                            <></>
+                        }
+                    </Col>
+                </Row>
+            </Container>
+            <Table id={index === 0 ? 'testGroupTable' : `testGroupTable${index}`}>
+                <thead>
+                    <tr>
+                        <th>Testit</th>
+                        <th>{testgroup.length > 0 ? 'Pakollinen' : ''}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {testgroup.map((testOfCase, j) =>
+                        <tr key={j}>
+                            <td>
+                                <Table>
+                                    <thead>
+                                        <tr>
+                                            <th>Testi</th>
+                                            <th>{testOfCase.tests.length > 0 ? 'Positiivinen' : ''}</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {testOfCase.tests.map((alternativeTest, k) =>
+                                            <tr key={k}>
+                                                <td>{alternativeTest.test ? alternativeTest.test.name : alternativeTest.name}</td>
+                                                <td>
+                                                    {testGroupManagement ?
                                                         <Form.Check
                                                             type='checkbox'
                                                             id='positive'
                                                             checked={alternativeTest.positive}
                                                             onChange={() => changeTestPositive(index, j, k)} />
-                                                    </td>
-                                                    <td>
+                                                        :
+                                                        <>
+                                                            {alternativeTest.positive ? <i className='fas fa-check' /> : <></>}
+                                                        </>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    {testGroupManagement ?
                                                         <Button variant='danger'
                                                             onClick={() => removeTest(index, j, k)}>Poista
                                                             <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
@@ -67,10 +76,14 @@ const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGrou
                                                                 <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
                                                             </svg>
                                                         </Button>
-                                                    </td>
-                                                </tr>
-                                            )}
-                                            <tr>
+                                                        :
+                                                        <></>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        )}
+                                        <tr>
+                                            {testGroupManagement ?
                                                 <SelectTest
                                                     addTest={addTest}
                                                     testGroupIndex={index}
@@ -79,18 +92,28 @@ const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGrou
                                                     tests={tests}
                                                     hasAlternative={testOfCase.tests.length > 0}
                                                 />
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </td>
-                                <td>
+                                                :
+                                                <></>
+                                            }
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </td>
+                            <td>
+                                {testGroupManagement ?
                                     <Form.Check
                                         type='checkbox'
                                         id='required'
                                         checked={testOfCase.isRequired}
                                         onChange={() => changeTestForCaseIsRequired(index, j)} />
-                                </td>
-                                <td>
+                                    :
+                                    <>
+                                        {testOfCase.isRequired ? <i className='fas fa-check' /> : <></>}
+                                    </>
+                                }
+                            </td>
+                            <td>
+                                {testGroupManagement ?
                                     <Button variant='danger'
                                         onClick={() => removeTestForCase(index, j)}>Poista
                                         <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
@@ -98,17 +121,24 @@ const TestGroup = ({ testgroup, index, removeTestGroup, testGroupsSize, testGrou
                                             <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
                                         </svg>
                                     </Button>
-                                </td>
-                            </tr>
-                        )}
-                        <tr>
-                            <td><Button id={index === 0 ? 'addTestForCase' : `addTestForCase${index}`} onClick={() => addEmptyTestForCase(index)}>Lisää tyhjä testi</Button></td>
+                                    :
+                                    <></>
+                                }
+                            </td>
                         </tr>
-                    </tbody>
-                </Table>
-            </ListGroup.Item>
-        </div>
-
+                    )}
+                    <tr>
+                        <td>
+                            {testGroupManagement ?
+                                <Button id={index === 0 ? 'addTestForCase' : `addTestForCase${index}`} onClick={() => addEmptyTestForCase(index)}>Lisää tyhjä testi</Button>
+                                :
+                                <></>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </Table>
+        </ListGroup.Item>
     )
 }
 
