@@ -11,6 +11,7 @@ import { INITIAL_STATE, marginStyle } from './utility'
 import { deleteTest, updateTest } from '../../reducers/testReducer'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
+import Notification from '../utility/Notification'
 
 
 const TestForm = ({ testToEdit }) => {
@@ -204,6 +205,7 @@ const TestForm = ({ testToEdit }) => {
                     closeButton>{testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
                 </Modal.Header>
                 <Modal.Body>
+                    <Notification></Notification>
                     {testToEdit ?
                         <DeleteButton id='deleteTest'
                             onClick={() => {
