@@ -62,6 +62,7 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
                 style={marginStyle}
                 name='bacteriaSpecificImage'
                 type='file'
+                accept=".png, .jpg, .jpeg"
                 value={bacteriaSpecificImage.image}
                 onChange={handleSpecificImg}
             />

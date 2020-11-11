@@ -318,6 +318,7 @@ const CaseForm = ({ caseToEdit }) => {
                                                 name='editCompletionImg'
                                                 value={completionImage.image}
                                                 type='file'
+                                                accept=".png, .jpg, .jpeg"
                                                 onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false) }}
                                             />
                                             <Button style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>Poista loppukuva
@@ -332,6 +333,7 @@ const CaseForm = ({ caseToEdit }) => {
                                             <Form.Control
                                                 name='completionImage'
                                                 type='file' value={completionImage.image}
+                                                accept=".png, .jpg, .jpeg"
                                                 onChange={handleCompletionImageChange} />
                                         </Form.Group>
                                     }
@@ -391,9 +393,9 @@ const CaseForm = ({ caseToEdit }) => {
                                     {caseToEdit ? <Button id="saveEdit" variant="success" type="submit">
                                         Tallenna muutokset
                                     </Button> : <Button
-                                            variant='success'
-                                            type='submit'
-                                            id='addCase'>
+                                        variant='success'
+                                        type='submit'
+                                        id='addCase'>
                                             Tallenna tapaus
                                     </Button>}
 

@@ -13,7 +13,8 @@ const reducer = (state = [], action) => {
         return state.filter(test => test.id !== action.data)
     }
     case 'UPDATE_TEST': {
-        return state.map(test => test.id === action.data.id ? test = action.data : test)
+        console.log(state)
+        return state.map(test => test.id === action.data.id ? action.data : test)
     }
     case 'ZERO_TEST': {
         return action.data
@@ -74,11 +75,12 @@ export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteria
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
         } else {
-            dispatch(setNotification({ message: 'Testi muokattiin', success: true }))
+            dispatch(setNotification({ message: 'Testi muokattiin onnistuneesti', success: true }))
             dispatch({
                 type: 'UPDATE_TEST',
                 data: test
             })
+            console.log(test)
             handleClose()
             setDeletePhotos({ ctrl: false, pos: false, neg: false })
             setDeleteSpecifics([])
