@@ -48,7 +48,10 @@ const TestForm = ({ testToEdit }) => {
 
     /* modal control */
     const [show, setShow] = useState(false)
-    const handleShow = () => setShow(true)
+    const handleShow = () => {
+        resetTestForm()
+        setShow(true)
+    }
 
     const handleClose = () => {
         resetTestForm()
