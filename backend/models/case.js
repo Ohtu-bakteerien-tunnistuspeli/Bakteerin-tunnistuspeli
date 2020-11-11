@@ -13,10 +13,12 @@ const caseSchema = mongoose.Schema({
         ref: 'Bacterium'
     },
     anamnesis: {
-        type: String
+        type: String,
+        maxlength: [10000, 'Tapauksen anamneesin tulee olla enintään 10000 merkkiä pitkä.']
     },
     completionText: {
         type: String,
+        maxlength: [10000, 'Tapauksen lopputekstin tulee olla enintään 10000 merkkiä pitkä.']
     },
     completionImage: {
         url: {
@@ -29,7 +31,8 @@ const caseSchema = mongoose.Schema({
     samples: [
         {
             description: {
-                type: String
+                type: String,
+                maxlength: [1000, 'Näytteen kuvauksen tulee olla enintään 1000 merkkiä pitkä.']
             },
             rightAnswer: {
                 type: Boolean
@@ -57,7 +60,10 @@ const caseSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Test'
         },
-        hint: String
+        hint: {
+            type: String,
+            maxlength: [1000, 'Vinkin tulee olla enintään 1000 merkkiä pitkä.']
+        }
     }],
     complete: {
         type: Boolean

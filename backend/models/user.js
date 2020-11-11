@@ -27,6 +27,7 @@ const userSchema = mongoose.Schema({
             },
             message: 'Vuosikurssin tule alkaa merkeillä \'C-\' ja loppua lukuun.'
         },
+        maxlength: [10, 'Vuosikurssin tulee olla enintään C-99999999.']
     },
     email: {
         type: String,
@@ -36,7 +37,8 @@ const userSchema = mongoose.Schema({
             },
             message: 'Sähköpostiosoite on virheellinen.'
         },
-        required: [true, 'Sähköpostiosoite on pakollinen.']
+        required: [true, 'Sähköpostiosoite on pakollinen.'],
+        maxlength: [100, 'Sähköpostin tulee olla enintään 100 merkkiä pitkä.'],
     },
     studentNumber: {
         type: String,
@@ -48,7 +50,8 @@ const userSchema = mongoose.Schema({
                 return true
             },
             message: 'Opiskelijanumeron tulee  olla luku.'
-        }
+        },
+        maxlength: [100, 'Opiskelijanumeron tulee olla enintään 100 merkkiä pitkä.'],
     },
 })
 

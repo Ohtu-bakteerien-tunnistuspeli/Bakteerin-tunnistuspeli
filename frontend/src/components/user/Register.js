@@ -28,21 +28,24 @@ const Register = () => {
         passwordAgain: Yup.string(),
         email: Yup.string()
             .required('Sähköpostiosoite on pakollinen.')
-            .email('Sähköpostiosoite on virheellinen.'),
+            .email('Sähköpostiosoite on virheellinen.')
+            .max(100, 'Sähköpostin tulee olla enintään 100 merkkiä pitkä.'),
         classGroup: Yup.string()
             .test('unique', 'Vuosikurssin tule alkaa merkeillä \'C-\' ja loppua lukuun.', (classGroup) => {
                 if (!classGroup) {
                     return true
                 }
                 return /C-+\d+/.test(classGroup)
-            }),
+            })
+            .max(10, 'Vuosikurssin tulee olla enintään C-99999999.'),
         studentNumber: Yup.string()
             .test('unique', 'Opiskelijanumeron tulee  olla luku.', (studentNumber) => {
                 if (!studentNumber) {
                     return true
                 }
                 return /^[0-9]+/.test(studentNumber)
-            }),
+            })
+            .max(100, 'Opiskelijanumeron tulee olla enintään 100 merkkiä pitkä.')
     })
 
     const handleRegister = async (values) => {
