@@ -5,7 +5,7 @@ import { deleteUser } from '../reducers/usersReducer'
 import { logout } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import ProfilePageUserInfo from './ProfilePageUserInfo'
-import { Table } from 'react-bootstrap'
+//import { Table } from 'react-bootstrap'
 
 const ProfilePage = () => {
 
@@ -17,9 +17,6 @@ const ProfilePage = () => {
 
     useEffect(() => {
         setUserInfo(credits.filter(credit => credit.user.id === user.id))
-        if(user.admin) {
-            setUserInfo(user)
-        }
     }, [user, credits])
 
     const userDelete = () => {
@@ -30,24 +27,9 @@ const ProfilePage = () => {
     return (
         <div>
             <h3>Oma profiilini</h3>
-            {user.admin ?
-                <div>
-                    <Table>
-                        <tbody>
-                            <tr>
-                                <td><b>käyttäjänimi</b> </td>
-                                <td> {user.username}</td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                </div>
-                :
-                <div>
-                    {userInfo.map(credit =>
-                        <ProfilePageUserInfo key={credit.id} credit={credit} user={user.admin} />
-                    )}
-                </div>
-            }
+            <div>
+                <ProfilePageUserInfo credit={userInfo} user={user} />
+            </div>
             <ConfirmWindow
                 listedUser={user}
                 buttonId='deleteUser'
