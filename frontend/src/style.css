@@ -21,38 +21,61 @@ h2 {
 
 .footer {
     margin: auto;
+    margin-bottom: 0;
+    border-bottom: 0;
+    padding-bottom: 0;
     position: relative;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    bottom: 0 !important;
     z-index: 100;
     background: gainsboro;
     text-align: center;
+    left: 0;
+    right: 0;
 }
 
 .navbar-nav {
     margin: auto;
-    padding-left: 18em;
+    padding-top: 0;
+    text-align: center;
+}
+
+.full {
+    padding: 0;
+    margin: 0;
+    border-bottom: 0;
+    bottom: 0;
+    min-height: 100%;
 }
 
 .page {
-    padding-bottom: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 0;
+    bottom: 0;
+    min-height: 100%;
 }
 
 .nav-link {
-    padding: 1rem;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .nav-text {
     margin-top: 15px;
 }
 
+.hidden-nav {
+    height: 62px;
+}
+
 .nav-bar {
-    min-height: 10vh;
+    min-height: 5vh;
 }
 
 .wrapper {
-    min-height: 78vh;
+    min-height: calc(100vh - 180px); 
 }
 
 #samples {

@@ -52,7 +52,7 @@ const App = () => {
                 null
             }
             <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Toggle className='hidden-nav' aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav" >
                     <Nav className="mr-auto">
                         <Nav.Link href="#" as="span">

@@ -9,9 +9,9 @@ import store from './store'
 import './style.css'
 
 ReactDOM.render(
-    <Provider store={store}>
-        <Router>
-            <App />
+    <Provider store={store} className='full' >
+        <Router className='full'>
+            <App className='full' />
         </Router>
     </Provider>, document.getElementById('root')
 )
