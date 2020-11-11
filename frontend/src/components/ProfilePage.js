@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import ConfirmWindow from './utility/ConfirmWindow.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteUser } from '../reducers/usersReducer'
@@ -29,41 +29,41 @@ const ProfilePage = () => {
 
     return (
         <div>
-        <h3>Oma profiilini</h3>
-        {user.admin ?
-            <div>
-                <Table>
-                    <tbody>
-                     <tr>
-                        <td><b>käyttäjänimi</b> </td>
-                        <td> {user.username}</td>
-                     </tr>
-                </tbody>
-                </Table>
-            </div>
-        :
-        <div>
-            {userInfo.map(credit => 
-                <ProfilePageUserInfo key={credit.id} credit={credit} user={user.admin} />
-            )}
-        </div>
-        }
-        <ConfirmWindow
-            listedUser={user}
-            buttonId='deleteUser'
-            modalOpenButtonText='Poista käyttäjätunnus'
-            modalOpenButtonVariant='danger'
-            modalHeader={`Käyttäjän ${user.username} poistamisen varmennus`}
-            warningText='Olet poistamassa käyttäjätunnustasi.
+            <h3>Oma profiilini</h3>
+            {user.admin ?
+                <div>
+                    <Table>
+                        <tbody>
+                            <tr>
+                                <td><b>käyttäjänimi</b> </td>
+                                <td> {user.username}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                </div>
+                :
+                <div>
+                    {userInfo.map(credit =>
+                        <ProfilePageUserInfo key={credit.id} credit={credit} user={user.admin} />
+                    )}
+                </div>
+            }
+            <ConfirmWindow
+                listedUser={user}
+                buttonId='deleteUser'
+                modalOpenButtonText='Poista käyttäjätunnus'
+                modalOpenButtonVariant='danger'
+                modalHeader={`Käyttäjän ${user.username} poistamisen varmennus`}
+                warningText='Olet poistamassa käyttäjätunnustasi.
                 Et voi palauttaa käyttäjätunnustasi, kun olet sen poistanut.
                 Jos olet varma, että haluat poistaa käyttäjätunnksesi, niin
                 kirjoita käyttäjänimesi ja paina nappia poistaaksesi profiilisi.'
-            functionToExecute={userDelete}
-            executeButtonText='Poista käyttäjä'
-            executeButtonVariant='danger'
-        />
+                functionToExecute={userDelete}
+                executeButtonText='Poista käyttäjä'
+                executeButtonVariant='danger'
+            />
 
-    </div>
+        </div>
     )
 }
 

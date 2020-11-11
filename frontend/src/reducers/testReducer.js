@@ -13,7 +13,6 @@ const reducer = (state = [], action) => {
         return state.filter(test => test.id !== action.data)
     }
     case 'UPDATE_TEST': {
-        console.log(state)
         return state.map(test => test.id === action.data.id ? action.data : test)
     }
     case 'ZERO_TEST': {
@@ -80,7 +79,6 @@ export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteria
                 type: 'UPDATE_TEST',
                 data: test
             })
-            console.log(test)
             handleClose()
             setDeletePhotos({ ctrl: false, pos: false, neg: false })
             setDeleteSpecifics([])
