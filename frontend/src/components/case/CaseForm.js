@@ -384,24 +384,24 @@ const CaseForm = ({ caseToEdit }) => {
                                                         id='showTestGroupManagement'
                                                         checked={testGroupManagement}
                                                         onChange={() => setTestGroupManagement(!testGroupManagement)} />
-                                                        {testGroups.map((testGroup, i) =>
-                                                            <TestGroup key={i}
-                                                                testgroup={testGroup}
-                                                                index={i}
-                                                                removeTestGroup={removeTestGroup}
-                                                                testGroupsSize={testGroups.length}
-                                                                testGroupSwitch={testGroupSwitch}
-                                                                addEmptyTestForCase={addEmptyTestForCase}
-                                                                removeTestForCase={removeTestForCase}
-                                                                changeTestForCaseIsRequired={changeTestForCaseIsRequired}
-                                                                addTest={addTest}
-                                                                removeTest={removeTest}
-                                                                changeTestPositive={changeTestPositive}
-                                                                tests={tests}
-                                                                addedTests={addedTests}
-                                                                testGroupManagement={testGroupManagement}
-                                                            />
-                                                        )}
+                                                    {testGroups.map((testGroup, i) =>
+                                                        <TestGroup key={i}
+                                                            testgroup={testGroup}
+                                                            index={i}
+                                                            removeTestGroup={removeTestGroup}
+                                                            testGroupsSize={testGroups.length}
+                                                            testGroupSwitch={testGroupSwitch}
+                                                            addEmptyTestForCase={addEmptyTestForCase}
+                                                            removeTestForCase={removeTestForCase}
+                                                            changeTestForCaseIsRequired={changeTestForCaseIsRequired}
+                                                            addTest={addTest}
+                                                            removeTest={removeTest}
+                                                            changeTestPositive={changeTestPositive}
+                                                            tests={tests}
+                                                            addedTests={addedTests}
+                                                            testGroupManagement={testGroupManagement}
+                                                        />
+                                                    )}
                                                     {testGroupManagement ? <Button id='addTestGroup' onClick={() => addTestGroup()} block>Aloita uusi testiryhmä</Button> : <></>}
                                                 </Card.Body>
                                             </Accordion.Collapse>
@@ -410,9 +410,9 @@ const CaseForm = ({ caseToEdit }) => {
                                     {caseToEdit ? <Button id='saveEdit' variant='success' type='submit'>
                                         Tallenna muutokset
                                     </Button> : <Button
-                                            variant='success'
-                                            type='submit'
-                                            id='addCase'>
+                                        variant='success'
+                                        type='submit'
+                                        id='addCase'>
                                             Tallenna tapaus
                                     </Button>}
 
