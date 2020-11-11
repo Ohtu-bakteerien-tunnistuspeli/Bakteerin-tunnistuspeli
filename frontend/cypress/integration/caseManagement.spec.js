@@ -8,6 +8,7 @@ describe('Case management', () => {
         cy.addTest({ name: 'Testi', type: 'Viljely' })
         cy.addTest({ name: 'Testi2', type: 'Viljely' })
         cy.addTest({ name: 'Testi3', type: 'Viljely' })
+        cy.wait(500)
         cy.visit('http://localhost:3000')
     })
 
