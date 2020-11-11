@@ -10,6 +10,7 @@ const AddImage = ({ title, name, value, setImage, setAdded, imgPreview, setImgPr
             <Form.Control
                 name={name}
                 type='file'
+                accept=".png, .jpg, .jpeg"
                 value={value}
                 onChange={({ target }) => {
                     setImgPreview(URL.createObjectURL(target.files[0]))
