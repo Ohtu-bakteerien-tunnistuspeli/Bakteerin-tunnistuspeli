@@ -1,6 +1,6 @@
 describe('Case management', () => {
     beforeEach(() => {
-        cy.login({ username: 'admin', password: 'admin' })
+
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
         cy.wait(500)
         cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
@@ -9,6 +9,7 @@ describe('Case management', () => {
         cy.wait(500)
         cy.request('POST', 'http://localhost:3001/api/testing/cases')
         cy.wait(1000)
+        cy.login({ username: 'admin', password: 'admin' })
         cy.visit('http://localhost:3000')
     })
 
