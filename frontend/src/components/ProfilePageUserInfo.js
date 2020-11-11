@@ -9,7 +9,7 @@ return (
         <Table>
         <tbody>
         <tr key={credit.id}>
-                <td><b>username</b></td>
+                <td><b>käyttäjänimi</b></td>
                 <td> {credit.user.username} </td>
         </tr>
         <tr>
