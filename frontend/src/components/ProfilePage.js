@@ -8,7 +8,7 @@ import ProfilePageUserInfo from './ProfilePageUserInfo'
 
 const ProfilePage = () => {
     const user = useSelector(state => state.user)
-    const credits = useSelector(state => state.credit)?.sort((credit1, credit2) => credit1.user.studentNumber.localeCompare(credit2.user.studentNumber))
+    const credits = useSelector(state => state.credit)
     const history = useHistory()
     const dispatch = useDispatch()
     const userDelete = () => {
