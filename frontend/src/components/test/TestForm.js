@@ -85,7 +85,6 @@ const TestForm = ({ testToEdit }) => {
         setImgPreviewNeg('')
         setImgPreviewPos('')
         setAddedBacteriaImage(testToEdit ? testToEdit.bacteriaSpecificImages.map(bacImg => bacImg.bacterium.name) : [])
-        console.log(bacteriaSpecificImages)
     }
 
     const removeTest = () => {
@@ -149,7 +148,6 @@ const TestForm = ({ testToEdit }) => {
     }
 
     const addBacteriumSpecificImage = () => {
-        console.log('addBacterium')
         if (!bacterium) {
             return
         }
@@ -165,10 +163,7 @@ const TestForm = ({ testToEdit }) => {
                 if (!newFile) {
                     newFile = bacteriaSpecificImage
                 }
-                console.log('before concat', bacteriaSpecificImages)
                 setBacteriaImages(bacteriaSpecificImages.concat(newFile))
-                console.log('concat', bacteriaSpecificImages)
-                console.log('newFile', newFile)
                 setDeleteSpecifics(deleteSpecifics.filter(img => img !== newFile.name))
                 setBacteriaImage(INITIAL_STATE)
                 setBacterium('')
@@ -178,7 +173,6 @@ const TestForm = ({ testToEdit }) => {
     }
 
     const removeBacteriaSpecificImage = (image) => {
-        console.log('at remove')
         let name
         image.name ? name = image.name : name = image.bacterium.name
         setDeleteSpecifics(deleteSpecifics.concat(name))
@@ -197,7 +191,6 @@ const TestForm = ({ testToEdit }) => {
 
     return (
         <div>
-            {console.log(bacteriaSpecificImages)}
             <Button style={style}
                 id={testToEdit ? 'testEditButton' : 'testModalButton'}
                 variant='primary'
@@ -220,7 +213,6 @@ const TestForm = ({ testToEdit }) => {
                         ></DeleteButton>
                         : null
                     }
-                    {console.log(bacteriaSpecificImages)}
                     <Formik
                         validationSchema={TestSchema}
                         onSubmit={onSuccess}
@@ -338,8 +330,6 @@ const TestForm = ({ testToEdit }) => {
                                         :
                                         null
                                     }
-
-                                    {console.log(bacteriaSpecificImages)}
 
                                     <BacteriaSpecificImages
                                         controlId={testToEdit ? 'editBacteriaSpecificImages' : 'bacteriaSpecificImages'}

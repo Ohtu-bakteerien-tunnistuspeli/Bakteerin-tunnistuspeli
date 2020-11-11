@@ -6,7 +6,7 @@ import SelectBacterium from './components/SelectBaterium.js'
 import Name from './components/Name.js'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
-import { Modal, Button, Form } from 'react-bootstrap'
+import { Modal, Button, Form, Accordion, Card } from 'react-bootstrap'
 import Notification from '../utility/Notification.js'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
@@ -57,6 +57,8 @@ const CaseForm = ({ caseToEdit }) => {
     const [samples, setSamples] = useState(caseToEdit ? caseToEdit.samples : [])
     const [testGroups, setTestGroups] = useState(caseToEdit ? caseToEdit.testGroups.map(testGroup => testGroup.slice().map(testForCase => { return { ...testForCase, tests: testForCase.tests.slice() } })) : [])
     const [addedTests, setAddedTests] = useState(caseToEdit ? testsFromTestGroups : [])
+    const [testGroupAccordion, setTestGroupAccodrion] = useState('0')
+    const [testGroupManagement, setTestGroupManagement] = useState(true)
     /* states end*/
 
     /* modal */
@@ -307,7 +309,7 @@ const CaseForm = ({ caseToEdit }) => {
 
                                     {caseToEdit ?
 
-                                        <Form.Group controlId="editCompletionImage">
+                                        <Form.Group controlId='editCompletionImage'>
                                             <Form.Label style={marginStyle}>Loppukuva</Form.Label>
                                             {img ?
                                                 <p style={borderStyle}>Loppukuva on annettu</p>
@@ -321,9 +323,9 @@ const CaseForm = ({ caseToEdit }) => {
                                                 onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false) }}
                                             />
                                             <Button style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>Poista loppukuva
-                                                <svg width="1em" height="1em" viewBox="0 0 16 16" className="bi bi-trash" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                    <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
+                                                    <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z' />
+                                                    <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
                                                 </svg>
                                             </Button>
                                         </Form.Group> :
@@ -347,48 +349,41 @@ const CaseForm = ({ caseToEdit }) => {
                                         handleBlur={handleBlur}
                                         touched={touched.sample}
                                     ></AddSample>
-
-                                    {/*<AddTestGroup addingAlt={addingAlt}
-                                        setAddingAlt={setAddingAlt}
-                                        addingTest={addingTest}
-                                        setAddingTest={setAddingTest}
-                                        setTest={setTest}
-                                        test={test}
-                                        tests={tests}
-                                        tableWidth={tableWidth}
-                                        cellWidth={cellWidth}
-                                        testForCase={testForCase}
-                                        setTestForCase={setTestForCase}
-                                        addTest={addTest}
-                                        addTestToTestGroup={addTestToTestGroup}
-                                        testGroup={testGroup}
-                                        addTestGroup={addTestGroup}
-                                        onChange={setFieldValue}
-                                        value={values.test}
-                                        error={errors.test}
-                                        addedTests={addedTests}
-                                        touched={touched.test}
-                                ></AddTestGroup>*/}
-                                    <Form.Label>Testiryhmät</Form.Label>
-                                    {testGroups.map((testGroup, i) =>
-                                        <TestGroup key={i}
-                                            testgroup={testGroup}
-                                            index={i}
-                                            removeTestGroup={removeTestGroup}
-                                            testGroupsSize={testGroups.length}
-                                            testGroupSwitch={testGroupSwitch}
-                                            addEmptyTestForCase={addEmptyTestForCase}
-                                            removeTestForCase={removeTestForCase}
-                                            changeTestForCaseIsRequired={changeTestForCaseIsRequired}
-                                            addTest={addTest}
-                                            removeTest={removeTest}
-                                            changeTestPositive={changeTestPositive}
-                                            tests={tests}
-                                            addedTests={addedTests}
-                                        />
-                                    )}
-                                    <Button id='addTestGroup' onClick={() => addTestGroup()} block>Lisää tyhjä testiryhmä</Button>
-                                    {caseToEdit ? <Button id="saveEdit" variant="success" type="submit">
+                                    <Accordion activeKey={testGroupAccordion}>
+                                        <Card>
+                                            <Accordion.Toggle as={Card.Header} onClick={() => setTestGroupAccodrion(testGroupAccordion === '-1' ? '0' : '-1')}><Form.Label>Testiryhmät (klikkaa {testGroupAccordion === '-1' ? 'näyttääksesi' : 'piilottaaksesi'})</Form.Label></Accordion.Toggle>
+                                            <Accordion.Collapse eventKey='0'>
+                                                <Card.Body>
+                                                    <Form.Check
+                                                        label='Näytä muokkaustoiminnallisuus'
+                                                        type='checkbox'
+                                                        id='showTestGroupManagement'
+                                                        checked={testGroupManagement}
+                                                        onChange={() => setTestGroupManagement(!testGroupManagement)} />
+                                                    {testGroups.map((testGroup, i) =>
+                                                        <TestGroup key={i}
+                                                            testgroup={testGroup}
+                                                            index={i}
+                                                            removeTestGroup={removeTestGroup}
+                                                            testGroupsSize={testGroups.length}
+                                                            testGroupSwitch={testGroupSwitch}
+                                                            addEmptyTestForCase={addEmptyTestForCase}
+                                                            removeTestForCase={removeTestForCase}
+                                                            changeTestForCaseIsRequired={changeTestForCaseIsRequired}
+                                                            addTest={addTest}
+                                                            removeTest={removeTest}
+                                                            changeTestPositive={changeTestPositive}
+                                                            tests={tests}
+                                                            addedTests={addedTests}
+                                                            testGroupManagement={testGroupManagement}
+                                                        />
+                                                    )}
+                                                    {testGroupManagement ? <Button id='addTestGroup' onClick={() => addTestGroup()} block>Aloita uusi testiryhmä</Button> : <></>}
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    </Accordion>
+                                    {caseToEdit ? <Button id='saveEdit' variant='success' type='submit'>
                                         Tallenna muutokset
                                     </Button> : <Button
                                             variant='success'
