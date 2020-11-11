@@ -3,7 +3,6 @@ import { ListGroup } from 'react-bootstrap'
 import { Table } from 'react-bootstrap'
 
 const ProfilePageUserInfo = ({ credit, user }) => {
-
     return (
         <div>
             <Table>
@@ -27,9 +26,7 @@ const ProfilePageUserInfo = ({ credit, user }) => {
                 </tbody>
             </Table>
             <h6>Suoritukset</h6>
-            {/* Suoritukset ei näy esim. käyttäjällä user. Komponentti renderöidään liian aikaisin, eikä credit ehditä hakea?*/}
-            {console.log(credit)}
-            {credit.testCases && credit.testCases.length !== 0 ?
+            {credit && credit.testCases && credit.testCases.length > 0 ?
                 <>
                     {credit.testCases.map(completedCase =>
                         <ListGroup variant='flush' key={completedCase}>
@@ -41,7 +38,6 @@ const ProfilePageUserInfo = ({ credit, user }) => {
                 <p>Ei suorituksia</p>
             }
         </div>
-
     )
 }
 

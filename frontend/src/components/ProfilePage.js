@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import ConfirmWindow from './utility/ConfirmWindow.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteUser } from '../reducers/usersReducer'
 import { logout } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import ProfilePageUserInfo from './ProfilePageUserInfo'
-//import { Table } from 'react-bootstrap'
 
 const ProfilePage = () => {
-
     const user = useSelector(state => state.user)
     const credits = useSelector(state => state.credit)?.sort((credit1, credit2) => credit1.user.studentNumber.localeCompare(credit2.user.studentNumber))
-    const [userInfo, setUserInfo] = useState(credits)
     const history = useHistory()
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        setUserInfo(credits.filter(credit => credit.user.id === user.id))
-    }, [user, credits])
-
     const userDelete = () => {
         dispatch(deleteUser(user, user.token))
         dispatch(logout(history))
@@ -28,7 +20,7 @@ const ProfilePage = () => {
         <div>
             <h3>Oma profiilini</h3>
             <div>
-                <ProfilePageUserInfo credit={userInfo} user={user} />
+                <ProfilePageUserInfo credit={credits.filter(credit => credit.user.id === user.id).length > 0 ? credits.filter(credit => credit.user.id === user.id)[0] : null} user={user} />
             </div>
             <ConfirmWindow
                 listedUser={user}
@@ -44,7 +36,6 @@ const ProfilePage = () => {
                 executeButtonText='Poista käyttäjä'
                 executeButtonVariant='danger'
             />
-
         </div>
     )
 }
