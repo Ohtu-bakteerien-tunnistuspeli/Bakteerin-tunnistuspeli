@@ -100,7 +100,8 @@ const CaseForm = ({ caseToEdit }) => {
                     return false
                 }
                 return true
-            }),
+            })
+            .max(1000, 'Näytteen tulee olla enintään 1000 merkkiä pitkä.'),
         test: Yup.string()
             .test('unique', 'Testi on jo lisätty', (test) => {
                 if (!test) {
@@ -110,7 +111,11 @@ const CaseForm = ({ caseToEdit }) => {
                     return false
                 }
                 return true
-            })
+            }),
+        anamnesis: Yup.string()
+            .max(10000, 'Anamneesin tulee olla enintään 10000 merkkiä pitkä.'),
+        completionText: Yup.string()
+            .max(10000, 'Lopputekstin tulee olla enintään 10000 merkkiä pitkä.')
     })
     /* schema for validation end */
 
@@ -254,7 +259,9 @@ const CaseForm = ({ caseToEdit }) => {
                             name: name,
                             bacteriumId: bacteriumId,
                             sample: '',
-                            test: ''
+                            test: '',
+                            anamnesis: '',
+                            completionText: ''
                         }}
                     >
                         {({
@@ -292,21 +299,34 @@ const CaseForm = ({ caseToEdit }) => {
                                             as='textarea'
                                             rows='3'
                                             value={anamnesis}
-                                            onChange={(event) => setAnamnesis(event.target.value)}
+                                            onChange={(event) => {
+                                                setAnamnesis(event.target.value)
+                                                setFieldValue('anamnesis', event.target.value)
+                                            }}
+                                            onBlur={handleBlur}
+                                            isInvalid={errors.anamnesis && touched.anamnesis}
                                         />
+                                        <Form.Control.Feedback type='invalid' hidden={!touched.anamnesis}>
+                                            {errors.anamnesis}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
-
                                     <Form.Group controlId='completionText'>
                                         <Form.Label>Lopputeksti</Form.Label>
                                         <Form.Control
                                             as='textarea'
                                             rows='3' value={completionText}
-                                            onChange={(event) => setCompletionText(event.target.value)}
+                                            onChange={(event) => {
+                                                setCompletionText(event.target.value)
+                                                setFieldValue('completionText', event.target.value)
+                                            }}
+                                            isInvalid={errors.completionText && touched.completionText}
+                                            onBlur={handleBlur}
                                         />
+                                        <Form.Control.Feedback type='invalid' hidden={!touched.completionText}>
+                                            {errors.completionText}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
-
                                     {caseToEdit ?
-
                                         <Form.Group controlId="editCompletionImage">
                                             <Form.Label style={marginStyle}>Loppukuva</Form.Label>
                                             {img ?
@@ -393,9 +413,9 @@ const CaseForm = ({ caseToEdit }) => {
                                     {caseToEdit ? <Button id="saveEdit" variant="success" type="submit">
                                         Tallenna muutokset
                                     </Button> : <Button
-                                        variant='success'
-                                        type='submit'
-                                        id='addCase'>
+                                            variant='success'
+                                            type='submit'
+                                            id='addCase'>
                                             Tallenna tapaus
                                     </Button>}
 
