@@ -3,7 +3,7 @@ WORKDIR /app/backend
 COPY ./frontend/ ../frontend/
 
 RUN cd ../frontend && \
-       npm install --production && \
+       npm ci --production && \
        cd ../backend
 
 COPY ./backend/ .
