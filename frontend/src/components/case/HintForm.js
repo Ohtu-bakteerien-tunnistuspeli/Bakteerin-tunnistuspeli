@@ -84,7 +84,7 @@ const HintForm = ({ caseToUpdate }) => {
                                 { currentTest ?
                                     <div>
                                         <Form.Label>{ currentTest.name } - virheviesti:</Form.Label>
-                                        <Form.Control id='hint' name='hint' onChange={handleHintChange} value={hints.filter(pair => pair.test.id === currentTest.id).length > 0 ? hints.filter(hint => hint.test.name === currentTest.name)[0].hint : ''} />
+                                        <Form.Control id='testHint' name='hint' onChange={handleHintChange} value={hints.filter(pair => pair.test.id === currentTest.id).length > 0 ? hints.filter(hint => hint.test.name === currentTest.name)[0].hint : ''} />
                                         {formik.touched.hint && formik.errors.hint ? (
                                             <div>{formik.errors.hint}</div>
                                         ) : null}
