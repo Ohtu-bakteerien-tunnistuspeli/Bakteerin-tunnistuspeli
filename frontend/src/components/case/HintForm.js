@@ -11,7 +11,7 @@ const HintForm = ({ caseToUpdate }) => {
     const [hints, setHints] = useState(caseToUpdate.hints)
     const [currentTest, setCurrentTest] = useState(null)
     const dispatch = useDispatch()
-    const saveUpdatedHints = (event) => {
+    const saveUpdatedHints = () => {
         dispatch(updateCaseHints(caseToUpdate.id, hints.filter(hint => hint.hint.length > 0).map(hint => { return { hint: hint.hint, test: hint.test.id }}), handleClose, user.token))
     }
     const handleHintChange = (event) => {
@@ -33,7 +33,7 @@ const HintForm = ({ caseToUpdate }) => {
 
     const formik = useFormik({
         initialValues: {
-            hint: hints.filter(pair => pair.test.id === currentTest.id) && hints.filter(pair => pair.test.id === currentTest.id).length > 0 ? hints.filter(hint => hint.test.name === currentTest.name)[0].hint : '',
+            hint: hints.length > 0 && hints.filter(pair => pair.test.id === currentTest.id) && hints.filter(pair => pair.test.id === currentTest.id).length > 0 ? hints.filter(hint => hint.test.name === currentTest.name)[0].hint : '',
         },
         onSubmit: saveUpdatedHints,
         validationSchema: Yup.object({
