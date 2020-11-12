@@ -2,7 +2,7 @@ module.exports = {
     'env': {
         'browser': true,
         'es6': true,
-        "cypress/globals": true,
+//        "cypress/globals": true,
 //        "jest/globals": true
     },
     'extends': [
@@ -33,7 +33,8 @@ module.exports = {
         ]
       },
     "plugins": [
-        "react","cypress",
+        "react",
+ //       "cypress",
  //       "jest"
     ],
     'rules': {
