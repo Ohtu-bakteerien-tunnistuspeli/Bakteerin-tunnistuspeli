@@ -269,7 +269,7 @@ const CaseForm = ({ caseToEdit }) => {
                     >
                         {({
                             handleSubmit,
-                            values,
+                            //values,
                             errors,
                             setFieldValue,
                             touched,
