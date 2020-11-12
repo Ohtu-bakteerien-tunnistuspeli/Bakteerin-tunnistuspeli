@@ -11,7 +11,7 @@ const HintForm = ({ caseToUpdate }) => {
     const [hints, setHints] = useState(caseToUpdate.hints)
     const [currentTest, setCurrentTest] = useState(null)
     const dispatch = useDispatch()
-    const saveUpdatedHints = (event) => {
+    const saveUpdatedHints = (/*event*/) => {
         dispatch(updateCaseHints(caseToUpdate.id, hints.filter(hint => hint.hint.length > 0).map(hint => { return { hint: hint.hint, test: hint.test.id }}), handleClose, user.token))
     }
     const handleHintChange = (event) => {
