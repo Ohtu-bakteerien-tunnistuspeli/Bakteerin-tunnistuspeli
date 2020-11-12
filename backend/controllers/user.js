@@ -34,6 +34,9 @@ userRouter.post('/login', async (request, response) => {
             token,
             username: user.username,
             admin: user.admin,
+            classGroup: user.classGroup,
+            email: user.email,
+            studentNumber: user.studentNumber,
             id: user._id
         })
 })
