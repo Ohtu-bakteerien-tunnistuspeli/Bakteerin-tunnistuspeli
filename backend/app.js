@@ -4,7 +4,7 @@ const app = express()
 const config = require('./utils/config')
 require('express-async-errors')
 const mongoose = require('mongoose')
-if(process.env.NODE_ENV === 'testserver' || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'testserver' || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     const testingRouter = require('./controllers/testing')
     app.use('/api/testing', testingRouter)
 }
@@ -144,7 +144,8 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
                 testGroups: [
                     [{ tests: [{ test: intialTestCase1, positive: true }], isRequired: false }, { tests: [{ test: intialTestCase2, positive: true }, { test: intialTestCase4, positive: true }], isRequired: true }],
                     [{ tests: [{ test: intialTestCase3, positive: false }], isRequired: true }]
-                ]
+                ],
+                complete: true
             })
             await initialCase.save()
 
