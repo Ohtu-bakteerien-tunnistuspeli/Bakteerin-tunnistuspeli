@@ -125,5 +125,6 @@ describe('User management', () => {
 
     after(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_users')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
     })
 })
