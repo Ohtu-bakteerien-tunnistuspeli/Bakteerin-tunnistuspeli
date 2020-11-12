@@ -1,6 +1,7 @@
 describe('Game', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_users')
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.visit('http://localhost:3000')
         cy.contains('Kirjaudu sisään').click()
@@ -229,6 +230,17 @@ describe('Game', () => {
                 cy.get('.close').click()
                 cy.contains('Oma profiilini')
             })
+
+            it('User can view their info', () => {
+                cy.contains('Käyttäjänimi')
+                cy.contains('Opiskelijanumero')
+                cy.contains('Sähköposti')
+                cy.contains('Vuosikurssi')
+                cy.contains('Suoritukset')
+                cy.contains('example@com')
+                cy.contains('Ei suorituksia')
+            })
+
         })
     })
 
@@ -248,6 +260,52 @@ describe('Game', () => {
         it('user can log out', () => {
             cy.contains('Kirjaudu ulos').click()
             cy.contains('Kirjaudu Bakteeripeliin')
+        })
+
+        it('Admin can go to own profile page', () => {
+            cy.contains('admin').click()
+            cy.contains('Oma profiilini')
+        })
+
+        describe('When in profile page', () => {
+            beforeEach(() => {
+                cy.contains('admin').click()
+            })
+
+            it('Cannot delete itself wihout giving correct confirmation text', () => {
+                cy.get('#deleteUser').click()
+                cy.get('#confirmField').type('dmin')
+                cy.get('#confirm').should('be.disabled')
+            })
+
+            it('Can quit deleting itself', () => {
+                cy.get('#deleteUser').click()
+                cy.get('#confirmField').type('admin')
+                cy.get('.close').click()
+                cy.contains('Oma profiilini')
+            })
+
+            it('Admin can view their info', () => {
+                cy.contains('Käyttäjänimi')
+                cy.contains('Opiskelijanumero')
+                cy.contains('Sähköposti')
+                cy.contains('Vuosikurssi')
+                cy.contains('Suoritukset')
+                cy.contains('example@com')
+                cy.contains('Ei suorituksia')
+            })
+
+            it('Admin can delete itself', () => {
+                cy.get('#deleteUser').click()
+                cy.get('#confirmField').type('admin')
+                cy.get('#confirm').click()
+                cy.contains('Kirjaudu Bakteeripeliin')
+                cy.get('#username').type('admin')
+                cy.get('#password').type('admin')
+                cy.get('#submit').click()
+                cy.contains('Kirjaudu Bakteeripeliin')
+            })
+
         })
 
         describe('and there is a bacterium', () => {
