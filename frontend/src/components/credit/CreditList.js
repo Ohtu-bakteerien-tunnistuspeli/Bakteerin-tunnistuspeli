@@ -11,7 +11,6 @@ const CreditList = () => {
     const [filterByClassGroup, setFilterByClassGroup] = useState('')
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
     const user = useSelector(state => state.user)
-    const exportStyle = { margin: '2px', float: 'right' }
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -47,7 +46,7 @@ const CreditList = () => {
                             <th>Käyttäjänimi</th>
                             <th>Vuosikurssi</th>
                             <th>
-                                <Button id='deleteCredits' variant='danger' style={exportStyle} onClick={deleteCredits}>Poista suoritukset</Button>
+                                <Button id='deleteCredits' variant='danger' className='small-margin-float-right' onClick={deleteCredits}>Poista suoritukset</Button>
                                 <CSVExporter data={creditsToShow} />
                             </th>
                         </tr>

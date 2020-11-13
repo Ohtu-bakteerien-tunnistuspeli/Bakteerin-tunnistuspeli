@@ -248,7 +248,7 @@ const CaseForm = ({ caseToEdit }) => {
 
     return (
         <div>
-            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} style={{ float: 'right', margin: '2px' }} variant='primary' onClick={handleShow}>
+            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} className="small-margin-float-right" variant='primary' onClick={handleShow}>
                 {caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}
             </Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose} backdrop='static'>

@@ -45,7 +45,7 @@ const HintForm = ({ caseToUpdate }) => {
 
     return (
         <>
-            <Button variant='outline-primary' style={{ float: 'right', margin: '2px' }} id='addHint' onClick={handleShow}>Lisää Vinkkejä</Button>
+            <Button variant='outline-primary' className='small-margin-float-right' id='addHint' onClick={handleShow}>Lisää Vinkkejä</Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose}>
                 <Modal.Header closeButton>
                     Muokkaa testeihin liittyviä vinkkejä

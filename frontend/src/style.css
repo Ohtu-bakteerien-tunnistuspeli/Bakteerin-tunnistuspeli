@@ -90,7 +90,7 @@ h2 {
     margin: 10px 0 10px 0;
 }
 
-.csvlink-button {
+.small-margin-float-right {
     margin: 2px;
     float: right;
 }
@@ -120,4 +120,8 @@ h2 {
     max-width: max-content;
     height: auto;
     display: "block";
+}
+
+.small-margin {
+    margin: 2px;
 }
