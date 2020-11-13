@@ -18,8 +18,6 @@ jobs:
       matrix:
         node-version: [14.x]
         mongodb-version: [4.4]
-        test-file:
-          [ cypress/integration/userManagement.spec.js, cypress/integration/testManagement.spec.js ]
 
     steps:
     - uses: actions/checkout@v2
@@ -45,7 +43,6 @@ jobs:
         working-directory: frontend
         wait-on: http://localhost:3000
         wait-on-timeout: 300
-        spec: ${{ matrix.test-file }}
       
   backend:
     runs-on: ubuntu-latest
