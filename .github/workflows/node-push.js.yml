@@ -40,7 +40,6 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v2
       with:
-        parallel: true 
         start: npm start
         working-directory: frontend
         wait-on: http://localhost:3000
