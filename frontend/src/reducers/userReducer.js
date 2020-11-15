@@ -32,7 +32,7 @@ export const login = (username, password, history) => {
         if (user && !user.error) {
             user.token = `bearer ${user.token}`
             window.localStorage.setItem('loggedUser', JSON.stringify(user))
-            dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}`, success: true }))
+            dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}`, success: true, show: true }))
             dispatch({
                 type: 'LOGIN',
                 data: user
@@ -50,7 +50,7 @@ export const login = (username, password, history) => {
                 type: 'LOGIN',
                 data: null
             })
-            dispatch(setNotification({ message: 'Kirjautuminen epäonnistui', success: false }))
+            dispatch(setNotification({ message: 'Kirjautuminen epäonnistui', success: false, show: true }))
         }
     }
 }
@@ -102,7 +102,7 @@ export const register = (username, email, studentNumber, classGroup, password, h
     return async dispatch => {
         let response = await userService.register({ username, email, studentNumber, classGroup, password })
         if (response && !response.error) {
-            dispatch(setNotification({ message: `Rekisteröidyit onnistuneesti, ${username}`, success: true }))
+            dispatch(setNotification({ message: `Rekisteröidyit onnistuneesti, ${username}`, success: true, show: true }))
             history.push('/kirjautuminen')
         } else {
             dispatch({
@@ -110,9 +110,9 @@ export const register = (username, email, studentNumber, classGroup, password, h
                 data: null
             })
             if (response.error.includes('User validation failed')) {
-                dispatch(setNotification({ message: response.error.substring(response.error.indexOf('name: ') + 6), success: false }))
+                dispatch(setNotification({ message: response.error.substring(response.error.indexOf('name: ') + 6), success: false, show: true }))
             } else {
-                dispatch(setNotification({ message: response.error, success: false }))
+                dispatch(setNotification({ message: response.error, success: false, show: true }))
             }
         }
     }

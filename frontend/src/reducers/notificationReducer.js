@@ -18,7 +18,7 @@ export const setNotification = ( notification ) => {
             clearTimeout(timer)
             timer = setTimeout(() => {
                 dispatch(setNotification(''))
-            }, 5000)
+            }, 8000)
         }
         dispatch({
             type: 'SET NOTIFICATION',
