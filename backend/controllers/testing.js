@@ -75,6 +75,8 @@ router.post('/init', async (request, response) => {
         const user = new User({
             username: 'user',
             email: 'example@com',
+            studentNumber: '1234567',
+            classGroup: 'C-12',
             admin: false,
             passwordHash
         })
@@ -83,6 +85,8 @@ router.post('/init', async (request, response) => {
         const admin = new User({
             username: 'admin',
             email: 'example@com',
+            studentNumber: '',
+            classGroup: '',
             admin: true,
             passwordHash
         })
