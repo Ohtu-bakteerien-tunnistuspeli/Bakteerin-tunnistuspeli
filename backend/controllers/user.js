@@ -4,7 +4,6 @@ const userRouter = require('express').Router()
 const User = require('../models/user')
 const Credit = require('../models/credit')
 const config = require('../utils/config')
-const { request } = require('../app')
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body
