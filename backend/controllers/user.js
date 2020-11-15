@@ -166,4 +166,35 @@ userRouter.post('/changePassword', async (request, response) => {
     }
 })
 
+userRouter.post('/changeStudentNumber', async (request, response) => {
+    if (request.user) {
+        const body = request.body
+        if (!body.password) {
+            return response.status(400).json({ error: 'Salasana on pakollinen.' })
+        } else if (!body.newStudentNumber) {
+            return response.status(400).json({ error: 'Uusi opiskelijanumero on pakollinen.' })
+        } else {
+            try {
+                const user = await User.findOne({ username: request.user.username })
+                const passwordCorrect = user === null
+                    ? false
+                    : await bcrypt.compare(body.password, user.passwordHash)
+                if (passwordCorrect) {
+                    const updatedUser = await User.findByIdAndUpdate(user.id, { studentNumber: body.newStudentNumber }, { new: true, runValidators: true, context: 'query' })
+                    if (!updatedUser) {
+                        return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+                    }
+                    return response.status(200).json(updatedUser.toJSON())
+                } else {
+                    return response.status(400).json({ error: 'Väärä salasana.' })
+                }
+            } catch (error) {
+                return response.status(400).json({ error: error.message })
+            }
+        }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
 module.exports = userRouter

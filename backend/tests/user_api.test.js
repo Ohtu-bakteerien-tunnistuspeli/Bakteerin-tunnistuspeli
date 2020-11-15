@@ -11,8 +11,8 @@ beforeEach(async () => {
     await User.deleteMany({})
     const adminPassword = await bcrypt.hash('admin', 10)
     const userPassword = await bcrypt.hash('password', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com' })
-    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'example@com' })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com', studentNumber: '', classGroup: '' })
+    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'example@com', studentNumber: '7897089', classGroup: 'C-122' })
     await admin.save()
     await user.save()
 })
@@ -616,6 +616,92 @@ describe('changing password', () => {
             .post('/api/user/changePassword')
             .set('Authorization', `bearer ${loginResponse.body.token}`)
             .send({ password: 'pass', newPassword: 'newPassword' })
+            .expect(400)
+        expect(res.body.error).toContain('Väärä salasana.')
+    })
+})
+
+describe('changing student number', () => {
+    test('admin can change own student number', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+            .expect(200)
+        expect(loginResponse.body.studentNumber).not.toContain('12345')
+        const res = await api
+            .post('/api/user/changeStudentNumber')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'admin', newStudentNumber: '12345' })
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        expect(res.body.studentNumber).toContain('12345')
+    })
+
+    test('user can change own student number', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        expect(loginResponse.body.studentNumber).not.toContain('12345')
+        const res = await api
+            .post('/api/user/changeStudentNumber')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'password', newStudentNumber: '12345' })
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+        expect(res.body.studentNumber).toContain('12345')
+    })
+
+    test('password is required for changing student number', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        const res = await api
+            .post('/api/user/changeStudentNumber')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ newStudentNumber: '12345' })
+            .expect(400)
+        expect(res.body.error).toContain('Salasana on pakollinen.')
+    })
+
+    test('new student number is required for changing student number', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        const res = await api
+            .post('/api/user/changeStudentNumber')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'password' })
+            .expect(400)
+        expect(res.body.error).toContain('Uusi opiskelijanumero on pakollinen.')
+    })
+
+    test('student number cannot be changed with incorrect password', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+            .expect(200)
+        const res = await api
+            .post('/api/user/changeStudentNumber')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'incorrect', newStudentNumber: '12345' })
             .expect(400)
         expect(res.body.error).toContain('Väärä salasana.')
     })
