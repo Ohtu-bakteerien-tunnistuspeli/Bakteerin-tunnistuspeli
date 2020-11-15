@@ -1,6 +1,7 @@
 describe('Game', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+        cy.request('POST', 'http://localhost:3001/api/testing/reset_credits')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_users')
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.visit('http://localhost:3000')
