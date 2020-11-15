@@ -495,6 +495,132 @@ describe('demote', () => {
     })
 })
 
+describe('changing password', () => {
+    test('admin can change own password', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'admin'
+            })
+            .expect(200)
+        await api
+            .post('/api/user/changePassword')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'admin', newPassword: 'newAdmin' })
+            .expect(200)
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'adminNew',
+                password: 'newAdmin'
+            })
+            .expect(200)
+    })
+
+    test('user can change own password', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        await api
+            .post('/api/user/changePassword')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'password', newPassword: 'newPassword' })
+            .expect(200)
+        await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'newPassword'
+            })
+            .expect(200)
+    })
+
+    test('password is required', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        const res = await api
+            .post('/api/user/changePassword')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ newPassword: 'newPassword' })
+            .expect(400)
+        expect(res.body.error).toContain('Salasana on pakollinen.')
+    })
+
+    test('new password is required', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        const res = await api
+            .post('/api/user/changePassword')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'password' })
+            .expect(400)
+        expect(res.body.error).toContain('Uusi salasana on pakollinen.')
+    })
+
+    test('new password needs to be long enough', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        const res = await api
+            .post('/api/user/changePassword')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'password', newPassword: 'uu' })
+            .expect(400)
+        expect(res.body.error).toContain('Salasanan täytyy olla vähintään 3 merkkiä pitkä.')
+    })
+
+    test('new password cannot be too long', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        const res = await api
+            .post('/api/user/changePassword')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'password', newPassword: new Array(150).join('a') })
+            .expect(400)
+        expect(res.body.error).toContain('Salasanan täytyy olla enintään 100 merkkiä pitkä.')
+    })
+
+    test('password is not changed if incorrect password is given', async () => {
+        const loginResponse = await api
+            .post('/api/user/login')
+            .send({
+                username: 'usernameNew',
+                password: 'password'
+            })
+            .expect(200)
+        const res = await api
+            .post('/api/user/changePassword')
+            .set('Authorization', `bearer ${loginResponse.body.token}`)
+            .send({ password: 'pass', newPassword: 'newPassword' })
+            .expect(400)
+        expect(res.body.error).toContain('Väärä salasana.')
+    })
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
     await mongoose.disconnect()
