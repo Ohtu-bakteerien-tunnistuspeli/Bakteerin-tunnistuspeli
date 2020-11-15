@@ -194,6 +194,9 @@ const TestForm = ({ testToEdit }) => {
 
     return (
         <div>
+            <Modal>
+                <Notification></Notification>
+            </Modal>
             <Button style={style}
                 id={testToEdit ? 'testEditButton' : 'testModalButton'}
                 variant='primary'
@@ -205,7 +208,6 @@ const TestForm = ({ testToEdit }) => {
                     closeButton>{testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
                 </Modal.Header>
                 <Modal.Body>
-                    <Notification></Notification>
                     {testToEdit ?
                         <DeleteButton id='deleteTest'
                             onClick={() => {

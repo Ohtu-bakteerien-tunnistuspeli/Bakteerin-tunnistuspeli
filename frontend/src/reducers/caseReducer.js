@@ -26,7 +26,7 @@ export const getCases = (token) => {
     return async dispatch => {
         const cases = await caseService.get(token)
         if (cases.error) {
-            dispatch(setNotification({ message: cases.error, success: false }))
+            dispatch(setNotification({ message: cases.error, success: false, show: true }))
         } else {
             dispatch({
                 type: 'GET_CASES',
@@ -41,12 +41,12 @@ export const addCase = (name, bacterium, anamnesis, completionText, completionIm
         const caseToSave = await caseService.add(name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, token)
         if (caseToSave.error) {
             if (caseToSave.error.includes('Case validation failed')) {
-                dispatch(setNotification({ message: caseToSave.error.substring(caseToSave.error.indexOf('name: ') + 6), success: false }))
+                dispatch(setNotification({ message: caseToSave.error.substring(caseToSave.error.indexOf('name: ') + 6), success: false, show: true }))
             } else {
-                dispatch(setNotification({ message: caseToSave.error, success: false }))
+                dispatch(setNotification({ message: caseToSave.error, success: false, show: true }))
             }
         } else {
-            dispatch(setNotification({ message: `Tapauksen ${caseToSave.name} lisäys onnistui.`, success: true }))
+            dispatch(setNotification({ message: `Tapauksen ${caseToSave.name} lisäys onnistui.`, success: true, show: true }))
             dispatch({
                 type: 'ADD_CASE',
                 data: caseToSave
@@ -60,9 +60,9 @@ export const deleteCase = (caseToDelete, token) => {
     return async dispatch => {
         const res = await caseService.deleteCase(caseToDelete.id, token)
         if (res.status !== 204) {
-            dispatch(setNotification({ message: res.error, success: false }))
+            dispatch(setNotification({ message: res.error, success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: `Tapauksen ${caseToDelete.name} poisto onnistui.`, success: true }))
+            dispatch(setNotification({ message: `Tapauksen ${caseToDelete.name} poisto onnistui.`, success: true, show: true }))
             dispatch({
                 type: 'DELETE_CASE',
                 data: caseToDelete
@@ -76,12 +76,12 @@ export const updateCase = (id, name, bacterium, anamnesis, completionText, compl
         const caseToUpdate = await caseService.update(id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token)
         if(caseToUpdate.error){
             if (caseToUpdate.error.includes('Case validation failed')) {
-                dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
+                dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false, show: true }))
             } else {
-                dispatch(setNotification({ message: caseToUpdate.error, success: false }))
+                dispatch(setNotification({ message: caseToUpdate.error, success: false, show: true }))
             }
         } else {
-            dispatch(setNotification({ message: `Tapauksen ${caseToUpdate.name} muokkaus onnistui.`, success: true }))
+            dispatch(setNotification({ message: `Tapauksen ${caseToUpdate.name} muokkaus onnistui.`, success: true, show: true }))
             dispatch({
                 type: 'UPDATE_CASE',
                 data: caseToUpdate
@@ -95,8 +95,9 @@ export const updateCaseHints = (id, hints, handleClose, token) => {
     return async dispatch => {
         const caseToUpdate = await caseService.updateHints(id, hints, token)
         if(caseToUpdate.error){
-            dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false }))
+            dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
+            dispatch(setNotification({ message: `Tapauksen ${caseToUpdate.name} vihjeiden muokkaus onnistui.`, success: true, show: true }))
             dispatch({
                 type: 'UPDATE_CASE',
                 data: caseToUpdate

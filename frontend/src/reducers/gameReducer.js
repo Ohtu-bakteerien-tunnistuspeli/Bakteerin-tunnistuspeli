@@ -31,7 +31,7 @@ export const getGame = (history, id, token) => {
     return async dispatch => {
         const receivedCase = await gameService.get(id, token)
         if (receivedCase.error) {
-            dispatch(setNotification({ message: receivedCase.error, success: false }))
+            dispatch(setNotification({ message: receivedCase.error, success: false, show: true }))
         } else {
             let game = {
                 case: receivedCase,
@@ -56,16 +56,16 @@ export const checkSamples = (game, samples, token) => {
     return async dispatch => {
         const checkSample = await gameService.sampleCheck(game.case.id, samples, token)
         if (checkSample.error) {
-            dispatch(setNotification({ message: checkSample.error, success: false }))
+            dispatch(setNotification({ message: checkSample.error, success: false, show: true }))
         } else {
             if (checkSample.correct) {
-                dispatch(setNotification({ message: 'Oikea vastaus', success: true }))
+                dispatch(setNotification({ message: 'Oikea vastaus', success: true, show: true }))
                 dispatch({
                     type: 'CHECK_SAMPLES',
                     data: { ...game, samplesCorrect: true }
                 })
             } else {
-                dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
+                dispatch(setNotification({ message: 'Väärä vastaus', success: false, show: true }))
             }
 
         }
@@ -76,15 +76,15 @@ export const checkTests = (game, test, token, setTestTab) => {
     return async dispatch => {
         const checkTest = await gameService.testCheck(game.case.id, { tests: [...game.correctTests, test] }, token)
         if (checkTest.error) {
-            dispatch(setNotification({ message: checkTest.error, success: false }))
+            dispatch(setNotification({ message: checkTest.error, success: false, show: true }))
         } else {
             if (checkTest.correct) {
                 if (checkTest.allDone) {
-                    dispatch(setNotification({ message: 'Oikea vastaus. Kaikki testit tehty.', success: true }))
+                    dispatch(setNotification({ message: 'Oikea vastaus. Kaikki testit tehty.', success: true, show: true }))
                 } else if (checkTest.requiredDone) {
-                    dispatch(setNotification({ message: 'Oikea vastaus. Kaikki vaaditut testit tehty.', success: true }))
+                    dispatch(setNotification({ message: 'Oikea vastaus. Kaikki vaaditut testit tehty.', success: true, show: true }))
                 } else {
-                    dispatch(setNotification({ message: 'Oikea vastaus.', success: true }))
+                    dispatch(setNotification({ message: 'Oikea vastaus.', success: true, show: true }))
                 }
                 dispatch({
                     type: 'CHECK_TESTS',
@@ -93,9 +93,9 @@ export const checkTests = (game, test, token, setTestTab) => {
                 setTestTab('tuloksia')
             } else {
                 if(checkTest.hint) {
-                    dispatch(setNotification({ message: checkTest.hint, success: false }))
+                    dispatch(setNotification({ message: checkTest.hint, success: false, show: true }))
                 } else {
-                    dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
+                    dispatch(setNotification({ message: 'Väärä vastaus', success: false, show: true }))
                 }
             }
 
@@ -107,17 +107,17 @@ export const checkBacterium = (game, bacteriumName, token) => {
     return async dispatch => {
         const checkBacterium = await gameService.bacteriumCheck(game.case.id, { bacteriumName }, token)
         if (checkBacterium.error) {
-            dispatch(setNotification({ message: checkBacterium.error, success: false }))
+            dispatch(setNotification({ message: checkBacterium.error, success: false, show: true }))
         } else {
             if (checkBacterium.correct) {
-                dispatch(setNotification({ message: 'Oikea vastaus', success: true }))
+                dispatch(setNotification({ message: 'Oikea vastaus', success: true, show: true }))
                 dispatch({
                     type: 'CHECK_BACTERIUM',
                     data: { ...game, bacteriumCorrect: true, completionImageUrl: checkBacterium.completionImageUrl }
                 })
                 dispatch(getCredits(token))
             } else {
-                dispatch(setNotification({ message: 'Väärä vastaus', success: false }))
+                dispatch(setNotification({ message: 'Väärä vastaus', success: false, show: true }))
             }
 
         }
