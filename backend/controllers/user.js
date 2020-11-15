@@ -4,6 +4,7 @@ const userRouter = require('express').Router()
 const User = require('../models/user')
 const Credit = require('../models/credit')
 const config = require('../utils/config')
+const { request } = require('../app')
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body
@@ -153,7 +154,7 @@ userRouter.post('/changePassword', async (request, response) => {
                     if (!updatedUser) {
                         return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
                     }
-                    return response.status(200).end()
+                    return response.status(200).json(updatedUser.toJSON())
                 } else {
                     return response.status(400).json({ error: 'Väärä salasana.' })
                 }
@@ -181,6 +182,37 @@ userRouter.post('/changeStudentNumber', async (request, response) => {
                     : await bcrypt.compare(body.password, user.passwordHash)
                 if (passwordCorrect) {
                     const updatedUser = await User.findByIdAndUpdate(user.id, { studentNumber: body.newStudentNumber }, { new: true, runValidators: true, context: 'query' })
+                    if (!updatedUser) {
+                        return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+                    }
+                    return response.status(200).json(updatedUser.toJSON())
+                } else {
+                    return response.status(400).json({ error: 'Väärä salasana.' })
+                }
+            } catch (error) {
+                return response.status(400).json({ error: error.message })
+            }
+        }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
+userRouter.post('/changeEmail', async (request, response) => {
+    if (request.user) {
+        const body = request.body
+        if (!body.password) {
+            return response.status(400).json({ error: 'Salasana on pakollinen.' })
+        } else if (!body.newEmail) {
+            return response.status(400).json({ error: 'Uusi sähköpostiosoite on pakollinen.' })
+        } else {
+            try {
+                const user = await User.findOne({ username: request.user.username })
+                const passwordCorrect = user === null
+                    ? false
+                    : await bcrypt.compare(body.password, user.passwordHash)
+                if (passwordCorrect) {
+                    const updatedUser = await User.findByIdAndUpdate(user.id, { email: body.newEmail }, { new: true, runValidators: true, context: 'query' })
                     if (!updatedUser) {
                         return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
                     }
