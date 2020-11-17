@@ -122,7 +122,7 @@ describe('Game', () => {
 
         cy.get('#submit').click()
 
-        cy.contains('Käyttäjänimen tulee olla uniikki.')
+        cy.contains('Käyttäjänimen ja sähköpostiosoitteen tulee olla uniikkeja.')
         cy.contains('Rekisteröidy Bakteeripeliin')
     })
 
@@ -292,7 +292,7 @@ describe('Game', () => {
                 cy.contains('Sähköposti')
                 cy.contains('Vuosikurssi')
                 cy.contains('Suoritukset')
-                cy.contains('example@com')
+                cy.contains('examples@com')
                 cy.contains('Ei suorituksia')
             })
 

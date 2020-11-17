@@ -12,6 +12,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    singleUsePassword: {
+        passwordHash: {
+            type: String
+        },
+        generationTime: {
+            type: Date
+        }
+    },
     admin: {
         type: Boolean,
         required: true
@@ -39,6 +47,7 @@ const userSchema = mongoose.Schema({
         },
         required: [true, 'Sähköpostiosoite on pakollinen.'],
         maxlength: [100, 'Sähköpostin tulee olla enintään 100 merkkiä pitkä.'],
+        unique: [true, 'Sähköpostin tulee olla uniikki.']
     },
     studentNumber: {
         type: String,
@@ -61,9 +70,10 @@ userSchema.set('toJSON', {
         delete returnedObject._id
         delete returnedObject.__v
         delete returnedObject.passwordHash
+        delete returnedObject.singleUsePassword
     }
 })
-userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimen tulee olla uniikki.' })
+userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimen ja sähköpostiosoitteen tulee olla uniikkeja.' })
 const User = mongoose.model('User', userSchema)
 
 module.exports = User

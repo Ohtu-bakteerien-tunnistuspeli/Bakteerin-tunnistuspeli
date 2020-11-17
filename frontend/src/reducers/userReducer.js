@@ -32,7 +32,6 @@ export const login = (username, password, history) => {
         if (user && !user.error) {
             user.token = `bearer ${user.token}`
             window.localStorage.setItem('loggedUser', JSON.stringify(user))
-            dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}`, success: true, show: true }))
             dispatch({
                 type: 'LOGIN',
                 data: user
@@ -44,7 +43,13 @@ export const login = (username, password, history) => {
             dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
-            history.push('/')
+            if (user.singleUsePasswordUsed) {
+                dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}. Vaihda salasanasi.`, success: true, show: true }))
+                history.push('/profiilini')
+            } else {
+                dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}.`, success: true, show: true }))
+                history.push('/')
+            }
         } else {
             dispatch({
                 type: 'LOGIN',
@@ -114,6 +119,19 @@ export const register = (username, email, studentNumber, classGroup, password, h
             } else {
                 dispatch(setNotification({ message: response.error, success: false, show: true }))
             }
+        }
+    }
+}
+
+
+export const generateSingleUsePassword = (username, email, history) => {
+    return async dispatch => {
+        let response = await userService.singleUsePasswordGenerate({ username, email })
+        if (response.error) {
+            dispatch(setNotification({ message: response.error, success: false, show: true }))
+        } else {
+            dispatch(setNotification({ message: response.message, success: true, show: true }))
+            history.push('/')
         }
     }
 }

@@ -11,8 +11,8 @@ beforeEach(async () => {
     await User.deleteMany({})
     const adminPassword = await bcrypt.hash('admin', 10)
     const userPassword = await bcrypt.hash('password', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com', studentNumber: '', classGroup: '' })
-    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'example@com', studentNumber: '7897089', classGroup: 'C-122' })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example11@com', studentNumber: '', classGroup: '' })
+    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'examples111@com', studentNumber: '7897089', classGroup: 'C-122' })
     await admin.save()
     await user.save()
 })
@@ -44,7 +44,7 @@ describe('register ', () => {
             .send({
                 username: 'testUser',
                 password: 'testPassword',
-                email: 'example@com'
+                email: 'example1@com'
             })
             .expect(200)
         await api
@@ -61,7 +61,7 @@ describe('register ', () => {
             .send({
                 username: 'testUser',
                 password: 'testPassword',
-                email: 'example@com',
+                email: 'example2@com',
                 classGroup: 'C-76',
                 studentNumber: '1234567'
             })
@@ -78,30 +78,30 @@ describe('register ', () => {
         const invalidUsers = [{
             username: 'usernameNew',
             password: 'testPassword',
-            email: 'example@com'
+            email: 'example3@com'
         }, {
             username: 'usernameNew'
         }, {
             username: 'usernameNew',
             password: 't',
-            email: 'example@com'
+            email: 'example4@com'
         }, {
             username: 'u',
             password: 'testPassword',
-            email: 'example@com'
+            email: 'example5@com'
         }, {
             username: 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu',
             password: 'testPassword',
-            email: 'example@com'
+            email: 'example6@com'
         }, {
             username: 'uniqueUser',
             password: 'testPassword',
             classGroup: '123',
-            email: 'example@com'
+            email: 'example7@com'
         }, {
             username: 'usernameNew',
             password: 'testPassword',
-            email: 'examplecom@'
+            email: 'examplecom8@'
         }, {
             username: 'usernameNew',
             password: 'testPassword',
@@ -116,7 +116,7 @@ describe('register ', () => {
             .post('/api/user/register')
             .send(invalidUsers[0])
             .expect(400)
-        expect(registerResponse.body.error).toContain('Käyttäjänimen tulee olla uniikki.')
+        expect(registerResponse.body.error).toContain('Käyttäjänimen ja sähköpostiosoitteen tulee olla uniikkeja.')
         await api
             .post('/api/user/login')
             .send(invalidUsers[0])
@@ -188,7 +188,7 @@ describe('register ', () => {
             .post('/api/user/register')
             .send(invalidUsers[8])
             .expect(400)
-        expect(registerResponse.body.error).toContain('User validation failed: classGroup: Vuosikurssin tule alkaa merkeillä \'C-\' ja loppua lukuun., email: Sähköpostiosoite on virheellinen., username: Käyttäjänimen tulee olla uniikki.')
+        expect(registerResponse.body.error).toContain('User validation failed: classGroup: Vuosikurssin tule alkaa merkeillä \'C-\' ja loppua lukuun., email: Sähköpostiosoite on virheellinen., username: Käyttäjänimen ja sähköpostiosoitteen tulee olla uniikkeja.')
         await api
             .post('/api/user/login')
             .send(invalidUsers[8])

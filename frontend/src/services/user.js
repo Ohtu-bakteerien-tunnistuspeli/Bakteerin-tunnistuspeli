@@ -33,4 +33,8 @@ const demote = (id, token) => {
     return axios.put(`${baseUrl}/${id}/demote`, {}, config).then(response => response.data).catch(error => error.response.data)
 }
 
-export default { get, login, register, deleteUser, promote, demote }
+const singleUsePasswordGenerate = (credentials) => {
+    return axios.post(`${baseUrl}/singleusepassword`, credentials).then(response => response.data).catch(error => error.response.data)
+}
+
+export default { get, login, register, deleteUser, promote, demote, singleUsePasswordGenerate }

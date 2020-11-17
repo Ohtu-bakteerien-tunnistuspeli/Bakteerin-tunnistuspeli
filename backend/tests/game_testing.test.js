@@ -99,7 +99,7 @@ beforeEach(async () => {
     await Case.deleteMany({})
     // Create admin
     const adminPassword = await bcrypt.hash('admin', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com' })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example333333@com' })
     await admin.save()
     // Get admin token
     const loginRes = await api
@@ -209,7 +209,7 @@ describe('it is possible to do tests', () => {
 
     test('normal user can do tests', async () => {
         const adminPassword = await bcrypt.hash('user', 10)
-        const admin = new User({ username: 'userNew', passwordHash: adminPassword, admin: false, email: 'example@com' })
+        const admin = new User({ username: 'userNew', passwordHash: adminPassword, admin: false, email: 'examples4444@com' })
         await admin.save()
         const loginRes = await api
             .post('/api/user/login')

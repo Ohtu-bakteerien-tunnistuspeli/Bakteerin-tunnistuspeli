@@ -84,7 +84,7 @@ router.post('/init', async (request, response) => {
         passwordHash = await bcrypt.hash('admin', saltRounds)
         const admin = new User({
             username: 'admin',
-            email: 'example@com',
+            email: 'examples@com',
             studentNumber: '',
             classGroup: '',
             admin: true,
