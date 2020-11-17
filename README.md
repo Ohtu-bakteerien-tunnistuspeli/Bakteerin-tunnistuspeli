@@ -20,8 +20,8 @@ Software Engineering Lab, Fall 2020, University of Helsinki
 
 #### [Methods and procedures](https://docs.google.com/document/d/1cTWnJgth1c0F1vmdGZFoTWz-a0D2TMyhTx_XzweBJjY/edit)
 
-## Copyright of the backround image
-Copyright of the backround image [used in the app](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/tree/master/frontend/src) is owned by University of Helsinki. If you clone or fork this project, you should change the image before publishing it.
+## Copyright of the background image
+Copyright of the background image [used in the app](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/tree/master/frontend/src) is owned by University of Helsinki. If you clone or fork this project, you should change the image before publishing it.
 
 ## License
 
