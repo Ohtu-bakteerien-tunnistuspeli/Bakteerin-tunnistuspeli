@@ -38,14 +38,14 @@ const HintForm = ({ caseToUpdate }) => {
         onSubmit: saveUpdatedHints,
         validationSchema: Yup.object({
             hint: Yup.string()
-                .max(300, 'Vinkin tulee olla alle 300 merkkiä pitkä.')
+                .max(1000, 'Vinkin tulee olla alle 1000 merkkiä pitkä.')
                 .min(2, 'Vinkin tulee olla vähintään 2 merkkiä pitkä.')
         })
     })
 
     return (
         <>
-            <Button variant='outline-primary' style={{ float: 'right', margin: '2px' }} id='addHint' onClick={handleShow}>Lisää Vinkkejä</Button>
+            <Button variant='outline-primary' className='small-margin-float-right' id='addHint' onClick={handleShow}>Lisää Vinkkejä</Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose}>
                 <Modal.Header closeButton>
                     Muokkaa testeihin liittyviä vinkkejä

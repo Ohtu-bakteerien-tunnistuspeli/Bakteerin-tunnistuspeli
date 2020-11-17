@@ -50,6 +50,8 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             const admin = new User({
                 username: 'admin',
                 email: 'example@com',
+                studentNumber: '',
+                classGroup: '',
                 admin: true,
                 passwordHash
             })

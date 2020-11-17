@@ -27,7 +27,7 @@ export const getTests = (token) => {
     return async dispatch => {
         const test = await testService.get(token)
         if (test.error) {
-            dispatch(setNotification({ message: test.error, success: false }))
+            dispatch(setNotification({ message: test.error, success: false, show: true }))
         } else {
             dispatch({
                 type: 'GET_TEST',
@@ -41,9 +41,9 @@ export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, tok
     return async dispatch => {
         const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpesif, token)
         if (test.error) {
-            dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
+            dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: 'Testi lisätty onnistuneesti', success: true }))
+            dispatch(setNotification({ message: 'Testi lisätty onnistuneesti', success: true, show: true }))
             dispatch({
                 type: 'ADD_TEST',
                 data: test
@@ -59,7 +59,7 @@ export const deleteTest = (id, token) => {
         if (response.status !== 204) {
             dispatch(setNotification({ message: response.error, success: false }))
         } else {
-            dispatch(setNotification({ message: 'Testi poistettiin onnistuneesti', success: true }))
+            dispatch(setNotification({ message: 'Testi poistettiin onnistuneesti', success: true, show: true }))
             dispatch({
                 type: 'DELETE_TEST',
                 data: id
@@ -72,9 +72,9 @@ export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteria
     return async dispatch => {
         const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token)
         if (test.error) {
-            dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false }))
+            dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: 'Testi muokattiin onnistuneesti', success: true }))
+            dispatch(setNotification({ message: 'Testi muokattiin onnistuneesti', success: true, show: true }))
             dispatch({
                 type: 'UPDATE_TEST',
                 data: test

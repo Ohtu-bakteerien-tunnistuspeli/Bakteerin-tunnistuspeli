@@ -29,7 +29,7 @@ const CSVExport = ({ data }) => {
     return (
         <>
             <CSVLink {...csvReport}>
-                <Button className="csvlink-button" variant='success'>Tallenna Excel-muodossa</Button>
+                <Button className="small-margin-float-right" variant='success'>Tallenna Excel-muodossa</Button>
             </CSVLink>
         </>
     )

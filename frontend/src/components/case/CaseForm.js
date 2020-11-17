@@ -116,9 +116,9 @@ const CaseForm = ({ caseToEdit }) => {
                 return true
             }),
         anamnesis: Yup.string()
-            .max(10000, 'Anamneesin tulee olla enintään 10000 merkkiä pitkä.'),
+            .max(15000, 'Anamneesin tulee olla enintään 15000 merkkiä pitkä.'),
         completionText: Yup.string()
-            .max(10000, 'Lopputekstin tulee olla enintään 10000 merkkiä pitkä.')
+            .max(15000, 'Lopputekstin tulee olla enintään 15000 merkkiä pitkä.')
     })
     /* schema for validation end */
 
@@ -248,13 +248,15 @@ const CaseForm = ({ caseToEdit }) => {
 
     return (
         <div>
-            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} style={{ float: 'right', margin: '2px' }} variant='primary' onClick={handleShow}>
+            <Modal>
+                <Notification></Notification>
+            </Modal>
+            <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} className="small-margin-float-right" variant='primary' onClick={handleShow}>
                 {caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}
             </Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose} backdrop='static'>
                 <Modal.Header closeButton>{caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}</Modal.Header>
                 <Modal.Body>
-                    <Notification></Notification>
                     <Formik
                         validationSchema={CaseSchema}
                         onSubmit={onSuccess}
