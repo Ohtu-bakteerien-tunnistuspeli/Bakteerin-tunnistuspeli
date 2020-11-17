@@ -4,6 +4,7 @@ import Idle from 'react-idle'
 import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/user/Login'
+import SingleUsePassword from './components/user/SingleUsePassword'
 import Register from './components/user/Register'
 import FrontPage from './components/FrontPage'
 import BacteriaList from './components/bacteria/BacteriaList'
@@ -38,7 +39,7 @@ const App = () => {
     window.onbeforeunload = handleOnBeforeUnload
 
     return (
-        <div className="page">
+        <div className='page'>
             {user ?
                 <Idle
                     timeout={7200000}
@@ -51,120 +52,120 @@ const App = () => {
                 :
                 null
             }
-            <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
-                <Navbar.Toggle className='hidden-nav' aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav" >
-                    <Nav className="mr-auto">
-                        <Nav.Link href="#" as="span">
+            <Navbar collapseOnSelect expand='lg' bg='light' variant='light'>
+                <Navbar.Toggle className='hidden-nav' aria-controls='responsive-navbar-nav' />
+                <Navbar.Collapse id='responsive-navbar-nav' >
+                    <Nav className='mr-auto'>
+                        <Nav.Link href='#' as='span'>
                             {user
-                                ? <Link  to="/">Etusivu</Link>
+                                ? <Link to='/'>Etusivu</Link>
                                 : null
                             }
                         </Nav.Link>
-                        <Nav.Link href="#" as="span">
+                        <Nav.Link href='#' as='span'>
                             {user?.admin
-                                ? <Link  to="/bakteeriLista">Bakteerien hallinta</Link>
+                                ? <Link to='/bakteeriLista'>Bakteerien hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
-                        <Nav.Link href="#" as="span">
+                        <Nav.Link href='#' as='span'>
                             {user?.admin
-                                ? <Link to="/tapausLista" >Tapausten hallinta</Link>
+                                ? <Link to='/tapausLista' >Tapausten hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
-                        <Nav.Link href="#" as="span">
+                        <Nav.Link href='#' as='span'>
                             {user?.admin
-                                ? <Link to="/testiLista">Testien hallinta</Link>
+                                ? <Link to='/testiLista'>Testien hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
-                        <Nav.Link href="#" as="span">
+                        <Nav.Link href='#' as='span'>
                             {user?.admin
-                                ? <Link to="/suoritusLista">Suoritusten hallinta</Link>
+                                ? <Link to='/suoritusLista'>Suoritusten hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
-                        <Nav.Link href="#" as="span">
+                        <Nav.Link href='#' as='span'>
                             {user?.admin
-                                ? <Link to="/käyttäjäLista">Käyttäjien hallinta</Link>
+                                ? <Link to='/käyttäjäLista'>Käyttäjien hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
                     </Nav>
-                    <Nav.Link href="#" as="span">
+                    <Nav.Link href='#' as='span'>
                         {user
-                            ? <em><p className="nav-text">Tervetuloa <Link to="/profiilini">{user.username}</Link></p></em>
-                            : <Link to="/kirjautuminen">Kirjaudu sisään</Link>
+                            ? <em><p className='nav-text'>Tervetuloa <Link to='/profiilini'>{user.username}</Link></p></em>
+                            : <Link to='/kirjautuminen'>Kirjaudu sisään</Link>
                         }
                     </Nav.Link>
-                    <Nav.Link href="#" as="span">
+                    <Nav.Link href='#' as='span'>
                         {user
                             ? null
-                            : <Link to="/rekisteröityminen">Rekisteröidy</Link>
+                            : <Link to='/rekisteröityminen'>Rekisteröidy</Link>
                         }
                     </Nav.Link>
                     <Nav.Item>
                         {user
-                            ? <Button id="submit" variant="primary" type="button" onClick={logoutButton}>Kirjaudu ulos</Button>
+                            ? <Button id='submit' variant='primary' type='button' onClick={logoutButton}>Kirjaudu ulos</Button>
                             : null
                         }
                     </Nav.Item>
                 </Navbar.Collapse>
             </Navbar>
-            <div className="wrapper">
-                <div className="container">
+            <div className='wrapper'>
+                <div className='container'>
                     <Notification></Notification>
                     {user ?
                         <>
                             <Switch>
                                 <Route path='/bakteeriLista'>
                                     {user.admin ?
-                                        <BacteriaList></BacteriaList>
+                                        <BacteriaList />
                                         :
-                                        <Redirect to='/'></Redirect>
+                                        <Redirect to='/' />
                                     }
                                 </Route>
                                 <Route path='/tapausLista'>
                                     {user.admin ?
                                         <CaseList />
                                         :
-                                        <Redirect to='/'></Redirect>
+                                        <Redirect to='/' />
                                     }
                                 </Route>
                                 <Route path='/testiLista'>
                                     {user.admin ?
                                         <TestList />
                                         :
-                                        <Redirect to='/'></Redirect>
+                                        <Redirect to='/' />
                                     }
                                 </Route>
                                 <Route path='/suoritusLista'>
                                     {user.admin ?
                                         <CreditList />
                                         :
-                                        <Redirect to='/'></Redirect>
+                                        <Redirect to='/' />
                                     }
                                 </Route>
                                 <Route path='/käyttäjäLista'>
                                     {user.admin ?
                                         <UserList />
                                         :
-                                        <Redirect to='/'></Redirect>
+                                        <Redirect to='/' />
                                     }
                                 </Route>
                                 <Route path='/peli'>
                                     {game ?
-                                        <GamePage></GamePage>
+                                        <GamePage />
                                         :
-                                        <Redirect to='/'></Redirect>
+                                        <Redirect to='/' />
                                     }
                                 </Route>
                                 <Route path='/profiilini'>
                                     {user ?
                                         <ProfilePage />
                                         :
-                                        <Redirect to='/'></Redirect>
+                                        <Redirect to='/' />
                                     }
                                 </Route>
                                 <Route path='/'>
@@ -176,13 +177,16 @@ const App = () => {
                         <>
                             <Switch>
                                 <Route path='/kirjautuminen'>
-                                    <Login></Login>
+                                    <Login />
                                 </Route>
                                 <Route path='/rekisteröityminen'>
-                                    <Register></Register>
+                                    <Register />
+                                </Route>
+                                <Route path='/kertakäyttöinensalasana'>
+                                    <SingleUsePassword />
                                 </Route>
                                 <Route path='/'>
-                                    <Redirect to='/kirjautuminen'></Redirect>
+                                    <Redirect to='/kirjautuminen' />
                                 </Route>
                             </Switch>
                         </>
@@ -191,7 +195,7 @@ const App = () => {
                 </div>
             </div>
 
-            <div className="navbar navbar-inverse navbar-fixed-bottom footer">
+            <div className='navbar navbar-inverse navbar-fixed-bottom footer'>
                 <Footer />
             </div>
         </div>

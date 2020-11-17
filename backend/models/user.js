@@ -12,6 +12,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    singleUsePassword: {
+        passwordHash: {
+            type: String
+        },
+        generationTime: {
+            type: Date
+        }
+    },
     admin: {
         type: Boolean,
         required: true
@@ -62,6 +70,7 @@ userSchema.set('toJSON', {
         delete returnedObject._id
         delete returnedObject.__v
         delete returnedObject.passwordHash
+        delete returnedObject.singleUsePassword
     }
 })
 userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimen tulee olla uniikki.' })
