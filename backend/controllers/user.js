@@ -4,6 +4,7 @@ const userRouter = require('express').Router()
 const User = require('../models/user')
 const Credit = require('../models/credit')
 const config = require('../utils/config')
+const { request } = require('express')
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body
@@ -129,17 +130,11 @@ userRouter.put('/:id/demote', async (request, response) => {
     }
 })
 
-userRouter.post('/changePassword', async (request, response) => {
+userRouter.put('/', async (request, response) => {
     if (request.user) {
         const body = request.body
         if (!body.password) {
             return response.status(400).json({ error: 'Salasana on pakollinen.' })
-        } else if (!body.newPassword) {
-            return response.status(400).json({ error: 'Uusi salasana on pakollinen.' })
-        } else if (body.newPassword.length < 3) {
-            return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
-        } else if (body.newPassword.length > 100) {
-            return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
         } else {
             try {
                 const user = await User.findOne({ username: request.user.username })
@@ -147,71 +142,37 @@ userRouter.post('/changePassword', async (request, response) => {
                     ? false
                     : await bcrypt.compare(body.password, user.passwordHash)
                 if (passwordCorrect) {
-                    const saltRounds = 10
-                    const passwordHash = await bcrypt.hash(body.newPassword, saltRounds)
-                    const updatedUser = await User.findByIdAndUpdate(user.id, { passwordHash: passwordHash }, { new: true, runValidators: true, context: 'query' })
-                    if (!updatedUser) {
-                        return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
-                    }
-                    return response.status(200).json(updatedUser.toJSON())
-                } else {
-                    return response.status(400).json({ error: 'Väärä salasana.' })
-                }
-            } catch (error) {
-                return response.status(400).json({ error: error.message })
-            }
-        }
-    } else {
-        throw Error('JsonWebTokenError')
-    }
-})
+                    let changes = {}
 
-userRouter.post('/changeStudentNumber', async (request, response) => {
-    if (request.user) {
-        const body = request.body
-        if (!body.password) {
-            return response.status(400).json({ error: 'Salasana on pakollinen.' })
-        } else if (!body.newStudentNumber) {
-            return response.status(400).json({ error: 'Uusi opiskelijanumero on pakollinen.' })
-        } else {
-            try {
-                const user = await User.findOne({ username: request.user.username })
-                const passwordCorrect = user === null
-                    ? false
-                    : await bcrypt.compare(body.password, user.passwordHash)
-                if (passwordCorrect) {
-                    const updatedUser = await User.findByIdAndUpdate(user.id, { studentNumber: body.newStudentNumber }, { new: true, runValidators: true, context: 'query' })
-                    if (!updatedUser) {
-                        return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+                    if (body.newUsername) {
+                        changes = { ...changes, username: body.newUsername }
                     }
-                    return response.status(200).json(updatedUser.toJSON())
-                } else {
-                    return response.status(400).json({ error: 'Väärä salasana.' })
-                }
-            } catch (error) {
-                return response.status(400).json({ error: error.message })
-            }
-        }
-    } else {
-        throw Error('JsonWebTokenError')
-    }
-})
 
-userRouter.post('/changeEmail', async (request, response) => {
-    if (request.user) {
-        const body = request.body
-        if (!body.password) {
-            return response.status(400).json({ error: 'Salasana on pakollinen.' })
-        } else if (!body.newEmail) {
-            return response.status(400).json({ error: 'Uusi sähköpostiosoite on pakollinen.' })
-        } else {
-            try {
-                const user = await User.findOne({ username: request.user.username })
-                const passwordCorrect = user === null
-                    ? false
-                    : await bcrypt.compare(body.password, user.passwordHash)
-                if (passwordCorrect) {
-                    const updatedUser = await User.findByIdAndUpdate(user.id, { email: body.newEmail }, { new: true, runValidators: true, context: 'query' })
+                    if (body.newEmail) {
+                        changes = { ...changes, email: body.newEmail }
+                    }
+
+                    if (body.newPassword) {
+                        if (body.newPassword.length < 3) {
+                            return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
+                        } else if (body.newPassword.length > 100) {
+                            return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
+                        } else {
+                            const saltRounds = 10
+                            const passwordHash = await bcrypt.hash(body.newPassword, saltRounds)
+                            changes = { ...changes, passwordHash: passwordHash }
+                        }
+                    }
+
+                    if (body.newStudentNumber) {
+                        changes = { ...changes, studentNumber: body.newStudentNumber }
+                    }
+
+                    if (body.newClassGroup) {
+                        changes = { ...changes, classGroup: body.newClassGroup }
+                    }
+
+                    const updatedUser = await User.findByIdAndUpdate(user.id, changes, { new: true, runValidators: true, context: 'query' })
                     if (!updatedUser) {
                         return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
                     }
