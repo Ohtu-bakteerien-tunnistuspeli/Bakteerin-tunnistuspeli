@@ -6,6 +6,7 @@ const IMAGEURL = process.env.IMAGEURL
 const EMAILHOST = process.env.EMAILHOST
 const EMAILUSER = process.env.EMAILUSER
 const EMAILPASSWORD = process.env.EMAILPASSWORD
+const EMAILPORT = process.env.EMAILPORT
 
 let MONGODB_URI
 if (process.env.NODE_ENV === 'production') {
@@ -19,5 +20,6 @@ module.exports = {
     IMAGEURL,
     EMAILHOST,
     EMAILUSER,
-    EMAILPASSWORD
+    EMAILPASSWORD,
+    EMAILPORT
 }
