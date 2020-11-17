@@ -4,6 +4,7 @@ const userRouter = require('express').Router()
 const User = require('../models/user')
 const Credit = require('../models/credit')
 const config = require('../utils/config')
+const nodemailer = require('nodemailer')
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body
@@ -124,6 +125,28 @@ userRouter.put('/:id/demote', async (request, response) => {
         } catch (error) {
             return response.status(400).json({ error: error.message })
         }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
+userRouter.post('/returnpassword', async (request, response) => {
+    if (request.user) {
+        let transporter = nodemailer.createTransport({
+            host: config.EMAILHOST,
+            auth: {
+                user: config.EMAILUSER,
+                pass: config.EMAILPASSWORD,
+            },
+        })
+        await transporter.sendMail({
+            from: config.EMAILUSER,
+            to: request.user.email,
+            subject: 'Bakteeripelin salasanan palautus',
+            text: `Salasanasi on ${request.user.username}.`,
+            html: `<p>Salasanasi on ${request.user.username}.</p>`,
+        })
+        return response.status(200).json({ message: 'Salasana palautettu' })
     } else {
         throw Error('JsonWebTokenError')
     }

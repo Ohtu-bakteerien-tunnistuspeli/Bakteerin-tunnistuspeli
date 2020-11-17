@@ -39,6 +39,7 @@ const userSchema = mongoose.Schema({
         },
         required: [true, 'Sähköpostiosoite on pakollinen.'],
         maxlength: [100, 'Sähköpostin tulee olla enintään 100 merkkiä pitkä.'],
+        unique: [true, 'Sähköpostin tulee olla uniikki.']
     },
     studentNumber: {
         type: String,
