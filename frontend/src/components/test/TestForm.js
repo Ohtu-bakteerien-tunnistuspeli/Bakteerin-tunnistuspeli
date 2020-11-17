@@ -77,7 +77,7 @@ const TestForm = ({ testToEdit }) => {
     }
 
     const countTotalFileSizeForImages = () => {
-        let totalSize = 0;
+        let totalSize = 0
         totalSize += controlImage && controlImage.size ? controlImage.size : 0
         totalSize += positiveResultImage && positiveResultImage.size ? positiveResultImage.size : 0
         totalSize += negativeImage && negativeImage.size ? negativeImage.size : 0
