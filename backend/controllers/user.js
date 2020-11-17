@@ -4,6 +4,7 @@ const userRouter = require('express').Router()
 const User = require('../models/user')
 const Credit = require('../models/credit')
 const config = require('../utils/config')
+const { request } = require('express')
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body
@@ -123,6 +124,65 @@ userRouter.put('/:id/demote', async (request, response) => {
             return response.status(200).json(updatedUser.toJSON())
         } catch (error) {
             return response.status(400).json({ error: error.message })
+        }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
+userRouter.put('/', async (request, response) => {
+    if (request.user) {
+        const body = request.body
+        if (!body.password) {
+            return response.status(400).json({ error: 'Salasana on pakollinen.' })
+        } else {
+            try {
+                const user = await User.findOne({ username: request.user.username })
+                const passwordCorrect = user === null
+                    ? false
+                    : await bcrypt.compare(body.password, user.passwordHash)
+                if (passwordCorrect) {
+                    let changes = {}
+
+                    if (body.newUsername) {
+                        changes = { ...changes, username: body.newUsername }
+                    }
+
+                    if (body.newEmail) {
+                        changes = { ...changes, email: body.newEmail }
+                    }
+
+                    if (body.newPassword) {
+                        if (body.newPassword.length < 3) {
+                            return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
+                        } else if (body.newPassword.length > 100) {
+                            return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
+                        } else {
+                            const saltRounds = 10
+                            const passwordHash = await bcrypt.hash(body.newPassword, saltRounds)
+                            changes = { ...changes, passwordHash: passwordHash }
+                        }
+                    }
+
+                    if (body.newStudentNumber) {
+                        changes = { ...changes, studentNumber: body.newStudentNumber }
+                    }
+
+                    if (body.newClassGroup) {
+                        changes = { ...changes, classGroup: body.newClassGroup }
+                    }
+
+                    const updatedUser = await User.findByIdAndUpdate(user.id, changes, { new: true, runValidators: true, context: 'query' })
+                    if (!updatedUser) {
+                        return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+                    }
+                    return response.status(200).json(updatedUser.toJSON())
+                } else {
+                    return response.status(400).json({ error: 'Väärä salasana.' })
+                }
+            } catch (error) {
+                return response.status(400).json({ error: error.message })
+            }
         }
     } else {
         throw Error('JsonWebTokenError')
