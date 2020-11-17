@@ -38,7 +38,7 @@ const HintForm = ({ caseToUpdate }) => {
         onSubmit: saveUpdatedHints,
         validationSchema: Yup.object({
             hint: Yup.string()
-                .max(300, 'Vinkin tulee olla alle 300 merkkiä pitkä.')
+                .max(1000, 'Vinkin tulee olla alle 1000 merkkiä pitkä.')
                 .min(2, 'Vinkin tulee olla vähintään 2 merkkiä pitkä.')
         })
     })

@@ -14,11 +14,11 @@ const caseSchema = mongoose.Schema({
     },
     anamnesis: {
         type: String,
-        maxlength: [10000, 'Tapauksen anamneesin tulee olla enintään 10000 merkkiä pitkä.']
+        maxlength: [15000, 'Tapauksen anamneesin tulee olla enintään 15000 merkkiä pitkä.']
     },
     completionText: {
         type: String,
-        maxlength: [10000, 'Tapauksen lopputekstin tulee olla enintään 10000 merkkiä pitkä.']
+        maxlength: [15000, 'Tapauksen lopputekstin tulee olla enintään 15000 merkkiä pitkä.']
     },
     completionImage: {
         url: {

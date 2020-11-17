@@ -116,9 +116,9 @@ const CaseForm = ({ caseToEdit }) => {
                 return true
             }),
         anamnesis: Yup.string()
-            .max(10000, 'Anamneesin tulee olla enintään 10000 merkkiä pitkä.'),
+            .max(15000, 'Anamneesin tulee olla enintään 15000 merkkiä pitkä.'),
         completionText: Yup.string()
-            .max(10000, 'Lopputekstin tulee olla enintään 10000 merkkiä pitkä.')
+            .max(15000, 'Lopputekstin tulee olla enintään 15000 merkkiä pitkä.')
     })
     /* schema for validation end */
 
