@@ -185,13 +185,14 @@ app.use('/api/game', gameRouter)
 const creditRouter = require('./controllers/credit')
 app.use('/api/credit', creditRouter)
 app.use(security.authorizationHandler)
-if (process.env.NODE_ENV === 'production') {
-    app.get('*', (req, res) => {
-        res.sendFile(`${__dirname}/build/index.html`, (err) => {
-            if (err) {
-                res.status(500).send(err)
-            }
-        })
+app.get(/\/(bakteeriLista|tapausLista|testiLista|suoritusLista|kayttajaLista|peli|profiilini|kirjautuminen|rekisteroityminen|kertakayttoinensalasana)$/, (req, res) => {
+    res.sendFile(`${__dirname}/build/index.html`, (err) => {
+        if (err) {
+            res.status(500).send(err)
+        }
     })
-}
+})
+app.get('*', (req, res) => {
+    res.status(404).sendFile(`${__dirname}/utils/error.html`)
+})
 module.exports = app

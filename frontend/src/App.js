@@ -88,7 +88,7 @@ const App = () => {
                         </Nav.Link>
                         <Nav.Link href='#' as='span'>
                             {user?.admin
-                                ? <Link to='/käyttäjäLista'>Käyttäjien hallinta</Link>
+                                ? <Link to='/kayttajaLista'>Käyttäjien hallinta</Link>
                                 : null
                             }
                         </Nav.Link>
@@ -102,7 +102,7 @@ const App = () => {
                     <Nav.Link href='#' as='span'>
                         {user
                             ? null
-                            : <Link to='/rekisteröityminen'>Rekisteröidy</Link>
+                            : <Link to='/rekisteroityminen'>Rekisteröidy</Link>
                         }
                     </Nav.Link>
                     <Nav.Item>
@@ -147,7 +147,7 @@ const App = () => {
                                         <Redirect to='/' />
                                     }
                                 </Route>
-                                <Route path='/käyttäjäLista'>
+                                <Route path='/kayttajaLista'>
                                     {user.admin ?
                                         <UserList />
                                         :
@@ -179,10 +179,10 @@ const App = () => {
                                 <Route path='/kirjautuminen'>
                                     <Login />
                                 </Route>
-                                <Route path='/rekisteröityminen'>
+                                <Route path='/rekisteroityminen'>
                                     <Register />
                                 </Route>
-                                <Route path='/kertakäyttöinensalasana'>
+                                <Route path='/kertakayttoinensalasana'>
                                     <SingleUsePassword />
                                 </Route>
                                 <Route path='/'>

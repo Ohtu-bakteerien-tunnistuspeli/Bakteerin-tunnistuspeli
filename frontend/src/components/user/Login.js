@@ -36,7 +36,7 @@ const Login = () => {
                     <Button id="submit" variant="primary" type="submit">
                         Kirjaudu
                     </Button>
-                    <Form.Label>Unohtuiko salasana? Klikkaa <Link to='/kertakäyttöinensalasana'>tästä</Link>.</Form.Label>
+                    <Form.Label>Unohtuiko salasana? Klikkaa <Link to='/kertakayttoinensalasana'>tästä</Link>.</Form.Label>
                 </Form.Group>
             </Form>
         </div>
