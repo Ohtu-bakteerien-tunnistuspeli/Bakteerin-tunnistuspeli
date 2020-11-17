@@ -12,6 +12,7 @@ import { deleteTest, updateTest } from '../../reducers/testReducer'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import Notification from '../utility/Notification'
+import { setNotification } from '../../reducers/notificationReducer'
 
 
 const TestForm = ({ testToEdit }) => {
@@ -61,13 +62,27 @@ const TestForm = ({ testToEdit }) => {
 
     /* form control */
     const addTests = () => {
-        dispatch(addTest(testName,
-            testType,
-            controlImage,
-            positiveResultImage,
-            negativeImage,
-            bacteriaSpecificImages,
-            user.token, handleClose))
+        const totalFileSize = countTotalFileSizeForImages()
+        if (totalFileSize <= 50e6) {
+            dispatch(addTest(testName,
+                testType,
+                controlImage,
+                positiveResultImage,
+                negativeImage,
+                bacteriaSpecificImages,
+                user.token, handleClose))
+        } else {
+            dispatch(setNotification({ message: 'Tallennus epäonnistui, sillä tallennettavien kuvien yhteiskoko ylitti 50 MB.', success: false, show: true }))
+        }
+    }
+
+    const countTotalFileSizeForImages = () => {
+        let totalSize = 0
+        totalSize += controlImage && controlImage.size ? controlImage.size : 0
+        totalSize += positiveResultImage && positiveResultImage.size ? positiveResultImage.size : 0
+        totalSize += negativeImage && negativeImage.size ? negativeImage.size : 0
+        bacteriaSpecificImages.forEach(image => totalSize += image.size)
+        return totalSize
     }
 
     const resetTestForm = () => {
@@ -98,13 +113,18 @@ const TestForm = ({ testToEdit }) => {
         const photosToDelete = deletePhotos
         const token = user.token
         const id = testToEdit.id
-        dispatch(updateTest(id, testName,
-            testType, controlImage,
-            positiveResultImage, negativeImage,
-            bacteriaSpecificImages,
-            photosToDelete,
-            deleteSpecifics,
-            token, handleClose, setDeletePhotos, setDeleteSpecifics))
+        const totalFileSize = countTotalFileSizeForImages()
+        if (totalFileSize <= 50e6) {
+            dispatch(updateTest(id, testName,
+                testType, controlImage,
+                positiveResultImage, negativeImage,
+                bacteriaSpecificImages,
+                photosToDelete,
+                deleteSpecifics,
+                token, handleClose, setDeletePhotos, setDeleteSpecifics))
+        } else {
+            dispatch(setNotification({ message: 'Tallennus epäonnistui, sillä tallennettavien kuvien yhteiskoko ylitti 50 MB.', success: false, show: true }))
+        }
     }
     /* form control end */
 
