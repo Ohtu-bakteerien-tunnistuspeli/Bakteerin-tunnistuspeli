@@ -73,7 +73,7 @@ userSchema.set('toJSON', {
         delete returnedObject.singleUsePassword
     }
 })
-userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimen tulee olla uniikki.' })
+userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimen ja sähköpostiosoitteen tulee olla uniikkeja.' })
 const User = mongoose.model('User', userSchema)
 
 module.exports = User
