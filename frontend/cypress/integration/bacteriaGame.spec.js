@@ -292,7 +292,7 @@ describe('Game', () => {
                 cy.contains('Sähköposti')
                 cy.contains('Vuosikurssi')
                 cy.contains('Suoritukset')
-                cy.contains('example@com')
+                cy.contains('examples@com')
                 cy.contains('Ei suorituksia')
             })
 
