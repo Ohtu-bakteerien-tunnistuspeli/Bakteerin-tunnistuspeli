@@ -4,6 +4,7 @@ import AddSample from './components/AddSample.js'
 import TestGroup from './components/TestGroup.js'
 import SelectBacterium from './components/SelectBaterium.js'
 import Name from './components/Name.js'
+import TextEditField from './components/TextEditField'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { Modal, Button, Form, Accordion, Card } from 'react-bootstrap'
@@ -300,13 +301,12 @@ const CaseForm = ({ caseToEdit }) => {
 
                                     <Form.Group controlId='anamnesis'>
                                         <Form.Label>Anamneesi</Form.Label>
-                                        <Form.Control
-                                            as='textarea'
-                                            rows='3'
+                                        <TextEditField
                                             value={anamnesis}
-                                            onChange={(event) => {
-                                                setAnamnesis(event.target.value)
-                                                setFieldValue('anamnesis', event.target.value)
+                                            onChange={(value) => {
+                                                console.log(value)
+                                                setAnamnesis(value)
+                                                setFieldValue('anamnesis', value)
                                             }}
                                             onBlur={handleBlur}
                                             isInvalid={errors.anamnesis && touched.anamnesis}
@@ -317,12 +317,11 @@ const CaseForm = ({ caseToEdit }) => {
                                     </Form.Group>
                                     <Form.Group controlId='completionText'>
                                         <Form.Label>Lopputeksti</Form.Label>
-                                        <Form.Control
-                                            as='textarea'
-                                            rows='3' value={completionText}
-                                            onChange={(event) => {
-                                                setCompletionText(event.target.value)
-                                                setFieldValue('completionText', event.target.value)
+                                        <TextEditField
+                                            value={completionText}
+                                            onChange={(value) => {
+                                                setCompletionText(value)
+                                                setFieldValue('completionText', value)
                                             }}
                                             isInvalid={errors.completionText && touched.completionText}
                                             onBlur={handleBlur}
