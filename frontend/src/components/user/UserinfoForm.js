@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Modal, Button, Form } from 'react-bootstrap'
 import Notification from '../utility/Notification.js'
 import { updateUserinfo } from '../../reducers/usersReducer'
