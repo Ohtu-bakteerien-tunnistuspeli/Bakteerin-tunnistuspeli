@@ -58,13 +58,17 @@ userRouter.post('/login', async (request, response) => {
 
 userRouter.post('/register', async (request, response) => {
     const body = request.body
-
     if (!body.password) {
         return response.status(400).json({ error: 'Salasana on pakollinen.' })
     } else if (body.password.length < 3) {
         return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
     } else if (body.password.length > 100) {
         return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
+    } else if (body.password === body.username ||
+        body.password === body.classGroup ||
+        body.password === body.email ||
+        body.password === body.newStudentNumber) {
+            return response.status(400).json({ error: 'Salasana ei voi olla sama kuin syötetyt kentät.' })
     } else {
         try {
             const saltRounds = 10
