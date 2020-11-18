@@ -134,7 +134,7 @@ describe('register ', () => {
             .post('/api/user/register')
             .send(invalidUsers[2])
             .expect(400)
-        expect(registerResponse.body.error).toContain('Salasanan täytyy olla vähintään 3 merkkiä pitkä.')
+        expect(registerResponse.body.error).toContain('Salasanan täytyy olla vähintään 10 merkkiä pitkä.')
         await api
             .post('/api/user/login')
             .send(invalidUsers[2])
