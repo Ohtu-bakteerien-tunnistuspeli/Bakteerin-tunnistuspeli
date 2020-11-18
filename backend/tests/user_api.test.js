@@ -525,14 +525,14 @@ describe('modifying user', () => {
             await api
                 .put('/api/user')
                 .set('Authorization', `bearer ${loginResponse.body.token}`)
-                .send({ password: 'admin', newPassword: 'newAdmin' })
+                .send({ password: 'admin', newPassword: 'newPasswordThatIsLongEnough123' })
                 .expect(200)
                 .expect('Content-Type', /application\/json/)
             await api
                 .post('/api/user/login')
                 .send({
                     username: 'adminNew',
-                    password: 'newAdmin'
+                    password: 'newPasswordThatIsLongEnough123'
                 })
                 .expect(200)
         })
@@ -548,13 +548,13 @@ describe('modifying user', () => {
             await api
                 .put('/api/user')
                 .set('Authorization', `bearer ${loginResponse.body.token}`)
-                .send({ password: 'password', newPassword: 'newPassword' })
+                .send({ password: 'password', newPassword: 'newPassword123' })
                 .expect(200)
             await api
                 .post('/api/user/login')
                 .send({
                     username: 'usernameNew',
-                    password: 'newPassword'
+                    password: 'newPassword123'
                 })
                 .expect(200)
         })
