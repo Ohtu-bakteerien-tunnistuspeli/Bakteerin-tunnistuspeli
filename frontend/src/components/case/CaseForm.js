@@ -299,9 +299,10 @@ const CaseForm = ({ caseToEdit }) => {
                                         handleBlur={handleBlur}
                                     ></SelectBacterium>
 
-                                    <Form.Group controlId='anamnesis'>
+                                    <Form.Group id='anamnesis'>
                                         <Form.Label>Anamneesi</Form.Label>
                                         <TextEditField
+                                            id='anamnesisField'
                                             value={anamnesis}
                                             onChange={(value) => {
                                                 console.log(value)
@@ -315,9 +316,10 @@ const CaseForm = ({ caseToEdit }) => {
                                             {errors.anamnesis}
                                         </Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId='completionText'>
+                                    <Form.Group id='completionText'>
                                         <Form.Label>Lopputeksti</Form.Label>
                                         <TextEditField
+                                            id='completionTextField'
                                             value={completionText}
                                             onChange={(value) => {
                                                 setCompletionText(value)
