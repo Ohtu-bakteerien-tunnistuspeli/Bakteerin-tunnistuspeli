@@ -1,8 +1,6 @@
 describe('Case management', () => {
     beforeEach(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.request('POST', 'http://localhost:3001/api/testing/case_management')
         cy.login({ username: 'admin', password: 'admin' })
     })
@@ -137,10 +135,10 @@ describe('Case management', () => {
             cy.get('#testSelect').select('Testi3')
             cy.get('#addTest').click()
             cy.get('#testGroupTable').contains('Testi3')
-            cy.contains('Tetanus')            
+            cy.contains('Tetanus')
             cy.get('#addCase').click()
             cy.get('#caseEditButton').click()
-            cy.get('#testGroupTable').contains('Testi3')            
+            cy.get('#testGroupTable').contains('Testi3')
             cy.get('#name').type('Maatila2')
             cy.get('#bacterium').select('Koli')
             cy.get('#addTestGroup').click()
@@ -259,9 +257,8 @@ describe('Case management', () => {
             cy.get('#deleteCase').click()
         })
     })
+
     after(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
     })
 })
