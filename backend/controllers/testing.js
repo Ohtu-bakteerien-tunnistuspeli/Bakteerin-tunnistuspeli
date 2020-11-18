@@ -130,6 +130,11 @@ router.post('/init', async (request, response) => {
             name: 'Tetanus'
         })
 
+        const bac4 = new Bacterium({
+            name: 'Koli'
+        })
+
+        await bac4.save()
         await bac1.save()
         await bac2.save()
         await bac3.save()
@@ -210,19 +215,6 @@ router.post('/init', async (request, response) => {
             ]
         })
         await initialCase.save()
-        response.status(200).json()
-    } catch (error) {
-        response.status(400).json({ error: error.message })
-    }
-})
-
-router.post('/case_management', async (request, response) => {
-    try {
-        await new Bacterium({ name: 'Koli' }).save()
-        await new Test({ name: 'Testi', type: 'Viljely' }).save()
-        await new Test({ name: 'Testi2', type: 'Viljely' }).save()
-        await new Test({ name: 'Testi3', type: 'Viljely' }).save()
-
         response.status(200).json()
     } catch (error) {
         response.status(400).json({ error: error.message })
