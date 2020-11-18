@@ -205,7 +205,7 @@ describe('addition of a case ', () => {
             .send(newCase)
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(addResponse.body.error).toContain('Tapauksen nimen tulee olla uniikki.')
+        expect(addResponse.body.error).toContain('Nimen tulee olla uniikki.')
         resAfterAdding = await api
             .get('/api/case')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -216,7 +216,7 @@ describe('addition of a case ', () => {
             .send(newCases[2])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(addResponse.body.error).toContain('Tapauksen nimen tulee olla vähintään 2 merkkiä pitkä.')
+        expect(addResponse.body.error).toContain('Nimen tulee olla vähintään 2 merkkiä pitkä.')
         resAfterAdding = await api
             .get('/api/case')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -227,7 +227,7 @@ describe('addition of a case ', () => {
             .send(newCases[3])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(addResponse.body.error).toContain('Tapauksen nimen tulee olla enintään 100 merkkiä pitkä.')
+        expect(addResponse.body.error).toContain('Nimen tulee olla enintään 100 merkkiä pitkä.')
         resAfterAdding = await api
             .get('/api/case')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -600,21 +600,21 @@ describe('modify a case', () => {
             .send(changes[0])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(updatetCase.body.error).toContain('Tapauksen nimen tulee olla uniikki.')
+        expect(updatetCase.body.error).toContain('Nimen tulee olla uniikki.')
         updatetCase = await api
             .put(`/api/case/${postedCase.body.id}`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(changes[1])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(updatetCase.body.error).toContain('Tapauksen nimen tulee olla vähintään 2 merkkiä pitkä.')
+        expect(updatetCase.body.error).toContain('Nimen tulee olla vähintään 2 merkkiä pitkä.')
         updatetCase = await api
             .put(`/api/case/${postedCase.body.id}`)
             .set('Authorization', `bearer ${user.body.token}`)
             .send(changes[2])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(updatetCase.body.error).toContain('Tapauksen nimen tulee olla enintään 100 merkkiä pitkä.')
+        expect(updatetCase.body.error).toContain('Nimen tulee olla enintään 100 merkkiä pitkä.')
         updatetCase = await api
             .put(`/api/case/${postedCase.body.id}`)
             .set('Authorization', `bearer ${user.body.token}`)

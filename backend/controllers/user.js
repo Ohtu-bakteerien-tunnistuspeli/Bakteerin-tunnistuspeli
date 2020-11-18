@@ -6,6 +6,7 @@ const Credit = require('../models/credit')
 const config = require('../utils/config')
 const nodemailer = require('nodemailer')
 const { v4: uuidv4 } = require('uuid')
+const validation = config.validation.user
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body
@@ -58,13 +59,17 @@ userRouter.post('/login', async (request, response) => {
 
 userRouter.post('/register', async (request, response) => {
     const body = request.body
-
     if (!body.password) {
-        return response.status(400).json({ error: 'Salasana on pakollinen.' })
-    } else if (body.password.length < 3) {
-        return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
-    } else if (body.password.length > 100) {
-        return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
+        return response.status(400).json({ error: validation.password.requiredMessage })
+    } else if (body.password.length < validation.password.minlength) {
+        return response.status(400).json({ error: validation.password.minMessage })
+    } else if (body.password.length > validation.password.maxlength) {
+        return response.status(400).json({ error: validation.password.maxMessage })
+    } else if (body.password === body.username ||
+        body.password === body.classGroup ||
+        body.password === body.email ||
+        body.password === body.newStudentNumber) {
+        return response.status(400).json({ error: validation.password.uniqueMessage })
     } else {
         try {
             const saltRounds = 10
@@ -162,6 +167,13 @@ userRouter.post('/singleusepassword', async (request, response) => {
                         pass: config.EMAILPASSWORD,
                     },
                 })
+            } else if (config.EMAILHOST.includes('helsinki')) {
+                transporter = nodemailer.createTransport({
+                    from: config.EMAILUSER,
+                    host: config.EMAILHOST,
+                    port: config.EMAILPORT,
+                    secure: false
+                })
             } else {
                 transporter = nodemailer.createTransport({
                     host: config.EMAILHOST,
@@ -172,7 +184,7 @@ userRouter.post('/singleusepassword', async (request, response) => {
                         pass: config.EMAILPASSWORD,
                     },
                 })
-            } 
+            }
             const singleUsePassword = uuidv4()
             await transporter.sendMail({
                 from: config.EMAILUSER,
@@ -216,10 +228,10 @@ userRouter.put('/', async (request, response) => {
                     }
 
                     if (body.newPassword) {
-                        if (body.newPassword.length < 3) {
-                            return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
-                        } else if (body.newPassword.length > 100) {
-                            return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
+                        if (body.newPassword.length < validation.password.minlength) {
+                            return response.status(400).json({ error: validation.password.minMessage })
+                        } else if (body.newPassword.length > validation.password.maxlength) {
+                            return response.status(400).json({ error: validation.password.maxMessage })
                         } else {
                             const saltRounds = 10
                             const passwordHash = await bcrypt.hash(body.newPassword, saltRounds)

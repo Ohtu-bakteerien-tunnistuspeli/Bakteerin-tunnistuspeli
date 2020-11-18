@@ -51,7 +51,7 @@ describe('Test management', () => {
             cy.get('#testModalButton').click({ force: true })
             cy.get('#name').type('Katalaasitesti')
             cy.get('#addTest').click()
-            cy.contains('Pakollinen kenttä')
+            cy.contains('Tyyppi on pakollinen.')
         })
     })
 
