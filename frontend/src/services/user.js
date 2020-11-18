@@ -33,4 +33,13 @@ const demote = (id, token) => {
     return axios.put(`${baseUrl}/${id}/demote`, {}, config).then(response => response.data).catch(error => error.response.data)
 }
 
-export default { get, login, register, deleteUser, promote, demote }
+const update = (username, email, password, studentNumber, classGroup, token) => {
+    const config = { headers: { Authorization: token } }
+    return axios.put(baseUrl, { newUsername: username, newEmail: email, password: password, newPassword: password, newStudentNumber: studentNumber, newClassGroup: classGroup }, config)
+        .then(response => response.data)
+        .catch(error => error.response.data)
+
+}
+export default { get, login, register, deleteUser, promote, demote, update }
+
+
