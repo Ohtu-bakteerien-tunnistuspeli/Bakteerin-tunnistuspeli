@@ -4,6 +4,7 @@ import { Typeahead } from 'react-bootstrap-typeahead'
 import { useSelector, useDispatch } from 'react-redux'
 import { checkSamples, checkTests, checkBacterium } from '../reducers/gameReducer'
 import ModalImage from './utility/ModalImage'
+import FormattedText from './case/components/FormattedText'
 
 const GamePage = () => {
     const [tab, setTab] = useState('anamneesi')
@@ -50,7 +51,7 @@ const GamePage = () => {
         <>
             <Tabs activeKey={tab} onSelect={(k) => setTab(k)}>
                 <Tab eventKey='anamneesi' title='Anamneesi'>
-                    <p>{game.case.anamnesis}</p>
+                    <p style={{ padding:'20px' }}><FormattedText value={game.case.anamnesis} /></p>
                 </Tab>
                 <Tab eventKey='toiminnot' title='Toiminnot'>
                     <Tabs activeKey={testTab} onSelect={(k) => setTestTab(k)}>
@@ -164,7 +165,7 @@ const GamePage = () => {
                     <h1>Diagnoosi</h1>
                     {game.bacteriumCorrect ?
                         <>
-                            {game.case.completionText}
+                            <p style={{ padding:'10px' }}><FormattedText value={game.case.completionText} /></p>
                             <p></p>
                             {game.completionImageUrl ?
                                 <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
