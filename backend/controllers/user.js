@@ -59,13 +59,17 @@ userRouter.post('/login', async (request, response) => {
 
 userRouter.post('/register', async (request, response) => {
     const body = request.body
-
     if (!body.password) {
         return response.status(400).json({ error: validation.password.requiredMessage })
     } else if (body.password.length < validation.password.minlength) {
         return response.status(400).json({ error: validation.password.minMessage })
     } else if (body.password.length > validation.password.maxlength) {
         return response.status(400).json({ error: validation.password.maxMessage })
+    } else if (body.password === body.username ||
+        body.password === body.classGroup ||
+        body.password === body.email ||
+        body.password === body.newStudentNumber) {
+            return response.status(400).json({ error: 'Salasana ei voi olla sama kuin syötetyt kentät.' })
     } else {
         try {
             const saltRounds = 10
@@ -163,6 +167,13 @@ userRouter.post('/singleusepassword', async (request, response) => {
                         pass: config.EMAILPASSWORD,
                     },
                 })
+            } else if(config.EMAILHOST.includes('helsinki')) {
+                transporter = nodemailer.createTransport({
+                    from: config.EMAILUSER,
+                    host: config.EMAILHOST,
+                    port: config.EMAILPORT,
+                    secure: false
+                })
             } else {
                 transporter = nodemailer.createTransport({
                     host: config.EMAILHOST,
@@ -173,7 +184,7 @@ userRouter.post('/singleusepassword', async (request, response) => {
                         pass: config.EMAILPASSWORD,
                     },
                 })
-            } 
+            }
             const singleUsePassword = uuidv4()
             await transporter.sendMail({
                 from: config.EMAILUSER,
