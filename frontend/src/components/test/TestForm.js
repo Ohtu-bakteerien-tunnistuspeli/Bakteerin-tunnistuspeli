@@ -13,14 +13,13 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import Notification from '../utility/Notification'
 
-
 const TestForm = ({ testToEdit }) => {
-
     /* style parameters */
     const style = { margin: '10px', float: 'right' }
     /* style parameters end */
 
     /* initial parameters */
+    const validation = useSelector(state => state.language)?.validation?.testCase
     const tests = useSelector(state => state.test)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
@@ -110,12 +109,15 @@ const TestForm = ({ testToEdit }) => {
 
 
     /* schema for validation */
+    if(!validation) {
+        return<></>
+    }
     const TestSchema = Yup.object().shape({
         testName: Yup.string()
-            .min(2, 'Nimen tulee olla vähintään 2 merkkiä pitkä.')
-            .max(100, 'Nimen tulee olla enintään 100 merkkiä pitkä.')
-            .required('Pakollinen kenttä.')
-            .test('unique', 'Nimen tulee olla uniikki', function (name) {
+            .min(validation.name.minlength, validation.name.minMessage)
+            .max(validation.name.maxlength, validation.name.maxMessage)
+            .required(validation.name.requiredMessage)
+            .test('unique', validation.name.uniqueMessage, (name) => {
                 if (testToEdit) {
                     if (name === testToEdit.name) {
                         return true
@@ -127,9 +129,9 @@ const TestForm = ({ testToEdit }) => {
                 return true
             }),
         testType: Yup.string()
-            .required('Pakollinen kenttä'),
+            .required(validation.type.requiredMessage),
         bacteriumName: Yup.string()
-            .test('unique', 'bakteerille on jo lisätty kuva', function (bacteriumName) {
+            .test('unique', validation.bacteriumImage.uniqueMessage, (bacteriumName) => {
                 if (!bacteriumName || bacteriumName === '') {
                     return true
                 }

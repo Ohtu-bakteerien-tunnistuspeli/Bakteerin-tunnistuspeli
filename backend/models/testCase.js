@@ -1,18 +1,20 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const config = require('../utils/config')
+const validation = config.validation.testCase
 const testSchema = mongoose.Schema({
     name: {
         type: String,
-        minlength: [2, 'Testin nimen tulee olla vähintään 2 merkkiä pitkä.'],
-        maxlength: [100, 'Testin nimen tulee olla enintään 100 merkkiä pitkä.'],
-        required: [true, 'Testin nimi on pakollinen.'],
-        unique: [true, 'Testin nimen tulee olla uniikki.']
+        minlength: [validation.name.minlength, validation.name.minMessage],
+        maxlength: [validation.name.maxlength, validation.name.maxMessage],
+        required: [true, validation.name.requiredMessage],
+        unique: [true, validation.name.uniqueMessage]
     },
     type: {
         type: String,
-        minlength: [2, 'Testin tyypin tulee olla vähintään 2 merkkiä pitkä.'],
-        maxlength: [100, 'Testin tyypin tulee olla enintään 100 merkkiä pitkä.'],
-        required: [true, 'Testin tyyppi on pakollinen.']
+        minlength: [validation.type.minlength, validation.type.minMessage],
+        maxlength: [validation.type.maxlength, validation.type.maxMessage],
+        required: [true, validation.type.requiredMessage]
     },
     controlImage: {
         url: {
@@ -59,7 +61,7 @@ testSchema.set('toJSON', {
         delete returnedObject.__v
     }
 })
-testSchema.plugin(uniqueValidator, { message: 'Testin nimen tulee olla uniikki.' })
+testSchema.plugin(uniqueValidator, { message: validation.name.uniqueMessage })
 const Test = mongoose.model('Test', testSchema)
 
 module.exports = Test
