@@ -69,7 +69,7 @@ userRouter.post('/register', async (request, response) => {
         body.password === body.classGroup ||
         body.password === body.email ||
         body.password === body.newStudentNumber) {
-            return response.status(400).json({ error: 'Salasana ei voi olla sama kuin syötetyt kentät.' })
+        return response.status(400).json({ error: validation.password.uniqueMessage })
     } else {
         try {
             const saltRounds = 10
@@ -167,7 +167,7 @@ userRouter.post('/singleusepassword', async (request, response) => {
                         pass: config.EMAILPASSWORD,
                     },
                 })
-            } else if(config.EMAILHOST.includes('helsinki')) {
+            } else if (config.EMAILHOST.includes('helsinki')) {
                 transporter = nodemailer.createTransport({
                     from: config.EMAILUSER,
                     host: config.EMAILHOST,
