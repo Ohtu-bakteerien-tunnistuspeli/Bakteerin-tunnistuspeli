@@ -588,7 +588,7 @@ describe('modifying user', () => {
                 .set('Authorization', `bearer ${loginResponse.body.token}`)
                 .send({ password: 'password', newPassword: 'uu' })
                 .expect(400)
-            expect(res.body.error).toContain('Salasanan täytyy olla vähintään 3 merkkiä pitkä.')
+            expect(res.body.error).toContain('Salasanan täytyy olla vähintään 10 merkkiä pitkä.')
         })
 
         test('new password cannot be too long', async () => {
