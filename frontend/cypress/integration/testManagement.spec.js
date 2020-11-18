@@ -1,11 +1,7 @@
 describe('Test management', () => {
     beforeEach(() => {
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.login({ username: 'admin', password: 'admin' })
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-        cy.addBacterium({ name: 'Tetanus' })
-        cy.addTest({ name: 'Cypress Testi', type: 'Viljely' })
     })
 
     it('User cannot access test management', () => {
@@ -17,10 +13,10 @@ describe('Test management', () => {
 
         it('A new test without images can be added', () => {
             cy.contains('Testien hallinta').click()
-            cy.should('not.contain', 'Katalaasitesti')
+            cy.should('not.contain', 'Lancefield määritys')
             cy.get('#testModalButton').click({ force: true })
-            cy.get('#name').type('Katalaasitesti')
-            cy.get('#type').select('Viljely')
+            cy.get('#name').type('Lancefield määritys')
+            cy.get('#type').select('Testi')
             cy.get('#addTest').click()
             cy.contains('Testi lisätty onnistuneesti')
             cy.contains('Katalaasitesti')
@@ -29,14 +25,14 @@ describe('Test management', () => {
         it('If test name is not unique, test is not added and error is reported', () => {
             cy.contains('Testien hallinta').click()
             cy.get('#testModalButton').click({ force: true })
-            cy.get('#name').type('Katalaasitesti')
-            cy.get('#type').select('Viljely')
+            cy.get('#name').type('Lancefield määritys')
+            cy.get('#type').select('Testi')
             cy.get('#addTest').click()
             cy.contains('Testi lisätty onnistuneesti')
-            cy.contains('Katalaasitesti')
+            cy.contains('Lancefield määritys')
             cy.get('#testModalButton').click()
-            cy.get('#name').type('Katalaasitesti')
-            cy.get('#type').select('Viljely')
+            cy.get('#name').type('Lancefield määritys')
+            cy.get('#type').select('Testi')
             cy.get('#addTest').click()
             cy.contains('Nimen tulee olla uniikki')
         })
@@ -60,6 +56,10 @@ describe('Test management', () => {
     })
 
     describe('Tests can be deleted', () => {
+        beforeEach(() => {
+            cy.request('POST', 'http://localhost:3001/api/testing/test_editing')
+            cy.visit('http://localhost:3000/')
+        })
 
         it('Test can be deleted', () => {
             cy.contains('Testien hallinta').click()
@@ -72,6 +72,10 @@ describe('Test management', () => {
     })
 
     describe('Tests can be modified', () => {
+        beforeEach(() => {
+            cy.request('POST', 'http://localhost:3001/api/testing/test_editing')
+            cy.visit('http://localhost:3000/')
+        })
 
         it('Test name can be edited', () => {
             cy.contains('Testien hallinta').click()
@@ -91,8 +95,6 @@ describe('Test management', () => {
     })
 
     after(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
     })
 })

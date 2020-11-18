@@ -1,9 +1,6 @@
 describe('credit management', () => {
     beforeEach(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_credits')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.request('POST', 'http://localhost:3001/api/testing/credits')
         cy.login({ username: 'admin', password: 'admin' })
     })
@@ -79,11 +76,6 @@ describe('credit management', () => {
     })
 
     after(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_credits')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_users')
         cy.request('POST', 'http://localhost:3001/api/testing/init')
     })
 })
