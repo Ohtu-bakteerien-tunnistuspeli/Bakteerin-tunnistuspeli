@@ -1,3 +1,71 @@
 {
-    
+    "backend": {
+        "bacterium": {
+            "usedInTest": "Bakteeri on käytössä testissä eikä sitä voi poistaa.",
+            "usedInCase": "Bakteeri on käytössä tapauksessa eikä sitä voi poistaa.",
+            "notFound": "Annettua bakteeria ei löydy tietokannasta."
+        },
+        "case": {
+            "bacteriumNotFound": "Annettua bakteeria ei löydy.",
+            "testNotFound": "Annettua testiä ei löydy.",
+            "caseNotFound": "Annettua tapausta ei löydy tietokannasta."
+
+        },
+        "game": {
+            "testError": "Testin lähettämisessä tapahtui virhe."
+        },
+        "testCase": {
+
+        },
+        "security":{
+            "tokenError": "token missing or invalid"
+        },
+        "user": {
+
+        }
+    },
+    "frontend": {
+        "routes": {
+            "bacteriaList": "bakteeriLista",
+            "caseList": "tapausLista",
+            "testList": "testiLista",
+            "creditList": "suoritusLista",
+            "userList": "kayttajaLista",
+            "game": "peli",
+            "profile": "profiilini",
+            "login": "kirjautuminen",
+            "register": "rekisteroityminen",
+            "singleUsePassword": "kertakayttoinensalasana"
+        },
+        "app": {
+
+        },
+        "bacteria": {
+
+        },
+        "case": {
+
+        },
+        "credit": {
+
+        },
+        "test": {
+
+        },
+        "user": {
+
+        },
+        "footer": {
+
+        },
+        "fronPage": {
+
+        },
+        "gamePage": {
+
+        },
+        "profilePage": {
+
+        }
+    }
 }

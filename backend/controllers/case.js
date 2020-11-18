@@ -3,6 +3,8 @@ const Case = require('../models/case')
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
 const config = require('../utils/config')
+const library = config.library.backend.case
+const validation = config.validation.case
 
 const isCompletionDone = (caseToCheck) => {
     if ((caseToCheck.completionImage && caseToCheck.completionImage.url) || caseToCheck.completionText) {
@@ -76,11 +78,11 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                     bacterium = await Bacterium.findById(request.body.bacterium)
                 } catch (e) {
                     deleteUploadedImages(request)
-                    return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
+                    return response.status(400).json({ error: library.bacteriumNotFound })
                 }
                 if (!bacterium) {
                     deleteUploadedImages(request)
-                    return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
+                    return response.status(400).json({ error: library.bacteriumNotFound })
                 }
                 newCase.bacterium = bacterium
             }
@@ -100,7 +102,7 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                 for (let i = 0; i < descList.length; i++) {
                     if (checkedDescList.includes(descList[i])) {
                         deleteUploadedImages(request)
-                        return response.status(400).json({ error: `Näytettä ${descList[i]} yritetään käyttää tapauksessa useampaan kertaan` })
+                        return response.status(400).json({ error: `${validation.samples.description.uniqueStart}${descList[i]}${validation.samples.description.uniqueEnd}` })
                     } else {
                         checkedDescList.push(descList[i])
                     }
@@ -122,15 +124,15 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                                 testFromDb = await Test.findById(testForAlternativeTests.testId)
                             } catch (e) {
                                 deleteUploadedImages(request)
-                                return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                                return response.status(400).json({ error: library.testNotFound })
                             }
                             if (!testFromDb) {
                                 deleteUploadedImages(request)
-                                return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                                return response.status(400).json({ error: library.testNotFound })
                             } else {
                                 if (addedTestIds.includes(testFromDb.id)) {
                                     deleteUploadedImages(request)
-                                    return response.status(400).json({ error: `Testiä ${testFromDb.name} yritetään käyttää tapauksessa useampaan kertaan` })
+                                    return response.status(400).json({ error: `${validation.test.uniqueStart}${testFromDb.name}${validation.test.uniqueEnd}` })
                                 }
                                 addedTestIds.push(testFromDb.id)
                                 testsFromDb.push({ test: testFromDb, positive: testForAlternativeTests.positive })
@@ -186,7 +188,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             const caseToUpdate = await Case.findById(request.params.id)
             if (!caseToUpdate) {
                 deleteUploadedImages(request)
-                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
+                return response.status(400).json({ error: library.caseNotFound })
             }
             let changes = {
                 name: request.body.name
@@ -197,11 +199,11 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                     bacterium = await Bacterium.findById(request.body.bacterium)
                 } catch (e) {
                     deleteUploadedImages(request)
-                    return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
+                    return response.status(400).json({ error: library.bacteriumNotFound })
                 }
                 if (!bacterium) {
                     deleteUploadedImages(request)
-                    return response.status(400).json({ error: 'Annettua bakteeria ei löydy.' })
+                    return response.status(400).json({ error: library.bacteriumNotFound })
                 }
                 changes.bacterium = bacterium
             }
@@ -222,7 +224,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 for (let i = 0; i < descList.length; i++) {
                     if (checkedDescList.includes(descList[i])) {
                         deleteUploadedImages(request)
-                        return response.status(400).json({ error: `Näytettä ${descList[i]} yritetään käyttää tapauksessa useampaan kertaan` })
+                        return response.status(400).json({ error: `${validation.samples.description.uniqueStart}${descList[i]}${validation.samples.description.uniqueEnd}` })
                     } else {
                         checkedDescList.push(descList[i])
                     }
@@ -244,15 +246,15 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                                 testFromDb = await Test.findById(testForAlternativeTests.testId)
                             } catch (e) {
                                 deleteUploadedImages(request)
-                                return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                                return response.status(400).json({ error: library.testNotFound })
                             }
                             if (!testFromDb) {
                                 deleteUploadedImages(request)
-                                return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                                return response.status(400).json({ error: library.testNotFound })
                             } else {
                                 if (addedTestIds.includes(testFromDb.id)) {
                                     deleteUploadedImages(request)
-                                    return response.status(400).json({ error: `Testiä ${testFromDb.name} yritetään käyttää tapauksessa useampaan kertaan` })
+                                    return response.status(400).json({ error: `${validation.test.uniqueStart}${testFromDb.name}${validation.test.uniqueEnd}` })
                                 }
                                 addedTestIds.push(testFromDb.id)
                                 testsFromDb.push({ test: testFromDb, positive: testForAlternativeTests.positive })
@@ -307,7 +309,7 @@ caseRouter.put('/:id/hints', async (request, response) => {
         try {
             const caseToUpdate = await Case.findById(request.params.id)
             if (!caseToUpdate) {
-                return response.status(400).json({ error: 'Annettua tapausta ei löydy tietokannasta.' })
+                return response.status(400).json({ error: library.caseNotFound })
             }
             const hints = request.body
             let testsWithHints = []
@@ -320,15 +322,15 @@ caseRouter.put('/:id/hints', async (request, response) => {
                 try {
                     testFromDb = await Test.findById(hints[i].test)
                 } catch (e) {
-                    return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                    return response.status(400).json({ error: library.testNotFound })
                 }
                 if (!testFromDb) {
-                    return response.status(400).json({ error: 'Annettua testiä ei löydy.' })
+                    return response.status(400).json({ error: library.testNotFound })
                 }
                 testsWithHints.push(hints[i].test)
             }
             if (hasMoreThanOneSame) {
-                return response.status(400).json({ error: 'Samalla testillä on useampia vinkkejä.' })
+                return response.status(400).json({ error: validation.hints.hint.uniqueMessage })
             }
             let updatedCase = await Case.findByIdAndUpdate(request.params.id, { hints }, { new: true, runValidators: true, context: 'query' })
             updatedCase = await Case.findById(request.params.id).populate('bacterium', { name: 1 }).populate({

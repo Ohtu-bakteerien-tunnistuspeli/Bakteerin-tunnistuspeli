@@ -1,7 +1,8 @@
 const gameRouter = require('express').Router()
 const Case = require('../models/case')
 const Credit = require('../models/credit')
-
+const config = require('../utils/config')
+const library = config.library.backend.game
 gameRouter.get('/:id', async (request, response) => {
     if (request.user) {
         try {
@@ -68,7 +69,7 @@ gameRouter.post('/:id/checkTests', async (request, response) => {
             let groupIndex = 0
 
             if (!testsToCheck || testsToCheck.length === 0) {
-                return response.status(400).json({ error: 'Testin lähettämisessä tapahtui virhe.' })
+                return response.status(400).json({ error: library.testError })
             }
             let latestTestForCase
             for (let i = 0; i < testsToCheck.length; i++) {

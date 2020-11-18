@@ -132,17 +132,14 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
             if (request.files) {
                 if (request.files.controlImage) {
                     oldLinks.push(testToEdit.controlImage.url)
-                    // fs.unlink(`${imageDir}/${testToEdit.controlImage.url}`, (err) => err)
                     testToUpdate.controlImage = { url: request.files.controlImage[0].filename, contentType: request.files.controlImage[0].mimetype }
                 }
                 if (request.files.positiveResultImage) {
                     oldLinks.push(testToEdit.positiveResultImage.url)
-                    // fs.unlink(`${imageDir}/${testToEdit.positiveResultImage.url}`, (err) => err)
                     testToUpdate.positiveResultImage = { url: request.files.positiveResultImage[0].filename, contentType: request.files.positiveResultImage[0].mimetype }
                 }
                 if (request.files.negativeResultImage) {
                     oldLinks.push(testToEdit.negativeResultImage.url)
-                    //fs.unlink(`${imageDir}/${testToEdit.negativeResultImage.url}`, (err) => err)
                     testToUpdate.negativeResultImage = { url: request.files.negativeResultImage[0].filename, contentType: request.files.negativeResultImage[0].mimetype }
                 }
                 if (request.files.bacteriaSpecificImages) {
@@ -156,7 +153,6 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                         const imageToDelete = testToUpdate.bacteriaSpecificImages.filter(image => image.bacterium.name === bacterium.name)
                         if (imageToDelete.length > 0) {
                             oldLinks.push(imageToDelete[0].url)
-                            //fs.unlink(`${imageDir}/${imageToDelete[0].url}`, (err) => err)
                             testToUpdate.bacteriaSpecificImages = testToUpdate.bacteriaSpecificImages.map(image => image.bacterium.name === bacterium.name ? { url: file.filename, contentType: file.mimetype, bacterium } : image)
                         } else {
                             testToUpdate.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
@@ -225,7 +221,7 @@ testRouter.delete('/:id', async (request, response) => {
                     model: 'Bacterium'
                 }
             }).populate({
-                path:'hints.test',
+                path: 'hints.test',
                 model: 'Test'
             })
             let testIsInUse = false
@@ -241,8 +237,8 @@ testRouter.delete('/:id', async (request, response) => {
                 }
             })
             cases.forEach(element => {
-                for(let i = 0; i < element.hints.length; i++) {
-                    if(element.hints[i].name === testToDelete.name) {
+                for (let i = 0; i < element.hints.length; i++) {
+                    if (element.hints[i].name === testToDelete.name) {
                         testIsInUse = true
                     }
                 }
