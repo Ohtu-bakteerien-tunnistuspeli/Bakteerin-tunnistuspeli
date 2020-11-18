@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const config = require('../utils/config')
+const validation = config.validation.bacterium
 const bacteriumSchema = mongoose.Schema({
     name: {
         type: String,
-        minlength: [2, 'Bakteerin nimen tulee olla vähintään 2 merkkiä pitkä.'],
-        maxlength: [100, 'Bakteerin nimen tulee olla enintään 100 merkkiä pitkä.'],
-        required: [true, 'Bakteerin nimi on pakollinen.'],
-        unique: [true, 'Bakteerin nimen tulee olla uniikki.']
+        minlength: [validation.name.minlength, validation.name.minMessage],
+        maxlength: [validation.name.maxlength, validation.name.maxMessage],
+        required: [true, validation.name.requiredMessage],
+        unique: [true, validation.name.uniqueMessage]
     }
 })
 
@@ -17,7 +19,7 @@ bacteriumSchema.set('toJSON', {
         delete returnedObject.__v
     }
 })
-bacteriumSchema.plugin(uniqueValidator, { message: 'Bakteerin nimen tulee olla uniikki.' })
+bacteriumSchema.plugin(uniqueValidator, { message: validation.name.uniqueMessage })
 const Bacterium = mongoose.model('Bacterium', bacteriumSchema)
 
 module.exports = Bacterium

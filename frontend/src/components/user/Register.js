@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { Form, Button, Modal } from 'react-bootstrap'
@@ -10,42 +10,46 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 
 const Register = () => {
+    const validation = useSelector(state => state.language)?.validation?.user
     const dispatch = useDispatch()
     const history = useHistory()
     const [accept, setAccept] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [showModal2, setShowModal2] = useState(false)
 
+    if(!validation) {
+        return<></>
+    }
     const UserSchema = Yup.object().shape({
         username: Yup.string()
-            .min(2, 'Käyttäjänimen tulee olla vähintään 2 merkkiä pitkä.')
-            .max(100, 'Käyttäjänimen tulee olla enintään 100 merkkiä pitkä.')
-            .required('Käyttäjänimi on pakollinen.'),
+            .min(validation.username.minlength, validation.username.minMessage)
+            .max(validation.username.maxlength, validation.username.maxMessage)
+            .required(validation.username.requiredMessage),
         password: Yup.string()
-            .min(3, 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.')
-            .max(100, 'Salasanan täytyy olla enintään 100 merkkiä pitkä.')
-            .required('Salasana on pakollinen.'),
+            .min(validation.password.minlength, validation.password.minMessage)
+            .max(validation.password.maxlength, validation.password.maxMessage)
+            .required(validation.password.requiredMessage),
         passwordAgain: Yup.string(),
         email: Yup.string()
-            .required('Sähköpostiosoite on pakollinen.')
-            .email('Sähköpostiosoite on virheellinen.')
-            .max(100, 'Sähköpostin tulee olla enintään 100 merkkiä pitkä.'),
+            .required(validation.email.requiredMessage)
+            .email(validation.email.validationMessage)
+            .max(validation.email.maxlength, validation.email.maxMessage),
         classGroup: Yup.string()
-            .test('unique', 'Vuosikurssin tule alkaa merkeillä \'C-\' ja loppua lukuun.', (classGroup) => {
+            .test('unique', validation.classGroup.validationMessage, (classGroup) => {
                 if (!classGroup) {
                     return true
                 }
                 return /C-+\d+/.test(classGroup)
             })
-            .max(10, 'Vuosikurssin tulee olla enintään C-99999999.'),
+            .max(validation.classGroup.maxlength, validation.classGroup.maxMessage),
         studentNumber: Yup.string()
-            .test('unique', 'Opiskelijanumeron tulee  olla luku.', (studentNumber) => {
+            .test('unique', validation.studentNumber.validationMessage, (studentNumber) => {
                 if (!studentNumber) {
                     return true
                 }
                 return /^[0-9]+/.test(studentNumber)
             })
-            .max(100, 'Opiskelijanumeron tulee olla enintään 100 merkkiä pitkä.')
+            .max(validation.studentNumber.maxlength, validation.studentNumber.maxMessage)
     })
 
     const handleRegister = async (values) => {
@@ -65,6 +69,7 @@ const Register = () => {
             dispatch(setNotification({ message: 'Käyttöehtojen hyväksyminen on pakollista.', success: false }))
         }
     }
+
     return (
         <div >
             <h2>Rekisteröidy Bakteeripeliin</h2>

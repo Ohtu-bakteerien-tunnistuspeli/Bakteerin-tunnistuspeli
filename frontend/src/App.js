@@ -17,6 +17,7 @@ import ProfilePage from './components/ProfilePage'
 import Notification from './components/utility/Notification'
 import Footer from './components/Footer'
 import { Button, Navbar, Nav } from 'react-bootstrap'
+import { getLanguage } from './reducers/languageReducer'
 
 const App = () => {
     const history = useHistory()
@@ -26,6 +27,7 @@ const App = () => {
 
     useEffect(() => {
         dispatch(returnUser(history))
+        dispatch(getLanguage())
     }, [dispatch, history])
     const logoutButton = async () => {
         dispatch(logout(history))
