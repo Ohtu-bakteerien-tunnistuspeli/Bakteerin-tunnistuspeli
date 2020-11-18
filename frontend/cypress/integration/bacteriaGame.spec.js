@@ -94,7 +94,7 @@ describe('Game', () => {
         cy.contains('Rekisteröidy Bakteeripeliin')
 
         cy.get('#username').type('newUser')
-        cy.get('#password').type('newpass')
+        cy.get('#password').type('newpassThatisLongEnough10')
         cy.get('#passwordAgain').type('newpass')
         cy.get('#email').type('example@e.com')
         cy.get('#classGroup').type('C-67')
@@ -110,8 +110,8 @@ describe('Game', () => {
         cy.contains('Rekisteröidy Bakteeripeliin')
 
         cy.get('#username').type('admin')
-        cy.get('#password').type('newpass')
-        cy.get('#passwordAgain').type('newpass')
+        cy.get('#password').type('newpassThatIsLongEnough21')
+        cy.get('#passwordAgain').type('newpassThatIsLongEnough21')
         cy.get('#acceptCheckBox').click()
         cy.get('#email').type('example@e.com')
         cy.get('#classGroup').type('C-67')
@@ -128,8 +128,8 @@ describe('Game', () => {
         cy.contains('Rekisteröidy Bakteeripeliin')
 
         cy.get('#username').type('newUser')
-        cy.get('#password').type('newpass')
-        cy.get('#passwordAgain').type('newpas')
+        cy.get('#password').type('newpassThatIsLongEnough21')
+        cy.get('#passwordAgain').type('newpasThatIsLongEnough21')
         cy.get('#acceptCheckBox').click()
         cy.get('#email').type('example@e.com')
         cy.get('#classGroup').type('C-67')
