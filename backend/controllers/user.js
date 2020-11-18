@@ -162,6 +162,13 @@ userRouter.post('/singleusepassword', async (request, response) => {
                         pass: config.EMAILPASSWORD,
                     },
                 })
+            } else if(config.EMAILHOST.includes('helsinki')) {
+                transporter = nodemailer.createTransport({
+                    from: config.EMAILUSER,
+                    host: config.EMAILHOST,
+                    port: config.EMAILPORT,
+                    secure: false
+                })
             } else {
                 transporter = nodemailer.createTransport({
                     host: config.EMAILHOST,
@@ -172,7 +179,7 @@ userRouter.post('/singleusepassword', async (request, response) => {
                         pass: config.EMAILPASSWORD,
                     },
                 })
-            } 
+            }
             const singleUsePassword = uuidv4()
             await transporter.sendMail({
                 from: config.EMAILUSER,
