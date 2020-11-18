@@ -76,11 +76,12 @@
             "uniqueMessage": "Käyttäjänimi tulee olla uniikki."
         },
         "password": {
-            "minlength": 3,
+            "minlength": 10,
             "maxlength": 100,
-            "minMessage": "Salasanan täytyy olla vähintään 3 merkkiä pitkä.",
+            "minMessage": "Salasanan täytyy olla vähintään 10 merkkiä pitkä.",
             "maxMessage": "Salasanan täytyy olla enintään 100 merkkiä pitkä.",
-            "requiredMessage": "Salasana on pakollinen."
+            "requiredMessage": "Salasana on pakollinen.",
+            "uniqueMessage": "Salasana ei voi olla sama kuin muut syötetyt kentät."
         },
         "classGroup": {
             "maxlength": 10,
