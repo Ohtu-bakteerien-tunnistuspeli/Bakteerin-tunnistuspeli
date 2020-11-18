@@ -220,6 +220,7 @@ describe('Case management', () => {
             cy.contains('Testi3').click()
             cy.contains('Väärä vastaus')
             cy.contains('Testi2').click()
+            cy.wait(500)
             cy.contains('Vinkkii')
             cy.contains('Testi').click()
             cy.contains('Testi2').click()
