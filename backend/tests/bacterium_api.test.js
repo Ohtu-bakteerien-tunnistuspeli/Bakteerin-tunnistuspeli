@@ -26,8 +26,8 @@ beforeEach(async () => {
     await Promise.all(promiseArray)
     const adminPassword = await bcrypt.hash('admin', 10)
     const userPassword = await bcrypt.hash('password', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com' })
-    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'example@com' })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example1111111@com' })
+    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'examples55555@com' })
     await admin.save()
     await user.save()
 })
@@ -103,7 +103,7 @@ describe('addition of a bacterium ', () => {
             .send(newBacteria[0])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(addResponse.body.error).toContain('Bakteerin nimen tulee olla vähintään 2 merkkiä pitkä.')
+        expect(addResponse.body.error).toContain('Bacterium validation failed: name: Nimen tulee olla vähintään 2 merkkiä pitkä.')
         let resAfterAdding = await api
             .get('/api/bacteria')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -114,7 +114,7 @@ describe('addition of a bacterium ', () => {
             .send(newBacteria[1])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(addResponse.body.error).toContain('Bakteerin nimen tulee olla uniikki.')
+        expect(addResponse.body.error).toContain('Nimen tulee olla uniikki.')
         resAfterAdding = await api
             .get('/api/bacteria')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -125,7 +125,7 @@ describe('addition of a bacterium ', () => {
             .send(newBacteria[2])
             .expect(400)
             .expect('Content-Type', /application\/json/)
-        expect(addResponse.body.error).toContain('Bakteerin nimen tulee olla enintään 100 merkkiä pitkä.')
+        expect(addResponse.body.error).toContain('Nimen tulee olla enintään 100 merkkiä pitkä.')
         resAfterAdding = await api
             .get('/api/bacteria')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -371,7 +371,7 @@ describe('modifying a bacterium', () => {
             .expect(400)
             .expect('Content-Type', /application\/json/)
 
-        expect(updatedBacterium.body.error).toContain('Bakteerin nimen tulee olla uniikki.')
+        expect(updatedBacterium.body.error).toContain('Nimen tulee olla uniikki.')
     })
 
     test('cannot modify bacterium that does not exist', async () => {

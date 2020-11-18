@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const config = require('../utils/config')
+const validation = config.validation.case
 const caseSchema = mongoose.Schema({
     name: {
         type: String,
-        minlength: [2, 'Tapauksen nimen tulee olla vähintään 2 merkkiä pitkä.'],
-        maxlength: [100, 'Tapauksen nimen tulee olla enintään 100 merkkiä pitkä.'],
-        required: [true, 'Tapauksen nimi on pakollinen.'],
-        unique: [true, 'Tapauksen nimen tulee olla uniikki.']
+        minlength: [validation.name.minlength, validation.name.minMessage],
+        maxlength: [validation.name.maxlength, validation.name.maxMessage],
+        required: [true, validation.name.requiredMessage],
+        unique: [true, validation.name.uniqueMessage]
     },
     bacterium: {
         type: mongoose.Schema.Types.ObjectId,
@@ -14,11 +16,11 @@ const caseSchema = mongoose.Schema({
     },
     anamnesis: {
         type: String,
-        maxlength: [10000, 'Tapauksen anamneesin tulee olla enintään 10000 merkkiä pitkä.']
+        maxlength: [validation.anamnesis.maxlength, validation.anamnesis.maxMessage]
     },
     completionText: {
         type: String,
-        maxlength: [10000, 'Tapauksen lopputekstin tulee olla enintään 10000 merkkiä pitkä.']
+        maxlength: [validation.completionText.maxlength, validation.completionText.maxMessage]
     },
     completionImage: {
         url: {
@@ -32,7 +34,7 @@ const caseSchema = mongoose.Schema({
         {
             description: {
                 type: String,
-                maxlength: [1000, 'Näytteen kuvauksen tulee olla enintään 1000 merkkiä pitkä.']
+                maxlength: [validation.samples.description.maxlength, validation.samples.description.maxMessage]
             },
             rightAnswer: {
                 type: Boolean
@@ -62,7 +64,7 @@ const caseSchema = mongoose.Schema({
         },
         hint: {
             type: String,
-            maxlength: [1000, 'Vinkin tulee olla enintään 1000 merkkiä pitkä.']
+            maxlength: [validation.hints.hint.maxlength, validation.hints.hint.maxMessage]
         }
     }],
     complete: {
@@ -77,7 +79,7 @@ caseSchema.set('toJSON', {
         delete returnedObject.__v
     }
 })
-caseSchema.plugin(uniqueValidator, { message: 'Tapauksen nimen tulee olla uniikki.' })
+caseSchema.plugin(uniqueValidator, { message: validation.name.uniqueMessage })
 const Case = mongoose.model('Case', caseSchema)
 
 module.exports = Case

@@ -1,8 +1,5 @@
 describe('Game', () => {
     beforeEach(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_credits')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_users')
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.visit('http://localhost:3000')
         cy.contains('Kirjaudu sisään').click()
@@ -97,7 +94,7 @@ describe('Game', () => {
         cy.contains('Rekisteröidy Bakteeripeliin')
 
         cy.get('#username').type('newUser')
-        cy.get('#password').type('newpass')
+        cy.get('#password').type('newpassThatisLongEnough10')
         cy.get('#passwordAgain').type('newpass')
         cy.get('#email').type('example@e.com')
         cy.get('#classGroup').type('C-67')
@@ -113,8 +110,8 @@ describe('Game', () => {
         cy.contains('Rekisteröidy Bakteeripeliin')
 
         cy.get('#username').type('admin')
-        cy.get('#password').type('newpass')
-        cy.get('#passwordAgain').type('newpass')
+        cy.get('#password').type('newpassThatIsLongEnough21')
+        cy.get('#passwordAgain').type('newpassThatIsLongEnough21')
         cy.get('#acceptCheckBox').click()
         cy.get('#email').type('example@e.com')
         cy.get('#classGroup').type('C-67')
@@ -122,7 +119,7 @@ describe('Game', () => {
 
         cy.get('#submit').click()
 
-        cy.contains('Käyttäjänimen tulee olla uniikki.')
+        cy.contains('Käyttäjänimen ja sähköpostiosoitteen tulee olla uniikkeja.')
         cy.contains('Rekisteröidy Bakteeripeliin')
     })
 
@@ -131,8 +128,8 @@ describe('Game', () => {
         cy.contains('Rekisteröidy Bakteeripeliin')
 
         cy.get('#username').type('newUser')
-        cy.get('#password').type('newpass')
-        cy.get('#passwordAgain').type('newpas')
+        cy.get('#password').type('newpassThatIsLongEnough21')
+        cy.get('#passwordAgain').type('newpasThatIsLongEnough21')
         cy.get('#acceptCheckBox').click()
         cy.get('#email').type('example@e.com')
         cy.get('#classGroup').type('C-67')
@@ -292,7 +289,7 @@ describe('Game', () => {
                 cy.contains('Sähköposti')
                 cy.contains('Vuosikurssi')
                 cy.contains('Suoritukset')
-                cy.contains('example@com')
+                cy.contains('examples@com')
                 cy.contains('Ei suorituksia')
             })
 
@@ -350,6 +347,6 @@ describe('Game', () => {
     })
 
     after(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
     })
 })

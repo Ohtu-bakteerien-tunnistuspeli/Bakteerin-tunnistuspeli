@@ -4,16 +4,30 @@ const userRouter = require('express').Router()
 const User = require('../models/user')
 const Credit = require('../models/credit')
 const config = require('../utils/config')
-const { request } = require('express')
+const nodemailer = require('nodemailer')
+const { v4: uuidv4 } = require('uuid')
+const validation = config.validation.user
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body
     const user = await User.findOne({ username: body.username })
+    let singleUsePasswordUsed = false
     try {
-        const passwordCorrect = user === null
-            ? false
-            : await bcrypt.compare(body.password, user.passwordHash)
-        if (!(user && passwordCorrect)) {
+        if (!user) {
+            return response.status(400).json({
+                error: 'Invalid username or password'
+            })
+        }
+        let passwordCorrect = await bcrypt.compare(body.password, user.passwordHash)
+        if (!passwordCorrect && user.singleUsePassword) {
+            const diffTime = Math.abs(new Date() - user.singleUsePassword.generationTime)
+            if (diffTime <= 900000) {
+                passwordCorrect = await bcrypt.compare(body.password, user.singleUsePassword.passwordHash)
+                singleUsePasswordUsed = true
+            }
+            await User.findByIdAndUpdate(user.id, { singleUsePassword: null }, { new: true, runValidators: true, context: 'query' })
+        }
+        if (!passwordCorrect) {
             return response.status(400).json({
                 error: 'Invalid username or password'
             })
@@ -38,19 +52,24 @@ userRouter.post('/login', async (request, response) => {
             classGroup: user.classGroup,
             email: user.email,
             studentNumber: user.studentNumber,
-            id: user._id
+            id: user._id,
+            singleUsePasswordUsed
         })
 })
 
 userRouter.post('/register', async (request, response) => {
     const body = request.body
-
     if (!body.password) {
-        return response.status(400).json({ error: 'Salasana on pakollinen.' })
-    } else if (body.password.length < 3) {
-        return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
-    } else if (body.password.length > 100) {
-        return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
+        return response.status(400).json({ error: validation.password.requiredMessage })
+    } else if (body.password.length < validation.password.minlength) {
+        return response.status(400).json({ error: validation.password.minMessage })
+    } else if (body.password.length > validation.password.maxlength) {
+        return response.status(400).json({ error: validation.password.maxMessage })
+    } else if (body.password === body.username ||
+        body.password === body.classGroup ||
+        body.password === body.email ||
+        body.password === body.newStudentNumber) {
+        return response.status(400).json({ error: validation.password.uniqueMessage })
     } else {
         try {
             const saltRounds = 10
@@ -130,6 +149,62 @@ userRouter.put('/:id/demote', async (request, response) => {
     }
 })
 
+userRouter.post('/singleusepassword', async (request, response) => {
+    const user = await User.findOne({ username: request.body.username })
+    if (user && user.email === request.body.email) {
+        try {
+            let transporter
+            if (config.EMAILHOST.includes('outlook')) {
+                transporter = nodemailer.createTransport({
+                    host: config.EMAILHOST,
+                    port: config.EMAILPORT,
+                    secure: false,
+                    tls: {
+                        ciphers: 'SSLv3'
+                    },
+                    auth: {
+                        user: config.EMAILUSER,
+                        pass: config.EMAILPASSWORD,
+                    },
+                })
+            } else if (config.EMAILHOST.includes('helsinki')) {
+                transporter = nodemailer.createTransport({
+                    from: config.EMAILUSER,
+                    host: config.EMAILHOST,
+                    port: config.EMAILPORT,
+                    secure: false
+                })
+            } else {
+                transporter = nodemailer.createTransport({
+                    host: config.EMAILHOST,
+                    port: config.EMAILPORT,
+                    secure: true,
+                    auth: {
+                        user: config.EMAILUSER,
+                        pass: config.EMAILPASSWORD,
+                    },
+                })
+            }
+            const singleUsePassword = uuidv4()
+            await transporter.sendMail({
+                from: config.EMAILUSER,
+                to: user.email,
+                subject: 'Bakteeripelin kertakäyttöinen salasana',
+                text: `Kertakäyttöinen salasanasi on "${singleUsePassword}". Salasana vanhentuu 15min kuluttua.`,
+                html: `<p>Kertakäyttöinen salasanasi on "<span style="color: black; background: black; span:hover { color: white }">${singleUsePassword}</span>". Salasana vanhentuu 15min kuluttua.</p>`,
+            })
+            const saltRounds = 10
+            const passwordHash = await bcrypt.hash(singleUsePassword, saltRounds)
+            await User.findByIdAndUpdate(user.id, { singleUsePassword: { passwordHash, generationTime: new Date() } }, { new: true, runValidators: true, context: 'query' })
+        } catch (error) {
+            return response.status(400).json({ error: 'Sähköpostia ei voitu lähettää.' })
+        }
+        return response.status(200).json({ message: `Kertakäyttöinen salasana lähetetty sähöpostiosoitteeseen ${user.email}.` })
+    } else {
+        return response.status(400).json({ error: 'Käyttäjää ei löytynyt tai sähköposti on väärä.' })
+    }
+})
+
 userRouter.put('/', async (request, response) => {
     if (request.user) {
         const body = request.body
@@ -153,10 +228,10 @@ userRouter.put('/', async (request, response) => {
                     }
 
                     if (body.newPassword) {
-                        if (body.newPassword.length < 3) {
-                            return response.status(400).json({ error: 'Salasanan täytyy olla vähintään 3 merkkiä pitkä.' })
-                        } else if (body.newPassword.length > 100) {
-                            return response.status(400).json({ error: 'Salasanan täytyy olla enintään 100 merkkiä pitkä.' })
+                        if (body.newPassword.length < validation.password.minlength) {
+                            return response.status(400).json({ error: validation.password.minMessage })
+                        } else if (body.newPassword.length > validation.password.maxlength) {
+                            return response.status(400).json({ error: validation.password.maxMessage })
                         } else {
                             const saltRounds = 10
                             const passwordHash = await bcrypt.hash(body.newPassword, saltRounds)

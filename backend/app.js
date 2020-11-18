@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             let passwordHash = await bcrypt.hash('user', saltRounds)
             const user = new User({
                 username: 'user',
-                email: 'example@com',
+                email: 'examples@com',
                 admin: false,
                 studentNumber: '834183479234',
                 classGroup: 'C-13',
@@ -169,7 +169,12 @@ app.use(express.json())
 app.use(express.static('build'))
 const path = require('path')
 const dir = path.join(__dirname, config.IMAGEURL)
+console.log(dir)
 app.use(express.static(dir))
+const path2 = require('path')
+let dir2 = path2.join(__dirname, '/lib')
+console.log(dir2)
+app.use(express.static(dir2))
 const security = require('./utils/security')
 app.use(security.tokenExtractor)
 const userRouter = require('./controllers/user')
@@ -185,13 +190,14 @@ app.use('/api/game', gameRouter)
 const creditRouter = require('./controllers/credit')
 app.use('/api/credit', creditRouter)
 app.use(security.authorizationHandler)
-if (process.env.NODE_ENV === 'production') {
-    app.get('*', (req, res) => {
-        res.sendFile(`${__dirname}/build/index.html`, (err) => {
-            if (err) {
-                res.status(500).send(err)
-            }
-        })
+app.get(/\/(bakteeriLista|tapausLista|testiLista|suoritusLista|kayttajaLista|peli|profiilini|kirjautuminen|rekisteroityminen|kertakayttoinensalasana)$/, (req, res) => {
+    res.sendFile(`${__dirname}/build/index.html`, (err) => {
+        if (err) {
+            res.status(500).send(err)
+        }
     })
-}
+})
+app.get('*', (req, res) => {
+    res.status(404).sendFile(`${__dirname}/utils/error.html`)
+})
 module.exports = app

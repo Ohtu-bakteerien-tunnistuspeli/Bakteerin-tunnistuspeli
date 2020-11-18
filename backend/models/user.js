@@ -1,16 +1,26 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
+const config = require('../utils/config')
+const validation = config.validation.user
 const userSchema = mongoose.Schema({
     username: {
         type: String,
-        minlength: [2, 'Käyttäjänimen tulee olla vähintään 2 merkkiä pitkä.'],
-        maxlength: [100, 'Käyttäjänimen tulee olla enintään 100 merkkiä pitkä.'],
-        required: [true, 'Käyttäjänimi on pakollinen.'],
-        unique: [true, 'Käyttäjänimen tulee olla uniikki.']
+        minlength: [validation.username.minlength, validation.username.minMessage],
+        maxlength: [validation.username.maxlength, validation.username.maxMessage],
+        required: [true, validation.username.requiredMessage],
+        unique: [true, validation.username.uniqueMessage]
     },
     passwordHash: {
         type: String,
         required: true
+    },
+    singleUsePassword: {
+        passwordHash: {
+            type: String
+        },
+        generationTime: {
+            type: Date
+        }
     },
     admin: {
         type: Boolean,
@@ -25,9 +35,9 @@ const userSchema = mongoose.Schema({
                 }
                 return true
             },
-            message: 'Vuosikurssin tule alkaa merkeillä \'C-\' ja loppua lukuun.'
+            message: validation.classGroup.validationMessage
         },
-        maxlength: [10, 'Vuosikurssin tulee olla enintään C-99999999.']
+        maxlength: [validation.classGroup.maxlength, validation.classGroup.maxMessage]
     },
     email: {
         type: String,
@@ -35,10 +45,11 @@ const userSchema = mongoose.Schema({
             validator: (mailAddress) => {
                 return /\S+@\S+/.test(mailAddress)
             },
-            message: 'Sähköpostiosoite on virheellinen.'
+            message: validation.email.validationMessage
         },
-        required: [true, 'Sähköpostiosoite on pakollinen.'],
-        maxlength: [100, 'Sähköpostin tulee olla enintään 100 merkkiä pitkä.'],
+        required: [true, validation.email.requiredMessage],
+        maxlength: [validation.email.maxlength, validation.email.maxMessage],
+        unique: [true, validation.email.uniqueMessage]
     },
     studentNumber: {
         type: String,
@@ -49,9 +60,9 @@ const userSchema = mongoose.Schema({
                 }
                 return true
             },
-            message: 'Opiskelijanumeron tulee  olla luku.'
+            message: validation.studentNumber.validationMessage
         },
-        maxlength: [100, 'Opiskelijanumeron tulee olla enintään 100 merkkiä pitkä.'],
+        maxlength: [validation.studentNumber.maxlength, validation.studentNumber.maxMessage],
     },
 })
 
@@ -61,9 +72,10 @@ userSchema.set('toJSON', {
         delete returnedObject._id
         delete returnedObject.__v
         delete returnedObject.passwordHash
+        delete returnedObject.singleUsePassword
     }
 })
-userSchema.plugin(uniqueValidator, { message: 'Käyttäjänimen tulee olla uniikki.' })
+userSchema.plugin(uniqueValidator, { message: validation.uniqueMessage })
 const User = mongoose.model('User', userSchema)
 
 module.exports = User

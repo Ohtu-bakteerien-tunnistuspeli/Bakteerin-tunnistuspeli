@@ -4,6 +4,7 @@ import AddSample from './components/AddSample.js'
 import TestGroup from './components/TestGroup.js'
 import SelectBacterium from './components/SelectBaterium.js'
 import Name from './components/Name.js'
+import TextEditField from './components/TextEditField'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
 import { Modal, Button, Form, Accordion, Card } from 'react-bootstrap'
@@ -12,9 +13,7 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import { updateCase } from '../../reducers/caseReducer'
 
-
 const CaseForm = ({ caseToEdit }) => {
-
     const testsFromTestGroups = () => {
         const testIds = []
 
@@ -30,6 +29,7 @@ const CaseForm = ({ caseToEdit }) => {
     }
 
     /* initial parameters */
+    const validation = useSelector(state => state.language)?.validation?.case
     const cases = useSelector(state => state.case)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
@@ -76,12 +76,15 @@ const CaseForm = ({ caseToEdit }) => {
     const dispatch = useDispatch()
 
     /* schema for validation */
+    if(!validation) {
+        return<></>
+    }
     const CaseSchema = Yup.object().shape({
         name: Yup.string()
-            .min(2, 'Nimen tulee olla vähintään 2 merkkiä pitkä.')
-            .max(100, 'Nimen tulee olla korkeintaan 100 merkkiä pitkä')
-            .required('Pakollinen kenttä.')
-            .test('unique', 'Nimen tulee olla uniikki', function (name) {
+            .min(validation.name.minlength, validation.name.minMessage)
+            .max(validation.name.maxlength, validation.name.maxMessage)
+            .required(validation.name.requiredMessage)
+            .test('unique', validation.name.uniqueMessage, (name) => {
                 if (caseToEdit) {
                     if (name === caseToEdit.name) {
                         return true
@@ -93,9 +96,9 @@ const CaseForm = ({ caseToEdit }) => {
                 return true
             }),
         bacteriumId: Yup.string()
-            .required('Valitse bakteeri'),
+            .required(validation.bacterium.requiredMessage),
         sample: Yup.string()
-            .test('unique', 'Näyte on jo lisätty listaan', (sample) => {
+            .test('unique', validation.samples.description.uniqueMessage, (sample) => {
                 if (sample === '') {
                     return true
                 }
@@ -104,9 +107,9 @@ const CaseForm = ({ caseToEdit }) => {
                 }
                 return true
             })
-            .max(1000, 'Näytteen tulee olla enintään 1000 merkkiä pitkä.'),
+            .max(validation.samples.description.maxlength, validation.samples.description.maxMessage),
         test: Yup.string()
-            .test('unique', 'Testi on jo lisätty', (test) => {
+            .test('unique', validation.test.uniqueMessage, (test) => {
                 if (!test) {
                     return true
                 }
@@ -116,9 +119,9 @@ const CaseForm = ({ caseToEdit }) => {
                 return true
             }),
         anamnesis: Yup.string()
-            .max(10000, 'Anamneesin tulee olla enintään 10000 merkkiä pitkä.'),
+            .max(validation.anamnesis.maxlength, validation.anamnesis.maxMessage),
         completionText: Yup.string()
-            .max(10000, 'Lopputekstin tulee olla enintään 10000 merkkiä pitkä.')
+            .max(validation.completionText.maxlength, validation.completionText.maxMessage)
     })
     /* schema for validation end */
 
@@ -298,15 +301,15 @@ const CaseForm = ({ caseToEdit }) => {
                                         handleBlur={handleBlur}
                                     ></SelectBacterium>
 
-                                    <Form.Group controlId='anamnesis'>
+                                    <Form.Group id='anamnesis'>
                                         <Form.Label>Anamneesi</Form.Label>
-                                        <Form.Control
-                                            as='textarea'
-                                            rows='3'
+                                        <TextEditField
+                                            id='anamnesisField'
                                             value={anamnesis}
-                                            onChange={(event) => {
-                                                setAnamnesis(event.target.value)
-                                                setFieldValue('anamnesis', event.target.value)
+                                            onChange={(value) => {
+                                                console.log(value)
+                                                setAnamnesis(value)
+                                                setFieldValue('anamnesis', value)
                                             }}
                                             onBlur={handleBlur}
                                             isInvalid={errors.anamnesis && touched.anamnesis}
@@ -315,14 +318,14 @@ const CaseForm = ({ caseToEdit }) => {
                                             {errors.anamnesis}
                                         </Form.Control.Feedback>
                                     </Form.Group>
-                                    <Form.Group controlId='completionText'>
+                                    <Form.Group id='completionText'>
                                         <Form.Label>Lopputeksti</Form.Label>
-                                        <Form.Control
-                                            as='textarea'
-                                            rows='3' value={completionText}
-                                            onChange={(event) => {
-                                                setCompletionText(event.target.value)
-                                                setFieldValue('completionText', event.target.value)
+                                        <TextEditField
+                                            id='completionTextField'
+                                            value={completionText}
+                                            onChange={(value) => {
+                                                setCompletionText(value)
+                                                setFieldValue('completionText', value)
                                             }}
                                             isInvalid={errors.completionText && touched.completionText}
                                             onBlur={handleBlur}
@@ -415,7 +418,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         variant='success'
                                         type='submit'
                                         id='addCase'>
-                                            Tallenna tapaus
+                                        Tallenna tapaus
                                     </Button>}
 
                                     { Object.keys(errors).length > 0 ?

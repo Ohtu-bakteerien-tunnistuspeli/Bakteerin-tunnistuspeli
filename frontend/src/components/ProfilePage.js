@@ -31,6 +31,7 @@ const ProfilePage = () => {
                 modalHeader={`Käyttäjän ${user.username} poistamisen varmennus`}
                 warningText='Olet poistamassa käyttäjätunnustasi.
                 Et voi palauttaa käyttäjätunnustasi, kun olet sen poistanut.
+                Käyttäjätunnuksen poistaminen poistaa myös suoritukset.
                 Jos olet varma, että haluat poistaa käyttäjätunnksesi, niin
                 kirjoita käyttäjänimesi ja paina nappia poistaaksesi profiilisi.'
                 functionToExecute={userDelete}

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { login } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 const Login = () => {
     const dispatch = useDispatch()
     const history = useHistory()
@@ -35,6 +36,7 @@ const Login = () => {
                     <Button id="submit" variant="primary" type="submit">
                         Kirjaudu
                     </Button>
+                    <Form.Label>Unohtuiko salasana? Klikkaa <Link to='/kertakayttoinensalasana'>tästä</Link>.</Form.Label>
                 </Form.Group>
             </Form>
         </div>

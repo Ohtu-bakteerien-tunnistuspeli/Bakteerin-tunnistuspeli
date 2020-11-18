@@ -39,7 +39,9 @@ const update = (username, email, password, studentNumber, classGroup, token) => 
         .then(response => response.data)
         .catch(error => error.response.data)
 
+const singleUsePasswordGenerate = (credentials) => {
+    return axios.post(`${baseUrl}/singleusepassword`, credentials).then(response => response.data).catch(error => error.response.data)
 }
-export default { get, login, register, deleteUser, promote, demote, update }
 
+export default { get, login, register, deleteUser, promote, demote, update, singleUsePasswordGenerate }
 

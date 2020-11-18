@@ -31,7 +31,7 @@ beforeEach(async () => {
 
     // Create users
     const adminPwd = await bcrypt.hash('admin', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPwd, admin: true, email: 'example@com' })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPwd, admin: true, email: 'example666@com' })
     await admin.save()
 
     const userPwd = await bcrypt.hash('user', 10)

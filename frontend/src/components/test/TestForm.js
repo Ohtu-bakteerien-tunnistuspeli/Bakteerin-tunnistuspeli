@@ -12,15 +12,15 @@ import { deleteTest, updateTest } from '../../reducers/testReducer'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import Notification from '../utility/Notification'
-
+import { setNotification } from '../../reducers/notificationReducer'
 
 const TestForm = ({ testToEdit }) => {
-
     /* style parameters */
     const style = { margin: '10px', float: 'right' }
     /* style parameters end */
 
     /* initial parameters */
+    const validation = useSelector(state => state.language)?.validation?.testCase
     const tests = useSelector(state => state.test)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
@@ -61,13 +61,27 @@ const TestForm = ({ testToEdit }) => {
 
     /* form control */
     const addTests = () => {
-        dispatch(addTest(testName,
-            testType,
-            controlImage,
-            positiveResultImage,
-            negativeImage,
-            bacteriaSpecificImages,
-            user.token, handleClose))
+        const totalFileSize = countTotalFileSizeForImages()
+        if (totalFileSize <= 50e6) {
+            dispatch(addTest(testName,
+                testType,
+                controlImage,
+                positiveResultImage,
+                negativeImage,
+                bacteriaSpecificImages,
+                user.token, handleClose))
+        } else {
+            dispatch(setNotification({ message: 'Tallennus epäonnistui, sillä tallennettavien kuvien yhteiskoko ylitti 50 MB.', success: false, show: true }))
+        }
+    }
+
+    const countTotalFileSizeForImages = () => {
+        let totalSize = 0
+        totalSize += controlImage && controlImage.size ? controlImage.size : 0
+        totalSize += positiveResultImage && positiveResultImage.size ? positiveResultImage.size : 0
+        totalSize += negativeImage && negativeImage.size ? negativeImage.size : 0
+        bacteriaSpecificImages.forEach(image => totalSize += image.size ? image.size : 0)
+        return totalSize
     }
 
     const resetTestForm = () => {
@@ -98,24 +112,32 @@ const TestForm = ({ testToEdit }) => {
         const photosToDelete = deletePhotos
         const token = user.token
         const id = testToEdit.id
-        dispatch(updateTest(id, testName,
-            testType, controlImage,
-            positiveResultImage, negativeImage,
-            bacteriaSpecificImages,
-            photosToDelete,
-            deleteSpecifics,
-            token, handleClose, setDeletePhotos, setDeleteSpecifics))
+        const totalFileSize = countTotalFileSizeForImages()
+        if (totalFileSize <= 50e6) {
+            dispatch(updateTest(id, testName,
+                testType, controlImage,
+                positiveResultImage, negativeImage,
+                bacteriaSpecificImages,
+                photosToDelete,
+                deleteSpecifics,
+                token, handleClose, setDeletePhotos, setDeleteSpecifics))
+        } else {
+            dispatch(setNotification({ message: 'Tallennus epäonnistui, sillä tallennettavien kuvien yhteiskoko ylitti 50 MB.', success: false, show: true }))
+        }
     }
     /* form control end */
 
 
     /* schema for validation */
+    if(!validation) {
+        return<></>
+    }
     const TestSchema = Yup.object().shape({
         testName: Yup.string()
-            .min(2, 'Nimen tulee olla vähintään 2 merkkiä pitkä.')
-            .max(100, 'Nimen tulee olla enintään 100 merkkiä pitkä.')
-            .required('Pakollinen kenttä.')
-            .test('unique', 'Nimen tulee olla uniikki', function (name) {
+            .min(validation.name.minlength, validation.name.minMessage)
+            .max(validation.name.maxlength, validation.name.maxMessage)
+            .required(validation.name.requiredMessage)
+            .test('unique', validation.name.uniqueMessage, (name) => {
                 if (testToEdit) {
                     if (name === testToEdit.name) {
                         return true
@@ -127,9 +149,9 @@ const TestForm = ({ testToEdit }) => {
                 return true
             }),
         testType: Yup.string()
-            .required('Pakollinen kenttä'),
+            .required(validation.type.requiredMessage),
         bacteriumName: Yup.string()
-            .test('unique', 'bakteerille on jo lisätty kuva', function (bacteriumName) {
+            .test('unique', validation.bacteriumImage.uniqueMessage, (bacteriumName) => {
                 if (!bacteriumName || bacteriumName === '') {
                     return true
                 }
@@ -154,12 +176,12 @@ const TestForm = ({ testToEdit }) => {
         if (!bacterium) {
             return
         }
-        if (bacteriaSpecificImage.image !== 'undefined' && bacteriaSpecificImage.bacterium !== '') {
-            if (bacteriaSpecificImage.name !== '' && bacteriaSpecificImage.name !== 'default' && bacterium !== 'default') {
-                var newFile = null
-                if (bacteriaSpecificImages === undefined || bacteriaSpecificImage.name === 'undefined') {
-                    var file = bacteriaSpecificImage
-                    var blob = file.slice(0, file.size, file.type)
+        if (bacteriaSpecificImage !== INITIAL_STATE) {
+            if (bacteriaSpecificImage.name !== 'default' && bacterium !== 'default') {
+                let newFile = null
+                if (bacteriaSpecificImages === undefined || bacteriaSpecificImage.name !== bacterium) {
+                    let file = bacteriaSpecificImage
+                    let blob = file.slice(0, file.size, file.type)
                     newFile = new File([blob], bacterium, { type: file.type })
                     setBacteriaImage(newFile)
                 }
@@ -176,18 +198,17 @@ const TestForm = ({ testToEdit }) => {
     }
 
     const removeBacteriaSpecificImage = (image) => {
-        let name
-        image.name ? name = image.name : name = image.bacterium.name
+        let name = image.name ? image.name : image.bacterium.name
         setDeleteSpecifics(deleteSpecifics.concat(name))
-        setBacteriaImages(bacteriaSpecificImages.filter(img => img.name !== name))
+        setBacteriaImages(bacteriaSpecificImages.filter(img => img.bacterium?.name !== name && img.name !== name))
         setAddedBacteriaImage(addedBacteriaImage.filter(bac => bac !== name))
     }
 
     const handleSpecificImg = (event) => {
         if (event.target.files[0]) {
-            var file = event.target.files[0]
-            var blob = file.slice(0, file.size, file.type)
-            var newFile = new File([blob], bacterium, { type: file.type })
+            let file = event.target.files[0]
+            let blob = file.slice(0, file.size, file.type)
+            let newFile = new File([blob], bacterium, { type: file.type })
             setBacteriaImage(newFile)
         }
     }
@@ -329,7 +350,10 @@ const TestForm = ({ testToEdit }) => {
                                             }
                                             <DeleteButton
                                                 id='deleteNegative'
-                                                onClick={() => { setNeg(false); setDeletePhotos({ ...deletePhotos, neg: true }) }}
+                                                onClick={() => {
+                                                    setNeg(false)
+                                                    setDeletePhotos({ ...deletePhotos, neg: true })
+                                                }}
                                                 text='Poista negatiivinen kuva'
                                             ></DeleteButton>
                                         </Form.Group>

@@ -23,10 +23,10 @@ beforeEach(async () => {
     const promiseArray = testObjects.map(test => test.save())
     await Promise.all(promiseArray)
     const adminPassword = await bcrypt.hash('admin', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example@com' })
+    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example111111@com' })
     await admin.save()
     const userPassword = await bcrypt.hash('user', 10)
-    const user = new User({ username: 'userNew', passwordHash: userPassword, admin: false, email: 'example@com' })
+    const user = new User({ username: 'userNew', passwordHash: userPassword, admin: false, email: 'examples1@com' })
     await user.save()
 })
 
@@ -129,7 +129,7 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest2)
             .expect(400)
-        expect(res2.body.error).toEqual('Test validation failed: name: Testin nimen tulee olla uniikki.')
+        expect(res2.body.error).toEqual('Test validation failed: name: Nimen tulee olla uniikki.')
         const testsAfterAdding = await api
             .get('/api/test')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -178,7 +178,7 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest)
             .expect(400)
-        expect(res.body.error).toEqual('Test validation failed: name: Testin nimi on pakollinen.')
+        expect(res.body.error).toEqual('Test validation failed: name: Nimi on pakollinen.')
     })
 
     test('test type is required', async () => {
@@ -196,7 +196,7 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest)
             .expect(400)
-        expect(res.body.error).toEqual('Test validation failed: type: Testin tyyppi on pakollinen.')
+        expect(res.body.error).toEqual('Test validation failed: type: Tyyppi on pakollinen.')
     })
 
     test('test name length should be at least two', async () => {
@@ -222,7 +222,7 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest1)
             .expect(400)
-        expect(res1.body.error).toEqual('Test validation failed: name: Testin nimen tulee olla vähintään 2 merkkiä pitkä.')
+        expect(res1.body.error).toEqual('Test validation failed: name: Nimen tulee olla vähintään 2 merkkiä pitkä.')
         await api
             .post('/api/test')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -257,7 +257,7 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest1)
             .expect(400)
-        expect(res1.body.error).toEqual('Test validation failed: type: Testin tyypin tulee olla vähintään 2 merkkiä pitkä.')
+        expect(res1.body.error).toEqual('Test validation failed: type: Tyypin tulee olla vähintään 2 merkkiä pitkä.')
         await api
             .post('/api/test')
             .set('Authorization', `bearer ${user.body.token}`)
@@ -294,7 +294,7 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest2)
             .expect(400)
-        expect(res.body.error).toEqual('Test validation failed: name: Testin nimen tulee olla enintään 100 merkkiä pitkä.')
+        expect(res.body.error).toEqual('Test validation failed: name: Nimen tulee olla enintään 100 merkkiä pitkä.')
     })
 
     test('test type cannot be longer than 100 characters', async () => {
@@ -322,7 +322,7 @@ describe('addition of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(newTest2)
             .expect(400)
-        expect(res.body.error).toEqual('Test validation failed: type: Testin tyypin tulee olla enintään 100 merkkiä pitkä.')
+        expect(res.body.error).toEqual('Test validation failed: type: Tyypin tulee olla enintään 100 merkkiä pitkä.')
     })
 })
 
@@ -448,7 +448,7 @@ describe('modifying of a test', () => {
             .set('Authorization', `bearer ${user.body.token}`)
             .send(modifiedTest)
             .expect(400)
-        expect(modifyRes.body.error).toEqual('Validation failed: name: Testin nimen tulee olla uniikki.')
+        expect(modifyRes.body.error).toEqual('Validation failed: name: Nimen tulee olla uniikki.')
     })
 })
 
