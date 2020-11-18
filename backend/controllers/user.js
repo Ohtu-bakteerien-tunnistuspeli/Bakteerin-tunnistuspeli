@@ -173,7 +173,7 @@ userRouter.post('/singleusepassword', async (request, response) => {
                         pass: config.EMAILPASSWORD,
                     },
                 })
-            } 
+            }
             const singleUsePassword = uuidv4()
             await transporter.sendMail({
                 from: config.EMAILUSER,
