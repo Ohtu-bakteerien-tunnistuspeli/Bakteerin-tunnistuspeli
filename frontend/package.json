@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@testing-library/user-event": "^7.2.1",
     "axios": "^0.20.0",
     "formik": "^2.2.1",
     "jodit-react": "^1.0.66",
@@ -17,8 +18,7 @@
     "react-scripts": "^4.0.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "yup": "^0.29.3",
-    "zxcvbn": "^4.4.2"
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",

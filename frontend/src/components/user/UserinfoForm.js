@@ -12,7 +12,6 @@ import Password from './components/Password'
 import Classgroup from './components/Classgroup'
 import { setNotification } from '../../reducers/notificationReducer'
 import ConfirmWindow from '../utility/ConfirmWindow'
-import { render } from '@testing-library/react'
 
 const UserInfoForm = ( { user } ) => {
 
@@ -107,7 +106,6 @@ const UserInfoForm = ( { user } ) => {
     const onSuccess = () => {
         if (password === passwordAgain) {
             setConfirm(true)
-            render()
         } else {
             dispatch(setNotification({ message: 'Salasanojen tulee olla samat.', success: false }))
         }
