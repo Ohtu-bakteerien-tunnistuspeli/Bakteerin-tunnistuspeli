@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Button, Form } from 'react-bootstrap'
 import Notification from '../utility/Notification.js'
 import { updateUserinfo } from '../../reducers/usersReducer'
@@ -10,11 +10,13 @@ import Email from './components/Email'
 import Studentnumber from './components/Studentnumber'
 import Password from './components/Password'
 import Classgroup from './components/Classgroup'
+import { setNotification } from '../../reducers/notificationReducer'
 
 const UserInfoForm = ( { user } ) => {
 
     /* states */
 
+    const validation = useSelector(state => state.language)?.validation?.user
     const [username, setNewUsername] = useState(user.username)
     const [password, setNewPassword] = useState('*********')
     const [passwordAgain, setNewPasswordAgain] = useState('*********')
@@ -62,20 +64,49 @@ const UserInfoForm = ( { user } ) => {
 
 
     /* schema for validation */
+    if(!validation) {
+        return<></>
+    }
     const UserinfoSchema = Yup.object().shape({
         username: Yup.string()
-            .min(2, 'Käyttäjäimen tulee olla vähintään 2 merkkiä pitkä.')
-            .max(100, 'Käyttäjänimen tulee olla enintään 100 merkkiä pitkä.'),
+            .min(validation.username.minlength, validation.username.minMessage)
+            .max(validation.username.maxlength, validation.username.maxMessage)
+            .required(validation.username.requiredMessage),
         password: Yup.string()
-            .min(3, 'Salasanan tulee olla vähintään 2 merkkiä pitkä.')
-            .max(100, 'Salasanan tulee olla enintään 100 merkkiä pitkä.'),
+            .min(validation.password.minlength, validation.password.minMessage)
+            .max(validation.password.maxlength, validation.password.maxMessage)
+            .required(validation.password.requiredMessage),
         passwordAgain: Yup.string(),
+        email: Yup.string()
+            .required(validation.email.requiredMessage)
+            .email(validation.email.validationMessage)
+            .max(validation.email.maxlength, validation.email.maxMessage),
+        classGroup: Yup.string()
+            .test('unique', validation.classGroup.validationMessage, (classGroup) => {
+                if (!classGroup) {
+                    return true
+                }
+                return /C-+\d+/.test(classGroup)
+            })
+            .max(validation.classGroup.maxlength, validation.classGroup.maxMessage),
+        studentNumber: Yup.string()
+            .test('unique', validation.studentNumber.validationMessage, (studentNumber) => {
+                if (!studentNumber) {
+                    return true
+                }
+                return /^[0-9]+/.test(studentNumber)
+            })
+            .max(validation.studentNumber.maxlength, validation.studentNumber.maxMessage)
     })
     /* schema for validation end */
 
     const onSuccess = () => {
-        saveUpdatedUserinfo()
-        handleClose()
+        if (password === passwordAgain) {
+            saveUpdatedUserinfo()
+            handleClose()
+        } else {
+            dispatch(setNotification({ message: 'Salasanojen tulee olla samat.', success: false }))
+        }
     }
 
     return (
@@ -140,7 +171,7 @@ const UserInfoForm = ( { user } ) => {
                                         touched={touched.password}
                                         onBlur={handleBlur}
                                         setPassword={setNewPassword}></Password>
-                                    <Password typeControlId='password'
+                                    <Password typeControlId='passwordAgain'
                                         password={passwordAgain}
                                         label={'Salasana uudelleen'}
                                         onChange={setFieldValue}
