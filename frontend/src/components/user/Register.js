@@ -4,6 +4,7 @@ import { register } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { Form, Button, Modal } from 'react-bootstrap'
 import { setNotification } from '../../reducers/notificationReducer'
+import PasswordQualityIndicator from './components/PasswordQualityIndicator'
 import GDBRText from './GDPRText'
 import PrivacyText from './PrivacyText'
 import * as Yup from 'yup'
@@ -16,6 +17,7 @@ const Register = () => {
     const [accept, setAccept] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [showModal2, setShowModal2] = useState(false)
+    const checkPassWord = require('zxcvbn')
 
     if(!validation) {
         return<></>
@@ -28,7 +30,23 @@ const Register = () => {
         password: Yup.string()
             .min(validation.password.minlength, validation.password.minMessage)
             .max(validation.password.maxlength, validation.password.maxMessage)
-            .required(validation.password.requiredMessage),
+            .required(validation.password.requiredMessage)
+            .test('level0', validation.password.level0, (password) => {
+                if(password){
+                    if(checkPassWord(password).score === 0){
+                        return false
+                    }
+                }
+                return true
+            })
+            .test('level1', validation.password.level1, (password) => {
+                if(password){
+                    if(checkPassWord(password).score === 1){
+                        return false
+                    }
+                }
+                return true
+            }),
         passwordAgain: Yup.string(),
         email: Yup.string()
             .required(validation.email.requiredMessage)
@@ -90,7 +108,8 @@ const Register = () => {
                     errors,
                     setFieldValue,
                     touched,
-                    handleBlur
+                    handleBlur,
+                    values
                 }) => {
                     return (
                         <Form onSubmit={handleSubmit}>
@@ -155,6 +174,11 @@ const Register = () => {
                                 <Form.Control.Feedback type='invalid' hidden={!touched.password}>
                                     {errors.password}
                                 </Form.Control.Feedback>
+                                <PasswordQualityIndicator
+                                    value={checkPassWord(values.password).score}
+                                    show={values.password.length>0}
+                                    messages={validation.password}
+                                ></PasswordQualityIndicator>
                                 <Form.Label>Salasana toisen kerran:</Form.Label>
                                 <Form.Control
                                     type='password'
