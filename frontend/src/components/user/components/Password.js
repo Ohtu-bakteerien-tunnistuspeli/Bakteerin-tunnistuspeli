@@ -11,7 +11,7 @@ const Password = ({ password, label, setPassword, onChange, error, touched, hand
         <Form.Group controlId='password'>
             <Form.Label>{label}</Form.Label>
             <Form.Control
-                type='text'
+                type='password'
                 isInvalid={error && touched}
                 value={password}
                 onChange={handleChange}
