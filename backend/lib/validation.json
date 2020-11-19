@@ -81,7 +81,12 @@
             "minMessage": "Salasanan täytyy olla vähintään 10 merkkiä pitkä.",
             "maxMessage": "Salasanan täytyy olla enintään 100 merkkiä pitkä.",
             "requiredMessage": "Salasana on pakollinen.",
-            "uniqueMessage": "Salasana ei voi olla sama kuin muut syötetyt kentät."
+            "uniqueMessage": "Salasana ei voi olla sama kuin muut syötetyt kentät.",
+            "level0": "Salasana on erittäin heikko.",
+            "level1": "Salasana on heikko.",
+            "level2": "Salasana on kohtalainen.",
+            "level3": "Salasana on turvallinen.",
+            "level4": "Salasana on erittäin turvallinen."
         },
         "classGroup": {
             "maxlength": 10,
