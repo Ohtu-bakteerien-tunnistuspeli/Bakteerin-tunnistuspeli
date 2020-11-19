@@ -9,6 +9,7 @@ if (process.env.NODE_ENV === 'testserver' || process.env.NODE_ENV === 'developme
     app.use('/api/testing', testingRouter)
 }
 if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+    const generateData = true
     const { MongoMemoryServer } = require('mongodb-memory-server')
     const mongoServer = new MongoMemoryServer()
     const User = require('./models/user')
@@ -151,6 +152,63 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             })
             await initialCase.save()
 
+            if (generateData) {
+                const usersToGenerate = 2000
+                const classGroupsStart = 50
+                const classGroupsEnd = 70
+                const saltRounds = 10
+                const passwordHash = await bcrypt.hash('passwordForAllAccounts10', saltRounds)
+
+                let classGroups = []
+                let cases = [
+                    'Maatila',
+                    'Maitotila 1',
+                    'Maitotila 2',
+                    'Maitotila 3'
+                ]
+                for (let i = classGroupsStart; i <= classGroupsEnd; i++) {
+                    classGroups.push(`C-${i}`)
+                }
+
+                let generatedUsers = []
+                for (let i = 0; i < usersToGenerate; i++) {
+                    const userNumberStr = `${10000 + Math.floor(Math.random() * 1000)}${i}`
+                    const user = new User({
+                        username: `user${userNumberStr}`,
+                        email: `example${userNumberStr}@com`,
+                        studentNumber: userNumberStr,
+                        classGroup: classGroups[Math.floor(Math.random() * classGroups.length)],
+                        admin: false,
+                        passwordHash
+                    })
+                    generatedUsers.push(user)
+                }
+                const userPromiseArray = generatedUsers.map(user => user.save())
+                await Promise.all(userPromiseArray)
+
+                let generatedCredits = []
+                for (let i = 0; i < generatedUsers.length; i++) {
+                    const user = generatedUsers[i]
+                    let testCases = []
+
+                    for (let i = 0; i < cases.length; i++) {
+                        if (Math.random() < 0.5) {
+                            testCases.push(cases[i])
+                        }
+                    }
+                    if (testCases.length > 0) {
+                        const credit = new Credit({
+                            user: user,
+                            testCases: testCases
+                        })
+                        generatedCredits.push(credit)
+                    }
+                }
+                const creditPromiseArray = generatedCredits.map(credit => credit.save())
+                await Promise.all(creditPromiseArray)
+
+                console.log('Data generated')
+            }
         })
     })
 
