@@ -11,6 +11,8 @@ import Studentnumber from './components/Studentnumber'
 import Password from './components/Password'
 import Classgroup from './components/Classgroup'
 import { setNotification } from '../../reducers/notificationReducer'
+import ConfirmWindow from '../utility/ConfirmWindow'
+import { render } from '@testing-library/react'
 
 const UserInfoForm = ( { user } ) => {
 
@@ -23,6 +25,7 @@ const UserInfoForm = ( { user } ) => {
     const [email, setNewEmail] = useState(user.email)
     const [studentNumber, setNewStudentNumber] = useState(user.studentNumber)
     const [classGroup, setNewClassgroup] = useState(user.classGroup)
+    const [showConfirm, setConfirm] = useState(false)
 
     /* states end */
 
@@ -42,13 +45,13 @@ const UserInfoForm = ( { user } ) => {
 
 
     /* form control */
-    const saveUpdatedUserinfo = () => {
+    const saveUpdatedUserinfo = (props) => {
         const token = user.token
-
-        if(password === passwordAgain) {
+        const oldPassword = props
+        if (password === passwordAgain) {
             dispatch(updateUserinfo(username,
-                email, password, studentNumber,
-                classGroup, token
+                email, studentNumber, classGroup, oldPassword, password,
+                token
             ))
         }
     }
@@ -60,6 +63,7 @@ const UserInfoForm = ( { user } ) => {
         setNewClassgroup(user.classGroup)
         setNewPassword('*********')
         setNewPasswordAgain('*********')
+        setConfirm(false)
     }
 
 
@@ -102,11 +106,17 @@ const UserInfoForm = ( { user } ) => {
 
     const onSuccess = () => {
         if (password === passwordAgain) {
-            saveUpdatedUserinfo()
-            handleClose()
+            setConfirm(true)
+            render()
         } else {
             dispatch(setNotification({ message: 'Salasanojen tulee olla samat.', success: false }))
         }
+    }
+
+    const confirmChanges = (props) => {
+        const oldPassword = props
+        saveUpdatedUserinfo(oldPassword)
+        handleClose()
     }
 
     return (
@@ -194,6 +204,25 @@ const UserInfoForm = ( { user } ) => {
                                         onBlur={handleBlur}
                                         setClassgroup={setNewClassgroup}></Classgroup>
                                     <Button id={'updateUserinfo'} variant='success' type='submit'>Päivitä Tiedot</Button>
+                                    { showConfirm ?
+                                        <ConfirmWindow
+                                            listedUser={user}
+                                            buttonId='updateUserInfo'
+                                            modalOpenButtonText='Vahvista proffilitietojen päivitys'
+                                            modalOpenButtonVariant='success'
+                                            modalHeader={`Käyttäjän ${user.username} profiilitietojen muuttamisen varmennus`}
+                                            warningText='Ole hyvä ja anna tämänhetkinen salasanasi vahvistaaksesi
+                                            henkilöllisyytesi ja tallentaaksesi profiilisi muutokset.'
+                                            functionToExecute={confirmChanges}
+                                            executeButtonText='Tallenna muutokset'
+                                            executeButtonVariant='success'
+                                            showImmediately={true}
+                                            password={true}
+                                            parameter={true}
+                                        />
+                                        :
+                                        <></>
+                                    }
                                 </Form>
                             )}}
                     </Formik>

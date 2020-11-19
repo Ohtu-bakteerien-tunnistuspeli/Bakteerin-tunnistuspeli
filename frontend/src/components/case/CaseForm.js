@@ -307,7 +307,6 @@ const CaseForm = ({ caseToEdit }) => {
                                             id='anamnesisField'
                                             value={anamnesis}
                                             onChange={(value) => {
-                                                console.log(value)
                                                 setAnamnesis(value)
                                                 setFieldValue('anamnesis', value)
                                             }}

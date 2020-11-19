@@ -7,7 +7,7 @@ const config = require('../utils/config')
 const nodemailer = require('nodemailer')
 const { v4: uuidv4 } = require('uuid')
 const validation = config.validation.user
-const checkPassWord = require('zxcvbn');
+const checkPassWord = require('zxcvbn')
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body

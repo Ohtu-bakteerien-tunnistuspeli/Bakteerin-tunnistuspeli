@@ -93,9 +93,9 @@ export const zeroUsers = () => {
     }
 }
 
-export const updateUserinfo = (username, email, studentNumber, classGroup, password, token) => {
+export const updateUserinfo = (username, email, studentNumber, classGroup, oldPassword, password, token) => {
     return async dispatch => {
-        const userInfo = await userService.update(username, email, studentNumber, classGroup, password, token )
+        const userInfo = await userService.update(username, email, studentNumber, classGroup, oldPassword, password, token )
         if (userInfo.error) {
             dispatch(setNotification({ message: userInfo.error.substring(userInfo.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {

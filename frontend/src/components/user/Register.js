@@ -17,7 +17,7 @@ const Register = () => {
     const [accept, setAccept] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [showModal2, setShowModal2] = useState(false)
-    const checkPassWord = require('zxcvbn')
+    const checkPassWord = require('zxcvbn') // eslint-disable-line
 
     if(!validation) {
         return<></>

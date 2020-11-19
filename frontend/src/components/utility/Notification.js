@@ -13,7 +13,8 @@ const Notification = () => {
         top: '80px',
         right: '80px',
         width: '30%',
-        textAlign: 'center'
+        textAlign: 'center',
+        zIndex: 99999
     }
 
     const styleFail = {
@@ -23,7 +24,8 @@ const Notification = () => {
         top: '80px',
         right: '80px',
         width: '30%',
-        textAlign: 'center'
+        textAlign: 'center',
+        zIndex: 99999
     }
     /* style parameters end */
 

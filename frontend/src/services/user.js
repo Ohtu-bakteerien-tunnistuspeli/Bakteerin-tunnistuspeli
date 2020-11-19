@@ -33,9 +33,9 @@ const demote = (id, token) => {
     return axios.put(`${baseUrl}/${id}/demote`, {}, config).then(response => response.data).catch(error => error.response.data)
 }
 
-const update = (username, email, password, studentNumber, classGroup, token) => {
+const update = (username, email, studentNumber, classGroup, oldPassword, password, token) => {
     const config = { headers: { Authorization: token } }
-    return axios.put(baseUrl, { newUsername: username, newEmail: email, password: password, newPassword: password, newStudentNumber: studentNumber, newClassGroup: classGroup }, config)
+    return axios.put(baseUrl, { newUsername: username, newEmail: email, password: oldPassword, newPassword: password, newStudentNumber: studentNumber, newClassGroup: classGroup }, config)
         .then(response => response.data)
         .catch(error => error.response.data)
 }
