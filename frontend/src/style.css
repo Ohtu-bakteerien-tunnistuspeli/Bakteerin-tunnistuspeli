@@ -129,3 +129,9 @@ h2 {
 .small-margin {
     margin: 2px;
 }
+
+.required-field::after {
+    content: " *";
+    color: red;
+  }
+

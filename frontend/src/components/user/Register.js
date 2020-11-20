@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
-import { Form, Button, Modal } from 'react-bootstrap'
+import { Form, Button, Modal, InputGroup } from 'react-bootstrap'
 import { setNotification } from '../../reducers/notificationReducer'
 import PasswordQualityIndicator from './components/PasswordQualityIndicator'
 import GDBRText from './GDPRText'
@@ -31,17 +31,9 @@ const Register = () => {
             .min(validation.password.minlength, validation.password.minMessage)
             .max(validation.password.maxlength, validation.password.maxMessage)
             .required(validation.password.requiredMessage)
-            .test('level0', validation.password.level0, (password) => {
+            .test('level0', validation.password.unsecurePasswordMessage, (password) => {
                 if(password){
-                    if(checkPassWord(password).score === 0){
-                        return false
-                    }
-                }
-                return true
-            })
-            .test('level1', validation.password.level1, (password) => {
-                if(password){
-                    if(checkPassWord(password).score === 1){
+                    if(checkPassWord(password).score === 0 || checkPassWord(password).score === 1){
                         return false
                     }
                 }
@@ -114,7 +106,7 @@ const Register = () => {
                     return (
                         <Form onSubmit={handleSubmit}>
                             <Form.Group>
-                                <Form.Label>Käyttäjänimi:</Form.Label>
+                                <Form.Label className="required-field">Käyttäjänimi</Form.Label>
                                 <Form.Control
                                     type='text'
                                     id='username'
@@ -126,7 +118,7 @@ const Register = () => {
                                 <Form.Control.Feedback type='invalid' hidden={!touched.username}>
                                     {errors.username}
                                 </Form.Control.Feedback>
-                                <Form.Label>Sähköposti:</Form.Label>
+                                <Form.Label className="required-field">Sähköposti</Form.Label>
                                 <Form.Control
                                     type='text'
                                     id='email'
@@ -138,7 +130,7 @@ const Register = () => {
                                 <Form.Control.Feedback type='invalid' hidden={!touched.email}>
                                     {errors.email}
                                 </Form.Control.Feedback>
-                                <Form.Label>Opiskelijanumero:</Form.Label>
+                                <Form.Label>Opiskelijanumero</Form.Label>
                                 <Form.Control
                                     type='text'
                                     id='studentNumber'
@@ -150,20 +142,25 @@ const Register = () => {
                                 <Form.Control.Feedback type='invalid' hidden={!touched.studentNumber}>
                                     {errors.studentNumber}
                                 </Form.Control.Feedback>
-                                <Form.Label>Vuosikurssi:</Form.Label>
-                                <Form.Control
-                                    type='text'
-                                    id='classGroup'
-                                    name='classGroup'
-                                    defaultValue='C-'
-                                    isInvalid={errors.classGroup && touched.classGroup}
-                                    onChange={(event) => setFieldValue('classGroup', event.target.value)}
-                                    onBlur={handleBlur}
-                                />
+                                <Form.Label>Vuosikurssi</Form.Label>
+                                <InputGroup>
+                                    <InputGroup.Prepend>
+                                        <InputGroup.Text>C-</InputGroup.Text>
+                                    </InputGroup.Prepend>
+                                    <Form.Control
+                                        className="choose-class-field"
+                                        type='number'
+                                        id='classGroup'
+                                        name='classGroup'
+                                        isInvalid={errors.classGroup && touched.classGroup}
+                                        onChange={(event) => setFieldValue('classGroup', event.target.value)}
+                                        onBlur={handleBlur}
+                                    />
+                                </InputGroup>
                                 <Form.Control.Feedback type='invalid' hidden={!touched.classGroup}>
                                     {errors.classGroup}
                                 </Form.Control.Feedback>
-                                <Form.Label>Salasana:</Form.Label>
+                                <Form.Label className="required-field">Salasana</Form.Label>
                                 <Form.Control
                                     type='password'
                                     id='password'
@@ -171,6 +168,9 @@ const Register = () => {
                                     onChange={(event) => setFieldValue('password', event.target.value)}
                                     onBlur={handleBlur}
                                 />
+                                <Form.Text muted>
+                                    {validation.password.instruction}
+                                </Form.Text>
                                 <Form.Control.Feedback type='invalid' hidden={!touched.password}>
                                     {errors.password}
                                 </Form.Control.Feedback>
@@ -179,7 +179,7 @@ const Register = () => {
                                     show={values.password.length>0}
                                     messages={validation.password}
                                 ></PasswordQualityIndicator>
-                                <Form.Label>Salasana toisen kerran:</Form.Label>
+                                <Form.Label className="required-field">Salasana toisen kerran</Form.Label>
                                 <Form.Control
                                     type='password'
                                     id='passwordAgain'
@@ -188,10 +188,10 @@ const Register = () => {
                                     onBlur={handleBlur}
                                 />
                                 <div className='form-group form-inline'>
-                                    <Form.Label>Olen lukenut ja hyväksyn&nbsp;{<a href='#' onClick={() => setShowModal(true)}>käyttöehdot</a>//eslint-disable-line
+                                    <Form.Label className="required-field">Olen lukenut ja hyväksyn&nbsp;{<a href='#' onClick={() => setShowModal(true)}>käyttöehdot</a>//eslint-disable-line
                                     }&nbsp;
                         ja&nbsp;{<a href='#' onClick={() => setShowModal2(true)}>tietosuojailmoituksen</a> //eslint-disable-line
-                                    }:&nbsp;
+                                    }&nbsp;
                                     </Form.Label>
                                     <Form.Check type='checkbox' label='' id='acceptCheckBox' value={accept} onChange={() => setAccept(!accept)} />
                                 </div>
