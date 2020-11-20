@@ -88,7 +88,7 @@
             "level3": "Salasana on turvallinen.",
             "level4": "Salasana on erittäin turvallinen.",
             "unsecurePasswordMessage": "Salasana on liian heikko. Paranna salasanasi turvallisuutta.",
-            "instruction": "Salasanan täytyy olla väintään 10 merkkiä pitkä."
+            "instruction": "Salasanan täytyy olla vähintään 10 merkkiä pitkä ja sen turvallisuuden tulee olla joko kohtalainen, turvallinen tai erittäin turvallinen."
         },
         "classGroup": {
             "maxlength": 10,

@@ -33,7 +33,7 @@ const Register = () => {
             .required(validation.password.requiredMessage)
             .test('level0', validation.password.unsecurePasswordMessage, (password) => {
                 if(password){
-                    if(checkPassWord(password).score === 0 || checkPassWord(password).score === 1){
+                    if(checkPassWord(password).score < 2){
                         return false
                     }
                 }
@@ -153,7 +153,7 @@ const Register = () => {
                                         id='classGroup'
                                         name='classGroup'
                                         isInvalid={errors.classGroup && touched.classGroup}
-                                        onChange={(event) => setFieldValue('classGroup', event.target.value)}
+                                        onChange={(event) => setFieldValue('classGroup', 'C-'+event.target.value)}
                                         onBlur={handleBlur}
                                     />
                                 </InputGroup>
