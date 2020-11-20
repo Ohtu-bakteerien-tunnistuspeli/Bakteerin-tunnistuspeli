@@ -31,7 +31,7 @@ const Register = () => {
             .min(validation.password.minlength, validation.password.minMessage)
             .max(validation.password.maxlength, validation.password.maxMessage)
             .required(validation.password.requiredMessage)
-            .test('level0', validation.password.unsecurePasswordMessage, (password) => {
+            .test('secure', validation.password.unsecurePasswordMessage, (password) => {
                 if(password){
                     if(checkPassWord(password).score < 2){
                         return false
