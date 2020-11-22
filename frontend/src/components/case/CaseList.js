@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CaseListing from './CaseListing'
 import CaseForm from './CaseForm'
@@ -6,15 +6,29 @@ import { deleteCase } from '../../reducers/caseReducer'
 import { Table } from 'react-bootstrap'
 
 const CaseList = () => {
+
     const cases = useSelector(state => state.case)?.sort((case1, case2) => case1.name.localeCompare(case2.name))
+    const [casesToShow, setCasesToShow] = useState(cases)
     const user = useSelector(state => state.user)
+    const [filterByName, setFilterByName] = useState('')
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (filterByName === '') {
+            setCasesToShow(cases)
+        } else {
+            setCasesToShow(cases.filter(c => c.name && c.name.startsWith(filterByName)))
+        }
+
+    }, [filterByName, cases])
+
     const delCase = caseToDelete => {
         dispatch(deleteCase(caseToDelete, user.token))
     }
 
     return (
         <div>
+            Filtteröi nimellä <input id='caseNameFilter' type='text' value={filterByName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
             <h2>Tapaukset</h2>
             {cases.length !== 0 ?
                 <Table id='caseTable' borderless hover>
@@ -32,7 +46,7 @@ const CaseList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {cases.map(caseItem =>
+                        {casesToShow.map(caseItem =>
                             <CaseListing key={caseItem.id} caseItem={caseItem} admin={user?.admin} deleteCase={delCase} />
                         )}
                     </tbody>
