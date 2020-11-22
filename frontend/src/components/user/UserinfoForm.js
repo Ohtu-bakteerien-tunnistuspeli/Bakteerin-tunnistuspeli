@@ -48,10 +48,14 @@ const UserInfoForm = ( { user } ) => {
         const token = user.token
         const oldPassword = props
         if (password === passwordAgain) {
-            dispatch(updateUserinfo(username,
-                email, studentNumber, classGroup, oldPassword, password,
-                token
-            ))
+            try {
+                dispatch(updateUserinfo(username,
+                    email, studentNumber, classGroup, oldPassword, password,
+                    token, handleClose
+                ))
+            } catch(e) {
+                return e
+            }
         }
     }
 
@@ -113,8 +117,11 @@ const UserInfoForm = ( { user } ) => {
 
     const confirmChanges = (props) => {
         const oldPassword = props
-        saveUpdatedUserinfo(oldPassword)
-        handleClose()
+        try {
+            saveUpdatedUserinfo(oldPassword)
+        } catch(e) {
+            return e
+        }
     }
 
     return (

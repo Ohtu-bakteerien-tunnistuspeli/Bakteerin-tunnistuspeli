@@ -93,17 +93,27 @@ export const zeroUsers = () => {
     }
 }
 
-export const updateUserinfo = (username, email, studentNumber, classGroup, oldPassword, password, token) => {
+export const updateUserinfo = (username, email, studentNumber, classGroup, oldPassword, password, token, handleClose) => {
     return async dispatch => {
         const userInfo = await userService.update(username, email, studentNumber, classGroup, oldPassword, password, token )
         if (userInfo.error) {
             dispatch(setNotification({ message: userInfo.error.substring(userInfo.error.indexOf('name: ') + 6), success: false, show: true }))
+            if (handleClose) {
+                try {
+                    throw new Error('')
+                } catch(e) {
+                    return e
+                }
+            }
         } else {
             dispatch(setNotification({ message: 'Käyttäjätietoja muokattu onnistuneesti', success: true, show: true }))
             dispatch({
                 type: 'UPDATE_USERINFO',
                 data: userInfo
             })
+            if (handleClose) {
+                handleClose()
+            }
         }
     }
 }

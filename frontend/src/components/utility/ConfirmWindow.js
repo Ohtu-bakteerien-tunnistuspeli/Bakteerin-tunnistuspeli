@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Modal, Button, Form } from 'react-bootstrap'
-import { setNotification } from '../../reducers/notificationReducer'
 
 const ConfirmWindow = ({ listedUser, buttonId, modalOpenButtonText, modalOpenButtonVariant, modalHeader, warningText, functionToExecute, executeButtonText, executeButtonVariant, showImmediately, password, parameter }) => {
     const [confirmText, setConfirmText] = useState('')
     const [show, setShow] = useState(showImmediately ? true : false)
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
-    const dispatch = useDispatch()
     return (
         <>
             {showImmediately ? <></>
@@ -39,12 +36,7 @@ const ConfirmWindow = ({ listedUser, buttonId, modalOpenButtonText, modalOpenBut
                     }
                     { parameter ?
                         <Button id="confirm" variant={executeButtonVariant} type="button" onClick={() => {
-                            try {
-                                functionToExecute(confirmText)
-                            } catch {
-                                dispatch(setNotification({ message: 'Salasana oli väärä.', success: false }))
-                            }
-                            handleClose()
+                            functionToExecute(confirmText)
                         }}>{executeButtonText}</Button>
                         :
                         <Button id="confirm" variant={executeButtonVariant} type="button" disabled={confirmText !== listedUser.username} onClick={() => {
