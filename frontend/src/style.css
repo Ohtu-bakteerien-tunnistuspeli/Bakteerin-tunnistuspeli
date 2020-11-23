@@ -1,13 +1,18 @@
+:root {
+    --attachVar: fixed;
+}
+
 body {
     background: url(background.jpg);
     background-size: cover;
-    background-attachment: fixed;
+    background-attachment: var(--attachVar);
 }
 
 @media screen and (hover: none) {
     body{
         background: url(background.jpg);
         background-size: cover;
+        background-attachment: fixed;
     }
 }
 

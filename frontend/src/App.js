@@ -18,6 +18,7 @@ import Notification from './components/utility/Notification'
 import Footer from './components/Footer'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 import { getLanguage } from './reducers/languageReducer'
+import useDetectMobile from './components/utility'
 
 const App = () => {
     const history = useHistory()
@@ -37,8 +38,14 @@ const App = () => {
         window.localStorage.setItem('lastPage', window.location.pathname)
         window.localStorage.setItem('gameState', JSON.stringify(game))
     }
-
     window.onbeforeunload = handleOnBeforeUnload
+
+    const mobile = useDetectMobile()
+    if (mobile) {
+        document.body.style.setProperty('--attachVar', 'scroll')
+    } else {
+        document.body.style.setProperty('--attachVar', 'fixed')
+    }
 
     return (
         <div className='page'>
