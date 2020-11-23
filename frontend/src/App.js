@@ -18,7 +18,7 @@ import Notification from './components/utility/Notification'
 import Footer from './components/Footer'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 import { getLanguage } from './reducers/languageReducer'
-import useDetectMobile from './components/utility'
+import useDetectMobile from './components/utility/useDetectMobile'
 
 const App = () => {
     const history = useHistory()
