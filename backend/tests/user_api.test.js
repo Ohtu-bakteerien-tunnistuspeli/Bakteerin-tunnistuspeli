@@ -43,7 +43,7 @@ describe('register ', () => {
             .post('/api/user/register')
             .send({
                 username: 'testUser',
-                password: 'testPassword',
+                password: 'test password hotairballoon',
                 email: 'example1@com'
             })
             .expect(200)
@@ -51,7 +51,7 @@ describe('register ', () => {
             .post('/api/user/login')
             .send({
                 username: 'testUser',
-                password: 'testPassword'
+                password: 'test password hotairballoon'
             })
             .expect(200)
     })
@@ -60,7 +60,7 @@ describe('register ', () => {
             .post('/api/user/register')
             .send({
                 username: 'testUser',
-                password: 'testPassword',
+                password: 'test password hotairballoon',
                 email: 'example2@com',
                 classGroup: 'C-76',
                 studentNumber: '1234567'
@@ -70,14 +70,14 @@ describe('register ', () => {
             .post('/api/user/login')
             .send({
                 username: 'testUser',
-                password: 'testPassword'
+                password: 'test password hotairballoon'
             })
             .expect(200)
     })
     test('invalid user cannot register', async () => {
         const invalidUsers = [{
             username: 'usernameNew',
-            password: 'testPassword',
+            password: 'test password hotairballoon',
             email: 'example3@com'
         }, {
             username: 'usernameNew'
@@ -87,28 +87,28 @@ describe('register ', () => {
             email: 'example4@com'
         }, {
             username: 'u',
-            password: 'testPassword',
+            password: 'test password hotairballoon',
             email: 'example5@com'
         }, {
             username: 'uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu',
-            password: 'testPassword',
+            password: 'test password hotairballoon',
             email: 'example6@com'
         }, {
             username: 'uniqueUser',
-            password: 'testPassword',
+            password: 'test password hotairballoon',
             classGroup: '123',
             email: 'example7@com'
         }, {
             username: 'usernameNew',
-            password: 'testPassword',
+            password: 'test password hotairballoon',
             email: 'examplecom8@'
         }, {
             username: 'usernameNew',
-            password: 'testPassword',
+            password: 'test password hotairballoon',
             email: ''
         }, {
             username: 'usernameNew',
-            password: 'testPassword',
+            password: 'test password hotairballoon',
             classGroup: '123',
             email: 'abcdf'
         }]
@@ -525,14 +525,14 @@ describe('modifying user', () => {
             await api
                 .put('/api/user')
                 .set('Authorization', `bearer ${loginResponse.body.token}`)
-                .send({ password: 'admin', newPassword: 'newAdminnewAdminnewAdmin' })
+                .send({ password: 'admin', newPassword: 'newPasswordThatIsLongEnough123' })
                 .expect(200)
                 .expect('Content-Type', /application\/json/)
             await api
                 .post('/api/user/login')
                 .send({
                     username: 'adminNew',
-                    password: 'newAdminnewAdminnewAdmin'
+                    password: 'newPasswordThatIsLongEnough123'
                 })
                 .expect(200)
         })
@@ -548,13 +548,13 @@ describe('modifying user', () => {
             await api
                 .put('/api/user')
                 .set('Authorization', `bearer ${loginResponse.body.token}`)
-                .send({ password: 'password', newPassword: 'newPassword' })
+                .send({ password: 'password', newPassword: 'newPassword123' })
                 .expect(200)
             await api
                 .post('/api/user/login')
                 .send({
                     username: 'usernameNew',
-                    password: 'newPassword'
+                    password: 'newPassword123'
                 })
                 .expect(200)
         })

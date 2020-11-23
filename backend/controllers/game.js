@@ -125,13 +125,11 @@ gameRouter.post('/:id/checkTests', async (request, response) => {
             }
 
             let imageUrl
-            if (latestTestForCase.positive) {
-                const bacteriaSpecificImages = latestTestForCase.test.bacteriaSpecificImages.filter(bacteriaImage => bacteriaImage.bacterium.name === caseToCheck.bacterium.name)
-                if (bacteriaSpecificImages.length > 0) {
-                    imageUrl = bacteriaSpecificImages[0].url
-                } else {
-                    imageUrl = latestTestForCase.test.positiveResultImage.url
-                }
+            const bacteriaSpecificImages = latestTestForCase.test.bacteriaSpecificImages.filter(bacteriaImage => bacteriaImage.bacterium.name === caseToCheck.bacterium.name)
+            if (bacteriaSpecificImages.length > 0) {
+                imageUrl = bacteriaSpecificImages[0].url
+            } else if (latestTestForCase.positive) {
+                imageUrl = latestTestForCase.test.positiveResultImage.url
             } else {
                 imageUrl = latestTestForCase.test.negativeResultImage.url
             }

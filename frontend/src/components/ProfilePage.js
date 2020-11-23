@@ -5,6 +5,7 @@ import { deleteUser } from '../reducers/usersReducer'
 import { logout } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import ProfilePageUserInfo from './ProfilePageUserInfo'
+import UserinfoForm from './user/UserinfoForm'
 
 const ProfilePage = () => {
     const user = useSelector(state => state.user)
@@ -37,6 +38,9 @@ const ProfilePage = () => {
                 executeButtonText='Poista käyttäjä'
                 executeButtonVariant='danger'
             />
+            <div>
+                <UserinfoForm user={user}></UserinfoForm>
+            </div>
         </div>
     )
 }

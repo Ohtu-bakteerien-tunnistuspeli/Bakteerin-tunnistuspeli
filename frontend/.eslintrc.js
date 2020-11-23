@@ -1,9 +1,9 @@
-module.exports = {
+module.exports = { // eslint-disable-line
     'env': {
         'browser': true,
         'es6': true,
-//        "cypress/globals": true,
-//        "jest/globals": true
+        //        "cypress/globals": true,
+        //        "jest/globals": true
     },
     'extends': [
         'eslint:recommended',
@@ -18,24 +18,24 @@ module.exports = {
     },
     'settings': {
         'react': {
-          'createClass': 'createReactClass',
-          'pragma': 'React',
-          'version': 'detect',
-          'flowVersion': '0.53'
+            'createClass': 'createReactClass',
+            'pragma': 'React',
+            'version': 'detect',
+            'flowVersion': '0.53'
         },
         'propWrapperFunctions': [
-          { 'property': 'freeze', 'object': 'Object' },
-          { 'property': 'myFavoriteWrapper' }
+            { 'property': 'freeze', 'object': 'Object' },
+            { 'property': 'myFavoriteWrapper' }
         ],
         'linkComponents': [
-          'Hyperlink',
-          { 'name': 'Link', 'linkAttribute': 'to' }
+            'Hyperlink',
+            { 'name': 'Link', 'linkAttribute': 'to' }
         ]
-      },
-    "plugins": [
-        "react",
- //       "cypress",
- //       "jest"
+    },
+    'plugins': [
+        'react',
+        //       "cypress",
+        //       "jest"
     ],
     'rules': {
         'indent': [

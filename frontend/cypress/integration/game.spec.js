@@ -1,11 +1,8 @@
 describe('Playing game', () => {
     beforeEach(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.request('POST', 'http://localhost:3001/api/testing/cases')
         cy.login({ username: 'admin', password: 'admin' })
-        cy.visit('http://localhost:3000')
     })
     describe('Game can be played', () => {
         it('Admin can choose a case which to play', () => {
@@ -178,8 +175,6 @@ describe('Playing game', () => {
     })
 
     after(() => {
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_bacteria')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_tests')
-        cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
+        cy.request('POST', 'http://localhost:3001/api/testing/init')
     })
 })

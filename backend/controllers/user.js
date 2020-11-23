@@ -7,6 +7,8 @@ const config = require('../utils/config')
 const nodemailer = require('nodemailer')
 const { v4: uuidv4 } = require('uuid')
 const validation = config.validation.user
+const library = config.library.backend.user
+const checkPassword = require('zxcvbn')
 
 userRouter.post('/login', async (request, response) => {
     const body = request.body
@@ -15,7 +17,7 @@ userRouter.post('/login', async (request, response) => {
     try {
         if (!user) {
             return response.status(400).json({
-                error: 'Invalid username or password'
+                error: library.invalidUsernameOrPassword
             })
         }
         let passwordCorrect = await bcrypt.compare(body.password, user.passwordHash)
@@ -29,12 +31,12 @@ userRouter.post('/login', async (request, response) => {
         }
         if (!passwordCorrect) {
             return response.status(400).json({
-                error: 'Invalid username or password'
+                error: library.invalidUsernameOrPassword
             })
         }
     } catch (error) {
         return response.status(400).json({
-            error: 'Invalid username or password'
+            error: library.invalidUsernameOrPassword
         })
     }
 
@@ -70,6 +72,9 @@ userRouter.post('/register', async (request, response) => {
         body.password === body.email ||
         body.password === body.newStudentNumber) {
         return response.status(400).json({ error: validation.password.uniqueMessage })
+    } else if (checkPassword(body.password).score < 2){
+        return response.status(400).json({ error: validation.password.unsecurePasswordMessage })
+
     } else {
         try {
             const saltRounds = 10
@@ -122,7 +127,7 @@ userRouter.put('/:id/promote', async (request, response) => {
         try {
             const updatedUser = await User.findByIdAndUpdate(request.params.id, { admin: true }, { new: true, runValidators: true, context: 'query' })
             if (!updatedUser) {
-                return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+                return response.status(400).json({ error: library.userNotFound })
             }
             return response.status(200).json(updatedUser.toJSON())
         } catch (error) {
@@ -138,7 +143,7 @@ userRouter.put('/:id/demote', async (request, response) => {
         try {
             const updatedUser = await User.findByIdAndUpdate(request.params.id, { admin: false }, { new: true, runValidators: true, context: 'query' })
             if (!updatedUser) {
-                return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+                return response.status(400).json({ error: library.userNotFound })
             }
             return response.status(200).json(updatedUser.toJSON())
         } catch (error) {
@@ -189,19 +194,19 @@ userRouter.post('/singleusepassword', async (request, response) => {
             await transporter.sendMail({
                 from: config.EMAILUSER,
                 to: user.email,
-                subject: 'Bakteeripelin kertakäyttöinen salasana',
-                text: `Kertakäyttöinen salasanasi on "${singleUsePassword}". Salasana vanhentuu 15min kuluttua.`,
-                html: `<p>Kertakäyttöinen salasanasi on "<span style="color: black; background: black; span:hover { color: white }">${singleUsePassword}</span>". Salasana vanhentuu 15min kuluttua.</p>`,
+                subject: library.singleUsePasswordEmailSubject,
+                text: `${library.singleUsePasswordEmailTextStart}${singleUsePassword}${library.singleUsePasswordEmailTextEnd}`,
+                html: `${library.singleUsePasswordEmailHtmlStart}${singleUsePassword}${library.singleUsePasswordEmailHtmlEnd}`,
             })
             const saltRounds = 10
             const passwordHash = await bcrypt.hash(singleUsePassword, saltRounds)
             await User.findByIdAndUpdate(user.id, { singleUsePassword: { passwordHash, generationTime: new Date() } }, { new: true, runValidators: true, context: 'query' })
         } catch (error) {
-            return response.status(400).json({ error: 'Sähköpostia ei voitu lähettää.' })
+            return response.status(400).json({ error: library.emailError })
         }
-        return response.status(200).json({ message: `Kertakäyttöinen salasana lähetetty sähöpostiosoitteeseen ${user.email}.` })
+        return response.status(200).json({ message: `${library.emailSuccessStart}${user.email}${library.emailSuccessEnd}` })
     } else {
-        return response.status(400).json({ error: 'Käyttäjää ei löytynyt tai sähköposti on väärä.' })
+        return response.status(400).json({ error: library.userNotFoundOrEmailWrong })
     }
 })
 
@@ -209,7 +214,7 @@ userRouter.put('/', async (request, response) => {
     if (request.user) {
         const body = request.body
         if (!body.password) {
-            return response.status(400).json({ error: 'Salasana on pakollinen.' })
+            return response.status(400).json({ error: validation.password.requiredMessage })
         } else {
             try {
                 const user = await User.findOne({ username: request.user.username })
@@ -249,11 +254,11 @@ userRouter.put('/', async (request, response) => {
 
                     const updatedUser = await User.findByIdAndUpdate(user.id, changes, { new: true, runValidators: true, context: 'query' })
                     if (!updatedUser) {
-                        return response.status(400).json({ error: 'Annettua käyttäjää ei löydy tietokannasta.' })
+                        return response.status(400).json({ error: library.userNotFound })
                     }
                     return response.status(200).json(updatedUser.toJSON())
                 } else {
-                    return response.status(400).json({ error: 'Väärä salasana.' })
+                    return response.status(400).json({ error: library.wrongPassword })
                 }
             } catch (error) {
                 return response.status(400).json({ error: error.message })

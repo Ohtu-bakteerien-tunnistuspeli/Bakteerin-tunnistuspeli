@@ -3,6 +3,7 @@ const Test = require('../models/testCase')
 const Bacterium = require('../models/bacterium')
 const Case = require('../models/case')
 const config = require('../utils/config')
+const library = config.library.backend.testCase
 const multer = require('multer')
 const fileFilter = (req, file, cb) => {
     if (req.user && req.user.admin) {
@@ -87,12 +88,12 @@ testRouter.post('/', upload.fields([{ name: 'controlImage', maxCount: 1 }, { nam
                         const bacterium = await Bacterium.findOne({ name: file.originalname })
                         if (!bacterium) {
                             deleteUploadedImages(request)
-                            return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
+                            return response.status(400).json({ error: library.bacteriumNotFound })
                         }
                         const imagesForBacterium = test.bacteriaSpecificImages.filter(image => image.bacterium.name === bacterium.name)
                         if (imagesForBacterium.length > 0) {
                             deleteUploadedImages(request)
-                            return response.status(400).json({ error: 'Testille voi antaa vain yhden bakteerikohtaisen kuvan per bakteeri.' })
+                            return response.status(400).json({ error: library.singleImagePerBacterium })
                         }
                         test.bacteriaSpecificImages.push({ url: file.filename, contentType: file.mimetype, bacterium })
                     }
@@ -119,7 +120,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
             })
             if (!testToEdit) {
                 deleteUploadedImages(request)
-                return response.status(400).json({ error: 'Annettua testiä ei löydy tietokannasta' })
+                return response.status(400).json({ error: library.testNotFound })
             }
             let testToUpdate = {
                 name: request.body.name,
@@ -148,7 +149,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                         const bacterium = await Bacterium.findOne({ name: file.originalname })
                         if (!bacterium) {
                             deleteUploadedImages(request)
-                            return response.status(400).json({ error: 'Kuvaan liittyvää bakteeria ei löydy tietokannasta.' })
+                            return response.status(400).json({ error: library.bacteriumNotFound })
                         }
                         const imageToDelete = testToUpdate.bacteriaSpecificImages.filter(image => image.bacterium.name === bacterium.name)
                         if (imageToDelete.length > 0) {
@@ -244,7 +245,7 @@ testRouter.delete('/:id', async (request, response) => {
                 }
             })
             if (testIsInUse) {
-                return response.status(400).json({ error: 'Testi on käytössä ainakin yhdessä tapauksessa, eikä sitä voida poistaa' })
+                return response.status(400).json({ error: library.usedInCase })
             }
             fs.unlink(`${imageDir}/${testToDelete.controlImage.url}`, (err) => err)
             fs.unlink(`${imageDir}/${testToDelete.positiveResultImage.url}`, (err) => err)
@@ -260,7 +261,7 @@ testRouter.delete('/:id', async (request, response) => {
             await Test.findByIdAndRemove(request.params.id)
             return response.status(204).end()
         } catch (error) {
-            return response.status(400).json({ error: 'Annettua testiä ei löydy tietokannasta' })
+            return response.status(400).json({ error: library.testNotFound })
         }
     } else {
         throw Error('JsonWebTokenError')

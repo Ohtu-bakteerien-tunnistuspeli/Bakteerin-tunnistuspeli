@@ -58,12 +58,13 @@ h2 {
 .nav-link {
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 2px;
+    padding-top: 20px;
     padding-bottom: 2px;
+    height: 62px;
 }
 
 .nav-text {
-    margin-top: 15px;
+    margin-top: 0;
 }
 
 .hidden-nav {
@@ -71,7 +72,7 @@ h2 {
 }
 
 .nav-bar {
-    min-height: 5vh;
+    min-height: 10vh;
 }
 
 .wrapper {
@@ -109,6 +110,10 @@ h2 {
 
 .modal-image-large {
     width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    top: 0;
     height: auto;
     display: block;
 }
@@ -116,7 +121,6 @@ h2 {
 .modal-image-container {
     align-items: center;
     padding: 0;
-    position: absolute;
     max-width: max-content;
     height: auto;
     display: "block";
@@ -125,3 +129,9 @@ h2 {
 .small-margin {
     margin: 2px;
 }
+
+.required-field::after {
+    content: " *";
+    color: red;
+  }
+

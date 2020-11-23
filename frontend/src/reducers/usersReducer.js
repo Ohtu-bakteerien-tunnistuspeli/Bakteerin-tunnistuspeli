@@ -18,6 +18,9 @@ const reducer = (state = [], action) => {
     case 'ZERO_USERS': {
         return action.data
     }
+    case 'UPDATE_USERINFO': {
+        return state.map(user => user.id === action.data.id ? action.data : user)
+    }
     default: return state
     }
 }
@@ -87,6 +90,31 @@ export const zeroUsers = () => {
             type: 'ZERO_USERS',
             data: []
         })
+    }
+}
+
+export const updateUserinfo = (username, email, studentNumber, classGroup, oldPassword, password, token, handleClose) => {
+    return async dispatch => {
+        const userInfo = await userService.update(username, email, studentNumber, classGroup, oldPassword, password, token )
+        if (userInfo.error) {
+            dispatch(setNotification({ message: userInfo.error.substring(userInfo.error.indexOf('name: ') + 6), success: false, show: true }))
+            if (handleClose) {
+                try {
+                    throw new Error('')
+                } catch(e) {
+                    return e
+                }
+            }
+        } else {
+            dispatch(setNotification({ message: 'Käyttäjätietoja muokattu onnistuneesti', success: true, show: true }))
+            dispatch({
+                type: 'UPDATE_USERINFO',
+                data: userInfo
+            })
+            if (handleClose) {
+                handleClose()
+            }
+        }
     }
 }
 

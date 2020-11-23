@@ -15,13 +15,27 @@
             "testError": "Testin lähettämisessä tapahtui virhe."
         },
         "testCase": {
-
+            "bacteriumNotFound": "Kuvaan liittyvää bakteeria ei löydy tietokannasta.",
+            "singleImagePerBacterium": "Testille voi antaa vain yhden bakteerikohtaisen kuvan per bakteeri.",
+            "testNotFound": "Annettua testiä ei löydy tietokannasta",
+            "usedInCase": "Testi on käytössä ainakin yhdessä tapauksessa, eikä sitä voida poistaa"
         },
         "security":{
             "tokenError": "token missing or invalid"
         },
         "user": {
-
+            "invalidUsernameOrPassword": "Invalid username or password",
+            "userNotFound": "Annettua käyttäjää ei löydy tietokannasta.",
+            "singleUsePasswordEmailSubject": "Bakteeripelin kertakäyttöinen salasana",
+            "singleUsePasswordEmailTextStart": "Kertakäyttöinen salasanasi on \"",
+            "singleUsePasswordEmailTextEnd": "\". Salasana vanhentuu 15min kuluttua.",
+            "singleUsePasswordEmailHtmlStart": "<p>Kertakäyttöinen salasanasi on \"<span style=\"color: black; background: black; span:hover { color: white }\">",
+            "singleUsePasswordEmailHtmlEnd": "</span>\". Salasana vanhentuu 15min kuluttua.</p>",
+            "emailError": "Sähköpostia ei voitu lähettää.",
+            "emailSuccessStart": "Kertakäyttöinen salasana lähetetty sähöpostiosoitteeseen ",
+            "emailSuccessEnd": ".",
+            "userNotFoundOrEmailWrong": "Käyttäjää ei löytynyt tai sähköposti on väärä.",
+            "wrongPassword": "Väärä salasana."
         }
     },
     "frontend": {
