@@ -31,6 +31,7 @@ h2 {
     text-align: center;
     left: 0;
     right: 0;
+    width: 100%;
 }
 
 .navbar-nav {
@@ -53,6 +54,7 @@ h2 {
     border-bottom: 0;
     bottom: 0;
     min-height: 100%;
+    min-width: min-content;
 }
 
 .nav-link {
