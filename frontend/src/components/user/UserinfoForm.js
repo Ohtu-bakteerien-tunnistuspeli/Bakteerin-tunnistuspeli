@@ -19,8 +19,8 @@ const UserInfoForm = ( { user } ) => {
 
     const validation = useSelector(state => state.language)?.validation?.user
     const [username, setNewUsername] = useState(user.username)
-    const [password, setNewPassword] = useState('*********')
-    const [passwordAgain, setNewPasswordAgain] = useState('*********')
+    const [password, setNewPassword] = useState('')
+    const [passwordAgain, setNewPasswordAgain] = useState('')
     const [email, setNewEmail] = useState(user.email)
     const [studentNumber, setNewStudentNumber] = useState(user.studentNumber)
     const [classGroup, setNewClassgroup] = useState(user.classGroup)
@@ -47,6 +47,15 @@ const UserInfoForm = ( { user } ) => {
     const saveUpdatedUserinfo = (props) => {
         const token = user.token
         const oldPassword = props
+        if(password === '' && passwordAgain === '') {
+            try {
+                dispatch(updateUserinfo(username, email, studentNumber, classGroup, oldPassword, '',
+                    token, handleClose
+                ))
+            } catch(e) {
+                return e
+            }
+        }
         if (password === passwordAgain) {
             try {
                 dispatch(updateUserinfo(username,
@@ -64,8 +73,8 @@ const UserInfoForm = ( { user } ) => {
         setNewEmail(user.email)
         setNewStudentNumber(user.studentNumber)
         setNewClassgroup(user.classGroup)
-        setNewPassword('*********')
-        setNewPasswordAgain('*********')
+        setNewPassword('')
+        setNewPasswordAgain('')
         setConfirm(false)
     }
 
@@ -81,8 +90,7 @@ const UserInfoForm = ( { user } ) => {
             .required(validation.username.requiredMessage),
         password: Yup.string()
             .min(validation.password.minlength, validation.password.minMessage)
-            .max(validation.password.maxlength, validation.password.maxMessage)
-            .required(validation.password.requiredMessage),
+            .max(validation.password.maxlength, validation.password.maxMessage),
         passwordAgain: Yup.string(),
         email: Yup.string()
             .required(validation.email.requiredMessage)
