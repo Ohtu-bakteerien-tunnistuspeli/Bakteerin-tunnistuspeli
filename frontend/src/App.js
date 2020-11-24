@@ -219,8 +219,9 @@ const App = () => {
                 </div>
             </div>
             <div className='navbar navbar-inverse navbar-fixed-bottom footer'>
-                <Footer />
+                <Footer className='outer-footer' />
             </div>
+            <div className='footer-ghost'></div>
         </div >
     )
 }

@@ -2,10 +2,16 @@
     --attachVar: fixed;
 }
 
+html {
+    height:100%;
+}
+
 body {
     background: url(background.jpg);
     background-size: cover;
     background-attachment: var(--attachVar);
+    min-height: 100%;
+    position: relative;
 }
 
 @media screen and (hover: none) {
@@ -13,6 +19,8 @@ body {
         background: url(background.jpg);
         background-size: cover;
         background-attachment: fixed;
+        min-height: 100%;
+        position: relative;
     }
 }
 
@@ -26,24 +34,37 @@ body {
     min-width: min-content;
 }
 
+.container > * {
+    margin: 20px;
+}
+
 h2 {
     margin: 10px;
     font-size: 40px;
 }
 
 .footer {
-    margin: auto;
-    margin-bottom: 0;
-    border-bottom: 0;
-    padding-bottom: 0;
-    position: relative;
-    bottom: 0 !important;
+    position: absolute;
+    border-bottom: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    bottom: 0px;
     z-index: 100;
     background: gainsboro;
     text-align: center;
-    left: 0;
-    right: 0;
+    left: 0px;
+    right: 0px;
     width: 100%;
+    height: auto;
+    min-height: min-content;
+}
+
+.navbar-text {
+    padding-top: 15px;
+}
+
+.footer-ghost {
+    height: 120px; 
 }
 
 .nav-colour {
@@ -110,15 +131,14 @@ h2 {
 }
 
 .hidden-nav {
-    height: 62px;
+    height: 7vh;
+    min-height: 7vh;
+    max-height: 7vh
 }
 
 .nav-bar {
+    max-height: 10vh;
     min-height: 10vh;
-}
-
-.wrapper {
-    min-height: calc(100vh - 180px); 
 }
 
 #samples {
