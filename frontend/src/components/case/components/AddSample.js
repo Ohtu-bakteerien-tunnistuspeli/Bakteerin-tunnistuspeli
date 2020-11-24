@@ -1,8 +1,9 @@
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
-
+import { useSelector } from 'react-redux'
 
 const AddSample = ({ sample, setSample, addSample, error, onChange, touched, handleBlur }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.case.components
     const handleChange = event => {
         event.preventDefault()
         setSample({ ...sample, description: event.target.value })
@@ -23,7 +24,7 @@ const AddSample = ({ sample, setSample, addSample, error, onChange, touched, han
             <Form.Check
                 type='checkbox'
                 id='isRightAnswer'
-                label='Oikea vastaus'
+                label={library.sampleRightAnswer}
                 checked={sample.rightAnswer}
                 onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
             <Button type='button' id='addSample' onClick={() => {

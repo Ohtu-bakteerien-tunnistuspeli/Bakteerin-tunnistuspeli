@@ -6,6 +6,7 @@ import { deleteBacterium, updateBacterium } from '../../reducers/bacteriaReducer
 import { Table } from 'react-bootstrap'
 
 const BacteriaList = () => {
+    const library = useSelector(state => state.language)?.library?.frontend.bacteria.list
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
     const user = useSelector(state => state.user)
     const [bacteriaToShow, setBacteriaToShow] = useState(bacteria)
@@ -13,7 +14,7 @@ const BacteriaList = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(filterByBacteriaName === '') {
+        if (filterByBacteriaName === '') {
             setBacteriaToShow(bacteria)
         } else {
             setBacteriaToShow(bacteria.filter(bac => bac.name && bac.name.startsWith(filterByBacteriaName)))
@@ -29,13 +30,13 @@ const BacteriaList = () => {
 
     return (
         <div>
-            Filtteröi nimellä <input id='bacteriaFilterByName' type='text' value={filterByBacteriaName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
-            <h2>Bakteerit</h2>
+            {library.filterByName}<input id='bacteriaFilterByName' type='text' value={filterByBacteriaName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
+            <h2>{library.title}</h2>
             {bacteria.length !== 0 ?
                 <Table id='bacteriumTable' borderless hover>
                     <thead>
                         <tr>
-                            <th>Nimi</th>
+                            <th>{library.name}</th>
                             <th>
                                 {user?.admin ?
                                     <BacteriumForm></BacteriumForm>
@@ -58,9 +59,8 @@ const BacteriaList = () => {
                         :
                         <></>
                     }
-                    <div>Ei bakteereja</div>
+                    <div>{library.noBacteria}</div>
                 </>
-
             }
         </div>
     )

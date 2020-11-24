@@ -5,6 +5,7 @@ import { Table } from 'react-bootstrap'
 import { deleteUser, promoteUser, demoteUser } from '../../reducers/usersReducer'
 
 const UserList = () => {
+    const library = useSelector(state => state.language)?.library?.frontend.users.list
     const users = useSelector(state => state.users)?.sort((user1, user2) => user1.username.localeCompare(user2.username))
     const user = useSelector(state => state.user)
     const [usersToShow, setUsersToShow] = useState(users)
@@ -14,12 +15,12 @@ const UserList = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(filterByStudentNumber === '' && filterByUsername === '') {
+        if (filterByStudentNumber === '' && filterByUsername === '') {
             setUsersToShow(users)
         } else {
-            if(filterByStudentNumber === '') {
+            if (filterByStudentNumber === '') {
                 setUsersToShow(users.filter(user => user.username && user.username.startsWith(filterByUsername)))
-            } else if(filterByUsername === '') {
+            } else if (filterByUsername === '') {
                 setUsersToShow(users.filter(user => user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
             } else {
                 setUsersToShow(users.filter(user => user.username && user.username.startsWith(filterByUsername) && user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
@@ -38,16 +39,16 @@ const UserList = () => {
     }
     return (
         <div>
-            Filtteröi Opiskelijanumerolla <input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
-            Filtteröi käyttäjänimellä <input id='usernameFilter' type='text' value={filterByUsername} onChange={({ target }) => setFilterByUsername(target.value)}></input>&nbsp;
-            <h2>Käyttäjät</h2>
+            {library.filterByStudentNumber}<input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
+            {library.filterByUsername}<input id='usernameFilter' type='text' value={filterByUsername} onChange={({ target }) => setFilterByUsername(target.value)}></input>&nbsp;
+            <h2>{library.title}</h2>
             {users.length !== 0 ?
                 <Table id='userTable'>
                     <thead>
                         <tr>
-                            <th>Opiskelijanumero</th>
-                            <th>Käyttäjänimi</th>
-                            <th>Ylläpitäjä</th>
+                            <th>{library.studentNumber}</th>
+                            <th>{library.username}</th>
+                            <th>{library.admin}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -65,7 +66,7 @@ const UserList = () => {
                 </Table>
                 :
                 <>
-                    <div>Ei käyttäjiä</div>
+                    <div>{library.noUsers}</div>
                 </>
             }
         </div>

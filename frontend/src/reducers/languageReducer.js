@@ -23,7 +23,7 @@ export const getLanguage = () => {
             let validation = await languageService.getValidation()
             let library = await languageService.getLibrary()
             if (validation.error || library.error) {
-                dispatch(setNotification({ message: 'Tapahtui virhe kirjastoja hakiessa. Päivitä sivu.', success: false, show: true }))
+                dispatch(setNotification({ message: 'Tapahtui virhe kirjastoja hakiessa. Päivitä sivu./Error happened When getting library. Refresh page.', success: false, show: true }))
             } else {
                 const language = { validation, library }
                 window.localStorage.setItem('language', JSON.stringify(language))

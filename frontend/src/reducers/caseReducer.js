@@ -37,7 +37,8 @@ export const getCases = (token) => {
 }
 
 export const addCase = (name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, token, resetCaseForm) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.case.reducer
         const caseToSave = await caseService.add(name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, token)
         if (caseToSave.error) {
             if (caseToSave.error.includes('Case validation failed')) {
@@ -46,7 +47,7 @@ export const addCase = (name, bacterium, anamnesis, completionText, completionIm
                 dispatch(setNotification({ message: caseToSave.error, success: false, show: true }))
             }
         } else {
-            dispatch(setNotification({ message: `Tapauksen ${caseToSave.name} lisäys onnistui.`, success: true, show: true }))
+            dispatch(setNotification({ message: `${library.addSuccessStart}${caseToSave.name}${library.addSuccessEnd}`, success: true, show: true }))
             dispatch({
                 type: 'ADD_CASE',
                 data: caseToSave
@@ -57,12 +58,13 @@ export const addCase = (name, bacterium, anamnesis, completionText, completionIm
 }
 
 export const deleteCase = (caseToDelete, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.case.reducer
         const res = await caseService.deleteCase(caseToDelete.id, token)
         if (res.status !== 204) {
             dispatch(setNotification({ message: res.error, success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: `Tapauksen ${caseToDelete.name} poisto onnistui.`, success: true, show: true }))
+            dispatch(setNotification({ message: `${library.deleteSuccessStart}${caseToDelete.name}${library.deleteSuccessEnd}`, success: true, show: true }))
             dispatch({
                 type: 'DELETE_CASE',
                 data: caseToDelete
@@ -72,7 +74,8 @@ export const deleteCase = (caseToDelete, token) => {
 }
 
 export const updateCase = (id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token, resetCaseForm) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.case.reducer
         const caseToUpdate = await caseService.update(id, name, bacterium, anamnesis, completionText, completionImage, samples, testGroups, deleteEndImage, token)
         if(caseToUpdate.error){
             if (caseToUpdate.error.includes('Case validation failed')) {
@@ -81,7 +84,7 @@ export const updateCase = (id, name, bacterium, anamnesis, completionText, compl
                 dispatch(setNotification({ message: caseToUpdate.error, success: false, show: true }))
             }
         } else {
-            dispatch(setNotification({ message: `Tapauksen ${caseToUpdate.name} muokkaus onnistui.`, success: true, show: true }))
+            dispatch(setNotification({ message: `${library.editSuccessStart}${caseToUpdate.name}${library.editSuccessEnd}`, success: true, show: true }))
             dispatch({
                 type: 'UPDATE_CASE',
                 data: caseToUpdate
@@ -92,12 +95,13 @@ export const updateCase = (id, name, bacterium, anamnesis, completionText, compl
 }
 
 export const updateCaseHints = (id, hints, handleClose, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.case.reducer
         const caseToUpdate = await caseService.updateHints(id, hints, token)
         if(caseToUpdate.error){
             dispatch(setNotification({ message: caseToUpdate.error.substring(caseToUpdate.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: `Tapauksen ${caseToUpdate.name} vihjeiden muokkaus onnistui.`, success: true, show: true }))
+            dispatch(setNotification({ message: `${library.addHintSuccessStart}${caseToUpdate.name}${library.addHintSuccessEnd}`, success: true, show: true }))
             dispatch({
                 type: 'UPDATE_CASE',
                 data: caseToUpdate

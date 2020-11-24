@@ -1,11 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import FormattedText from '../case/components/FormattedText'
 
 const ImageCopyrightText = () => {
+    const library = useSelector(state => state.language)?.library?.frontend.user
     return (
         <div>
-            <h3>Bakteeripelin kuvien käyttöoikeudet</h3>
-                Kaikki bakteeripelin kuvat ovat Helsingin Yliopiston omistuksessa.
-            <p></p>
+            <FormattedText value={library.imageCopyright} />
         </div>
     )
 }

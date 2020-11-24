@@ -28,7 +28,8 @@ const reducer = (state = null, action) => {
 
 
 export const getGame = (history, id, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.routes
         const receivedCase = await gameService.get(id, token)
         if (receivedCase.error) {
             dispatch(setNotification({ message: receivedCase.error, success: false, show: true }))
@@ -47,25 +48,26 @@ export const getGame = (history, id, token) => {
                 type: 'GET_GAME',
                 data: game
             })
-            history.push('/peli')
+            history.push(`/${library.game}`)
         }
     }
 }
 
 export const checkSamples = (game, samples, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.gamePage.reducer
         const checkSample = await gameService.sampleCheck(game.case.id, samples, token)
         if (checkSample.error) {
             dispatch(setNotification({ message: checkSample.error, success: false, show: true }))
         } else {
             if (checkSample.correct) {
-                dispatch(setNotification({ message: 'Oikea vastaus', success: true, show: true }))
+                dispatch(setNotification({ message: library.samplesCorrect, success: true, show: true }))
                 dispatch({
                     type: 'CHECK_SAMPLES',
                     data: { ...game, samplesCorrect: true }
                 })
             } else {
-                dispatch(setNotification({ message: 'Väärä vastaus', success: false, show: true }))
+                dispatch(setNotification({ message: library.samplesWrong, success: false, show: true }))
             }
 
         }
@@ -73,18 +75,19 @@ export const checkSamples = (game, samples, token) => {
 }
 
 export const checkTests = (game, test, token, setTestTab) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.gamePage.reducer
         const checkTest = await gameService.testCheck(game.case.id, { tests: [...game.correctTests, test] }, token)
         if (checkTest.error) {
             dispatch(setNotification({ message: checkTest.error, success: false, show: true }))
         } else {
             if (checkTest.correct) {
                 if (checkTest.allDone) {
-                    dispatch(setNotification({ message: 'Oikea vastaus. Kaikki testit tehty.', success: true, show: true }))
+                    dispatch(setNotification({ message: library.allTestsDone, success: true, show: true }))
                 } else if (checkTest.requiredDone) {
-                    dispatch(setNotification({ message: 'Oikea vastaus. Kaikki vaaditut testit tehty.', success: true, show: true }))
+                    dispatch(setNotification({ message: library.requiredTestsDone, success: true, show: true }))
                 } else {
-                    dispatch(setNotification({ message: 'Oikea vastaus.', success: true, show: true }))
+                    dispatch(setNotification({ message: library.testCorrect, success: true, show: true }))
                 }
                 dispatch({
                     type: 'CHECK_TESTS',
@@ -95,7 +98,7 @@ export const checkTests = (game, test, token, setTestTab) => {
                 if(checkTest.hint) {
                     dispatch(setNotification({ message: checkTest.hint, success: false, show: true }))
                 } else {
-                    dispatch(setNotification({ message: 'Väärä vastaus', success: false, show: true }))
+                    dispatch(setNotification({ message: library.testWrong, success: false, show: true }))
                 }
             }
 
@@ -104,20 +107,21 @@ export const checkTests = (game, test, token, setTestTab) => {
 }
 
 export const checkBacterium = (game, bacteriumName, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.gamePage.reducer
         const checkBacterium = await gameService.bacteriumCheck(game.case.id, { bacteriumName }, token)
         if (checkBacterium.error) {
             dispatch(setNotification({ message: checkBacterium.error, success: false, show: true }))
         } else {
             if (checkBacterium.correct) {
-                dispatch(setNotification({ message: 'Oikea vastaus', success: true, show: true }))
+                dispatch(setNotification({ message: library.bacteriumCorrect, success: true, show: true }))
                 dispatch({
                     type: 'CHECK_BACTERIUM',
                     data: { ...game, bacteriumCorrect: true, completionImageUrl: checkBacterium.completionImageUrl }
                 })
                 dispatch(getCredits(token))
             } else {
-                dispatch(setNotification({ message: 'Väärä vastaus', success: false, show: true }))
+                dispatch(setNotification({ message: library.bacteriumWrong, success: false, show: true }))
             }
 
         }

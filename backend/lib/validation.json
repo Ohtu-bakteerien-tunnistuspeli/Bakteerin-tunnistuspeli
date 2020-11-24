@@ -37,7 +37,9 @@
         },
         "hints": {
             "hint": {
+                "minlength": 2,
                 "maxlength": 1000,
+                "minMessage": "Vinkin tulee olla vähintään 2 merkkiä pitkä.",
                 "maxMessage": "Vinkin tulee olla enintään 1000 merkkiä pitkä.",
                 "uniqueMessage": "Samalla testillä on useampia vinkkejä."
             }

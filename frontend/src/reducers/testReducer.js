@@ -38,12 +38,13 @@ export const getTests = (token) => {
 }
 
 export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, token, handleClose) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.test.reducer
         const test = await testService.add(name, type, contImg, posImg, negImg, bacteriaSpesif, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: 'Testi lisätty onnistuneesti', success: true, show: true }))
+            dispatch(setNotification({ message: library.addSuccess, success: true, show: true }))
             dispatch({
                 type: 'ADD_TEST',
                 data: test
@@ -54,12 +55,13 @@ export const addTest = (name, type, contImg, posImg, negImg, bacteriaSpesif, tok
 }
 
 export const deleteTest = (id, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.test.reducer
         const response = await testService.deleteTest(id, token)
         if (response.status !== 204) {
             dispatch(setNotification({ message: response.error, success: false }))
         } else {
-            dispatch(setNotification({ message: 'Testi poistettiin onnistuneesti', success: true, show: true }))
+            dispatch(setNotification({ message: library.deleteSuccess, success: true, show: true }))
             dispatch({
                 type: 'DELETE_TEST',
                 data: id
@@ -69,12 +71,13 @@ export const deleteTest = (id, token) => {
 }
 
 export const updateTest = (id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token, handleClose, setDeletePhotos, setDeleteSpecifics) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.test.reducer
         const test = await testService.update(id, name, type, contImg, photoPos, photoNeg, bacteriaSpesif, photosToDelete, deleteSpecifics, token)
         if (test.error) {
             dispatch(setNotification({ message: test.error.substring(test.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: 'Testi muokattiin onnistuneesti', success: true, show: true }))
+            dispatch(setNotification({ message: library.editSuccess, success: true, show: true }))
             dispatch({
                 type: 'UPDATE_TEST',
                 data: test

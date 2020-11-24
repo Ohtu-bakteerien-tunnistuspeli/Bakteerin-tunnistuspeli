@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Modal } from 'react-bootstrap'
 import GDBRText from './user/GDPRText'
 import PrivacyText from './user/PrivacyText'
@@ -8,15 +9,15 @@ const Footer = () => {
     const [showGDPR, setShowGDPR] = useState(false)
     const [showPrivacy, setShowPrivacy] = useState(false)
     const [showImageCopyright, setShowImageCopyright] = useState(false)
-
+    const library = useSelector(state => state.language)?.library?.frontend.footer
     return (
         <div className='footer'>
-            <p className="navbar-text">© Copyright 2020 Helsingin yliopisto.
-                &nbsp;{<a href="#" onClick={() => setShowGDPR(true)}>Käyttöehdot</a>//eslint-disable-line
+            <p className="navbar-text">{library.copyright}
+    &nbsp;{<a href="#" onClick={() => setShowGDPR(true)}>{library.gdbr}</a>//eslint-disable-line
+                }
+                ,&nbsp;{<a href="#" onClick={() => setShowPrivacy(true)}>{library.privacy}</a>//eslint-disable-line
                 }&nbsp;
-                ,&nbsp;{<a href="#" onClick={() => setShowPrivacy(true)}>Tietosuojailmoitus</a>//eslint-disable-line
-                }&nbsp;
-                ja&nbsp;{<a href="#" onClick={() => setShowImageCopyright(true)}>Kuvien Käyttöoikeudet</a> //eslint-disable-line
+                ja&nbsp;{<a href="#" onClick={() => setShowImageCopyright(true)}>{library.imageCopyright}</a> //eslint-disable-line
                 }&nbsp;
             </p>
             <Modal show={showGDPR} size="lg" onHide={() => setShowGDPR(false)} >
