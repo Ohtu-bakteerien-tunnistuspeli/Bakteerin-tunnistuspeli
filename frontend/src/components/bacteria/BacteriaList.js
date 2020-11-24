@@ -35,8 +35,8 @@ const BacteriaList = () => {
 
     return (
         <div>
-            {library.filterByName}<input id='bacteriaFilterByName' type='text' value={filterByBacteriaName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
             <h2>{library.title}</h2>
+            {library.filterByName}<input id='bacteriaFilterByName' type='text' value={filterByBacteriaName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
             {bacteria.length !== 0 ?
                 <Table id='bacteriumTable' borderless hover>
                     <thead>
