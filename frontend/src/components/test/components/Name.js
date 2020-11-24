@@ -1,8 +1,9 @@
-
 import React from 'react'
 import { Form } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 const Name = ({ nameControlId, error, onChange, testName, touched, setTestName }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.test.components
     const handleChange = (event) => {
         event.preventDefault()
         setTestName(event.target.value)
@@ -12,7 +13,7 @@ const Name = ({ nameControlId, error, onChange, testName, touched, setTestName }
     return (
         <>
             <Form.Group controlId={nameControlId}>
-                <Form.Label style={{ paddingTop: '30px' }}>Nimi</Form.Label>
+                <Form.Label style={{ paddingTop: '30px' }}>{library.name}</Form.Label>
                 <Form.Control
                     type="text"
                     isInvalid={error && touched}

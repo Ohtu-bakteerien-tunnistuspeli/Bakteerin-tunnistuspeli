@@ -2,6 +2,8 @@ const bacteriumRouter = require('express').Router()
 const Bacterium = require('../models/bacterium')
 const Test = require('../models/testCase')
 const Case = require('../models/case')
+const config = require('../utils/config')
+const library = config.library.backend.bacterium
 
 bacteriumRouter.get('/', async (request, response) => {
     if (request.user) {
@@ -39,10 +41,10 @@ bacteriumRouter.delete('/:id', async (request, response) => {
                 model: 'Bacterium'
             })
             if (testsUsingBacterium.length > 0) {
-                return response.status(400).json({ error: 'Bakteeri on käytössä testissä eikä sitä voi poistaa.' })
+                return response.status(400).json({ error: library.usedInTest })
             }
             if (casesUsingBacterium.length > 0) {
-                return response.status(400).json({ error: 'Bakteeri on käytössä tapauksessa eikä sitä voi poistaa.' })
+                return response.status(400).json({ error: library.usedInCase })
             }
             await Bacterium.findByIdAndRemove(request.params.id)
             response.status(204).end()
@@ -59,7 +61,7 @@ bacteriumRouter.put('/:id', async (request, response) => {
         try {
             const updatedBacterium = await Bacterium.findByIdAndUpdate(request.params.id, { name: request.body.name }, { new: true, runValidators: true, context: 'query' })
             if (!updatedBacterium) {
-                return response.status(400).json({ error: 'Annettua bakteeria ei löydy tietokannasta.' })
+                return response.status(400).json({ error: library.notFound })
             }
             return response.status(200).json(updatedBacterium)
         } catch (error) {

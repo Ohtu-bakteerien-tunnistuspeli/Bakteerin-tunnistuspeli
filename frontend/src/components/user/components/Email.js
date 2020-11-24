@@ -1,7 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Form } from 'react-bootstrap'
 
 const Email = ({ email, setEmail, onChange, error, touched, handleBlur }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.user.components
     const handleChange = (event) => {
         event.preventDefault()
         setEmail(event.target.value)
@@ -9,7 +11,7 @@ const Email = ({ email, setEmail, onChange, error, touched, handleBlur }) => {
     }
     return (
         <Form.Group controlId='username'>
-            <Form.Label>Sähköposti</Form.Label>
+            <Form.Label>{library.email}</Form.Label>
             <Form.Control
                 type='text'
                 isInvalid={error && touched}

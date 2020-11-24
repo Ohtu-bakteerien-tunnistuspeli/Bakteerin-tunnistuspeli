@@ -25,11 +25,16 @@ const App = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
     const game = useSelector(state => state.game)
-
+    const language = useSelector(state => state.language)
     useEffect(() => {
         dispatch(returnUser(history))
         dispatch(getLanguage())
     }, [dispatch, history])
+    useEffect(() => {
+        if (language && language.library) {
+            document.title = language.library.frontend.title
+        }
+    }, [language])
     const logoutButton = async () => {
         dispatch(logout(history))
     }
@@ -40,13 +45,17 @@ const App = () => {
     }
     window.onbeforeunload = handleOnBeforeUnload
 
+
     const mobile = useDetectMobile()
     if (mobile) {
         document.body.style.setProperty('--attachVar', 'scroll')
     } else {
         document.body.style.setProperty('--attachVar', 'fixed')
     }
-
+    if (!language || !language.validation || !language.library) {
+        return (<></>)
+    }
+    const library = language.library.frontend
     return (
         <div className='page'>
             {user ?
@@ -55,7 +64,7 @@ const App = () => {
                     onChange={({ idle }) => {
                         if (idle && user) {
                             dispatch(logout(history))
-                            alert('Sinut kirjattiin ulos automaattisesti, koska olet ollut pitkään epäaktiivisena.')
+                            alert(library.app.inactivityMessage)
                         }
                     }} />
                 :
@@ -68,61 +77,61 @@ const App = () => {
                         {user
                             ?
                             <Nav.Link href='#' as='span'>
-                                <Link to='/' className='link'>Etusivu</Link>
+                                <Link to='/' className='link'>{library.app.navigationBar.frontPage}</Link>
                             </Nav.Link>
                             : null
                         }
                         {user?.admin ?
                             <Nav.Link href='#' as='span'>
-                                <Link to='/bakteeriLista' className='link'>Bakteerien hallinta</Link>
+                                <Link to={`/${library.routes.bacteriaList}`} className='link'>{library.app.navigationBar.bacteriaList}</Link>
                             </Nav.Link>
                             : null
                         }
                         {user?.admin
                             ?
                             <Nav.Link href='#' as='span'>
-                                <Link to='/tapausLista' className='link'>Tapausten hallinta</Link>
+                                <Link to={`/${library.routes.caseList}`} className='link'>{library.app.navigationBar.caseList}</Link>
                             </Nav.Link>
                             : null
                         }
                         {user?.admin
                             ?
                             <Nav.Link href='#' as='span'>
-                                <Link to='/testiLista' className='link'>Testien hallinta</Link>
+                                <Link to={`/${library.routes.testList}`} className='link'>{library.app.navigationBar.testList}</Link>
                             </Nav.Link>
                             : null
                         }
                         {user?.admin
                             ?
                             <Nav.Link href='#' as='span'>
-                                <Link to='/suoritusLista' className='link'>Suoritusten hallinta</Link>
+                                <Link to={`/${library.routes.creditList}`} className='link'>{library.app.navigationBar.creditList}</Link>
                             </Nav.Link>
                             : null
                         }
                         {user?.admin
                             ?
                             <Nav.Link href='#' as='span'>
-                                <Link to='/kayttajaLista' className='link'>Käyttäjien hallinta</Link>
+                                <Link to={`/${library.routes.userList}`} className='link'>{library.app.navigationBar.userList}</Link>
                             </Nav.Link>
                             : null
                         }
                     </Nav>
                     <Nav.Link href='#' as='span'>
                         {user
-                            ? <p className='nav-text'><em>Kirjautuneena </em><Link to='/profiilini' className='logged-user' >{user.username}</Link></p>
-                            : <Link to='/kirjautuminen' className='link'>Kirjaudu sisään</Link>
+                            ? <p className='nav-text'><em>{library.app.navigationBar.loggedIn}</em><Link to={`/${library.routes.profile}`} className='logged-user' >{user.username}</Link></p>
+                            : <Link to={`/${library.routes.login}`} className='link'>{library.app.navigationBar.login}</Link>
                         }
                     </Nav.Link>
                     {user
                         ? null
                         :
                         <Nav.Link href='#' as='span'>
-                            <Link to='/rekisteroityminen' className='link'>Rekisteröidy</Link>
+                            <Link to={`/${library.routes.register}`} className='link'>{library.app.navigationBar.register}</Link>
                         </Nav.Link>
                     }
                     <Nav.Item>
                         {user
-                            ? <Button id='submit' variant='primary' type='button' onClick={logoutButton}>Kirjaudu ulos</Button>
+                            ? <Button id='submit' variant='primary' type='button' onClick={logoutButton}>{library.app.navigationBar.logout}</Button>
                             : null
                         }
                     </Nav.Item>
@@ -134,49 +143,49 @@ const App = () => {
                     {user ?
                         <>
                             <Switch>
-                                <Route path='/bakteeriLista'>
+                                <Route path={`/${library.routes.bacteriaList}`}>
                                     {user.admin ?
                                         <BacteriaList />
                                         :
                                         <Redirect to='/' />
                                     }
                                 </Route>
-                                <Route path='/tapausLista'>
+                                <Route path={`/${library.routes.caseList}`}>
                                     {user.admin ?
                                         <CaseList />
                                         :
                                         <Redirect to='/' />
                                     }
                                 </Route>
-                                <Route path='/testiLista'>
+                                <Route path={`/${library.routes.testList}`}>
                                     {user.admin ?
                                         <TestList />
                                         :
                                         <Redirect to='/' />
                                     }
                                 </Route>
-                                <Route path='/suoritusLista'>
+                                <Route path={`/${library.routes.creditList}`}>
                                     {user.admin ?
                                         <CreditList />
                                         :
                                         <Redirect to='/' />
                                     }
                                 </Route>
-                                <Route path='/kayttajaLista'>
+                                <Route path={`/${library.routes.userList}`}>
                                     {user.admin ?
                                         <UserList />
                                         :
                                         <Redirect to='/' />
                                     }
                                 </Route>
-                                <Route path='/peli'>
+                                <Route path={`/${library.routes.game}`}>
                                     {game ?
                                         <GamePage />
                                         :
                                         <Redirect to='/' />
                                     }
                                 </Route>
-                                <Route path='/profiilini'>
+                                <Route path={`/${library.routes.profile}`}>
                                     {user ?
                                         <ProfilePage />
                                         :
@@ -191,17 +200,17 @@ const App = () => {
                         :
                         <>
                             <Switch>
-                                <Route path='/kirjautuminen'>
+                                <Route path={`/${library.routes.login}`}>
                                     <Login />
                                 </Route>
-                                <Route path='/rekisteroityminen'>
+                                <Route path={`/${library.routes.register}`}>
                                     <Register />
                                 </Route>
-                                <Route path='/kertakayttoinensalasana'>
+                                <Route path={`/${library.routes.singleUsePassword}`}>
                                     <SingleUsePassword />
                                 </Route>
                                 <Route path='/'>
-                                    <Redirect to='/kirjautuminen' />
+                                    <Redirect to={`/${library.routes.login}`} />
                                 </Route>
                             </Switch>
                         </>
@@ -209,11 +218,10 @@ const App = () => {
 
                 </div>
             </div>
-
             <div className='navbar navbar-inverse navbar-fixed-bottom footer'>
                 <Footer />
             </div>
-        </div>
+        </div >
     )
 }
 

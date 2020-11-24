@@ -1,7 +1,9 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 const SelectBacterium = ({ bacteriumId, setBacteriumId, onChange, error, bacteria, touched, handleBlur }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.case.components
     const handleChange = event => {
         event.preventDefault()
         setBacteriumId(event.target.value)
@@ -9,14 +11,14 @@ const SelectBacterium = ({ bacteriumId, setBacteriumId, onChange, error, bacteri
     }
     return (
         <Form.Group controlId='bacterium'>
-            <Form.Label>Bakteeri</Form.Label>
+            <Form.Label>{library.bacterium}</Form.Label>
             <Form.Control as='select'
                 onChange={handleChange}
                 isInvalid={error && touched}
                 value={bacteriumId}
                 onBlur={handleBlur}
             >
-                <option value='' disabled hidden>Valitse bakteeri</option>
+                <option value='' disabled hidden>{library.chooseBacterium}</option>
                 {bacteria.map(bacterium =>
                     <option key={bacterium.id} value={bacterium.id}>{bacterium.name}</option>
                 )}

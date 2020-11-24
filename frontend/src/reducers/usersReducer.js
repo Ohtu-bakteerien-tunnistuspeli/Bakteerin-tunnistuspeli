@@ -40,7 +40,8 @@ export const getUsers = (token) => {
 }
 
 export const deleteUser = (user, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.users.reducer
         const res = await userService.deleteUser(user.id, token)
         if (res.status !== 204) {
             dispatch(setNotification({ message: res.error, success: false, show: true }))
@@ -49,13 +50,14 @@ export const deleteUser = (user, token) => {
                 type: 'DELETE_USER',
                 data: user
             })
-            dispatch(setNotification({ message: `Käyttäjän ${user.username} poisto onnistui.`, success: true, show: true }))
+            dispatch(setNotification({ message: `${library.deleteSuccessStart}${user.username}${library.deleteSuccessEnd}`, success: true, show: true }))
         }
     }
 }
 
 export const promoteUser = (id, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.users.reducer
         const user = await userService.promote(id, token)
         if (user.error) {
             dispatch(setNotification({ message: user.error.substring(user.error.indexOf('name: ') + 6), success: false, show: true }))
@@ -64,13 +66,14 @@ export const promoteUser = (id, token) => {
                 type: 'PROMOTE_USER',
                 data: user
             })
-            dispatch(setNotification({ message: `Käyttäjän ${user.username} ylennys onnistui.`, success: true, show: true }))
+            dispatch(setNotification({ message: `${library.promoteSuccessStart}${user.username}${library.promoteSuccessEnd}`, success: true, show: true }))
         }
     }
 }
 
 export const demoteUser = (id, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.users.reducer
         const user = await userService.demote(id, token)
         if (user.error) {
             dispatch(setNotification({ message: user.error.substring(user.error.indexOf('name: ') + 6), success: false, show: true }))
@@ -79,7 +82,7 @@ export const demoteUser = (id, token) => {
                 type: 'DEMOTE_USER',
                 data: user
             })
-            dispatch(setNotification({ message: `Käyttäjän ${user.username} alennus onnistui.`, success: true, show: true }))
+            dispatch(setNotification({ message: `${library.demoteSuccessStart}${user.username}${library.demoteSuccessEnd}`, success: true, show: true }))
         }
     }
 }
@@ -94,19 +97,13 @@ export const zeroUsers = () => {
 }
 
 export const updateUserinfo = (username, email, studentNumber, classGroup, oldPassword, password, token, handleClose) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.users.reducer
         const userInfo = await userService.update(username, email, studentNumber, classGroup, oldPassword, password, token )
         if (userInfo.error) {
             dispatch(setNotification({ message: userInfo.error.substring(userInfo.error.indexOf('name: ') + 6), success: false, show: true }))
-            if (handleClose) {
-                try {
-                    throw new Error('')
-                } catch(e) {
-                    return e
-                }
-            }
         } else {
-            dispatch(setNotification({ message: 'Käyttäjätietoja muokattu onnistuneesti', success: true, show: true }))
+            dispatch(setNotification({ message: library.editSuccess, success: true, show: true }))
             dispatch({
                 type: 'UPDATE_USERINFO',
                 data: userInfo

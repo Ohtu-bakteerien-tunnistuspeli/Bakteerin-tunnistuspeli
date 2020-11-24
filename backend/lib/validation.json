@@ -30,20 +30,27 @@
             "description": {
                 "maxlength": 1000,
                 "maxMessage": "Näytteen kuvauksen tulee olla enintään 1000 merkkiä pitkä.",
-                "uniqueMessage": "Näyte on jo lisätty listaan."
+                "uniqueMessage": "Näyte on jo lisätty listaan.",
+                "uniqueStart": "Näytettä ",
+                "uniqueEnd": " yritetään käyttää tapauksessa useampaan kertaan."
             }
         },
         "hints": {
             "hint": {
+                "minlength": 2,
                 "maxlength": 1000,
-                "maxMessage": "Vinkin tulee olla enintään 1000 merkkiä pitkä."
+                "minMessage": "Vinkin tulee olla vähintään 2 merkkiä pitkä.",
+                "maxMessage": "Vinkin tulee olla enintään 1000 merkkiä pitkä.",
+                "uniqueMessage": "Samalla testillä on useampia vinkkejä."
             }
         },
         "bacterium": {
             "requiredMessage": "Valitse bakteeri."
         },
         "test": {
-            "uniqueMessage": "Testi on jo lisätty"
+            "uniqueMessage": "Testi on jo lisätty",
+            "uniqueStart": "Testiä ",
+            "uniqueEnd": " yritetään käyttää tapauksessa useampaan kertaan."
         }
     },
     "testCase": {

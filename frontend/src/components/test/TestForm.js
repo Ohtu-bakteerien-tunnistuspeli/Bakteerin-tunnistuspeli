@@ -20,6 +20,7 @@ const TestForm = ({ testToEdit }) => {
     /* style parameters end */
 
     /* initial parameters */
+    const library = useSelector(state => state.language)?.library?.frontend.test.form
     const validation = useSelector(state => state.language)?.validation?.testCase
     const tests = useSelector(state => state.test)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
@@ -71,7 +72,7 @@ const TestForm = ({ testToEdit }) => {
                 bacteriaSpecificImages,
                 user.token, handleClose))
         } else {
-            dispatch(setNotification({ message: 'Tallennus epäonnistui, sillä tallennettavien kuvien yhteiskoko ylitti 50 MB.', success: false, show: true }))
+            dispatch(setNotification({ message: library.saveError, success: false, show: true }))
         }
     }
 
@@ -122,16 +123,13 @@ const TestForm = ({ testToEdit }) => {
                 deleteSpecifics,
                 token, handleClose, setDeletePhotos, setDeleteSpecifics))
         } else {
-            dispatch(setNotification({ message: 'Tallennus epäonnistui, sillä tallennettavien kuvien yhteiskoko ylitti 50 MB.', success: false, show: true }))
+            dispatch(setNotification({ message: library.saveError, success: false, show: true }))
         }
     }
     /* form control end */
 
 
     /* schema for validation */
-    if(!validation) {
-        return<></>
-    }
     const TestSchema = Yup.object().shape({
         testName: Yup.string()
             .min(validation.name.minlength, validation.name.minMessage)
@@ -222,21 +220,21 @@ const TestForm = ({ testToEdit }) => {
                 id={testToEdit ? 'testEditButton' : 'testModalButton'}
                 variant='primary'
                 onClick={() => handleShow()}>
-                {testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
+                {testToEdit ? library.edit : library.add}
             </Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose} backdrop='static'>
                 <Modal.Header
-                    closeButton>{testToEdit ? 'Muokkaa' : 'Luo uusi testi'}
+                    closeButton>{testToEdit ? library.add : library.add}
                 </Modal.Header>
                 <Modal.Body>
                     {testToEdit ?
                         <DeleteButton id='deleteTest'
                             onClick={() => {
-                                if (window.confirm('Tahdotko varmasti poistaa testin?')) {
+                                if (window.confirm(library.deleteConfirm)) {
                                     removeTest()
                                 }
                             }}
-                            text='POISTA testi'
+                            text={library.deleteTest}
                         ></DeleteButton>
                         : null
                     }
@@ -275,7 +273,7 @@ const TestForm = ({ testToEdit }) => {
                                         setTestType={setTestType}></Type>
 
                                     <AddImage
-                                        title='Kontrollikuva'
+                                        title={library.controlImage}
                                         name='controlImage'
                                         value={controlImage.image}
                                         setImage={setControlImage}
@@ -293,7 +291,7 @@ const TestForm = ({ testToEdit }) => {
                                                             setCtrl(false)
                                                             setDeletePhotos({ ...deletePhotos, ctrl: true })
                                                         }}
-                                                        text='Poista kontrollikuva'
+                                                        text={library.deleteControlImage}
                                                     ></DeleteButton>
                                                 </>
                                                 : <></>
@@ -304,7 +302,7 @@ const TestForm = ({ testToEdit }) => {
                                     }
 
                                     <AddImage
-                                        title='Positiivinen oletus'
+                                        title={library.positiveDefault}
                                         name='posImg'
                                         value={positiveResultImage.image}
                                         setImage={setPositiveResultImage}
@@ -323,7 +321,7 @@ const TestForm = ({ testToEdit }) => {
                                                             setPos(false)
                                                             setDeletePhotos({ ...deletePhotos, pos: true })
                                                         }}
-                                                        text='Poista positiivinen kuva'
+                                                        text={library.deletePositiveImage}
                                                     ></DeleteButton>
                                                 </>
                                                 : <></>
@@ -334,7 +332,7 @@ const TestForm = ({ testToEdit }) => {
                                     }
 
                                     <AddImage
-                                        title='Negatiivinen oletus'
+                                        title={library.negativeDefault}
                                         name='negImg'
                                         value={negativeImage.image}
                                         setImage={setNegativeImage}
@@ -352,7 +350,7 @@ const TestForm = ({ testToEdit }) => {
                                                             setNeg(false)
                                                             setDeletePhotos({ ...deletePhotos, neg: true })
                                                         }}
-                                                        text='Poista negatiivinen kuva'
+                                                        text={library.deleteNegativeImage}
                                                     ></DeleteButton>
                                                 </>
                                                 : <></>
@@ -378,10 +376,9 @@ const TestForm = ({ testToEdit }) => {
                                         error={errors.bacteriumName}
                                         touched={touched.bacteriumName}
                                     />
-                                    <Button id={testToEdit ? 'saveChanges' : 'addTest'} variant='success' type='submit'>{testToEdit ? 'Tallenna muutokset' : 'Tallenna'}</Button>
-
+                                    <Button id={testToEdit ? 'saveChanges' : 'addTest'} variant='success' type='submit'>{testToEdit ? library.saveEdit : library.saveNew}</Button>
                                     { Object.keys(errors).length > 0 ?
-                                        <p style={{ color: 'red' }}>Testiä ei voida lisätä, tarkista lisäämäsi syötteet.</p>
+                                        <p style={{ color: 'red' }}>{library.validationError}</p>
                                         : null
                                     }
                                 </Form>

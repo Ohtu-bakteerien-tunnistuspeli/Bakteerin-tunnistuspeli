@@ -1,12 +1,14 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { CSVLink } from 'react-csv'
 import { Button } from 'react-bootstrap'
 const CSVExport = ({ data }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.csvExport
     const headers = [
-        { label: 'Opiskelijanumero', key: 'studentNum' },
-        { label: 'Sähköposti', key: 'email' },
-        { label: 'Vuosikurssi', key: 'class' },
-        { label: 'Suoritukset', key: 'cases' }
+        { label: library.studentNumber, key: 'studentNum' },
+        { label: library.email, key: 'email' },
+        { label: library.classGroup, key: 'class' },
+        { label: library.credits, key: 'cases' }
     ]
 
     let cleanData = []
@@ -23,13 +25,13 @@ const CSVExport = ({ data }) => {
     const csvReport = {
         data: cleanData,
         headers: headers,
-        filename: 'Bakteeripeli-suoritukset.csv'
+        filename: `${library.filename}.csv`
     }
 
     return (
         <>
             <CSVLink {...csvReport}>
-                <Button className="small-margin-float-right" variant='success'>Tallenna Excel-muodossa</Button>
+                <Button className="small-margin-float-right" variant='success'>{library.exportButton}</Button>
             </CSVLink>
         </>
     )

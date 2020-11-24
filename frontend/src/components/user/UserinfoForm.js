@@ -13,10 +13,10 @@ import Classgroup from './components/Classgroup'
 import { setNotification } from '../../reducers/notificationReducer'
 import ConfirmWindow from '../utility/ConfirmWindow'
 
-const UserInfoForm = ( { user } ) => {
+const UserInfoForm = ({ user }) => {
 
     /* states */
-
+    const library = useSelector(state => state.language)?.library?.frontend.user.userInfo
     const validation = useSelector(state => state.language)?.validation?.user
     const [username, setNewUsername] = useState(user.username)
     const [password, setNewPassword] = useState('')
@@ -62,13 +62,13 @@ const UserInfoForm = ( { user } ) => {
                     email, studentNumber, classGroup, oldPassword, password,
                     token, handleClose
                 ))
-            } catch(e) {
+            } catch (e) {
                 return e
             }
         }
     }
 
-    const resetFields = () =>  {
+    const resetFields = () => {
         setNewUsername(user.username)
         setNewEmail(user.email)
         setNewStudentNumber(user.studentNumber)
@@ -80,9 +80,6 @@ const UserInfoForm = ( { user } ) => {
 
 
     /* schema for validation */
-    if(!validation) {
-        return<></>
-    }
     const UserinfoSchema = Yup.object().shape({
         username: Yup.string()
             .min(validation.username.minlength, validation.username.minMessage)
@@ -119,7 +116,7 @@ const UserInfoForm = ( { user } ) => {
         if (password === passwordAgain) {
             setConfirm(true)
         } else {
-            dispatch(setNotification({ message: 'Salasanojen tulee olla samat.', success: false }))
+            dispatch(setNotification({ message: library.samePasswordAndSecondPassword, success: false }))
         }
     }
 
@@ -127,7 +124,7 @@ const UserInfoForm = ( { user } ) => {
         const oldPassword = props
         try {
             saveUpdatedUserinfo(oldPassword)
-        } catch(e) {
+        } catch (e) {
             return e
         }
     }
@@ -141,11 +138,11 @@ const UserInfoForm = ( { user } ) => {
                 id={'infoEditButton'}
                 variant='primary'
                 onClick={() => handleShow()}>
-                    Muokkaa käyttäjätietoja
+                {library.editInformation}
             </Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose} backdrop='static'>
                 <Modal.Header closeButton>
-                    Muokkaa käyttäjätietoja
+                    {library.editInformation}
                 </Modal.Header>
                 <Modal.Body>
                     <Formik
@@ -188,7 +185,7 @@ const UserInfoForm = ( { user } ) => {
                                         setEmail={setNewEmail}></Email>
                                     <Password typeControlId='password'
                                         password={password}
-                                        label={'Salasana'}
+                                        label={library.password}
                                         onChange={setFieldValue}
                                         error={errors.password}
                                         touched={touched.password}
@@ -196,7 +193,7 @@ const UserInfoForm = ( { user } ) => {
                                         setPassword={setNewPassword}></Password>
                                     <Password typeControlId='passwordAgain'
                                         password={passwordAgain}
-                                        label={'Salasana uudelleen'}
+                                        label={library.passwordAgain}
                                         onChange={setFieldValue}
                                         error={errors.password}
                                         touched={touched.password}
@@ -216,18 +213,17 @@ const UserInfoForm = ( { user } ) => {
                                         touched={touched.classGroup}
                                         onBlur={handleBlur}
                                         setClassgroup={setNewClassgroup}></Classgroup>
-                                    <Button id={'updateUserinfo'} variant='success' type='submit'>Päivitä Tiedot</Button>
+                                    <Button id={'updateUserinfo'} variant='success' type='submit'>{library.updateInformation}</Button>
                                     { showConfirm ?
                                         <ConfirmWindow
                                             listedUser={user}
                                             buttonId='updateUserInfo'
-                                            modalOpenButtonText='Vahvista proffilitietojen päivitys'
+                                            modalOpenButtonText={library.modalButton}
                                             modalOpenButtonVariant='success'
-                                            modalHeader={`Käyttäjän ${user.username} profiilitietojen muuttamisen varmennus`}
-                                            warningText='Ole hyvä ja anna tämänhetkinen salasanasi vahvistaaksesi
-                                            henkilöllisyytesi ja tallentaaksesi profiilisi muutokset.'
+                                            modalHeader={`${library.modalHeaderStart}${user.username}${library.modalHeaderEnd}`}
+                                            warningText={library.warning}
                                             functionToExecute={confirmChanges}
-                                            executeButtonText='Tallenna muutokset'
+                                            executeButtonText={library.executeButton}
                                             executeButtonVariant='success'
                                             showImmediately={true}
                                             password={true}
@@ -237,7 +233,8 @@ const UserInfoForm = ( { user } ) => {
                                         <></>
                                     }
                                 </Form>
-                            )}}
+                            )
+                        }}
                     </Formik>
                 </Modal.Body>
             </Modal>

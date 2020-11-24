@@ -1,9 +1,10 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { generateSingleUsePassword } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 const SingleUsePassword = () => {
+    const library = useSelector(state => state.language)?.library?.frontend.user.singleUsePassword
     const dispatch = useDispatch()
     const history = useHistory()
     const handleSingleUsePassword = async (event) => {
@@ -14,23 +15,23 @@ const SingleUsePassword = () => {
     }
     return (
         <div>
-            <h2>Kertakäyttöisen salasanan luonti</h2>
+            <h2>{library.title}</h2>
             <Form onSubmit={handleSingleUsePassword}>
                 <Form.Group>
-                    <Form.Label>Käyttäjänimi:</Form.Label>
+                    <Form.Label>{library.username}</Form.Label>
                     <Form.Control
                         type='text'
                         id='username'
                         name='username'
                     />
-                    <Form.Label>Sähköpostiosoite:</Form.Label>
+                    <Form.Label>{library.email}</Form.Label>
                     <Form.Control
                         type='text'
                         id='email'
                         name='email'
                     />
                     <Button id='submit' variant='primary' type='submit'>
-                        Luo kertakäyttöinen salasana
+                        {library.button}
                     </Button>
                 </Form.Group>
             </Form>

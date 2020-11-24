@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tests, hasAlternative }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.case.components
     const [test, setTest] = useState('')
     return (
         <>
@@ -12,7 +14,7 @@ const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tes
                     value={test ? JSON.stringify(test) : ''}
                     onChange={(event) => event.target.value !== '' ? setTest(JSON.parse(event.target.value)) : setTest('')}
                 >
-                    <option value='' disabled hidden>Valitse testi</option>
+                    <option value='' disabled hidden>{library.chooseTest}</option>
                     {
                         tests.filter(t => !addedTests?.includes(t.id)).map(t =>
                             <option key={t.id} value={JSON.stringify(t)}>{t.name}</option>
@@ -25,7 +27,7 @@ const SelectTest = ({ addTest, testGroupIndex, testForCaseIndex, addedTests, tes
                 onClick={() => {
                     addTest(testGroupIndex, testForCaseIndex, test)
                     setTest('')
-                }}>{hasAlternative ? 'Lisää vaihtoehtoinen testi' : 'Lisää testi'}</Button></td>
+                }}>{hasAlternative ? library.addAlternativeTest : library.addTest}</Button></td>
         </>
     )
 }

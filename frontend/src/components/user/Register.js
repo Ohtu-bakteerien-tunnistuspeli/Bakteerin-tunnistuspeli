@@ -13,6 +13,7 @@ import { Formik } from 'formik'
 
 const Register = () => {
     const validation = useSelector(state => state.language)?.validation?.user
+    const library = useSelector(state => state.language)?.library?.frontend.user.register
     const dispatch = useDispatch()
     const history = useHistory()
     const [accept, setAccept] = useState(false)
@@ -20,9 +21,6 @@ const Register = () => {
     const [showModal2, setShowModal2] = useState(false)
     const checkPassWord = require('zxcvbn') // eslint-disable-line
 
-    if(!validation) {
-        return<></>
-    }
     const UserSchema = Yup.object().shape({
         username: Yup.string()
             .required(validation.username.requiredMessage)
@@ -33,8 +31,8 @@ const Register = () => {
             .min(validation.password.minlength, validation.password.minMessage)
             .max(validation.password.maxlength, validation.password.maxMessage)
             .test('secure', validation.password.unsecurePasswordMessage, (password) => {
-                if(password){
-                    if(checkPassWord(password).score < 2){
+                if (password) {
+                    if (checkPassWord(password).score < 2) {
                         return false
                     }
                 }
@@ -96,16 +94,16 @@ const Register = () => {
             if (password === passwordAgain) {
                 dispatch(register(username, email, studentNumber, classGroup, password, history))
             } else {
-                dispatch(setNotification({ message: 'Salasanojen tulee olla samat.', success: false }))
+                dispatch(setNotification({ message: library.samePasswordAndSecondPassword, success: false }))
             }
         } else {
-            dispatch(setNotification({ message: 'Käyttöehtojen hyväksyminen on pakollista.', success: false }))
+            dispatch(setNotification({ message: library.gdbr, success: false }))
         }
     }
 
     return (
         <div >
-            <h2>Rekisteröidy Bakteeripeliin</h2>
+            <h2>{library.title}</h2>
             <Formik
                 validationSchema={UserSchema}
                 onSubmit={handleRegister}
@@ -129,7 +127,7 @@ const Register = () => {
                     return (
                         <Form onSubmit={handleSubmit}>
                             <Form.Group>
-                                <Form.Label className="required-field">Käyttäjänimi</Form.Label>
+                                <Form.Label className="required-field">{library.username}</Form.Label>
                                 <Form.Control
                                     type='text'
                                     id='username'
@@ -141,7 +139,7 @@ const Register = () => {
                                 <Form.Control.Feedback type='invalid' hidden={!touched.username}>
                                     {errors.username}
                                 </Form.Control.Feedback>
-                                <Form.Label className="required-field">Sähköposti</Form.Label>
+                                <Form.Label className="required-field">{library.email}</Form.Label>
                                 <Form.Control
                                     type='text'
                                     id='email'
@@ -153,7 +151,7 @@ const Register = () => {
                                 <Form.Control.Feedback type='invalid' hidden={!touched.email}>
                                     {errors.email}
                                 </Form.Control.Feedback>
-                                <Form.Label>Opiskelijanumero</Form.Label>
+                                <Form.Label>{library.studentNumber}</Form.Label>
                                 <Form.Control
                                     type='text'
                                     id='studentNumber'
@@ -165,7 +163,7 @@ const Register = () => {
                                 <Form.Control.Feedback type='invalid' hidden={!touched.studentNumber}>
                                     {errors.studentNumber}
                                 </Form.Control.Feedback>
-                                <Form.Label>Vuosikurssi</Form.Label>
+                                <Form.Label>{library.classGroup}</Form.Label>
                                 <InputGroup>
                                     <InputGroup.Prepend>
                                         <InputGroup.Text>C-</InputGroup.Text>
@@ -176,7 +174,7 @@ const Register = () => {
                                         id='classGroup'
                                         name='classGroup'
                                         isInvalid={errors.classGroup && touched.classGroup}
-                                        onChange={(event) => setFieldValue('classGroup', 'C-'+event.target.value)}
+                                        onChange={(event) => setFieldValue('classGroup', 'C-' + event.target.value)}
                                         onBlur={handleBlur}
                                     />
                                 </InputGroup>
@@ -184,7 +182,7 @@ const Register = () => {
                                     {errors.classGroup}
                                 </Form.Control.Feedback>
                                 <Password password={values.password}
-                                    label={'Salasana'}
+                                    label={library.password}
                                     onChange={setFieldValue}
                                     error={errors.password}
                                     touched={touched}
@@ -194,10 +192,10 @@ const Register = () => {
                                 ></Password>
                                 <PasswordQualityIndicator
                                     value={checkPassWord(values.password).score}
-                                    show={values.password.length>0}
+                                    show={values.password.length > 0}
                                     messages={validation.password}
                                 ></PasswordQualityIndicator>
-                                <Form.Label className="required-field">Salasana toisen kerran</Form.Label>
+                                <Form.Label className="required-field">{library.passwordAgain}</Form.Label>
                                 <Form.Control
                                     type='password'
                                     id='passwordAgain'
@@ -206,15 +204,14 @@ const Register = () => {
                                     onBlur={handleBlur}
                                 />
                                 <div className='form-group form-inline'>
-                                    <Form.Label className="required-field">Olen lukenut ja hyväksyn&nbsp;{<a href='#' onClick={() => setShowModal(true)}>käyttöehdot</a>//eslint-disable-line
-                                    }&nbsp;
-                        ja&nbsp;{<a href='#' onClick={() => setShowModal2(true)}>tietosuojailmoituksen</a> //eslint-disable-line
+                    <Form.Label className="required-field">{library.readTermsStart}&nbsp;{<a href='#' onClick={() => setShowModal(true)}>{library.terms}</a>//eslint-disable-line
+                                    }&nbsp;{library.and}&nbsp;{<a href='#' onClick={() => setShowModal2(true)}>{library.privacy}</a> //eslint-disable-line
                                     }&nbsp;
                                     </Form.Label>
                                     <Form.Check type='checkbox' label='' id='acceptCheckBox' value={accept} onChange={() => setAccept(!accept)} />
                                 </div>
                                 <Button id='submit' variant='success' type='submit'>
-                                    Rekisteröidy
+                                    {library.button}
                                 </Button>
                             </Form.Group>
                         </Form>

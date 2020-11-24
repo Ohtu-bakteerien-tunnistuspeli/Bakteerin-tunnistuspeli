@@ -7,6 +7,7 @@ import ModalImage from './utility/ModalImage'
 import FormattedText from './case/components/FormattedText'
 
 const GamePage = () => {
+    const library = useSelector(state => state.language)?.library?.frontend.gamePage
     const [tab, setTab] = useState('anamneesi')
     const [testTab, setTestTab] = useState('testejä')
     const dispatch = useDispatch()
@@ -50,38 +51,38 @@ const GamePage = () => {
     return (
         <>
             <Tabs activeKey={tab} onSelect={(k) => setTab(k)}>
-                <Tab eventKey='anamneesi' title='Anamneesi'>
-                    <p style={{ padding:'20px' }}><FormattedText value={game.case.anamnesis} /></p>
+                <Tab eventKey='anamneesi' title={library.tabs.anamnesis}>
+                    <p style={{ padding: '20px' }}><FormattedText value={game.case.anamnesis} /></p>
                 </Tab>
-                <Tab eventKey='toiminnot' title='Toiminnot'>
+                <Tab eventKey='toiminnot' title={library.tabs.functions}>
                     <Tabs activeKey={testTab} onSelect={(k) => setTestTab(k)}>
-                        <Tab eventKey='testejä' title='Testejä'>
+                        <Tab eventKey='testejä' title={library.tabs.tests}>
                             {
                                 !game.samplesCorrect ?
                                     <>
-                                        <h1>Näytteenotto</h1>
+                                        <h1>{library.samplesTab.title}</h1>
                                         <Form id='samples' onSubmit={(event) => sampleSubmit(event)}>
-                                            <Form.Label>Millaisen näytteen otat?</Form.Label>
+                                            <Form.Label>{library.samplesTab.whatSample}</Form.Label>
                                             {game.case.samples.map((sample, i) => <Form.Check key={i} label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)}></Form.Check>)}
                                             <Button
                                                 variant='success'
                                                 type='submit'
                                                 id='checkSamples'
                                                 className="game-margin">
-                                                Ota näyte
+                                                {library.samplesTab.takeSample}
                                             </Button>
                                         </Form>
                                     </>
                                     :
                                     <>
-                                        <h1>Laboratoriotutkimukset</h1>
+                                        <h1>{library.testsTab.title}</h1>
                                         <div id='testView'>
                                             {
                                                 (cultivationsToShow && cultivationsToShow.length > 0) ?
                                                     <>
-                                                        <h2 style={{ marginTop:'20px' }}>Viljelyt</h2>
+                                                        <h2 style={{ marginTop: '20px' }}>{library.testsTab.culture}</h2>
                                                         {cultivationsToShow.map(test =>
-                                                            <Button id='testButton' key={test.id} variant='warning' style={{ margin:'3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                                            <Button id='testButton' key={test.id} variant='warning' style={{ margin: '3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -90,9 +91,9 @@ const GamePage = () => {
                                             {
                                                 (testsToShow && testsToShow.length > 0) ?
                                                     <>
-                                                        <h2 style={{ marginTop:'20px' }}>Testit</h2>
+                                                        <h2 style={{ marginTop: '20px' }}>{library.testsTab.tests}</h2>
                                                         {testsToShow.map(test =>
-                                                            <Button key={test.id} variant='info' style={{ margin:'3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='info' style={{ margin: '3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -101,9 +102,9 @@ const GamePage = () => {
                                             {
                                                 (stainingsToShow && stainingsToShow.length > 0) ?
                                                     <>
-                                                        <h2 style={{ marginTop:'20px' }}>Värjäys</h2>
+                                                        <h2 style={{ marginTop: '20px' }}>{library.testsTab.dye}</h2>
                                                         {stainingsToShow.map(test =>
-                                                            <Button key={test.id} variant='success' style={{ margin:'3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='success' style={{ margin: '3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -112,9 +113,9 @@ const GamePage = () => {
                                             {
                                                 (othersToShow && othersToShow.length > 0) ?
                                                     <>
-                                                        <h2 style={{ marginTop:'20px' }}>Muut</h2>
+                                                        <h2 style={{ marginTop: '20px' }}>{library.testsTab.other}</h2>
                                                         {othersToShow.map(test =>
-                                                            <Button key={test.id} variant='secondary' style={{ margin:'3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='secondary' style={{ margin: '3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -124,14 +125,14 @@ const GamePage = () => {
                                     </>
                             }
                         </Tab>
-                        <Tab eventKey='tuloksia' title='Tuloksia'>
-                            <h4 className="game-margin">Tulokset</h4>
+                        <Tab eventKey='tuloksia' title={library.tabs.results}>
+                            <h4 className="game-margin">{library.resultsTab.title}</h4>
                             <Table id='resultTable'>
                                 <thead>
                                     <tr>
-                                        <th>Testi</th>
-                                        <th>Kontrollikuva</th>
-                                        <th>Tulos</th>
+                                        <th>{library.resultsTab.test}</th>
+                                        <th>{library.resultsTab.controlImage}</th>
+                                        <th>{library.resultsTab.result}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -161,12 +162,11 @@ const GamePage = () => {
                         </Tab>
                     </Tabs>
                 </Tab>
-                <Tab eventKey='diagnoosi' title='Diagnoosi' disabled={!game.requiredTestsDone}>
-                    <h1>Diagnoosi</h1>
+                <Tab eventKey='diagnoosi' title={library.tabs.diagnosis} disabled={!game.requiredTestsDone}>
+                    <h1>{library.diagnosisTab.title}</h1>
                     {game.bacteriumCorrect ?
                         <>
-                            <p style={{ padding:'10px' }}><FormattedText value={game.case.completionText} /></p>
-                            <p></p>
+                            <p style={{ padding: '10px' }}><FormattedText value={game.case.completionText} /></p>
                             {game.completionImageUrl ?
                                 <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
                                 :
@@ -175,10 +175,10 @@ const GamePage = () => {
                         </>
                         :
                         <>
-                            <p>Syötä alla olevaan kenttään oikea diagnoosi (=bakteeri) tekemiesi testien perusteella.</p>
+                            <p>{library.diagnosisTab.insertDiagnosis}</p>
                             <Form onSubmit={(event) => bacteriumSubmit(event)}>
                                 <Form.Group>
-                                    <Form.Label>Syötä bakteerin nimi</Form.Label>
+                                    <Form.Label>{library.diagnosisTab.insertBacterium}</Form.Label>
                                     <Typeahead
                                         inputProps={{ id: 'bacterium' }}
                                         value={bacterium}
@@ -188,13 +188,13 @@ const GamePage = () => {
                                         onChange={(options) => setBacterium(options[0])}
                                         filterBy={(option, props) => option.toLowerCase().startsWith(props.text.toLowerCase())}
                                         options={bacteria}
-                                        emptyLabel='Vastaavia bakteereja ei löytynyt'
+                                        emptyLabel={library.diagnosisTab.bacteriumNotFound}
                                     />
                                 </Form.Group>
                                 <Button variant='info'
                                     type='submit'
                                     id='checkDiagnosis'>
-                                    Tarkasta diagnoosi
+                                    {library.diagnosisTab.checkDiagnosis}
                                 </Button>
                             </Form>
                         </>

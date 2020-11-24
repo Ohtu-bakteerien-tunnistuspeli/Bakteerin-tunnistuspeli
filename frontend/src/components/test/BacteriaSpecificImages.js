@@ -1,12 +1,13 @@
 import React from 'react'
 import { Button, Form, Image } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
     bacterium, handleSpecificImg,
     bacteriaSpecificImages, bacteriaSpecificImage,
     addBacteriumSpecificImage, removeBacteriaSpecificImage,
     marginStyle, onChange, error, addedBacteriaImage }) => {
-
+    const library = useSelector(state => state.language)?.library?.frontend.test.bacteriaImages
     const handleChange = (event) => {
         event.preventDefault()
         setBacterium(event.target.value)
@@ -21,7 +22,7 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
 
     return (
         <Form.Group controlId={controlId}>
-            <Form.Label style={{ paddingTop: '40px' }}><h4>Bakteerikohtaiset kuvat</h4></Form.Label>
+            <Form.Label style={{ paddingTop: '40px' }}><h4>{library.title}</h4></Form.Label>
             <ul>
                 {bacteriaSpecificImages.map((image, i) => {
                     return (
@@ -34,21 +35,21 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
                                 onClick={() => removeBacteriaSpecificImage(image)}
                                 variant='danger'
                                 size='sm'>
-                                Poista kuva
+                                {library.deleteImage}
                             </Button>
                         </li>
                     )
                 }
                 )}
             </ul>
-            <Form.Label style={marginStyle}>Bakteeri</Form.Label>
+            <Form.Label style={marginStyle}>{library.bacterium}</Form.Label>
             <Form.Control
                 as='select'
                 style={marginStyle}
                 value={bacterium}
                 isInvalid={error}
                 onChange={(event) => handleChange(event)}>
-                <option value='' disabled hidden>Valitse bakteeri</option>
+                <option value='' disabled hidden>{library.chooseBacterium}</option>
                 {bacteria.filter(bact => !addedBacteriaImage.includes(bact.name)).map(bact =>
                     <option key={bact.id} value={bact.name}>{bact.name}</option>
                 )}
@@ -64,7 +65,7 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
                 value={bacteriaSpecificImage.image}
                 onChange={handleSpecificImg}
             />
-            <Button style={marginStyle} type='button' onClick={handleAdd}>Tallenna bakteerikohtainen kuva</Button>
+            <Button style={marginStyle} type='button' onClick={handleAdd}>{library.saveImage}</Button>
         </Form.Group>
     )
 }

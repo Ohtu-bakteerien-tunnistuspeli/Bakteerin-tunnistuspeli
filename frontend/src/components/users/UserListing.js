@@ -1,7 +1,9 @@
 import React from 'react'
 import ConfirmWindow from '../utility/ConfirmWindow'
+import { useSelector } from 'react-redux'
 
 const UserListing = ({ listedUser, userDelete, promote, demote }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.users.listing
     return (
         <tr>
             <td>{listedUser.studentNumber ? listedUser.studentNumber : ''}</td>
@@ -13,36 +15,36 @@ const UserListing = ({ listedUser, userDelete, promote, demote }) => {
                         <ConfirmWindow
                             listedUser={listedUser}
                             buttonId='demoteUser'
-                            modalOpenButtonText='Alenna'
+                            modalOpenButtonText={library.demote.button}
                             modalOpenButtonVariant='primary'
-                            modalHeader={`Käyttäjän ${listedUser.username} alentamisen varmennus`}
-                            warningText='Kirjoita käyttäjän nimi ja paina nappia alentaaksesi käyttäjä.'
+                            modalHeader={`${library.demote.modalHeaderStart}${listedUser.username}${library.demote.modalHeaderEnd}`}
+                            warningText={library.demote.warning}
                             functionToExecute={demote}
-                            executeButtonText='Alenna käyttäjä'
+                            executeButtonText={library.demote.executeButton}
                             executeButtonVariant='primary'
                         />
                         :
                         <ConfirmWindow
                             listedUser={listedUser}
                             buttonId='promoteUser'
-                            modalOpenButtonText='Ylennä'
+                            modalOpenButtonText={library.promote.button}
                             modalOpenButtonVariant='primary'
-                            modalHeader={`Käyttäjän ${listedUser.username} ylentämisen varmennus`}
-                            warningText='Kirjoita käyttäjän nimi ja paina nappia ylentääksesi käyttäjä.'
+                            modalHeader={`${library.promote.modalHeaderStart}${listedUser.username}${library.promote.modalHeaderEnd}`}
+                            warningText={library.promote.warning}
                             functionToExecute={promote}
-                            executeButtonText='Ylennä käyttäjä'
+                            executeButtonText={library.promote.executeButton}
                             executeButtonVariant='primary'
                         />
                     }
                     <ConfirmWindow
                         listedUser={listedUser}
                         buttonId='deleteUser'
-                        modalOpenButtonText='Poista'
+                        modalOpenButtonText={library.delete.button}
                         modalOpenButtonVariant='danger'
-                        modalHeader={`Käyttäjän ${listedUser.username} poistamisen varmennus`}
-                        warningText='Kirjoita käyttäjän nimi ja paina nappia poistaaksesi käyttäjä ja käyttäjän suoritukset.'
+                        modalHeader={`${library.delete.modalHeaderStart}${listedUser.username}${library.delete.modalHeaderEnd}`}
+                        warningText={library.delete.warning}
                         functionToExecute={userDelete}
-                        executeButtonText='Poista käyttäjä'
+                        executeButtonText={library.delete.executeButton}
                         executeButtonVariant='danger'
                     />
                 </div>

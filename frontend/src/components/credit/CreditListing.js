@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Modal, Table, Button } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 const CreditListing = ({ credit, admin }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.credit.listing
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false)
     const [show, setShow] = useState(false)
@@ -13,15 +15,15 @@ const CreditListing = ({ credit, admin }) => {
                     <td>{credit.user.username}</td>
                     <td>{credit.user.classGroup}</td>
                     <td>
-                        <Button id='creditShowLink' className='small-margin-float-right' variant='primary' onClick={handleShow}>Näytä suoritukset</Button>
+                        <Button id='creditShowLink' className='small-margin-float-right' variant='primary' onClick={handleShow}>{library.showCredits}</Button>
                         <Modal show={show} size='lg' scrollable='true' onHide={handleClose} >
                             <Modal.Header closeButton></Modal.Header>
                             <Modal.Body>
-                                Opiskelija numero: {credit.user.studentNumber}<br />
-                                Käyttäjänimi: {credit.user.username}<br />
-                                Vuosikurssi: {credit.user.classGroup}<br />
-                                Sähköposti: {credit.user.email}<br />
-                                Suoritukset:
+                                {`${library.studentNumber} ${credit.user.studentNumber}`}<br />
+                                {`${library.username} ${credit.user.username}`}<br />
+                                {`${library.classGroup} ${credit.user.classGroup}`}<br />
+                                {`${library.email} ${credit.user.email}`}<br />
+                                {library.credits}
                                 <Table>
                                     <tbody>
                                         {credit.testCases.map(completedCase =>

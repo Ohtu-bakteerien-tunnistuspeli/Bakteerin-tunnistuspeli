@@ -1,6 +1,7 @@
 const config = require('./config')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const library = config.library.backend.security
 
 const tokenExtractor = async (request, response, next) => {
     const authorization = request.get('authorization')
@@ -16,7 +17,7 @@ const tokenExtractor = async (request, response, next) => {
 
 const authorizationHandler = (error, request, response, next) => {
     if (error.message === 'JsonWebTokenError') {
-        return response.status(401).json({ error: 'token missing or invalid' })
+        return response.status(401).json({ error: library.tokenError })
     } else if(error){
         return response.status(400).json({ error: error.message })
     }

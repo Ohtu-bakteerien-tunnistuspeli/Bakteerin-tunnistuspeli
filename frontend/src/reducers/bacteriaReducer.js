@@ -3,7 +3,6 @@ import { setNotification } from '../reducers/notificationReducer'
 const reducer = (state = [], action) => {
     switch (action.type) {
     case 'GET_BACTERIA': {
-
         return action.data
     }
     case 'ADD_BACTERIUM': {

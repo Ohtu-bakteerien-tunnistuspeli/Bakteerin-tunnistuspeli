@@ -27,7 +27,9 @@ const reducer = (state = null, action) => {
 
 
 export const login = (username, password, history) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.user.reducer
+        const routeLibrary = getState()?.language?.library.frontend.routes
         let user = await userService.login({ username, password })
         if (user && !user.error) {
             user.token = `bearer ${user.token}`
@@ -44,10 +46,10 @@ export const login = (username, password, history) => {
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
             if (user.singleUsePasswordUsed) {
-                dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}. Vaihda salasanasi.`, success: true, show: true }))
-                history.push('/profiilini')
+                dispatch(setNotification({ message: `${library.singelLoginMessageStart}${username}${library.singelLoginMessageEnd}`, success: true, show: true }))
+                history.push(`/${routeLibrary.profile}`)
             } else {
-                dispatch(setNotification({ message: `Kirjauduit sisään onnistuneesti, ${username}.`, success: true, show: true }))
+                dispatch(setNotification({ message: `${library.loginMessageStart}${username}${library.loginMessageEnd}`, success: true, show: true }))
                 history.push('/')
             }
         } else {
@@ -55,7 +57,7 @@ export const login = (username, password, history) => {
                 type: 'LOGIN',
                 data: null
             })
-            dispatch(setNotification({ message: 'Kirjautuminen epäonnistui', success: false, show: true }))
+            dispatch(setNotification({ message: library.loginFail, success: false, show: true }))
         }
     }
 }
@@ -67,7 +69,7 @@ export const logout = (history) => {
             type: 'LOGOUT',
             data: null
         })
-        history.push('/kirjautuminen')
+        history.push('/')
         dispatch(zeroUsers())
         dispatch(zeroBacteria())
         dispatch(zeroCase())
@@ -104,11 +106,13 @@ export const returnUser = (history) => {
 }
 
 export const register = (username, email, studentNumber, classGroup, password, history) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.user.reducer
+        const routeLibrary = getState()?.language?.library.frontend.routes
         let response = await userService.register({ username, email, studentNumber, classGroup, password })
         if (response && !response.error) {
-            dispatch(setNotification({ message: `Rekisteröidyit onnistuneesti, ${username}`, success: true, show: true }))
-            history.push('/kirjautuminen')
+            dispatch(setNotification({ message: `${library.registerMessageStart}${username}${library.registerMessageEnd}`, success: true, show: true }))
+            history.push(`/${routeLibrary.login}`)
         } else {
             dispatch({
                 type: 'REGISTER',

@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const config = require('./utils/config')
+const library = config.library.frontend.routes
 require('express-async-errors')
 const mongoose = require('mongoose')
 if (process.env.NODE_ENV === 'testserver' || process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
@@ -188,7 +189,7 @@ app.use('/api/game', gameRouter)
 const creditRouter = require('./controllers/credit')
 app.use('/api/credit', creditRouter)
 app.use(security.authorizationHandler)
-app.get(/\/(bakteeriLista|tapausLista|testiLista|suoritusLista|kayttajaLista|peli|profiilini|kirjautuminen|rekisteroityminen|kertakayttoinensalasana)$/, (req, res) => {
+app.get(new RegExp(`/(${library.bacteriaList}|${library.caseList}|${library.testList}|${library.creditList}|${library.userList}|${library.game}|${library.profile}|${library.login}|${library.register}|${library.singleUsePassword})$`), (req, res) => {
     res.sendFile(`${__dirname}/build/index.html`, (err) => {
         if (err) {
             res.status(500).send(err)

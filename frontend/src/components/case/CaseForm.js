@@ -29,6 +29,7 @@ const CaseForm = ({ caseToEdit }) => {
     }
 
     /* initial parameters */
+    const library = useSelector(state => state.language)?.library?.frontend.case.form
     const validation = useSelector(state => state.language)?.validation?.case
     const cases = useSelector(state => state.case)
     const bacteria = useSelector(state => state.bacteria)?.sort((bacterium1, bacterium2) => bacterium1.name.localeCompare(bacterium2.name))
@@ -76,9 +77,6 @@ const CaseForm = ({ caseToEdit }) => {
     const dispatch = useDispatch()
 
     /* schema for validation */
-    if(!validation) {
-        return<></>
-    }
     const CaseSchema = Yup.object().shape({
         name: Yup.string()
             .min(validation.name.minlength, validation.name.minMessage)
@@ -255,10 +253,10 @@ const CaseForm = ({ caseToEdit }) => {
                 <Notification></Notification>
             </Modal>
             <Button id={caseToEdit ? 'caseEditButton' : 'caseModalButton'} className="small-margin-float-right" variant='primary' onClick={handleShow}>
-                {caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}
+                {caseToEdit ? library.edit : library.add}
             </Button>
             <Modal show={show} size='xl' scrollable='true' onHide={handleClose} backdrop='static'>
-                <Modal.Header closeButton>{caseToEdit ? 'Muokkaa' : 'Luo uusi tapaus'}</Modal.Header>
+                <Modal.Header closeButton>{caseToEdit ? library.edit : library.add}</Modal.Header>
                 <Modal.Body>
                     <Formik
                         validationSchema={CaseSchema}
@@ -274,7 +272,6 @@ const CaseForm = ({ caseToEdit }) => {
                     >
                         {({
                             handleSubmit,
-                            //values,
                             errors,
                             setFieldValue,
                             touched,
@@ -290,7 +287,6 @@ const CaseForm = ({ caseToEdit }) => {
                                         touched={touched.name}
                                         handleBlur={handleBlur}
                                     ></Name>
-
                                     <SelectBacterium
                                         bacteriumId={bacteriumId}
                                         setBacteriumId={setBacteriumId}
@@ -300,9 +296,8 @@ const CaseForm = ({ caseToEdit }) => {
                                         touched={touched.bacteriumId}
                                         handleBlur={handleBlur}
                                     ></SelectBacterium>
-
                                     <Form.Group id='anamnesis'>
-                                        <Form.Label>Anamneesi</Form.Label>
+                                        <Form.Label>{library.anamnesis}</Form.Label>
                                         <TextEditField
                                             id='anamnesisField'
                                             value={anamnesis}
@@ -318,7 +313,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group id='completionText'>
-                                        <Form.Label>Lopputeksti</Form.Label>
+                                        <Form.Label>{library.completionText}</Form.Label>
                                         <TextEditField
                                             id='completionTextField'
                                             value={completionText}
@@ -334,11 +329,10 @@ const CaseForm = ({ caseToEdit }) => {
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     {caseToEdit ?
-
                                         <Form.Group controlId='editCompletionImage'>
-                                            <Form.Label style={marginStyle}>Loppukuva</Form.Label>
+                                            <Form.Label style={marginStyle}>{library.completionImage}</Form.Label>
                                             {img ?
-                                                <p style={borderStyle}>Loppukuva on annettu</p>
+                                                <p style={borderStyle}>{library.completionImageGiven}</p>
                                                 : <></>
                                             }
                                             <Form.Control
@@ -349,7 +343,7 @@ const CaseForm = ({ caseToEdit }) => {
                                                 accept=".png, .jpg, .jpeg"
                                                 onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false) }}
                                             />
-                                            <Button style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>Poista loppukuva
+                                            <Button style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>{library.deleteCompletionImage}
                                                 <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
                                                     <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z' />
                                                     <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
@@ -357,7 +351,7 @@ const CaseForm = ({ caseToEdit }) => {
                                             </Button>
                                         </Form.Group> :
                                         <Form.Group controlId='completionImage'>
-                                            <Form.Label>Loppukuva</Form.Label>
+                                            <Form.Label>{library.completionImage}</Form.Label>
                                             <Form.Control
                                                 name='completionImage'
                                                 type='file' value={completionImage.image}
@@ -379,11 +373,11 @@ const CaseForm = ({ caseToEdit }) => {
                                     ></AddSample>
                                     <Accordion activeKey={testGroupAccordion}>
                                         <Card>
-                                            <Accordion.Toggle as={Card.Header} onClick={() => setTestGroupAccodrion(testGroupAccordion === '-1' ? '0' : '-1')}><Form.Label>Testiryhmät (klikkaa {testGroupAccordion === '-1' ? 'näyttääksesi' : 'piilottaaksesi'})</Form.Label></Accordion.Toggle>
+                                            <Accordion.Toggle as={Card.Header} onClick={() => setTestGroupAccodrion(testGroupAccordion === '-1' ? '0' : '-1')}><Form.Label>{library.testGroups.titleStart}{testGroupAccordion === '-1' ? library.testGroups.toShow : library.testGroups.toHide})</Form.Label></Accordion.Toggle>
                                             <Accordion.Collapse eventKey='0'>
                                                 <Card.Body>
                                                     <Form.Check
-                                                        label='Näytä muokkaustoiminnallisuus'
+                                                        label={library.testGroups.showEdit}
                                                         type='checkbox'
                                                         id='showTestGroupManagement'
                                                         checked={testGroupManagement}
@@ -406,25 +400,23 @@ const CaseForm = ({ caseToEdit }) => {
                                                             testGroupManagement={testGroupManagement}
                                                         />
                                                     )}
-                                                    {testGroupManagement ? <Button id='addTestGroup' onClick={() => addTestGroup()} block>Aloita uusi testiryhmä</Button> : <></>}
+                                                    {testGroupManagement ? <Button id='addTestGroup' onClick={() => addTestGroup()} block>{library.testGroups.startNewTestGroup}</Button> : <></>}
                                                 </Card.Body>
                                             </Accordion.Collapse>
                                         </Card>
                                     </Accordion>
                                     {caseToEdit ? <Button id='saveEdit' variant='success' type='submit'>
-                                        Tallenna muutokset
+                                        {library.saveEdit}
                                     </Button> : <Button
                                         variant='success'
                                         type='submit'
                                         id='addCase'>
-                                        Tallenna tapaus
+                                        {library.saveNew}
                                     </Button>}
-
                                     { Object.keys(errors).length > 0 ?
-                                        <p style={{ color: 'red' }}>Tapausta ei voida lisätä, tarkista lisäämäsi syötteet.</p>
+                                        <p style={{ color: 'red' }}>{library.validationError}</p>
                                         : null
                                     }
-
                                 </Form>
                             )
                         }}

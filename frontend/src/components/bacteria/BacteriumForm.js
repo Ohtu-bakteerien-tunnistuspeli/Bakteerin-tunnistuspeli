@@ -4,6 +4,7 @@ import { addBacteria } from '../../reducers/bacteriaReducer'
 import { Button, Form } from 'react-bootstrap'
 
 const BacteriumForm = () => {
+    const library = useSelector(state => state.language)?.library?.frontend.bacteria.form
     const [newBacterium, setNewBacterium] = useState('')
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
@@ -23,7 +24,7 @@ const BacteriumForm = () => {
                     onChange={({ target }) => setNewBacterium(target.value)}
                     style={style}
                 />
-                <Button variant="primary" type="submit">Lisää bakteeri</Button>
+                <Button variant="primary" type="submit">{library.addBacterium}</Button>
             </Form>
         </div>
     )

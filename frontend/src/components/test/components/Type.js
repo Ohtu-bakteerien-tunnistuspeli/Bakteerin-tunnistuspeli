@@ -1,7 +1,9 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 const Type = ({ typeControlId, testType, onChange, error, touched, setTestType }) => {
+    const library = useSelector(state => state.language)?.library?.frontend.test.components
     const handleChange = (event) => {
         event.preventDefault()
         setTestType(event.target.value)
@@ -10,15 +12,15 @@ const Type = ({ typeControlId, testType, onChange, error, touched, setTestType }
     return (
         <>
             <Form.Group controlId={typeControlId}>
-                <Form.Label>Tyyppi</Form.Label>
+                <Form.Label>{library.type}</Form.Label>
                 <Form.Control as='select'
                     value={testType}
                     isInvalid={error && touched}
                     onChange={handleChange}>
-                    <option key='1' value='' disabled hidden>Valitse testin tyyppi</option>
-                    <option key='2' value='Värjäys'>Värjäys</option>
-                    <option key='3' value='Testi'>Testi</option>
-                    <option key='4' value='Viljely'>Viljely</option>
+                    <option key='1' value='' disabled hidden>{library.chooseType}</option>
+                    <option key='2' value='Värjäys'>{library.dye}</option>
+                    <option key='3' value='Testi'>{library.test}</option>
+                    <option key='4' value='Viljely'>{library.culture}</option>
                 </Form.Control>
                 <Form.Control.Feedback type="invalid">
                     {error}
