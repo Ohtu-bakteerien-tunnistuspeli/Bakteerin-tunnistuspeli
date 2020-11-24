@@ -61,65 +61,59 @@ const App = () => {
                 :
                 null
             }
-            <Navbar collapseOnSelect expand='lg' bg='light' variant='light'>
+            <Navbar collapseOnSelect expand='lg' className='nav-colour'>
                 <Navbar.Toggle className='hidden-nav' aria-controls='responsive-navbar-nav' />
                 <Navbar.Collapse id='responsive-navbar-nav' >
                     <Nav className='mr-auto'>
-                        {user
-                            ?
-                            <Nav.Link href='#' as='span'>
-                                <Link to='/'>Etusivu</Link>
-                            </Nav.Link>
-                            : null
-                        }
-                        {user?.admin ?
-                            <Nav.Link href='#' as='span'>
-                                <Link to='/bakteeriLista'>Bakteerien hallinta</Link>
-                            </Nav.Link>
-                            : null
-                        }
-                        {user?.admin
-                            ?
-                            <Nav.Link href='#' as='span'>
-                                <Link to='/tapausLista' >Tapausten hallinta</Link>
-                            </Nav.Link>
-                            : null
-                        }
-                        {user?.admin
-                            ?
-                            <Nav.Link href='#' as='span'>
-                                <Link to='/testiLista'>Testien hallinta</Link>
-                            </Nav.Link>
-                            : null
-                        }
-                        {user?.admin
-                            ?
-                            <Nav.Link href='#' as='span'>
-                                <Link to='/suoritusLista'>Suoritusten hallinta</Link>
-                            </Nav.Link>
-                            : null
-                        }
-                        {user?.admin
-                            ?
-                            <Nav.Link href='#' as='span'>
-                                <Link to='/kayttajaLista'>Käyttäjien hallinta</Link>
-                            </Nav.Link>
-                            : null
-                        }
+                        <Nav.Link href='#' as='span'>
+                            {user
+                                ? <Link to='/' className='link'>Etusivu</Link>
+                                : null
+                            }
+                        </Nav.Link>
+                        <Nav.Link href='#' as='span'>
+                            {user?.admin
+                                ? <Link to='/bakteeriLista' className='link'>Bakteerien hallinta</Link>
+                                : null
+                            }
+                        </Nav.Link>
+                        <Nav.Link href='#' as='span'>
+                            {user?.admin
+                                ? <Link to='/tapausLista' className='link'>Tapausten hallinta</Link>
+                                : null
+                            }
+                        </Nav.Link>
+                        <Nav.Link href='#' as='span'>
+                            {user?.admin
+                                ? <Link to='/testiLista' className='link'>Testien hallinta</Link>
+                                : null
+                            }
+                        </Nav.Link>
+                        <Nav.Link href='#' as='span'>
+                            {user?.admin
+                                ? <Link to='/suoritusLista' className='link'>Suoritusten hallinta</Link>
+                                : null
+                            }
+                        </Nav.Link>
+                        <Nav.Link href='#' as='span'>
+                            {user?.admin
+                                ? <Link to='/kayttajaLista' className='link'>Käyttäjien hallinta</Link>
+                                : null
+                            }
+                        </Nav.Link>
                     </Nav>
                     <Nav.Link href='#' as='span'>
                         {user
-                            ? <em><p className='nav-text'>Tervetuloa <Link to='/profiilini'>{user.username}</Link></p></em>
-                            : <Link to='/kirjautuminen'>Kirjaudu sisään</Link>
+                            ? <p className='nav-text'><em>Kirjautuneena </em><Link to='/profiilini' className='logged-user' >{user.username}</Link></p>
+                            : <Link to='/kirjautuminen' className='link'>Kirjaudu sisään</Link>
                         }
                     </Nav.Link>
-                    {user
-                        ? null
-                        :
-                        <Nav.Link href='#' as='span'>
-                            <Link to='/rekisteroityminen'>Rekisteröidy</Link>
-                        </Nav.Link>
-                    }
+                    <Nav.Link href='#' as='span'>
+                        {user
+                            ? null
+                            : <Link to='/rekisteroityminen' className='link'>Rekisteröidy</Link>
+                        }
+                    </Nav.Link>
                     <Nav.Item>
                         {user
                             ? <Button id='submit' variant='primary' type='button' onClick={logoutButton}>Kirjaudu ulos</Button>
