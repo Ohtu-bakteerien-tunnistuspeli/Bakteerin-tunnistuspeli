@@ -1,5 +1,6 @@
 import userService from '../services/user'
 import { setNotification } from './notificationReducer'
+import { setUser } from './userReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
@@ -108,6 +109,8 @@ export const updateUserinfo = (username, email, studentNumber, classGroup, oldPa
                 type: 'UPDATE_USERINFO',
                 data: userInfo
             })
+            const newUser = { ...userInfo, token: token }
+            dispatch(setUser(newUser))
             if (handleClose) {
                 handleClose()
             }
