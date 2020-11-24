@@ -16,6 +16,7 @@ const Password = ({ password, label, setPassword, onChange, error, touched, hand
                 type='password'
                 isInvalid={error && touched}
                 value={password}
+                placeholder='***********'
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
