@@ -11,7 +11,6 @@ import Studentnumber from './components/Studentnumber'
 import Password from './components/Password'
 import Classgroup from './components/Classgroup'
 import { setNotification } from '../../reducers/notificationReducer'
-import ConfirmWindow from '../utility/ConfirmWindow'
 
 const UserInfoForm = ({ user }) => {
 
@@ -24,7 +23,7 @@ const UserInfoForm = ({ user }) => {
     const [email, setNewEmail] = useState(user.email)
     const [studentNumber, setNewStudentNumber] = useState(user.studentNumber)
     const [classGroup, setNewClassgroup] = useState(user.classGroup)
-    const [showConfirm, setConfirm] = useState(false)
+    const [confirmText, setConfirmText] = useState('')
 
     /* states end */
 
@@ -75,7 +74,6 @@ const UserInfoForm = ({ user }) => {
         setNewClassgroup(user.classGroup)
         setNewPassword('')
         setNewPasswordAgain('')
-        setConfirm(false)
     }
 
 
@@ -112,9 +110,9 @@ const UserInfoForm = ({ user }) => {
     })
     /* schema for validation end */
 
-    const onSuccess = () => {
+    const onSuccess = (props) => {
         if (password === passwordAgain) {
-            setConfirm(true)
+            confirmChanges(props)
         } else {
             dispatch(setNotification({ message: library.samePasswordAndSecondPassword, success: false }))
         }
@@ -147,7 +145,7 @@ const UserInfoForm = ({ user }) => {
                 <Modal.Body>
                     <Formik
                         validationSchema={UserinfoSchema}
-                        onSubmit={onSuccess}
+                        onSubmit={() => onSuccess(confirmText)}
                         initialValues={{
                             username: username,
                             email: email,
@@ -213,25 +211,19 @@ const UserInfoForm = ({ user }) => {
                                         touched={touched.classGroup}
                                         onBlur={handleBlur}
                                         setClassgroup={setNewClassgroup}></Classgroup>
-                                    <Button id={'updateUserinfo'} variant='success' type='submit'>{library.updateInformation}</Button>
-                                    { showConfirm ?
-                                        <ConfirmWindow
-                                            listedUser={user}
-                                            buttonId='updateUserInfo'
-                                            modalOpenButtonText={library.modalButton}
-                                            modalOpenButtonVariant='success'
-                                            modalHeader={`${library.modalHeaderStart}${user.username}${library.modalHeaderEnd}`}
-                                            warningText={library.warning}
-                                            functionToExecute={confirmChanges}
-                                            executeButtonText={library.executeButton}
-                                            executeButtonVariant='success'
-                                            showImmediately={true}
-                                            password={true}
-                                            parameter={true}
+                                    <div>
+                                        <br></br>
+                                        <Form.Label>{library.warning}</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            id="confirmField"
+                                            onChange={(event) => setConfirmText(event.target.value)}
                                         />
-                                        :
-                                        <></>
-                                    }
+
+                                        <Button id="updateUserInfo" variant='success' type="submit">
+                                            {library.executeButton}
+                                        </Button>
+                                    </div>
                                 </Form>
                             )
                         }}
