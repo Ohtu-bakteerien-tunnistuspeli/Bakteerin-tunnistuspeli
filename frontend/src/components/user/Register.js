@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import { Form, Button, Modal, InputGroup } from 'react-bootstrap'
 import { setNotification } from '../../reducers/notificationReducer'
 import PasswordQualityIndicator from './components/PasswordQualityIndicator'
+import Password from './components/Password'
 import GDBRText from './GDPRText'
 import PrivacyText from './PrivacyText'
 import * as Yup from 'yup'
@@ -24,13 +25,13 @@ const Register = () => {
     }
     const UserSchema = Yup.object().shape({
         username: Yup.string()
+            .required(validation.username.requiredMessage)
             .min(validation.username.minlength, validation.username.minMessage)
-            .max(validation.username.maxlength, validation.username.maxMessage)
-            .required(validation.username.requiredMessage),
+            .max(validation.username.maxlength, validation.username.maxMessage),
         password: Yup.string()
+            .required(validation.password.requiredMessage)
             .min(validation.password.minlength, validation.password.minMessage)
             .max(validation.password.maxlength, validation.password.maxMessage)
-            .required(validation.password.requiredMessage)
             .test('secure', validation.password.unsecurePasswordMessage, (password) => {
                 if(password){
                     if(checkPassWord(password).score < 2){
@@ -38,7 +39,28 @@ const Register = () => {
                     }
                 }
                 return true
-            }),
+            })
+            .when('username',{
+                is: true,
+                then: Yup.string().notOneOf([Yup.ref('username'), null], validation.password.uniqueMessage),
+                otherwise: Yup.string().required(validation.password.requiredMessage)
+            })
+            .when('email',{
+                is: true,
+                then: Yup.string().notOneOf([Yup.ref('email'), null], validation.password.uniqueMessage),
+                otherwise: Yup.string().required(validation.password.requiredMessage)
+            })
+            .when('classGroup',{
+                is: true,
+                then: Yup.string().notOneOf([Yup.ref('classGroup'), null], validation.password.uniqueMessage),
+                otherwise: Yup.string().required(validation.password.requiredMessage)
+            })
+            .when('studentNumber',{
+                is: true,
+                then: Yup.string().notOneOf([Yup.ref('studentNumber'), null], validation.password.uniqueMessage),
+                otherwise: Yup.string().required(validation.password.requiredMessage)
+            })
+        ,
         passwordAgain: Yup.string(),
         email: Yup.string()
             .required(validation.email.requiredMessage)
@@ -67,7 +89,8 @@ const Register = () => {
         const email = values.email
         const studentNumber = values.studentNumber
         const classGroup = values.classGroup
-        const password = values.password
+        const password = values.password.trim()
+        console.log(password)
         const passwordAgain = values.passwordAgain
         if (accept) {
             if (password === passwordAgain) {
@@ -160,20 +183,15 @@ const Register = () => {
                                 <Form.Control.Feedback type='invalid' hidden={!touched.classGroup}>
                                     {errors.classGroup}
                                 </Form.Control.Feedback>
-                                <Form.Label className="required-field">Salasana</Form.Label>
-                                <Form.Control
-                                    type='password'
-                                    id='password'
-                                    isInvalid={errors.password && touched.password}
-                                    onChange={(event) => setFieldValue('password', event.target.value)}
-                                    onBlur={handleBlur}
-                                />
-                                <Form.Text muted>
-                                    {validation.password.instruction}
-                                </Form.Text>
-                                <Form.Control.Feedback type='invalid' hidden={!touched.password}>
-                                    {errors.password}
-                                </Form.Control.Feedback>
+                                <Password password={values.password}
+                                    label={'Salasana'}
+                                    onChange={setFieldValue}
+                                    error={errors.password}
+                                    touched={touched}
+                                    handleBlur={handleBlur}
+                                    values={values}
+                                    instruction={validation.password.instruction}
+                                ></Password>
                                 <PasswordQualityIndicator
                                     value={checkPassWord(values.password).score}
                                     show={values.password.length>0}
