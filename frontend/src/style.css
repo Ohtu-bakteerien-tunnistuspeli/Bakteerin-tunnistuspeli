@@ -52,6 +52,10 @@ h1, h3, h4 {
     padding-bottom: 10px;
 }
 
+input {
+    margin: 10px;
+}
+
 button {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -64,7 +68,7 @@ button {
     margin-bottom: 0px;
     bottom: 0px;
     z-index: 100;
-    background: rgb(223, 255, 230);
+    background: rgb(223, 255, 230, 0.95);
     text-align: center;
     left: 0px;
     right: 0px;

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 const Samples = ({ samples, deleteSample }) => {
     const library = useSelector(state => state.language)?.library?.frontend.case.components
     return (
-        <Form.Group id='samples'>
+        <Form.Group style={{ padding: '20px' }} id='samples'>
             <Form.Label>{library.samples}</Form.Label><br></br>
             <Table>
                 <tbody>
