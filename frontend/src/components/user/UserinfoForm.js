@@ -175,6 +175,7 @@ const UserInfoForm = ({ user }) => {
                                         error={errors.username}
                                         touched={touched.username}
                                         onBlur={handleBlur}
+                                        controlId='password'
                                         setUsername={setNewUsername}></Username>
                                     <Email typeControlId='email'
                                         email={email}
@@ -190,6 +191,7 @@ const UserInfoForm = ({ user }) => {
                                         error={errors.password}
                                         touched={touched.password}
                                         onBlur={handleBlur}
+                                        controlId='password'
                                         setPassword={setNewPassword}></Password>
                                     <Password typeControlId='passwordAgain'
                                         password={passwordAgain}
@@ -198,6 +200,7 @@ const UserInfoForm = ({ user }) => {
                                         error={errors.password}
                                         touched={touched.password}
                                         onBlur={handleBlur}
+                                        controlId='password2'
                                         setPassword={setNewPasswordAgain}></Password>
                                     <Studentnumber typeControlId='studentnumber'
                                         studentnumber={studentNumber}

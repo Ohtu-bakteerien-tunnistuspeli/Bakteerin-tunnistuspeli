@@ -21,7 +21,7 @@ const CaseList = () => {
             if (filterByName === '') {
                 setCasesToShow(cases)
             } else {
-                setCasesToShow(cases.filter(c => c.name && c.name.startsWith(filterByName)))
+                setCasesToShow(cases.filter(c => c.name && c.name.toLowerCase().startsWith(filterByName.toLowerCase())))
             }
         }, 1000))
     }, [filterByName, cases])

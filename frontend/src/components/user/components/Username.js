@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Form } from 'react-bootstrap'
 
-const Username = ({ username, setUsername, onChange, error, touched, handleBlur }) => {
+const Username = ({ username, setUsername, onChange, error, touched, handleBlur, controlId }) => {
     const library = useSelector(state => state.language)?.library?.frontend.user.components
     const handleChange = (event) => {
         event.preventDefault()
@@ -10,7 +10,7 @@ const Username = ({ username, setUsername, onChange, error, touched, handleBlur 
         onChange('username', event.target.value)
     }
     return (
-        <Form.Group controlId='username'>
+        <Form.Group controlId={controlId}>
             <Form.Label>{library.username}</Form.Label>
             <Form.Control
                 type='text'

@@ -11,6 +11,7 @@ const UserList = () => {
     const [usersToShow, setUsersToShow] = useState(users)
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
     const [filterByUsername, setFilterByUsername] = useState('')
+    const [filterByClassGroup, setFilterByClassGroup] = useState('C-')
     // const [filterByAdmin, setFilterByAdmin] = useState('')
     const dispatch = useDispatch()
     const [timer, setTimer] = useState(null)
@@ -19,19 +20,23 @@ const UserList = () => {
             clearTimeout(timer)
         }
         setTimer(setTimeout(() => {
-            if (filterByStudentNumber === '' && filterByUsername === '') {
+            if (filterByStudentNumber === '' && filterByUsername === '' && filterByClassGroup === '') {
                 setUsersToShow(users)
             } else {
-                if (filterByStudentNumber === '') {
-                    setUsersToShow(users.filter(user => user.username && user.username.startsWith(filterByUsername)))
-                } else if (filterByUsername === '') {
+                if (filterByStudentNumber === '' && filterByClassGroup === '') {
+                    setUsersToShow(users.filter(user => user.username && user.username.toLowerCase().startsWith(filterByUsername.toLowerCase())))
+                } else if (filterByUsername === '' && filterByClassGroup === '') {
                     setUsersToShow(users.filter(user => user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
+                } else if (filterByUsername === '' && filterByStudentNumber === '') {
+                    setUsersToShow(users.filter(user => user.classGroup && user.classGroup.toLowerCase().startsWith(filterByClassGroup.toLowerCase())))
                 } else {
-                    setUsersToShow(users.filter(user => user.username && user.username.startsWith(filterByUsername) && user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
+                    setUsersToShow(users.filter(user => user.username && user.username.toLowerCase().startsWith(filterByUsername.toLowerCase())
+                                                        && user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)
+                                                        && user.classGroup && user.classGroup.toLowerCase().startsWith(filterByClassGroup.toLowerCase())))
                 }
             }
         }, 1000))
-    }, [filterByUsername, filterByStudentNumber, users])
+    }, [filterByUsername, filterByStudentNumber, filterByClassGroup, users])
 
     const userDelete = (userToDelete) => {
         dispatch(deleteUser(userToDelete, user.token))
@@ -47,6 +52,7 @@ const UserList = () => {
             <h2>{library.title}</h2>
             {library.filterByStudentNumber}<input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
             {library.filterByUsername}<input id='usernameFilter' type='text' value={filterByUsername} onChange={({ target }) => setFilterByUsername(target.value)}></input>&nbsp;
+            {library.filterByClassGroup}<input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
             {users.length !== 0 ?
                 <Table id='userTable'>
                     <thead>

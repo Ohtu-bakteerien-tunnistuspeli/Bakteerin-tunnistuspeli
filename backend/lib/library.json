@@ -294,6 +294,7 @@
             "list": {
                 "filterByStudentNumber": "Filtteröi opiskelijanumerolla ",
                 "filterByUsername": "Filtteröi käyttäjänimellä ",
+                "filterByClassGroup": "Filtteröi vuosikurssilla ",
                 "title": "Käyttäjät",
                 "studentNumber": "Opiskelijanumero",
                 "username": "Käyttäjänimi",
