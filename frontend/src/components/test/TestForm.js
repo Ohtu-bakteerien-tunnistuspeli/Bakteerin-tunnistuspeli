@@ -279,37 +279,35 @@ const TestForm = ({ testToEdit }) => {
                                         name='controlImage'
                                         value={controlImage.image}
                                         setImage={setControlImage}
-                                        setAdded={setCtrl}
                                         imgPreview={imgPreviewCtrl}
                                         setImgPreview={setImgPreviewCtrl}
                                     ></AddImage>
                                     {testToEdit ?
                                         <Form.Group controlId='editControlImage'>
-
                                             {ctrl && testToEdit.controlImage ?
-                                                <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100} />
+                                                <>
+                                                    <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100} />
+                                                    <DeleteButton
+                                                        id='deleteControl'
+                                                        onClick={() => {
+                                                            setCtrl(false)
+                                                            setDeletePhotos({ ...deletePhotos, ctrl: true })
+                                                        }}
+                                                        text='Poista kontrollikuva'
+                                                    ></DeleteButton>
+                                                </>
                                                 : <></>
                                             }
-                                            <DeleteButton
-                                                id='deleteControl'
-                                                onClick={() => {
-                                                    setCtrl(false)
-                                                    setDeletePhotos({ ...deletePhotos, ctrl: true })
-                                                }}
-                                                text='Poista kontrollikuva'
-                                            ></DeleteButton>
                                         </Form.Group>
                                         :
                                         null
                                     }
-
 
                                     <AddImage
                                         title='Positiivinen oletus'
                                         name='posImg'
                                         value={positiveResultImage.image}
                                         setImage={setPositiveResultImage}
-                                        setAdded={setPos}
                                         imgPreview={imgPreviewPos}
                                         setImgPreview={setImgPreviewPos}
                                     ></AddImage>
@@ -317,17 +315,19 @@ const TestForm = ({ testToEdit }) => {
                                     {testToEdit ?
                                         <Form.Group controlId='editPositiveResultImage'>
                                             {pos && testToEdit.positiveResultImage ?
-                                                <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100} />
+                                                <>
+                                                    <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100} />
+                                                    <DeleteButton
+                                                        id='deletePositive'
+                                                        onClick={() => {
+                                                            setPos(false)
+                                                            setDeletePhotos({ ...deletePhotos, pos: true })
+                                                        }}
+                                                        text='Poista positiivinen kuva'
+                                                    ></DeleteButton>
+                                                </>
                                                 : <></>
                                             }
-                                            <DeleteButton
-                                                id='deletePositive'
-                                                onClick={() => {
-                                                    setPos(false)
-                                                    setDeletePhotos({ ...deletePhotos, pos: true })
-                                                }}
-                                                text='Poista positiivinen kuva'
-                                            ></DeleteButton>
                                         </Form.Group>
                                         :
                                         null
@@ -338,24 +338,25 @@ const TestForm = ({ testToEdit }) => {
                                         name='negImg'
                                         value={negativeImage.image}
                                         setImage={setNegativeImage}
-                                        setAdded={setNeg}
                                         imgPreview={imgPreviewNeg}
                                         setImgPreview={setImgPreviewNeg}
                                     ></AddImage>
                                     {testToEdit ?
                                         <Form.Group controlId='editNegativeResultImage'>
                                             {neg && testToEdit.negativeResultImage ?
-                                                <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100} />
+                                                <>
+                                                    <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100} />
+                                                    <DeleteButton
+                                                        id='deleteNegative'
+                                                        onClick={() => {
+                                                            setNeg(false)
+                                                            setDeletePhotos({ ...deletePhotos, neg: true })
+                                                        }}
+                                                        text='Poista negatiivinen kuva'
+                                                    ></DeleteButton>
+                                                </>
                                                 : <></>
                                             }
-                                            <DeleteButton
-                                                id='deleteNegative'
-                                                onClick={() => {
-                                                    setNeg(false)
-                                                    setDeletePhotos({ ...deletePhotos, neg: true })
-                                                }}
-                                                text='Poista negatiivinen kuva'
-                                            ></DeleteButton>
                                         </Form.Group>
                                         :
                                         null
