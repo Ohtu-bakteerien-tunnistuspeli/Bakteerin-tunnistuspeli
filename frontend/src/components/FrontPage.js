@@ -17,8 +17,9 @@ const FrontPage = () => {
 
     return (
         <div>
-            <p>
+            <p className='description'>
                 {library.introductionTextStart}
+                <br />
                 <br />
                 {library.introductionTextEnd}
             </p>

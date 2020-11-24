@@ -13,6 +13,7 @@ const Notification = () => {
         top: '80px',
         right: '80px',
         width: '30%',
+        minWidth: '180px',
         textAlign: 'center',
         zIndex: 99999
     }
@@ -24,6 +25,7 @@ const Notification = () => {
         top: '80px',
         right: '80px',
         width: '30%',
+        minWidth: '180px',
         textAlign: 'center',
         zIndex: 99999
     }

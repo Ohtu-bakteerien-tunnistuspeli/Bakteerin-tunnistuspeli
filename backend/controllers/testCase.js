@@ -130,6 +130,19 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
             const deletePhotos = { ctrl: request.body.deleteCtrl, pos: request.body.deletePos, neg: request.body.deleteNeg }
             const oldLinks = []
 
+            if (deletePhotos.ctrl === 'true') {
+                oldLinks.push(testToEdit.controlImage.url)
+                testToUpdate.controlImage = null
+            }
+            if (deletePhotos.pos === 'true') {
+                oldLinks.push(testToEdit.positiveResultImage.url)
+                testToUpdate.positiveResultImage = null
+            }
+            if (deletePhotos.neg === 'true') {
+                oldLinks.push(testToEdit.negativeResultImage.url)
+                testToUpdate.negativeResultImage = null
+            }
+
             if (request.files) {
                 if (request.files.controlImage) {
                     oldLinks.push(testToEdit.controlImage.url)
@@ -161,18 +174,7 @@ testRouter.put('/:id', upload.fields([{ name: 'controlImage', maxCount: 1 }, { n
                     }
                 }
             }
-            if (deletePhotos.ctrl === 'true') {
-                oldLinks.push(testToEdit.controlImage.url)
-                testToUpdate.controlImage = null
-            }
-            if (deletePhotos.pos === 'true') {
-                oldLinks.push(testToEdit.positiveResultImage.url)
-                testToUpdate.positiveResultImage = null
-            }
-            if (deletePhotos.neg === 'true') {
-                oldLinks.push(testToEdit.negativeResultImage.url)
-                testToUpdate.negativeResultImage = null
-            }
+
             if (request.body.deleteSpecifics) {
                 const deleteSpecifics = JSON.parse(request.body.deleteSpecifics)
                 if (deleteSpecifics && deleteSpecifics.length > 0) {

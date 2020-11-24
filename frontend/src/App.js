@@ -18,6 +18,7 @@ import Notification from './components/utility/Notification'
 import Footer from './components/Footer'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 import { getLanguage } from './reducers/languageReducer'
+import useDetectMobile from './components/utility/useDetectMobile'
 
 const App = () => {
     const history = useHistory()
@@ -30,7 +31,7 @@ const App = () => {
         dispatch(getLanguage())
     }, [dispatch, history])
     useEffect(() => {
-        if(language && language.library) {
+        if (language && language.library) {
             document.title = language.library.frontend.title
         }
     }, [language])
@@ -42,8 +43,15 @@ const App = () => {
         window.localStorage.setItem('lastPage', window.location.pathname)
         window.localStorage.setItem('gameState', JSON.stringify(game))
     }
-
     window.onbeforeunload = handleOnBeforeUnload
+
+
+    const mobile = useDetectMobile()
+    if (mobile) {
+        document.body.style.setProperty('--attachVar', 'scroll')
+    } else {
+        document.body.style.setProperty('--attachVar', 'fixed')
+    }
     if (!language || !language.validation || !language.library) {
         return (<></>)
     }
@@ -62,59 +70,65 @@ const App = () => {
                 :
                 null
             }
-            <Navbar collapseOnSelect expand='lg' bg='light' variant='light'>
+            <Navbar collapseOnSelect expand='lg' className='nav-colour'>
                 <Navbar.Toggle className='hidden-nav' aria-controls='responsive-navbar-nav' />
                 <Navbar.Collapse id='responsive-navbar-nav' >
                     <Nav className='mr-auto'>
-                        <Nav.Link href='#' as='span'>
-                            {user
-                                ? <Link to='/'>{library.app.navigationBar.frontPage}</Link>
-                                : null
-                            }
-                        </Nav.Link>
-                        <Nav.Link href='#' as='span'>
-                            {user?.admin
-                                ? <Link to={`/${library.routes.bacteriaList}`}>{library.app.navigationBar.bacteriaList}</Link>
-                                : null
-                            }
-                        </Nav.Link>
-                        <Nav.Link href='#' as='span'>
-                            {user?.admin
-                                ? <Link to={`/${library.routes.caseList}`} >{library.app.navigationBar.caseList}</Link>
-                                : null
-                            }
-                        </Nav.Link>
-                        <Nav.Link href='#' as='span'>
-                            {user?.admin
-                                ? <Link to={`/${library.routes.testList}`}>{library.app.navigationBar.testList}</Link>
-                                : null
-                            }
-                        </Nav.Link>
-                        <Nav.Link href='#' as='span'>
-                            {user?.admin
-                                ? <Link to={`/${library.routes.creditList}`}>{library.app.navigationBar.creditList}</Link>
-                                : null
-                            }
-                        </Nav.Link>
-                        <Nav.Link href='#' as='span'>
-                            {user?.admin
-                                ? <Link to={`/${library.routes.userList}`}>{library.app.navigationBar.userList}</Link>
-                                : null
-                            }
-                        </Nav.Link>
+                        {user
+                            ?
+                            <Nav.Link href='#' as='span'>
+                                <Link to='/' className='link'>{library.app.navigationBar.frontPage}</Link>
+                            </Nav.Link>
+                            : null
+                        }
+                        {user?.admin ?
+                            <Nav.Link href='#' as='span'>
+                                <Link to={`/${library.routes.bacteriaList}`} className='link'>{library.app.navigationBar.bacteriaList}</Link>
+                            </Nav.Link>
+                            : null
+                        }
+                        {user?.admin
+                            ?
+                            <Nav.Link href='#' as='span'>
+                                <Link to={`/${library.routes.caseList}`} className='link'>{library.app.navigationBar.caseList}</Link>
+                            </Nav.Link>
+                            : null
+                        }
+                        {user?.admin
+                            ?
+                            <Nav.Link href='#' as='span'>
+                                <Link to={`/${library.routes.testList}`} className='link'>{library.app.navigationBar.testList}</Link>
+                            </Nav.Link>
+                            : null
+                        }
+                        {user?.admin
+                            ?
+                            <Nav.Link href='#' as='span'>
+                                <Link to={`/${library.routes.creditList}`} className='link'>{library.app.navigationBar.creditList}</Link>
+                            </Nav.Link>
+                            : null
+                        }
+                        {user?.admin
+                            ?
+                            <Nav.Link href='#' as='span'>
+                                <Link to={`/${library.routes.userList}`} className='link'>{library.app.navigationBar.userList}</Link>
+                            </Nav.Link>
+                            : null
+                        }
                     </Nav>
                     <Nav.Link href='#' as='span'>
                         {user
-                            ? <em><p className='nav-text'>{library.app.navigationBar.welcome}<Link to={`/${library.routes.profile}`}>{user.username}</Link></p></em>
-                            : <Link to={`/${library.routes.login}`}>{library.app.navigationBar.login}</Link>
+                            ? <p className='nav-text'><em>{library.app.navigationBar.loggedIn}</em><Link to={`/${library.routes.profile}`} className='logged-user' >{user.username}</Link></p>
+                            : <Link to={`/${library.routes.login}`} className='link'>{library.app.navigationBar.login}</Link>
                         }
                     </Nav.Link>
-                    <Nav.Link href='#' as='span'>
-                        {user
-                            ? null
-                            : <Link to={`/${library.routes.register}`}>{library.app.navigationBar.register}</Link>
-                        }
-                    </Nav.Link>
+                    {user
+                        ? null
+                        :
+                        <Nav.Link href='#' as='span'>
+                            <Link to={`/${library.routes.register}`} className='link'>{library.app.navigationBar.register}</Link>
+                        </Nav.Link>
+                    }
                     <Nav.Item>
                         {user
                             ? <Button id='submit' variant='primary' type='button' onClick={logoutButton}>{library.app.navigationBar.logout}</Button>
@@ -207,7 +221,7 @@ const App = () => {
             <div className='navbar navbar-inverse navbar-fixed-bottom footer'>
                 <Footer />
             </div>
-        </div>
+        </div >
     )
 }
 

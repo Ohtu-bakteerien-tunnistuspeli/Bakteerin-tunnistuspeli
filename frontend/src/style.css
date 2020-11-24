@@ -1,14 +1,26 @@
+:root {
+    --attachVar: fixed;
+}
+
 body {
     background: url(background.jpg);
     background-size: cover;
-    background-attachment: fixed;
+    background-attachment: var(--attachVar);
+}
+
+@media screen and (hover: none) {
+    body{
+        background: url(background.jpg);
+        background-size: cover;
+        background-attachment: fixed;
+    }
 }
 
 .container {
     background-color: rgb(255, 255, 255, 0.9);
     border-radius: 12px;
     padding-bottom: 60px;
-    padding-top: 40px;
+    padding-top: 5px;
     margin-top: 2rem;
     margin-bottom: 2rem;
     min-width: min-content;
@@ -31,6 +43,34 @@ h2 {
     text-align: center;
     left: 0;
     right: 0;
+    width: 100%;
+}
+
+.nav-colour {
+    background-color: rgb(112, 182, 130, 0.95);
+}
+
+.link {
+    color: white;
+}
+
+.description {
+    background-color: rgb(112, 182, 130, 0.8);
+    color: white;
+    border-radius: 12px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    min-width: min-content;
+    text-align: center;
+}
+
+.logged-user {
+    color: white;
+    text-decoration: underline;
 }
 
 .navbar-nav {
@@ -53,6 +93,7 @@ h2 {
     border-bottom: 0;
     bottom: 0;
     min-height: 100%;
+    min-width: min-content;
 }
 
 .nav-link {
@@ -65,6 +106,7 @@ h2 {
 
 .nav-text {
     margin-top: 0;
+    color: white;
 }
 
 .hidden-nav {

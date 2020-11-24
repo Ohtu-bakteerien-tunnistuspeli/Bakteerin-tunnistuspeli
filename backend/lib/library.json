@@ -64,7 +64,8 @@
                 "welcome": "Tervetuloa ",
                 "login": "Kirjaudu sisään",
                 "register": "Rekisteröidy",
-                "logout": "Kirjaudu ulos"
+                "logout": "Kirjaudu ulos",
+                "loggedIn": "Kirjautuneena "
             }
         },
         "bacteria": {
