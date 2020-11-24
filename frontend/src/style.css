@@ -27,7 +27,7 @@ body {
 .container {
     background-color: rgb(255, 255, 255, 0.9);
     border-radius: 12px;
-    padding-bottom: 60px;
+    padding-bottom: 40px;
     padding-top: 5px;
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -40,7 +40,21 @@ body {
 
 h2 {
     margin: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 40px;
+}
+
+h1, h3, h4 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+button {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .footer {
