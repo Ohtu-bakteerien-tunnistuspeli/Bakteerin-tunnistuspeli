@@ -79,9 +79,9 @@ const GamePage = () => {
                                             {
                                                 (cultivationsToShow && cultivationsToShow.length > 0) ?
                                                     <>
-                                                        <h2>Viljelyt</h2>
+                                                        <h2 style={{ marginTop:'20px' }}>Viljelyt</h2>
                                                         {cultivationsToShow.map(test =>
-                                                            <Button id='testButton' key={test.id} variant='warning' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                                            <Button id='testButton' key={test.id} variant='warning' style={{ margin:'3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -90,9 +90,9 @@ const GamePage = () => {
                                             {
                                                 (testsToShow && testsToShow.length > 0) ?
                                                     <>
-                                                        <h2>Testit</h2>
+                                                        <h2 style={{ marginTop:'20px' }}>Testit</h2>
                                                         {testsToShow.map(test =>
-                                                            <Button key={test.id} variant='info' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='info' style={{ margin:'3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -101,9 +101,9 @@ const GamePage = () => {
                                             {
                                                 (stainingsToShow && stainingsToShow.length > 0) ?
                                                     <>
-                                                        <h2>Värjäys</h2>
+                                                        <h2 style={{ marginTop:'20px' }}>Värjäys</h2>
                                                         {stainingsToShow.map(test =>
-                                                            <Button key={test.id} variant='success' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='success' style={{ margin:'3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
@@ -112,9 +112,9 @@ const GamePage = () => {
                                             {
                                                 (othersToShow && othersToShow.length > 0) ?
                                                     <>
-                                                        <h2>Muut</h2>
+                                                        <h2 style={{ marginTop:'20px' }}>Muut</h2>
                                                         {othersToShow.map(test =>
-                                                            <Button key={test.id} variant='secondary' onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
+                                                            <Button key={test.id} variant='secondary' style={{ margin:'3px' }} onClick={() => handleTest(test.id)}>{test.name}{game.correctTests.includes(test.id) ? <i className='fas fa-check'></i> : <></>}</Button>
                                                         )}
                                                     </>
                                                     :
