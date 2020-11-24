@@ -11,26 +11,31 @@ const TestList = () => {
     const [testsToShow, setTestsToShow] = useState(tests)
     const [filterByTestName, setFilterByTestName] = useState('')
     const [filterByTestType, setFilterByTestType] = useState('')
-
+    const [timer, setTimer] = useState(null)
     useEffect(() => {
-        if (filterByTestName === '' && filterByTestType === '') {
-            setTestsToShow(tests)
-        } else {
-            if (filterByTestName === '') {
-                setTestsToShow(tests.filter(test => test.type && test.type.startsWith(filterByTestType)))
-            } else if (filterByTestType === '') {
-                setTestsToShow(tests.filter(test => test.name && test.name.startsWith(filterByTestName)))
-            } else {
-                setTestsToShow(tests.filter(test => test.name && test.name.startsWith(filterByTestName) && test.type && test.type.startsWith(filterByTestType)))
-            }
+        if (timer) {
+            clearTimeout(timer)
         }
+        setTimer(setTimeout(() => {
+            if (filterByTestName === '' && filterByTestType === '') {
+                setTestsToShow(tests)
+            } else {
+                if (filterByTestName === '') {
+                    setTestsToShow(tests.filter(test => test.type && test.type.startsWith(filterByTestType)))
+                } else if (filterByTestType === '') {
+                    setTestsToShow(tests.filter(test => test.name && test.name.startsWith(filterByTestName)))
+                } else {
+                    setTestsToShow(tests.filter(test => test.name && test.name.startsWith(filterByTestName) && test.type && test.type.startsWith(filterByTestType)))
+                }
+            }
+        }, 1000))
     }, [filterByTestName, filterByTestType, tests])
 
     return (
         <div>
+            <h2>{library.title}</h2>
             {library.filterByName}<input id='testNameFilter' type='text' value={filterByTestName} onChange={({ target }) => setFilterByTestName(target.value)}></input>&nbsp;
             {library.filterByType}<input id='testTypeFilter' type='text' value={filterByTestType} onChange={({ target }) => setFilterByTestType(target.value)}></input>&nbsp;
-            <h2>{library.title}</h2>
             {tests.length !== 0 ?
                 <Table borderless hover>
                     <thead>

@@ -12,14 +12,18 @@ const CaseList = () => {
     const user = useSelector(state => state.user)
     const [filterByName, setFilterByName] = useState('')
     const dispatch = useDispatch()
-
+    const [timer, setTimer] = useState(null)
     useEffect(() => {
-        if (filterByName === '') {
-            setCasesToShow(cases)
-        } else {
-            setCasesToShow(cases.filter(c => c.name && c.name.startsWith(filterByName)))
+        if (timer) {
+            clearTimeout(timer)
         }
-
+        setTimer(setTimeout(() => {
+            if (filterByName === '') {
+                setCasesToShow(cases)
+            } else {
+                setCasesToShow(cases.filter(c => c.name && c.name.startsWith(filterByName)))
+            }
+        }, 1000))
     }, [filterByName, cases])
 
     const delCase = caseToDelete => {
@@ -28,8 +32,8 @@ const CaseList = () => {
 
     return (
         <div>
-            {library.filterByName}<input id='caseNameFilter' type='text' value={filterByName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
             <h2>{library.title}</h2>
+            {library.filterByName}<input id='caseNameFilter' type='text' value={filterByName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
             {cases.length !== 0 ?
                 <Table id='caseTable' borderless hover>
                     <thead>

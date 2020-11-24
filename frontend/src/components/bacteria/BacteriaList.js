@@ -12,13 +12,18 @@ const BacteriaList = () => {
     const [bacteriaToShow, setBacteriaToShow] = useState(bacteria)
     const [filterByBacteriaName, setFilterByName] = useState('')
     const dispatch = useDispatch()
-
+    const [timer, setTimer] = useState(null)
     useEffect(() => {
-        if (filterByBacteriaName === '') {
-            setBacteriaToShow(bacteria)
-        } else {
-            setBacteriaToShow(bacteria.filter(bac => bac.name && bac.name.startsWith(filterByBacteriaName)))
+        if (timer) {
+            clearTimeout(timer)
         }
+        setTimer(setTimeout(() => {
+            if (filterByBacteriaName === '') {
+                setBacteriaToShow(bacteria)
+            } else {
+                setBacteriaToShow(bacteria.filter(bac => bac.name && bac.name.startsWith(filterByBacteriaName)))
+            }
+        }, 1000))
     }, [filterByBacteriaName, bacteria])
 
     const deleteBact = bacterium => {

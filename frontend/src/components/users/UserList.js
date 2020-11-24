@@ -13,19 +13,24 @@ const UserList = () => {
     const [filterByUsername, setFilterByUsername] = useState('')
     // const [filterByAdmin, setFilterByAdmin] = useState('')
     const dispatch = useDispatch()
-
+    const [timer, setTimer] = useState(null)
     useEffect(() => {
-        if (filterByStudentNumber === '' && filterByUsername === '') {
-            setUsersToShow(users)
-        } else {
-            if (filterByStudentNumber === '') {
-                setUsersToShow(users.filter(user => user.username && user.username.startsWith(filterByUsername)))
-            } else if (filterByUsername === '') {
-                setUsersToShow(users.filter(user => user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
-            } else {
-                setUsersToShow(users.filter(user => user.username && user.username.startsWith(filterByUsername) && user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
-            }
+        if (timer) {
+            clearTimeout(timer)
         }
+        setTimer(setTimeout(() => {
+            if (filterByStudentNumber === '' && filterByUsername === '') {
+                setUsersToShow(users)
+            } else {
+                if (filterByStudentNumber === '') {
+                    setUsersToShow(users.filter(user => user.username && user.username.startsWith(filterByUsername)))
+                } else if (filterByUsername === '') {
+                    setUsersToShow(users.filter(user => user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
+                } else {
+                    setUsersToShow(users.filter(user => user.username && user.username.startsWith(filterByUsername) && user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
+                }
+            }
+        }, 1000))
     }, [filterByUsername, filterByStudentNumber, users])
 
     const userDelete = (userToDelete) => {
@@ -39,9 +44,9 @@ const UserList = () => {
     }
     return (
         <div>
+            <h2>{library.title}</h2>
             {library.filterByStudentNumber}<input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
             {library.filterByUsername}<input id='usernameFilter' type='text' value={filterByUsername} onChange={({ target }) => setFilterByUsername(target.value)}></input>&nbsp;
-            <h2>{library.title}</h2>
             {users.length !== 0 ?
                 <Table id='userTable'>
                     <thead>
