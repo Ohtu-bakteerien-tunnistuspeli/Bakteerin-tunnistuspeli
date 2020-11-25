@@ -313,7 +313,12 @@
                 "studentNumber": "Opiskelijanumero",
                 "username": "Käyttäjänimi",
                 "admin": "Ylläpitäjä",
-                "noUsers": "Ei käyttäjiä"
+                "noUsers": "Ei käyttäjiä",
+                "orderInstructions": "Järjestä käyttäjiä. Käytä vain yhtä järjestystapaa kerralla",
+                "orderByStudentNumber": "Järjestä opiskelijanumeron mukaan ",
+                "orderByUsername": "Järjestä käyttäjänimen mukaan ",
+                "ascending": "Nouseva",
+                "descending": "Laskeva"
             },
             "listing": {
                 "demote": {
