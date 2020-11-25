@@ -112,6 +112,12 @@ button {
     text-align: center;
 }
 
+.instruct-img {
+    font-style: italic;
+    border-radius: 12px;
+    min-width: min-content;
+}
+
 .logged-user {
     color: white;
     text-decoration: underline;
