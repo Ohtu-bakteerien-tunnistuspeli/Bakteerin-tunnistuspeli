@@ -12,6 +12,7 @@ import Notification from '../utility/Notification.js'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
 import { updateCase } from '../../reducers/caseReducer'
+import ShowPreviewImage from '../test/components/ShowPreviewImage.js'
 
 const CaseForm = ({ caseToEdit }) => {
     const testsFromTestGroups = () => {
@@ -61,6 +62,7 @@ const CaseForm = ({ caseToEdit }) => {
     const [addedTests, setAddedTests] = useState(caseToEdit ? testsFromTestGroups : [])
     const [testGroupAccordion, setTestGroupAccodrion] = useState('0')
     const [testGroupManagement, setTestGroupManagement] = useState(true)
+    const [imgPreview, setImgPreview] = useState('')
     /* states end*/
 
     /* modal */
@@ -155,6 +157,7 @@ const CaseForm = ({ caseToEdit }) => {
         setSamples(caseToEdit ? caseToEdit.samples : [])
         setTestGroups(caseToEdit ? caseToEdit.testGroups.map(testGroup => testGroup.slice().map(testForCase => { return { ...testForCase, tests: testForCase.tests.slice() } })) : [])
         setAddedTests(caseToEdit ? testsFromTestGroups : [])
+        setImgPreview('')
     }
     /* form control end */
 
@@ -236,8 +239,13 @@ const CaseForm = ({ caseToEdit }) => {
     /* testgroup control end */
 
     /* image */
-    const handleCompletionImageChange = (event) => {
-        setCompletionImage(event.target.files[0])
+    const handleImageAdd = (event) => {
+        if (event.target.files[0]) {
+            setImgPreview(URL.createObjectURL(event.target.files[0]))
+            setCompletionImage(event.target.files[0])
+        } else {
+            setImgPreview('')
+        }
     }
     /* image end */
 
@@ -336,16 +344,17 @@ const CaseForm = ({ caseToEdit }) => {
                                                 <p style={borderStyle}>{library.completionImageGiven}</p>
                                                 : <></>
                                             }
+                                            <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
                                             <Form.Control
                                                 style={marginStyle}
                                                 name='editCompletionImg'
                                                 value={completionImage.image}
                                                 type='file'
                                                 accept=".png, .jpg, .jpeg"
-                                                onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false) }}
+                                                onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false); setImgPreview(URL.createObjectURL(target.files[0])) }}
                                             />
                                             {img ?
-                                                <Button variant='danger' style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>{library.deleteCompletionImage}
+                                                <Button variant='danger' style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true); setImgPreview('') }}>{library.deleteCompletionImage}
                                                     <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
                                                         <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z' />
                                                         <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
@@ -361,7 +370,7 @@ const CaseForm = ({ caseToEdit }) => {
                                                 name='completionImage'
                                                 type='file' value={completionImage.image}
                                                 accept=".png, .jpg, .jpeg"
-                                                onChange={handleCompletionImageChange} />
+                                                onChange={handleImageAdd} />
                                         </Form.Group>
                                     }
                                     <Accordion activeKey={samplesAccordion}>

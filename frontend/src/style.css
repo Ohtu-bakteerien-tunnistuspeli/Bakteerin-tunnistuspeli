@@ -57,8 +57,7 @@ input {
 }
 
 button {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin-right: 5px;
 }
 
 .footer {

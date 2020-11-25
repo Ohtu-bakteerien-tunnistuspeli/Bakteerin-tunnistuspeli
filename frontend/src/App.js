@@ -131,7 +131,7 @@ const App = () => {
                     }
                     <Nav.Item>
                         {user
-                            ? <Button id='submit' variant='primary' type='button' onClick={logoutButton}>{library.app.navigationBar.logout}</Button>
+                            ? <Button id='submit' variant='primary' type='button' onClick={logoutButton} style={{ margin: '0px' }}>{library.app.navigationBar.logout}</Button>
                             : null
                         }
                     </Nav.Item>
