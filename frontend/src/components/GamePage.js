@@ -127,6 +127,7 @@ const GamePage = () => {
                         </Tab>
                         <Tab eventKey='tuloksia' title={library.tabs.results}>
                             <h4 className="game-margin">{library.resultsTab.title}</h4>
+                            <p className='instruct-img'>{library.resultsTab.imageInstruct}</p>
                             <Table id='resultTable'>
                                 <thead>
                                     <tr>
@@ -168,7 +169,10 @@ const GamePage = () => {
                         <>
                             <p style={{ padding: '10px' }}><FormattedText value={game.case.completionText} /></p>
                             {game.completionImageUrl ?
-                                <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
+                                <>
+                                    <p className='instruct-img'>{library.resultsTab.imageInstruct}</p>
+                                    <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
+                                </>
                                 :
                                 <></>
                             }

@@ -34,6 +34,7 @@ const TestList = () => {
     return (
         <div>
             <h2>{library.title}</h2>
+            <p className='instruct-img'>{library.imageInstruct}</p>
             {library.filterByName}<input id='testNameFilter' type='text' value={filterByTestName} onChange={({ target }) => setFilterByTestName(target.value)}></input>&nbsp;
             {library.filterByType}<input id='testTypeFilter' type='text' value={filterByTestType} onChange={({ target }) => setFilterByTestType(target.value)}></input>&nbsp;
             {tests.length !== 0 ?

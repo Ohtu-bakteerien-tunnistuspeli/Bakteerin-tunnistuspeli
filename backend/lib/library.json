@@ -123,6 +123,7 @@
                 "validationError": "Tapausta ei voida lisätä, tarkista lisäämäsi syötteet."
             },
             "list": {
+                "imageInstruct": "Voit laajentaa lisättyjä kuvua klikkaamalla niitä.",
                 "filterByName": "Filtteröi nimellä ",
                 "title": "Tapaukset",
                 "name": "Nimi",
@@ -207,6 +208,7 @@
                 "validationError": "Testiä ei voida lisätä, tarkista lisäämäsi syötteet."
             },
             "list": {
+                "imageInstruct": "Voit laajentaa lisättyjä kuvua klikkaamalla niitä.",
                 "filterByName": "Filtteröi nimellä ",
                 "filterByType": "Filtteröi tyypillä ",
                 "title": "Testit",
@@ -371,7 +373,8 @@
                 "title": "Tulokset",
                 "test": "Testi",
                 "controlImage": "Kontrollikuva",
-                "result": "Tulos"
+                "result": "Tulos",
+                "imageInstruct": "Peliin liittyviä kuvia voit laajentaa klikkaamalla niitä."
             },
             "diagnosisTab": {
                 "title": "Diagnoosi",
