@@ -11,9 +11,13 @@ const CreditList = () => {
     const [creditsToShow, setCreditsToShow] = useState(credits)
     const [filterByClassGroup, setFilterByClassGroup] = useState('')
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
+    const [orderByStudentNumber, setOrderByStudentNumber] = useState('')
+    const [orderByClassGroup, setOrderByClassGroup] = useState('')
+    const [orderByUsername, setOrderByUsername] = useState('')
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const [timer, setTimer] = useState(null)
+
     useEffect(() => {
         if (timer) {
             clearTimeout(timer)
@@ -39,11 +43,66 @@ const CreditList = () => {
         }
     }
 
+    // classGroup ja käyttäjänimen mukaan myös
+
+    useEffect(() => {
+        if(orderByStudentNumber === '' && orderByClassGroup === '' && orderByUsername === '') {
+            console.log('kaikki tyhjää')
+            setCreditsToShow(credits)
+        }
+
+        if(orderByUsername === 'Descending' && orderByStudentNumber === '' && orderByClassGroup === '') {
+            const credits2 = [].concat(credits)
+            setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.username.localeCompare(credit1.user.username)))
+        }
+
+        if(orderByUsername === 'Ascending' && orderByStudentNumber === '' && orderByClassGroup === '') {
+            const credits2 = [].concat(credits)
+            setCreditsToShow(credits2.sort((credit1, credit2) => credit1.user.username.localeCompare(credit2.user.username)))
+        }
+
+        if(orderByStudentNumber !== '' || orderByClassGroup !== '' || orderByUsername === '') {
+            if(orderByStudentNumber === 'Descending' && orderByClassGroup === '' && orderByUsername === '') {
+                const credits2 = [].concat(credits)
+                setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.studentNumber.localeCompare(credit1.user.studentNumber)))
+            } else if(orderByClassGroup === 'Ascending' && orderByStudentNumber === '' && orderByUsername === '') {
+                const credits2 = [].concat(credits)
+                setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.classGroup.localeCompare(credit1.user.classGroup)))
+            } else if(orderByClassGroup === 'Descending' && orderByStudentNumber === '' && orderByUsername === '') {
+                const credits2 = [].concat(credits)
+                setCreditsToShow(credits2.sort((credit1, credit2) => credit1.user.classGroup.localeCompare(credit2.user.classGroup)))
+            } else {
+                setCreditsToShow(credits)
+            }
+        }
+    }, [ orderByStudentNumber, orderByClassGroup, orderByUsername ])
+
     return (
         <div>
             <h2>{library.title}</h2>
             {library.filterByClassGroup}<input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
             {library.filterByStudentNumber}<input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
+            <div></div>
+            <h6>{library.sortingInstructions}</h6>
+            <div></div>
+            {library.orderByStudentNumber}
+            <select id='orderByStudentNumber' type= 'text' value={orderByStudentNumber} onChange={({ target }) => setOrderByStudentNumber(target.value)}>
+                <option value=''></option>
+                <option value='Ascending'>{library.ascending}</option>
+                <option value='Descending'>{library.descending}</option>
+            </select>&nbsp;
+            {library.orderByClassGroup}
+            <select id='orderByClassGroup' type= 'text' value={orderByClassGroup} onChange={({ target }) => setOrderByClassGroup(target.value)}>
+                <option value=''></option>
+                <option value='Ascending'>{library.ascending}</option>
+                <option value='Descending'>{library.descending}</option>
+            </select>&nbsp;
+            {library.orderByUsername}
+            <select id='orderByUsername' type= 'text' value={orderByUsername} onChange={({ target }) => setOrderByUsername(target.value)}>
+                <option value=''></option>
+                <option value='Ascending'>{library.ascending}</option>
+                <option value='Descending'>{library.descending}</option>
+            </select>&nbsp;
             {credits.length !== 0 ?
                 <Table borderless hover>
                     <thead>
