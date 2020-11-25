@@ -47,7 +47,6 @@ const CreditList = () => {
 
     useEffect(() => {
         if(orderByStudentNumber === '' && orderByClassGroup === '' && orderByUsername === '') {
-            console.log('kaikki tyhjää')
             setCreditsToShow(credits)
         }
 
