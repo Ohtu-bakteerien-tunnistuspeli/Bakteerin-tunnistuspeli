@@ -12,9 +12,12 @@ const UserList = () => {
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
     const [filterByUsername, setFilterByUsername] = useState('')
     const [filterByClassGroup, setFilterByClassGroup] = useState('C-')
+    const [orderByStudentNumber, setOrderByStudentNumber] = useState('')
+    const [orderByUsername, setOrderByUsername] = useState('')
 
     const dispatch = useDispatch()
     const [timer, setTimer] = useState(null)
+
     useEffect(() => {
         if (timer) {
             clearTimeout(timer)
@@ -38,6 +41,29 @@ const UserList = () => {
         }, 1000))
     }, [filterByUsername, filterByStudentNumber, filterByClassGroup, users])
 
+    useEffect(() => {
+
+        if(orderByStudentNumber === '' && orderByUsername === '') {
+            setUsersToShow(users)
+        }
+
+        if(orderByStudentNumber !== '' || orderByUsername !== '') {
+            if(orderByStudentNumber === 'Descending' && orderByUsername === '') {
+                const users2 = [].concat(users)
+                setUsersToShow(users2.sort((user1, user2) => user2.studentNumber.localeCompare(user1.studentNumber)))
+            } else if(orderByUsername === 'Ascending' && orderByStudentNumber === '') {
+                const users2 = [].concat(users)
+                setUsersToShow(users2.sort((user1, user2) => user2.username.localeCompare(user1.username)))
+            } else if(orderByUsername  === 'Descending' && orderByStudentNumber === '') {
+                const users2 = [].concat(users)
+                setUsersToShow(users2.sort((user1, user2) => user1.username.localeCompare(user2.username)))
+            } else {
+                setUsersToShow(users)
+            }
+        }
+
+    },[orderByStudentNumber, orderByUsername])
+
     const userDelete = (userToDelete) => {
         dispatch(deleteUser(userToDelete, user.token))
     }
@@ -53,6 +79,20 @@ const UserList = () => {
             {library.filterByStudentNumber}<input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
             {library.filterByUsername}<input id='usernameFilter' type='text' value={filterByUsername} onChange={({ target }) => setFilterByUsername(target.value)}></input>&nbsp;
             {library.filterByClassGroup}<input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
+            <div></div>
+            <h6>{library.orderInstructions}</h6>
+            {library.orderByStudentNumber}
+            <select id='orderByStudentNumber' type= 'text' value={orderByStudentNumber} onChange={({ target }) => setOrderByStudentNumber(target.value)}>
+                <option value=''></option>
+                <option value='Ascending'>{library.ascending}</option>
+                <option value='Descending'>{library.descending}</option>
+            </select>&nbsp;
+            {library.orderByUsername}
+            <select id='orderByUsername' type= 'text' value={orderByUsername} onChange={({ target }) => setOrderByUsername(target.value)}>
+                <option value=''></option>
+                <option value='Ascending'>{library.ascending}</option>
+                <option value='Descending'>{library.descending}</option>
+            </select>&nbsp;
             {users.length !== 0 ?
                 <Table id='userTable'>
                     <thead>
