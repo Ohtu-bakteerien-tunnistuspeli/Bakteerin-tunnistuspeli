@@ -141,13 +141,13 @@ const GamePage = () => {
                                             <td>{result.testName}</td>
                                             <td>
                                                 {tests.filter(test => test.name === result.testName).map(test =>
-                                                    <>
+                                                    <div key={ test.id }>
                                                         {test.controlImage ?
                                                             <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}></ModalImage>
                                                             :
                                                             <></>
                                                         }
-                                                    </>
+                                                    </div>
                                                 )}
                                             </td>
                                             {result.imageUrl ?
@@ -180,6 +180,7 @@ const GamePage = () => {
                                 <Form.Group>
                                     <Form.Label>{library.diagnosisTab.insertBacterium}</Form.Label>
                                     <Typeahead
+                                        id='type-ahead'
                                         inputProps={{ id: 'bacterium' }}
                                         value={bacterium}
                                         minLength={1}
