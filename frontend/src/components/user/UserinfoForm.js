@@ -187,6 +187,7 @@ const UserInfoForm = ({ user }) => {
                                         setValue={setNewEmail}
                                         fieldId='email' />
                                     <Password typeControlId='password'
+                                        controlId={'password'}
                                         value={password}
                                         password={password}
                                         label={library.password}
@@ -196,6 +197,7 @@ const UserInfoForm = ({ user }) => {
                                         setFieldTouched={setFieldTouched}
                                         setPassword={setNewPassword} />
                                     <Password typeControlId='passwordAgain'
+                                        controlId={'passwordAgain'}
                                         value={passwordAgain}
                                         password={passwordAgain}
                                         label={library.passwordAgain}

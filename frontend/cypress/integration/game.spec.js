@@ -2,7 +2,7 @@ describe('Playing game', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.request('POST', 'http://localhost:3001/api/testing/cases')
-        cy.login({ username: 'admin', password: 'admin' })
+        cy.login({ username: 'admin', password: 'adminadmin' })
     })
     describe('Game can be played', () => {
         it('Admin can choose a case which to play', () => {
@@ -17,7 +17,7 @@ describe('Playing game', () => {
         })
 
         it('Normal user can choose a case which to play', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.visit('http://localhost:3000')
             cy.contains('Etusivu').click()
             cy.get('div').should('contain', 'Maitotila 1')
@@ -30,7 +30,7 @@ describe('Playing game', () => {
         })
 
         it('A valid samplingmethod can be chosen', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
             cy.get('div').should('contain', 'Tilalla on 27 lypsävää lehmää parsinavetassa ja lisäksi nuorkarjaa. Kuivikkeena käytetään kutteria, vesi tulee omasta kaivosta. Pääosa lehmistä on omaa tuotantoa, mutta navetan laajennuksen yhteydessä edellisenä kesänä hankittiin muutama uusi tiine eläin, jotka poikivat loppusyksystä.')
@@ -42,7 +42,7 @@ describe('Playing game', () => {
         })
 
         it('If wrong sampling method is chosen, user is informed and right method can be chosen', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
             cy.contains('Toiminnot').click()
@@ -61,7 +61,7 @@ describe('Playing game', () => {
         })
 
         it('After choosing right samplingmethod, user can choose all tests in required order', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
             cy.contains('Toiminnot').click()
@@ -102,7 +102,7 @@ describe('Playing game', () => {
         })
 
         it('After choosing right samplingmethod, user can choose only required tests in required order', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
             cy.contains('Toiminnot').click()
@@ -124,7 +124,7 @@ describe('Playing game', () => {
         })
 
         it('User can see results after clicking a right test and without clicking "Tulokset" first', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
             cy.contains('Toiminnot').click()
@@ -141,7 +141,7 @@ describe('Playing game', () => {
         })
 
         it('User can give diagnosis after choosing at least the required tests', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.contains('Etusivu').click()
             cy.contains('Maitotila 1').click()
             cy.contains('Toiminnot').click()

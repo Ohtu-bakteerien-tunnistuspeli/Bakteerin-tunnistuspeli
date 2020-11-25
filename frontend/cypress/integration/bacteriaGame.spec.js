@@ -32,7 +32,7 @@ describe('Game', () => {
 
     it('User can log in', () => {
         cy.get('#username').type('admin')
-        cy.get('#password').type('admin')
+        cy.get('#password').type('adminadmin')
         cy.get('#submit').click()
 
         cy.get('div').should('not.contain', 'Kirjaudu Bakteeripeliin')
@@ -169,7 +169,7 @@ describe('Game', () => {
 
     describe('After logging in as a normal user', () => {
         beforeEach(() => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
         })
 
         it('a new bacterium cannot be added', () => {
@@ -200,51 +200,12 @@ describe('Game', () => {
             cy.contains('user').click()
             cy.contains('Oma profiilini')
         })
-
-        describe('When in profile page', () => {
-            beforeEach(() => {
-                cy.contains('user').click()
-            })
-            it('User can delete itself', () => {
-                cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('user')
-                cy.get('#confirm').click()
-                cy.contains('Kirjaudu Bakteeripeliin')
-                cy.get('#username').type('user')
-                cy.get('#password').type('user')
-                cy.get('#submit').click()
-                cy.contains('Kirjaudu Bakteeripeliin')
-            })
-
-            it('Cannot delete itself wihout giving correct confirmation text', () => {
-                cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('use')
-                cy.get('#confirm').should('be.disabled')
-            })
-
-            it('Can quit deleting itself', () => {
-                cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('user')
-                cy.get('.close').click()
-                cy.contains('Oma profiilini')
-            })
-
-            it('User can view their info', () => {
-                cy.contains('Käyttäjänimi')
-                cy.contains('Opiskelijanumero')
-                cy.contains('Sähköposti')
-                cy.contains('Vuosikurssi')
-                cy.contains('Suoritukset')
-                cy.contains('example@com')
-                cy.contains('Ei suorituksia')
-            })
-
-        })
+        
     })
 
     describe('After logging in as admin', () => {
         beforeEach(() => {
-            cy.login({ username: 'admin', password: 'admin' })
+            cy.login({ username: 'admin', password: 'adminadmin' })
         })
 
         it('a new bacterium can be added', () => {
@@ -263,47 +224,6 @@ describe('Game', () => {
         it('Admin can go to own profile page', () => {
             cy.contains('admin').click()
             cy.contains('Oma profiilini')
-        })
-
-        describe('When in profile page', () => {
-            beforeEach(() => {
-                cy.contains('admin').click()
-            })
-
-            it('Cannot delete itself wihout giving correct confirmation text', () => {
-                cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('dmin')
-                cy.get('#confirm').should('be.disabled')
-            })
-
-            it('Can quit deleting itself', () => {
-                cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('admin')
-                cy.get('.close').click()
-                cy.contains('Oma profiilini')
-            })
-
-            it('Admin can view their info', () => {
-                cy.contains('Käyttäjänimi')
-                cy.contains('Opiskelijanumero')
-                cy.contains('Sähköposti')
-                cy.contains('Vuosikurssi')
-                cy.contains('Suoritukset')
-                cy.contains('examples@com')
-                cy.contains('Ei suorituksia')
-            })
-
-            it('Admin can delete itself', () => {
-                cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('admin')
-                cy.get('#confirm').click()
-                cy.contains('Kirjaudu Bakteeripeliin')
-                cy.get('#username').type('admin')
-                cy.get('#password').type('admin')
-                cy.get('#submit').click()
-                cy.contains('Kirjaudu Bakteeripeliin')
-            })
-
         })
 
         describe('and there is a bacterium', () => {

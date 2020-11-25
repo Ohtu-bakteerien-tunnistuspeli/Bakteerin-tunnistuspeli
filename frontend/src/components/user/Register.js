@@ -165,6 +165,7 @@ const Register = () => {
                                     setFieldTouched={setFieldTouched}
                                     setClassgroup={setNewClassgroup} />
                                 <Password typeControlId='password'
+                                    controlId={'password'}
                                     password={password}
                                     value={password}
                                     label={library.password}

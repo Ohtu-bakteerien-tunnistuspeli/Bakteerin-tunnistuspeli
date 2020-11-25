@@ -2,7 +2,7 @@ describe('Case management', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.request('POST', 'http://localhost:3001/api/testing/reset_cases')
-        cy.login({ username: 'admin', password: 'admin' })
+        cy.login({ username: 'admin', password: 'adminadmin' })
     })
 
     describe('Add case', () => {
@@ -122,7 +122,7 @@ describe('Case management', () => {
         })
 
         it('A user can not add a case', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('not.contain', 'Tapausten hallinta')
         })
 
@@ -131,7 +131,7 @@ describe('Case management', () => {
     describe('Modify a case', () => {
 
         it('The case can be modified', () => {
-            cy.login({ username: 'admin', password: 'admin' })
+            cy.login({ username: 'admin', password: 'adminadmin' })
             cy.contains('Tapausten hallinta').click()
             cy.should('not.contain', 'Maatila')
             cy.wait(500)
@@ -188,7 +188,7 @@ describe('Case management', () => {
         })
 
         it('The user can add hints and see them only when answer is wrong', () => {
-            cy.login({ username: 'admin', password: 'admin' })
+            cy.login({ username: 'admin', password: 'adminadmin' })
             cy.contains('Tapausten hallinta').click()
             cy.wait(500)
             cy.get('#caseModalButton').click({ force: true })
@@ -253,7 +253,7 @@ describe('Case management', () => {
 
     describe('Remove a case', () => {
         beforeEach(() => {
-            cy.login({ username: 'admin', password: 'admin' })
+            cy.login({ username: 'admin', password: 'adminadmin' })
         })
 
         it('The case can be deleted', () => {
