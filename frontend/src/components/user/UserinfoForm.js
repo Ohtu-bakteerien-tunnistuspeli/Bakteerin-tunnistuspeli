@@ -94,7 +94,7 @@ const UserInfoForm = ({ user }) => {
                 if (!classGroup) {
                     return true
                 }
-                return /C-[0-9]+$/.test(classGroup)
+                return /^C-[0-9]+$/.test(classGroup)
             })
             .max(validation.classGroup.maxlength, validation.classGroup.maxMessage),
         studentNumber: Yup.string()
