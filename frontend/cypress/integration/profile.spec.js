@@ -89,7 +89,7 @@ describe('Profile management', () => {
 
             it('User can change their student number', () => {
                 cy.contains('Muokkaa käyttäjätietoja').click()
-                cy.get('#studentnumber').clear().type('012345')
+                cy.get('#studentNumber').clear().type('012345')
                 cy.get('#confirmField').type('useruser10')
                 cy.get('#updateUserInfo').click()
                 cy.contains('012345')
@@ -97,7 +97,7 @@ describe('Profile management', () => {
 
             it('User can change their class group', () => {
                 cy.contains('Muokkaa käyttäjätietoja').click()
-                cy.get('#classgroup').clear().type('C-70')
+                cy.get('#classGroup').clear().type('70')
                 cy.get('#confirmField').type('useruser10')
                 cy.get('#updateUserInfo').click()
                 cy.contains('C-70')
@@ -105,7 +105,7 @@ describe('Profile management', () => {
 
             it('User cannot change their info when an incorrect password is given', () => {
                 cy.contains('Muokkaa käyttäjätietoja').click()
-                cy.get('#classgroup').clear().type('C-70')
+                cy.get('#classGroup').clear().type('70')
                 cy.get('#confirmField').type('useruser12')
                 cy.get('#updateUserInfo').click()
                 cy.get('.close').click()
@@ -116,8 +116,8 @@ describe('Profile management', () => {
                 cy.contains('Muokkaa käyttäjätietoja').click()
                 cy.get('#username').clear().type('newName')
                 cy.get('#email').clear().type('new@email.com')
-                cy.get('#studentnumber').clear().type('777')
-                cy.get('#classgroup').clear().type('C-70')
+                cy.get('#studentNumber').clear().type('777')
+                cy.get('#classGroup').clear().type('70')
                 cy.get('#confirmField').type('useruser12')
                 cy.get('#updateUserInfo').click()
                 cy.get('.close').click()

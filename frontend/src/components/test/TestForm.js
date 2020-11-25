@@ -251,7 +251,8 @@ const TestForm = ({ testToEdit }) => {
                             handleSubmit,
                             errors,
                             setFieldValue,
-                            touched
+                            touched,
+                            setFieldTouched
                         }) => {
                             return (
                                 <Form
@@ -263,14 +264,16 @@ const TestForm = ({ testToEdit }) => {
                                         onChange={setFieldValue}
                                         error={errors.testName}
                                         touched={touched.testName}
-                                        setTestName={setTestName}></Name>
+                                        setTestName={setTestName}
+                                        setFieldTouched={setFieldTouched}></Name>
 
                                     <Type typeControlId='type'
                                         testType={testType}
                                         onChange={setFieldValue}
                                         error={errors.testType}
                                         touched={touched.testType}
-                                        setTestType={setTestType}></Type>
+                                        setTestType={setTestType}
+                                        setFieldTouched={setFieldTouched}></Type>
 
                                     <AddImage
                                         title={library.controlImage}

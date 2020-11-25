@@ -127,6 +127,7 @@ const GamePage = () => {
                         </Tab>
                         <Tab eventKey='tuloksia' title={library.tabs.results}>
                             <h4 className="game-margin">{library.resultsTab.title}</h4>
+                            <p className='instruct-img'>{library.resultsTab.imageInstruct}</p>
                             <Table id='resultTable'>
                                 <thead>
                                     <tr>
@@ -141,13 +142,13 @@ const GamePage = () => {
                                             <td>{result.testName}</td>
                                             <td>
                                                 {tests.filter(test => test.name === result.testName).map(test =>
-                                                    <>
+                                                    <div key={ test.id }>
                                                         {test.controlImage ?
                                                             <ModalImage imageUrl={test.controlImage.url} width={'10%'} height={'10%'}></ModalImage>
                                                             :
                                                             <></>
                                                         }
-                                                    </>
+                                                    </div>
                                                 )}
                                             </td>
                                             {result.imageUrl ?
@@ -168,7 +169,10 @@ const GamePage = () => {
                         <>
                             <p style={{ padding: '10px' }}><FormattedText value={game.case.completionText} /></p>
                             {game.completionImageUrl ?
-                                <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
+                                <>
+                                    <p className='instruct-img'>{library.resultsTab.imageInstruct}</p>
+                                    <ModalImage imageUrl={game.completionImageUrl} width={'10%'} height={'10%'}></ModalImage>
+                                </>
                                 :
                                 <></>
                             }
@@ -180,6 +184,7 @@ const GamePage = () => {
                                 <Form.Group>
                                     <Form.Label>{library.diagnosisTab.insertBacterium}</Form.Label>
                                     <Typeahead
+                                        id='type-ahead'
                                         inputProps={{ id: 'bacterium' }}
                                         value={bacterium}
                                         minLength={1}

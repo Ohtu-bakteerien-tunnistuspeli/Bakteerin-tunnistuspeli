@@ -123,6 +123,7 @@
                 "validationError": "Tapausta ei voida lisätä, tarkista lisäämäsi syötteet."
             },
             "list": {
+                "imageInstruct": "Voit laajentaa lisättyjä kuvua klikkaamalla niitä.",
                 "filterByName": "Filtteröi nimellä ",
                 "title": "Tapaukset",
                 "name": "Nimi",
@@ -207,6 +208,7 @@
                 "validationError": "Testiä ei voida lisätä, tarkista lisäämäsi syötteet."
             },
             "list": {
+                "imageInstruct": "Voit laajentaa lisättyjä kuvua klikkaamalla niitä.",
                 "filterByName": "Filtteröi nimellä ",
                 "filterByType": "Filtteröi tyypillä ",
                 "title": "Testit",
@@ -215,7 +217,10 @@
                 "controlImage": "Kontrollikuva",
                 "positiveDefault": "Positiivinen oletus",
                 "negativeDefault": "Negatiivinen oletus",
-                "noTests": "Ei Testejä"
+                "noTests": "Ei Testejä",
+                "test": "Testi",
+                "dye": "Värjäys",
+                "culture": "Viljely"
             },
             "bacteriaImages": {
                 "title": "Bakteerikohtaiset kuvat",
@@ -251,10 +256,6 @@
                 "samePasswordAndSecondPassword": "Salasanojen tulee olla samat.",
                 "gdbr": "Käyttöehtojen hyväksyminen on pakollista.",
                 "title": "Rekisteröidy Bakteeripeliin",
-                "username": "Käyttäjänimi",
-                "email": "Sähköposti",
-                "studentNumber": "Opiskelijanumero",
-                "classGroup": "Vuosikurssi",
                 "password": "Salasana",
                 "passwordAgain": "Salasana toisen kerran",
                 "readTermsStart": "Olen lukenut ja hyväksyn",
@@ -301,6 +302,7 @@
             "list": {
                 "filterByStudentNumber": "Filtteröi opiskelijanumerolla ",
                 "filterByUsername": "Filtteröi käyttäjänimellä ",
+                "filterByClassGroup": "Filtteröi vuosikurssilla ",
                 "title": "Käyttäjät",
                 "studentNumber": "Opiskelijanumero",
                 "username": "Käyttäjänimi",
@@ -375,7 +377,8 @@
                 "title": "Tulokset",
                 "test": "Testi",
                 "controlImage": "Kontrollikuva",
-                "result": "Tulos"
+                "result": "Tulos",
+                "imageInstruct": "Peliin liittyviä kuvia voit laajentaa klikkaamalla niitä."
             },
             "diagnosisTab": {
                 "title": "Diagnoosi",

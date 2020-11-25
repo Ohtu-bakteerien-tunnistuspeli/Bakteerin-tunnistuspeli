@@ -21,7 +21,7 @@ const CaseList = () => {
             if (filterByName === '') {
                 setCasesToShow(cases)
             } else {
-                setCasesToShow(cases.filter(c => c.name && c.name.startsWith(filterByName)))
+                setCasesToShow(cases.filter(c => c.name && c.name.toLowerCase().startsWith(filterByName.toLowerCase())))
             }
         }, 1000))
     }, [filterByName, cases])
@@ -33,6 +33,7 @@ const CaseList = () => {
     return (
         <div>
             <h2>{library.title}</h2>
+            <p className='instruct-img'>{library.imageInstruct}</p>
             {library.filterByName}<input id='caseNameFilter' type='text' value={filterByName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
             {cases.length !== 0 ?
                 <Table id='caseTable' borderless hover>

@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import BacteriumForm from './BacteriumForm'
 import BacteriumListing from './BacteriumListing'
 import { deleteBacterium, updateBacterium } from '../../reducers/bacteriaReducer'
-import { Table } from 'react-bootstrap'
+import { Table, Modal } from 'react-bootstrap'
+import Notification from '../utility/Notification'
 
 const BacteriaList = () => {
     const library = useSelector(state => state.language)?.library?.frontend.bacteria.list
@@ -21,7 +22,7 @@ const BacteriaList = () => {
             if (filterByBacteriaName === '') {
                 setBacteriaToShow(bacteria)
             } else {
-                setBacteriaToShow(bacteria.filter(bac => bac.name && bac.name.startsWith(filterByBacteriaName)))
+                setBacteriaToShow(bacteria.filter(bac => bac.name && bac.name.toLowerCase().startsWith(filterByBacteriaName.toLowerCase())))
             }
         }, 1000))
     }, [filterByBacteriaName, bacteria])
@@ -36,6 +37,9 @@ const BacteriaList = () => {
     return (
         <div>
             <h2>{library.title}</h2>
+            <Modal>
+                <Notification></Notification>
+            </Modal>
             {library.filterByName}<input id='bacteriaFilterByName' type='text' value={filterByBacteriaName} onChange={({ target }) => setFilterByName(target.value)}></input>&nbsp;
             {bacteria.length !== 0 ?
                 <Table id='bacteriumTable' borderless hover>

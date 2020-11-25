@@ -23,9 +23,9 @@ const TestList = () => {
                 if (filterByTestName === '') {
                     setTestsToShow(tests.filter(test => test.type && test.type.startsWith(filterByTestType)))
                 } else if (filterByTestType === '') {
-                    setTestsToShow(tests.filter(test => test.name && test.name.startsWith(filterByTestName)))
+                    setTestsToShow(tests.filter(test => test.name && test.name.toLowerCase().startsWith(filterByTestName.toLowerCase())))
                 } else {
-                    setTestsToShow(tests.filter(test => test.name && test.name.startsWith(filterByTestName) && test.type && test.type.startsWith(filterByTestType)))
+                    setTestsToShow(tests.filter(test => test.name && test.name.toLowerCase().startsWith(filterByTestName.toLowerCase()) && test.type && test.type.startsWith(filterByTestType)))
                 }
             }
         }, 1000))
@@ -34,8 +34,15 @@ const TestList = () => {
     return (
         <div>
             <h2>{library.title}</h2>
+            <p className='instruct-img'>{library.imageInstruct}</p>
             {library.filterByName}<input id='testNameFilter' type='text' value={filterByTestName} onChange={({ target }) => setFilterByTestName(target.value)}></input>&nbsp;
-            {library.filterByType}<input id='testTypeFilter' type='text' value={filterByTestType} onChange={({ target }) => setFilterByTestType(target.value)}></input>&nbsp;
+            {library.filterByType}
+            <select id='testTypeFilter' type= 'text' value={filterByTestType} onChange={({ target }) => setFilterByTestType(target.value)}>
+                <option value=''></option>
+                <option value='Testi'>{library.test}</option>
+                <option value='Viljely'>{library.culture}</option>
+                <option value='Värjäys'>{library.dye}</option>
+            </select>&nbsp;
             {tests.length !== 0 ?
                 <Table borderless hover>
                     <thead>

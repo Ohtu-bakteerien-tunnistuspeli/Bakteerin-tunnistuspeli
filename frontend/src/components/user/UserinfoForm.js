@@ -5,9 +5,7 @@ import Notification from '../utility/Notification.js'
 import { updateUserinfo } from '../../reducers/usersReducer'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
-import Username from './components/Username'
-import Email from './components/Email'
-import Studentnumber from './components/Studentnumber'
+import ValidatedTextField from './components/ValidatedTextField'
 import Password from './components/Password'
 import Classgroup from './components/Classgroup'
 import { setNotification } from '../../reducers/notificationReducer'
@@ -46,19 +44,19 @@ const UserInfoForm = ({ user }) => {
     const saveUpdatedUserinfo = (props) => {
         const token = user.token
         const oldPassword = props
-        if(password === '' && passwordAgain === '') {
+        if (password === '' && passwordAgain === '') {
             try {
                 dispatch(updateUserinfo(username, email, studentNumber, classGroup, oldPassword, '',
                     token, handleClose
                 ))
-            } catch(e) {
+            } catch (e) {
                 return e
             }
         }
         if (password === passwordAgain) {
             try {
                 dispatch(updateUserinfo(username,
-                    email, studentNumber, classGroup, oldPassword, password,
+                    email, studentNumber, `C-${classGroup}`, oldPassword, password,
                     token, handleClose
                 ))
             } catch (e) {
@@ -96,7 +94,7 @@ const UserInfoForm = ({ user }) => {
                 if (!classGroup) {
                     return true
                 }
-                return /C-+\d+/.test(classGroup)
+                return /^C-[0-9]+$/.test(classGroup)
             })
             .max(validation.classGroup.maxlength, validation.classGroup.maxMessage),
         studentNumber: Yup.string()
@@ -104,7 +102,7 @@ const UserInfoForm = ({ user }) => {
                 if (!studentNumber) {
                     return true
                 }
-                return /^[0-9]+/.test(studentNumber)
+                return /^[0-9]+$/.test(studentNumber)
             })
             .max(validation.studentNumber.maxlength, validation.studentNumber.maxMessage)
     })
@@ -126,6 +124,9 @@ const UserInfoForm = ({ user }) => {
             return e
         }
     }
+
+    console.log(user)
+    console.log(username)
 
     return (
         <div>
@@ -160,59 +161,67 @@ const UserInfoForm = ({ user }) => {
                             errors,
                             setFieldValue,
                             touched,
-                            handleBlur
+                            setFieldTouched
                         }) => {
                             return (
                                 <Form
                                     noValidate
                                     onSubmit={handleSubmit}
                                     encType='multipart/form-data'>
-                                    <Username nameControlId='username'
+                                    <ValidatedTextField
+                                        value={username}
                                         username={username}
                                         onChange={setFieldValue}
                                         error={errors.username}
                                         touched={touched.username}
-                                        onBlur={handleBlur}
-                                        setUsername={setNewUsername}></Username>
-                                    <Email typeControlId='email'
+                                        setFieldTouched={setFieldTouched}
+                                        setValue={setNewUsername}
+                                        fieldId='username' />
+                                    <ValidatedTextField
+                                        value={email}
                                         email={email}
                                         onChange={setFieldValue}
                                         error={errors.email}
                                         touched={touched.email}
-                                        onBlur={handleBlur}
-                                        setEmail={setNewEmail}></Email>
+                                        setFieldTouched={setFieldTouched}
+                                        setValue={setNewEmail}
+                                        fieldId='email' />
                                     <Password typeControlId='password'
-                                        controlId='password'
+                                        controlId={'password'}
+                                        value={password}
                                         password={password}
                                         label={library.password}
                                         onChange={setFieldValue}
                                         error={errors.password}
                                         touched={touched.password}
-                                        onBlur={handleBlur}
-                                        setPassword={setNewPassword}></Password>
+                                        setFieldTouched={setFieldTouched}
+                                        setPassword={setNewPassword} />
                                     <Password typeControlId='passwordAgain'
-                                        controlId='passwordAgain'
+                                        controlId={'passwordAgain'}
+                                        value={passwordAgain}
                                         password={passwordAgain}
                                         label={library.passwordAgain}
                                         onChange={setFieldValue}
                                         error={errors.password}
                                         touched={touched.password}
-                                        onBlur={handleBlur}
-                                        setPassword={setNewPasswordAgain}></Password>
-                                    <Studentnumber typeControlId='studentnumber'
+                                        setPassword={setNewPasswordAgain} />
+                                    <ValidatedTextField
+                                        value={studentNumber}
                                         studentnumber={studentNumber}
                                         onChange={setFieldValue}
                                         error={errors.studentNumber}
                                         touched={touched.studentNumber}
-                                        onBlur={handleBlur}
-                                        setStudentnumber={setNewStudentNumber}></Studentnumber>
-                                    <Classgroup typeControlId='classgroup'
+                                        setFieldTouched={setFieldTouched}
+                                        setValue={setNewStudentNumber}
+                                        fieldId='studentNumber' />
+                                    <Classgroup
+                                        value={classGroup}
                                         classgroup={classGroup}
                                         onChange={setFieldValue}
                                         error={errors.classGroup}
                                         touched={touched.classGroup}
-                                        onBlur={handleBlur}
-                                        setClassgroup={setNewClassgroup}></Classgroup>
+                                        setFieldTouched={setFieldTouched}
+                                        setClassgroup={setNewClassgroup} />
                                     <div>
                                         <br></br>
                                         <Form.Label>{library.warning}</Form.Label>
