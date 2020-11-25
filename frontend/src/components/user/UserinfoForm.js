@@ -125,6 +125,9 @@ const UserInfoForm = ({ user }) => {
         }
     }
 
+    console.log(user)
+    console.log(username)
+
     return (
         <div>
             <Modal>
@@ -166,6 +169,7 @@ const UserInfoForm = ({ user }) => {
                                     onSubmit={handleSubmit}
                                     encType='multipart/form-data'>
                                     <ValidatedTextField
+                                        value={username}
                                         username={username}
                                         onChange={setFieldValue}
                                         error={errors.username}
@@ -174,6 +178,7 @@ const UserInfoForm = ({ user }) => {
                                         setValue={setNewUsername}
                                         fieldId='username' />
                                     <ValidatedTextField
+                                        value={email}
                                         email={email}
                                         onChange={setFieldValue}
                                         error={errors.email}
@@ -182,6 +187,7 @@ const UserInfoForm = ({ user }) => {
                                         setValue={setNewEmail}
                                         fieldId='email' />
                                     <Password typeControlId='password'
+                                        value={password}
                                         password={password}
                                         label={library.password}
                                         onChange={setFieldValue}
@@ -190,6 +196,7 @@ const UserInfoForm = ({ user }) => {
                                         setFieldTouched={setFieldTouched}
                                         setPassword={setNewPassword} />
                                     <Password typeControlId='passwordAgain'
+                                        value={passwordAgain}
                                         password={passwordAgain}
                                         label={library.passwordAgain}
                                         onChange={setFieldValue}
@@ -197,6 +204,7 @@ const UserInfoForm = ({ user }) => {
                                         touched={touched.password}
                                         setPassword={setNewPasswordAgain} />
                                     <ValidatedTextField
+                                        value={studentNumber}
                                         studentnumber={studentNumber}
                                         onChange={setFieldValue}
                                         error={errors.studentNumber}
@@ -205,6 +213,7 @@ const UserInfoForm = ({ user }) => {
                                         setValue={setNewStudentNumber}
                                         fieldId='studentNumber' />
                                     <Classgroup
+                                        value={classGroup}
                                         classgroup={classGroup}
                                         onChange={setFieldValue}
                                         error={errors.classGroup}

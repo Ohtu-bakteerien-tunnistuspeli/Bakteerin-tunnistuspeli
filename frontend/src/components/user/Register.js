@@ -129,6 +129,7 @@ const Register = () => {
                             <Form.Group>
                                 <ValidatedTextField
                                     namedClass="required-field"
+                                    value={username}
                                     username={username}
                                     onChange={setFieldValue}
                                     error={errors.username}
@@ -138,6 +139,7 @@ const Register = () => {
                                     fieldId='username' />
                                 <ValidatedTextField
                                     namedClass="required-field"
+                                    value={email}
                                     email={email}
                                     onChange={setFieldValue}
                                     error={errors.email}
@@ -147,6 +149,7 @@ const Register = () => {
                                     fieldId='email' />
                                 <ValidatedTextField
                                     studentnumber={studentNumber}
+                                    value={studentNumber}
                                     onChange={setFieldValue}
                                     error={errors.studentNumber}
                                     touched={touched.studentNumber}
@@ -155,6 +158,7 @@ const Register = () => {
                                     fieldId='studentNumber' />
                                 <Classgroup
                                     classgroup={classGroup}
+                                    value={classGroup}
                                     onChange={setFieldValue}
                                     error={errors.classGroup}
                                     touched={touched.classGroup}
@@ -162,6 +166,7 @@ const Register = () => {
                                     setClassgroup={setNewClassgroup} />
                                 <Password typeControlId='password'
                                     password={password}
+                                    value={password}
                                     label={library.password}
                                     onChange={setFieldValue}
                                     error={errors.password}
