@@ -105,11 +105,18 @@
                 "completionImageGiven": "Loppukuva on annettu.",
                 "deleteCompletionImage": "Poista loppukuva",
                 "testGroups": {
-                    "titleStart": "Testiryhmät (klikkaa ",
+                    "titleStart": "Testiryhmien hallinta (klikkaa ",
                     "toShow": "näyttääksesi",
                     "toHide": "piilottaaksesi",
                     "showEdit": "Näytä muokkaustoiminnallisuus",
-                    "startNewTestGroup": "Aloita uusi testiryhmä"
+                    "startNewTestGroup": "Aloita uusi testiryhmä",
+                    "titleEnd": ")"
+                },
+                "samples": {
+                    "titleStart": "Näytteiden hallinta (klikkaa ",
+                    "toShow": "näyttääksesi",
+                    "toHide": "piilottaaksesi",
+                    "titleEnd": ")"
                 },
                 "saveEdit": "Tallenna muutokset",
                 "saveNew": "Tallenna tapaus",

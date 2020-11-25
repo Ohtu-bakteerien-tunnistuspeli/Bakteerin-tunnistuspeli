@@ -56,6 +56,7 @@ const CaseForm = ({ caseToEdit }) => {
     const [img, setImg] = useState(caseToEdit && caseToEdit.completionImage ? true : false)
     const [sample, setSample] = useState({ description: '', rightAnswer: false })
     const [samples, setSamples] = useState(caseToEdit ? caseToEdit.samples : [])
+    const [samplesAccordion, setSamplesAccodrion] = useState('0')
     const [testGroups, setTestGroups] = useState(caseToEdit ? caseToEdit.testGroups.map(testGroup => testGroup.slice().map(testForCase => { return { ...testForCase, tests: testForCase.tests.slice() } })) : [])
     const [addedTests, setAddedTests] = useState(caseToEdit ? testsFromTestGroups : [])
     const [testGroupAccordion, setTestGroupAccodrion] = useState('0')
@@ -363,21 +364,29 @@ const CaseForm = ({ caseToEdit }) => {
                                                 onChange={handleCompletionImageChange} />
                                         </Form.Group>
                                     }
-
-                                    <Samples samples={samples}
-                                        deleteSample={deleteSample}></Samples>
-                                    <AddSample
-                                        sample={sample}
-                                        setSample={setSample}
-                                        addSample={addSample}
-                                        error={errors.sample}
-                                        onChange={setFieldValue}
-                                        handleBlur={handleBlur}
-                                        touched={touched.sample}
-                                    ></AddSample>
+                                    <Accordion activeKey={samplesAccordion}>
+                                        <Card>
+                                            <Accordion.Toggle as={Card.Header} onClick={() => setSamplesAccodrion(samplesAccordion === '-1' ? '0' : '-1')}><Form.Label>{library.samples.titleStart}{samplesAccordion === '-1' ? library.samples.toShow : library.samples.toHide}{library.samples.titleEnd}</Form.Label></Accordion.Toggle>
+                                            <Accordion.Collapse eventKey='0'>
+                                                <Card.Body>
+                                                    <Samples samples={samples}
+                                                        deleteSample={deleteSample}></Samples>
+                                                    <AddSample
+                                                        sample={sample}
+                                                        setSample={setSample}
+                                                        addSample={addSample}
+                                                        error={errors.sample}
+                                                        onChange={setFieldValue}
+                                                        handleBlur={handleBlur}
+                                                        touched={touched.sample}
+                                                    ></AddSample>
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    </Accordion>
                                     <Accordion activeKey={testGroupAccordion}>
                                         <Card>
-                                            <Accordion.Toggle as={Card.Header} onClick={() => setTestGroupAccodrion(testGroupAccordion === '-1' ? '0' : '-1')}><Form.Label>{library.testGroups.titleStart}{testGroupAccordion === '-1' ? library.testGroups.toShow : library.testGroups.toHide})</Form.Label></Accordion.Toggle>
+                                            <Accordion.Toggle as={Card.Header} onClick={() => setTestGroupAccodrion(testGroupAccordion === '-1' ? '0' : '-1')}><Form.Label>{library.testGroups.titleStart}{testGroupAccordion === '-1' ? library.testGroups.toShow : library.testGroups.toHide}{library.testGroups.titleEnd}</Form.Label></Accordion.Toggle>
                                             <Accordion.Collapse eventKey='0'>
                                                 <Card.Body>
                                                     <Form.Check

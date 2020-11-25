@@ -22,13 +22,15 @@ const AddSample = ({ sample, setSample, addSample, error, onChange, touched, han
                 {error}
             </Form.Control.Feedback>
             <Form.Check
+                style={{ display: 'inline-block', paddingRight: '2px' }}
                 type='checkbox'
                 id='isRightAnswer'
                 label={library.sampleRightAnswer}
                 checked={sample.rightAnswer}
                 onChange={() => setSample({ ...sample, rightAnswer: !sample.rightAnswer })} />
             <Button type='button' id='addSample' onClick={() => {
-                addSample(sample.description, sample.rightAnswer, onChange)}}>+</Button>
+                addSample(sample.description, sample.rightAnswer, onChange)
+            }}>+</Button>
         </Form.Group>
     )
 }
