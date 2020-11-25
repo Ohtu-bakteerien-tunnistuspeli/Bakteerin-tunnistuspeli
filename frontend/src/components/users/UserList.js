@@ -48,10 +48,11 @@ const UserList = () => {
         if(orderByStudentNumber === '' && orderByUsername === '') {
             setUsersToShow(users)
         }
-
         if(orderByStudentNumber !== '' || orderByUsername !== '') {
             if(orderByStudentNumber === 'Descending' && orderByUsername === '') {
                 setUsersToShow(users2.sort((user1, user2) => user1.studentNumber.localeCompare(user2.studentNumber)))
+            } else if(orderByStudentNumber === 'Ascending' && orderByUsername === '') {
+                setUsersToShow(users2.sort((user1, user2) => user2.studentNumber.localeCompare(user1.studentNumber)))
             } else if(orderByUsername === 'Ascending' && orderByStudentNumber === '') {
                 setUsersToShow(users2.sort((user1, user2) => user2.username.localeCompare(user1.username)))
             } else if(orderByUsername  === 'Descending' && orderByStudentNumber === '') {
