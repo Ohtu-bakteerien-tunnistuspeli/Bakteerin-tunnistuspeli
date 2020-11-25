@@ -37,20 +37,20 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
         mongoose.connection.once('open', async () => {
             console.log(`MongoDB successfully connected to ${mongoUri}`)
             const saltRounds = 10
-            let passwordHash = await bcrypt.hash('user', saltRounds)
+            let passwordHash = await bcrypt.hash('useruser12', saltRounds)
             const user = new User({
                 username: 'user',
-                email: 'examples@com',
+                email: 'user@example.com',
                 admin: false,
                 studentNumber: '834183479234',
                 classGroup: 'C-13',
                 passwordHash
             })
             await user.save()
-            passwordHash = await bcrypt.hash('admin', saltRounds)
+            passwordHash = await bcrypt.hash('adminadmin', saltRounds)
             const admin = new User({
                 username: 'admin',
-                email: 'example@com',
+                email: 'admin@example.com',
                 studentNumber: '',
                 classGroup: '',
                 admin: true,
