@@ -97,7 +97,7 @@ describe('Game', () => {
         cy.get('#password').type('newpassThatisLongEnough10')
         cy.get('#passwordAgain').type('newpass')
         cy.get('#email').type('example@e.com')
-        cy.get('#classGroup').type('C-67')
+        cy.get('#classGroup').type('67')
         cy.get('#studentNumber').type('12345678')
         cy.get('#submit').click()
 
@@ -114,7 +114,7 @@ describe('Game', () => {
         cy.get('#passwordAgain').type('newpassThatIsLongEnough21')
         cy.get('#acceptCheckBox').click()
         cy.get('#email').type('example@e.com')
-        cy.get('#classGroup').type('C-67')
+        cy.get('#classGroup').type('67')
         cy.get('#studentNumber').type('12345678')
 
         cy.get('#submit').click()
@@ -132,7 +132,7 @@ describe('Game', () => {
         cy.get('#passwordAgain').type('newpasThatIsLongEnough21')
         cy.get('#acceptCheckBox').click()
         cy.get('#email').type('example@e.com')
-        cy.get('#classGroup').type('C-67')
+        cy.get('#classGroup').type('67')
         cy.get('#studentNumber').type('12345678')
 
         cy.get('#submit').click()

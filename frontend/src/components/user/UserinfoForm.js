@@ -20,7 +20,7 @@ const UserInfoForm = ({ user }) => {
     const [passwordAgain, setNewPasswordAgain] = useState('')
     const [email, setNewEmail] = useState(user.email)
     const [studentNumber, setNewStudentNumber] = useState(user.studentNumber)
-    const [classGroup, setNewClassgroup] = useState(user.classGroup)
+    const [classGroup, setNewClassgroup] = useState(user.classGroup.substring(2))
     const [confirmText, setConfirmText] = useState('')
 
     /* states end */
@@ -39,24 +39,22 @@ const UserInfoForm = ({ user }) => {
 
     const dispatch = useDispatch()
 
-
     /* form control */
     const saveUpdatedUserinfo = (props) => {
         const token = user.token
         const oldPassword = props
         if (password === '' && passwordAgain === '') {
             try {
-                dispatch(updateUserinfo(username, email, studentNumber, classGroup, oldPassword, '',
+                dispatch(updateUserinfo(username, email, studentNumber, `C-${classGroup}`, oldPassword, '',
                     token, handleClose
                 ))
             } catch (e) {
                 return e
             }
-        }
-        if (password === passwordAgain) {
+        } else if (password === passwordAgain) {
             try {
                 dispatch(updateUserinfo(username,
-                    email, studentNumber, `C-${classGroup}`, oldPassword, password,
+                    email, studentNumber,`C-${classGroup}`, oldPassword, password,
                     token, handleClose
                 ))
             } catch (e) {
@@ -69,7 +67,7 @@ const UserInfoForm = ({ user }) => {
         setNewUsername(user.username)
         setNewEmail(user.email)
         setNewStudentNumber(user.studentNumber)
-        setNewClassgroup(user.classGroup)
+        setNewClassgroup(user.classGroup.substring(2))
         setNewPassword('')
         setNewPasswordAgain('')
     }
@@ -94,7 +92,7 @@ const UserInfoForm = ({ user }) => {
                 if (!classGroup) {
                     return true
                 }
-                return /^C-[0-9]+$/.test(classGroup)
+                return /^C-[0-9]+$/.test(classGroup) || /^[0-9]+$/.test(classGroup)
             })
             .max(validation.classGroup.maxlength, validation.classGroup.maxMessage),
         studentNumber: Yup.string()
@@ -124,9 +122,6 @@ const UserInfoForm = ({ user }) => {
             return e
         }
     }
-
-    console.log(user)
-    console.log(username)
 
     return (
         <div>
