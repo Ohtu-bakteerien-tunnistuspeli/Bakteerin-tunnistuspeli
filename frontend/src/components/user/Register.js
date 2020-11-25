@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
-import { Form, Button, Modal, InputGroup } from 'react-bootstrap'
+import { Form, Button, Modal } from 'react-bootstrap'
 import { setNotification } from '../../reducers/notificationReducer'
 import PasswordQualityIndicator from './components/PasswordQualityIndicator'
 import Password from './components/Password'
+import ValidatedTextField from './components/ValidatedTextField'
+import Classgroup from './components/Classgroup'
 import GDBRText from './GDPRText'
 import PrivacyText from './PrivacyText'
 import * as Yup from 'yup'
@@ -19,6 +21,11 @@ const Register = () => {
     const [accept, setAccept] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [showModal2, setShowModal2] = useState(false)
+    const [username, setNewUsername] = useState(null)
+    const [password, setNewPassword] = useState(null)
+    const [email, setNewEmail] = useState(null)
+    const [studentNumber, setNewStudentNumber] = useState(null)
+    const [classGroup, setNewClassgroup] = useState(null)
     const checkPassWord = require('zxcvbn') // eslint-disable-line
 
     const UserSchema = Yup.object().shape({
@@ -38,22 +45,22 @@ const Register = () => {
                 }
                 return true
             })
-            .when('username',{
+            .when('username', {
                 is: true,
                 then: Yup.string().notOneOf([Yup.ref('username'), null], validation.password.uniqueMessage),
                 otherwise: Yup.string().required(validation.password.requiredMessage)
             })
-            .when('email',{
+            .when('email', {
                 is: true,
                 then: Yup.string().notOneOf([Yup.ref('email'), null], validation.password.uniqueMessage),
                 otherwise: Yup.string().required(validation.password.requiredMessage)
             })
-            .when('classGroup',{
+            .when('classGroup', {
                 is: true,
                 then: Yup.string().notOneOf([Yup.ref('classGroup'), null], validation.password.uniqueMessage),
                 otherwise: Yup.string().required(validation.password.requiredMessage)
             })
-            .when('studentNumber',{
+            .when('studentNumber', {
                 is: true,
                 then: Yup.string().notOneOf([Yup.ref('studentNumber'), null], validation.password.uniqueMessage),
                 otherwise: Yup.string().required(validation.password.requiredMessage)
@@ -83,16 +90,9 @@ const Register = () => {
     })
 
     const handleRegister = async (values) => {
-        const username = values.username
-        const email = values.email
-        const studentNumber = values.studentNumber
-        const classGroup = values.classGroup
-        const password = values.password.trim()
-        console.log(password)
-        const passwordAgain = values.passwordAgain
         if (accept) {
-            if (password === passwordAgain) {
-                dispatch(register(username, email, studentNumber, classGroup, password, history))
+            if (password === values.passwordAgain) {
+                dispatch(register(username, email, studentNumber, `C-${classGroup}`, password.trim(), history))
             } else {
                 dispatch(setNotification({ message: library.samePasswordAndSecondPassword, success: false }))
             }
@@ -121,75 +121,53 @@ const Register = () => {
                     errors,
                     setFieldValue,
                     touched,
-                    handleBlur,
-                    values
+                    values,
+                    setFieldTouched
                 }) => {
                     return (
                         <Form onSubmit={handleSubmit}>
                             <Form.Group>
-                                <Form.Label className="required-field">{library.username}</Form.Label>
-                                <Form.Control
-                                    type='text'
-                                    id='username'
-                                    name='username'
-                                    isInvalid={errors.username && touched.username}
-                                    onChange={(event) => setFieldValue('username', event.target.value)}
-                                    onBlur={handleBlur}
-                                />
-                                <Form.Control.Feedback type='invalid' hidden={!touched.username}>
-                                    {errors.username}
-                                </Form.Control.Feedback>
-                                <Form.Label className="required-field">{library.email}</Form.Label>
-                                <Form.Control
-                                    type='text'
-                                    id='email'
-                                    name='email'
-                                    isInvalid={errors.email && touched.email}
-                                    onChange={(event) => setFieldValue('email', event.target.value)}
-                                    onBlur={handleBlur}
-                                />
-                                <Form.Control.Feedback type='invalid' hidden={!touched.email}>
-                                    {errors.email}
-                                </Form.Control.Feedback>
-                                <Form.Label>{library.studentNumber}</Form.Label>
-                                <Form.Control
-                                    type='text'
-                                    id='studentNumber'
-                                    name='studentNumber'
-                                    isInvalid={errors.studentNumber && touched.studentNumber}
-                                    onChange={(event) => setFieldValue('studentNumber', event.target.value)}
-                                    onBlur={handleBlur}
-                                />
-                                <Form.Control.Feedback type='invalid' hidden={!touched.studentNumber}>
-                                    {errors.studentNumber}
-                                </Form.Control.Feedback>
-                                <Form.Label>{library.classGroup}</Form.Label>
-                                <InputGroup>
-                                    <InputGroup.Prepend>
-                                        <InputGroup.Text>C-</InputGroup.Text>
-                                    </InputGroup.Prepend>
-                                    <Form.Control
-                                        className="choose-class-field"
-                                        type='number'
-                                        id='classGroup'
-                                        name='classGroup'
-                                        isInvalid={errors.classGroup && touched.classGroup}
-                                        onChange={(event) => setFieldValue('classGroup', 'C-' + event.target.value)}
-                                        onBlur={handleBlur}
-                                    />
-                                </InputGroup>
-                                <Form.Control.Feedback type='invalid' hidden={!touched.classGroup}>
-                                    {errors.classGroup}
-                                </Form.Control.Feedback>
-                                <Password password={values.password}
+                                <ValidatedTextField
+                                    namedClass="required-field"
+                                    username={username}
+                                    onChange={setFieldValue}
+                                    error={errors.username}
+                                    touched={touched.username}
+                                    setFieldTouched={setFieldTouched}
+                                    setValue={setNewUsername}
+                                    fieldId='username' />
+                                <ValidatedTextField
+                                    namedClass="required-field"
+                                    email={email}
+                                    onChange={setFieldValue}
+                                    error={errors.email}
+                                    touched={touched.email}
+                                    setFieldTouched={setFieldTouched}
+                                    setValue={setNewEmail}
+                                    fieldId='email' />
+                                <ValidatedTextField
+                                    studentnumber={studentNumber}
+                                    onChange={setFieldValue}
+                                    error={errors.studentNumber}
+                                    touched={touched.studentNumber}
+                                    setFieldTouched={setFieldTouched}
+                                    setValue={setNewStudentNumber}
+                                    fieldId='studentNumber' />
+                                <Classgroup
+                                    classgroup={classGroup}
+                                    onChange={setFieldValue}
+                                    error={errors.classGroup}
+                                    touched={touched.classGroup}
+                                    setFieldTouched={setFieldTouched}
+                                    setClassgroup={setNewClassgroup} />
+                                <Password typeControlId='password'
+                                    password={password}
                                     label={library.password}
                                     onChange={setFieldValue}
                                     error={errors.password}
-                                    touched={touched}
-                                    handleBlur={handleBlur}
-                                    values={values}
-                                    instruction={validation.password.instruction}
-                                ></Password>
+                                    touched={touched.password}
+                                    setFieldTouched={setFieldTouched}
+                                    setPassword={setNewPassword} />
                                 <PasswordQualityIndicator
                                     value={checkPassWord(values.password).score}
                                     show={values.password.length > 0}
@@ -201,10 +179,9 @@ const Register = () => {
                                     id='passwordAgain'
                                     isInvalid={errors.passwordAgain && touched.passwordAgain}
                                     onChange={(event) => setFieldValue('passwordAgain', event.target.value)}
-                                    onBlur={handleBlur}
                                 />
                                 <div className='form-group form-inline'>
-                    <Form.Label className="required-field">{library.readTermsStart}&nbsp;{<a href='#' onClick={() => setShowModal(true)}>{library.terms}</a>//eslint-disable-line
+                                    <Form.Label className="required-field">{library.readTermsStart}&nbsp;{<a href='#' onClick={() => setShowModal(true)}>{library.terms}</a>//eslint-disable-line
                                     }&nbsp;{library.and}&nbsp;{<a href='#' onClick={() => setShowModal2(true)}>{library.privacy}</a> //eslint-disable-line
                                     }&nbsp;
                                     </Form.Label>

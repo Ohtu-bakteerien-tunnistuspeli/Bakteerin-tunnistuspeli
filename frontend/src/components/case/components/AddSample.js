@@ -2,10 +2,13 @@ import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
-const AddSample = ({ sample, setSample, addSample, error, onChange, touched, handleBlur }) => {
+const AddSample = ({ sample, setSample, addSample, error, onChange, touched, setFieldTouched }) => {
     const library = useSelector(state => state.language)?.library?.frontend.case.components
     const handleChange = event => {
         event.preventDefault()
+        if(!touched) {
+            setFieldTouched('sample', true, true)
+        }
         setSample({ ...sample, description: event.target.value })
         onChange('sample', event.target.value)
     }
@@ -16,7 +19,6 @@ const AddSample = ({ sample, setSample, addSample, error, onChange, touched, han
                 value={sample.description}
                 onChange={handleChange}
                 isInvalid={error}
-                onBlur={handleBlur}
             />
             <Form.Control.Feedback type='invalid' hidden={!touched}>
                 {error}

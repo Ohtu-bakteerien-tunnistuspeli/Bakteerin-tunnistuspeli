@@ -2,10 +2,13 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
-const SelectBacterium = ({ bacteriumId, setBacteriumId, onChange, error, bacteria, touched, handleBlur }) => {
+const SelectBacterium = ({ bacteriumId, setBacteriumId, onChange, error, bacteria, touched, setFieldTouched }) => {
     const library = useSelector(state => state.language)?.library?.frontend.case.components
     const handleChange = event => {
         event.preventDefault()
+        if(!touched) {
+            setFieldTouched('bacteriumId', true, true)
+        }
         setBacteriumId(event.target.value)
         onChange('bacteriumId', event.target.value)
     }
@@ -16,7 +19,6 @@ const SelectBacterium = ({ bacteriumId, setBacteriumId, onChange, error, bacteri
                 onChange={handleChange}
                 isInvalid={error && touched}
                 value={bacteriumId}
-                onBlur={handleBlur}
             >
                 <option value='' disabled hidden>{library.chooseBacterium}</option>
                 {bacteria.map(bacterium =>
