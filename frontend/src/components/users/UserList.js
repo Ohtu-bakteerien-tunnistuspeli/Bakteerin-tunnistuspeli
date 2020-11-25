@@ -43,19 +43,18 @@ const UserList = () => {
 
     useEffect(() => {
 
+        const users2 = [].concat(users)
+
         if(orderByStudentNumber === '' && orderByUsername === '') {
             setUsersToShow(users)
         }
 
         if(orderByStudentNumber !== '' || orderByUsername !== '') {
             if(orderByStudentNumber === 'Descending' && orderByUsername === '') {
-                const users2 = [].concat(users)
-                setUsersToShow(users2.sort((user1, user2) => user2.studentNumber.localeCompare(user1.studentNumber)))
+                setUsersToShow(users2.sort((user1, user2) => user1.studentNumber.localeCompare(user2.studentNumber)))
             } else if(orderByUsername === 'Ascending' && orderByStudentNumber === '') {
-                const users2 = [].concat(users)
                 setUsersToShow(users2.sort((user1, user2) => user2.username.localeCompare(user1.username)))
             } else if(orderByUsername  === 'Descending' && orderByStudentNumber === '') {
-                const users2 = [].concat(users)
                 setUsersToShow(users2.sort((user1, user2) => user1.username.localeCompare(user2.username)))
             } else {
                 setUsersToShow(users)

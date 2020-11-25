@@ -46,29 +46,27 @@ const CreditList = () => {
     // classGroup ja käyttäjänimen mukaan myös
 
     useEffect(() => {
+
+        const credits2 = [].concat(credits)
+
         if(orderByStudentNumber === '' && orderByClassGroup === '' && orderByUsername === '') {
             setCreditsToShow(credits)
         }
 
         if(orderByUsername === 'Descending' && orderByStudentNumber === '' && orderByClassGroup === '') {
-            const credits2 = [].concat(credits)
             setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.username.localeCompare(credit1.user.username)))
         }
 
         if(orderByUsername === 'Ascending' && orderByStudentNumber === '' && orderByClassGroup === '') {
-            const credits2 = [].concat(credits)
             setCreditsToShow(credits2.sort((credit1, credit2) => credit1.user.username.localeCompare(credit2.user.username)))
         }
 
         if(orderByStudentNumber !== '' || orderByClassGroup !== '' || orderByUsername === '') {
             if(orderByStudentNumber === 'Descending' && orderByClassGroup === '' && orderByUsername === '') {
-                const credits2 = [].concat(credits)
                 setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.studentNumber.localeCompare(credit1.user.studentNumber)))
             } else if(orderByClassGroup === 'Ascending' && orderByStudentNumber === '' && orderByUsername === '') {
-                const credits2 = [].concat(credits)
                 setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.classGroup.localeCompare(credit1.user.classGroup)))
             } else if(orderByClassGroup === 'Descending' && orderByStudentNumber === '' && orderByUsername === '') {
-                const credits2 = [].concat(credits)
                 setCreditsToShow(credits2.sort((credit1, credit2) => credit1.user.classGroup.localeCompare(credit2.user.classGroup)))
             } else {
                 setCreditsToShow(credits)
