@@ -12,7 +12,7 @@ const UserList = () => {
     const [filterByStudentNumber, setFilterByStudentNumber] = useState('')
     const [filterByUsername, setFilterByUsername] = useState('')
     const [filterByClassGroup, setFilterByClassGroup] = useState('C-')
-    // const [filterByAdmin, setFilterByAdmin] = useState('')
+
     const dispatch = useDispatch()
     const [timer, setTimer] = useState(null)
     useEffect(() => {

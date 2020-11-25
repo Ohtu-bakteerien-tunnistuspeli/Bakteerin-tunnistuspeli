@@ -174,7 +174,13 @@
                 "username": "Käyttäjänimi",
                 "classGroup": "Vuosikurssi",
                 "deleteCredits": "Poista suoritukset",
-                "noCredits": "Ei suorituksia"
+                "noCredits": "Ei suorituksia",
+                "orderByStudentNumber": "Järjestä opiskelijanumeron mukaan ",
+                "orderByClassGroup": "Järjestä vuosikurssin mukaan ",
+                "orderByUsername": "Järjestä käyttäjänimen mukaan ",
+                "sortingInstructions" : "Järjestä suorituksia. Käytä vain yhtä järjestystapaa kerralla",
+                "descending": "Laskeva",
+                "ascending": "Nouseva"
             },
             "listing": {
                 "showCredits": "Näytä suoritukset",
