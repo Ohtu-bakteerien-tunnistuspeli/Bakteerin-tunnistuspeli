@@ -38,9 +38,9 @@ const TestList = () => {
             {library.filterByType}
             <select id='testTypeFilter' type= 'text' value={filterByTestType} onChange={({ target }) => setFilterByTestType(target.value)}>
                 <option value=''></option>
-                <option value='Testi'>Testi</option>
-                <option value='Viljely'>Viljely</option>
-                <option value='Värjäys'>Värjäys</option>
+                <option value='Testi'>{library.test}</option>
+                <option value='Viljely'>{library.culture}</option>
+                <option value='Värjäys'>{library.dye}</option>
             </select>&nbsp;
             {tests.length !== 0 ?
                 <Table borderless hover>

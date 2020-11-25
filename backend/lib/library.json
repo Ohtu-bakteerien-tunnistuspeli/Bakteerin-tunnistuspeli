@@ -208,7 +208,10 @@
                 "controlImage": "Kontrollikuva",
                 "positiveDefault": "Positiivinen oletus",
                 "negativeDefault": "Negatiivinen oletus",
-                "noTests": "Ei Testejä"
+                "noTests": "Ei Testejä",
+                "test": "Testi",
+                "dye": "Värjäys",
+                "culture": "Viljely"
             },
             "bacteriaImages": {
                 "title": "Bakteerikohtaiset kuvat",
