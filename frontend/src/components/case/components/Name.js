@@ -2,10 +2,13 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
-const Name = ({ name, setName, onChange, error, touched, handleBlur }) => {
+const Name = ({ name, setName, onChange, error, touched, setFieldTouched }) => {
     const library = useSelector(state => state.language)?.library?.frontend.case.components
     const handleChange = (event) => {
         event.preventDefault()
+        if (!touched) {
+            setFieldTouched('name', true, true)
+        }
         setName(event.target.value)
         onChange('name', event.target.value)
     }
@@ -17,7 +20,6 @@ const Name = ({ name, setName, onChange, error, touched, handleBlur }) => {
                 isInvalid={error && touched}
                 value={name}
                 onChange={handleChange}
-                onBlur={handleBlur}
             />
             <Form.Control.Feedback type='invalid' hidden={!touched}>
                 {error}

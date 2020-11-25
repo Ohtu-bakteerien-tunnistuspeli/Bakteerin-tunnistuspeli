@@ -10,14 +10,14 @@ const options = {
     'buttons': '|,bold,strikethrough,underline,italic,eraser,|,font,fontsize,brush,paragraph,|,superscript,subscript,|,ul,ol,|,outdent,indent,align,,link,|,undo,redo,\n,copy,paste,|,preview,about'
 }
 
-const TextEditField = ({ value, onChange, onBlur, isInvalid }) => {
+const TextEditField = ({ value, handleChange, invalid, fieldId }) => {
     return (
         <JoditEditor
+            id={fieldId}
             value={value}
             config={options}
-            onChange={(value) => onChange(value)}
-            onBlur={onBlur}
-            isInvalid={isInvalid}
+            onChange={(value) => handleChange(value)}
+            isInvalid={invalid}
         />
     )
 }

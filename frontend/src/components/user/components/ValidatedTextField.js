@@ -2,22 +2,26 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Form } from 'react-bootstrap'
 
-const Email = ({ email, setEmail, onChange, error, touched, handleBlur }) => {
+
+const ValidatedTextField = ({ value, setValue, onChange, error, touched, setFieldTouched, fieldId, namedClass }) => {
     const library = useSelector(state => state.language)?.library?.frontend.user.components
     const handleChange = (event) => {
         event.preventDefault()
-        setEmail(event.target.value)
-        onChange('email', event.target.value)
+        if (!touched) {
+            setFieldTouched(fieldId, true, true)
+        }
+        setValue(event.target.value)
+        onChange(fieldId, event.target.value)
     }
     return (
-        <Form.Group controlId='username'>
-            <Form.Label>{library.email}</Form.Label>
+        <Form.Group controlId={fieldId}>
+            <Form.Label className={namedClass}>{library[fieldId]}</Form.Label>
             <Form.Control
+                name={fieldId}
                 type='text'
                 isInvalid={error && touched}
-                value={email}
+                value={value}
                 onChange={handleChange}
-                onBlur={handleBlur}
             />
             <Form.Control.Feedback type='invalid' hidden={!touched}>
                 {error}
@@ -26,4 +30,4 @@ const Email = ({ email, setEmail, onChange, error, touched, handleBlur }) => {
     )
 }
 
-export default Email
+export default ValidatedTextField

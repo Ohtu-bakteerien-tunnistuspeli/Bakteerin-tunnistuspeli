@@ -2,10 +2,13 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
-const Name = ({ nameControlId, error, onChange, testName, touched, setTestName }) => {
+const Name = ({ nameControlId, error, onChange, testName, touched, setTestName, setFieldTouched }) => {
     const library = useSelector(state => state.language)?.library?.frontend.test.components
     const handleChange = (event) => {
         event.preventDefault()
+        if (!touched) {
+            setFieldTouched('testName', true, true)
+        }
         setTestName(event.target.value)
         onChange('testName', event.target.value)
     }

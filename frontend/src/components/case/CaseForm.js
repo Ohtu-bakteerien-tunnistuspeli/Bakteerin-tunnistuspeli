@@ -276,7 +276,7 @@ const CaseForm = ({ caseToEdit }) => {
                             errors,
                             setFieldValue,
                             touched,
-                            handleBlur
+                            setFieldTouched
                         }) => {
                             return (
                                 <Form noValidate onSubmit={handleSubmit}>
@@ -286,7 +286,7 @@ const CaseForm = ({ caseToEdit }) => {
                                         onChange={setFieldValue}
                                         error={errors.name}
                                         touched={touched.name}
-                                        handleBlur={handleBlur}
+                                        setFieldTouched={setFieldTouched}
                                     ></Name>
                                     <SelectBacterium
                                         bacteriumId={bacteriumId}
@@ -295,37 +295,37 @@ const CaseForm = ({ caseToEdit }) => {
                                         onChange={setFieldValue}
                                         error={errors.bacteriumId}
                                         touched={touched.bacteriumId}
-                                        handleBlur={handleBlur}
+                                        setFieldTouched={setFieldTouched}
                                     ></SelectBacterium>
                                     <Form.Group id='anamnesis'>
                                         <Form.Label>{library.anamnesis}</Form.Label>
                                         <TextEditField
-                                            id='anamnesisField'
+                                            fieldId='anamnesisField'
                                             value={anamnesis}
-                                            onChange={(value) => {
+                                            handleChange={(value) => {
+                                                setFieldTouched('anamnesis', true, true)
                                                 setAnamnesis(value)
                                                 setFieldValue('anamnesis', value)
                                             }}
-                                            onBlur={handleBlur}
-                                            isInvalid={errors.anamnesis && touched.anamnesis}
+                                            invalid={errors.anamnesis && touched.anamnesis}
                                         />
-                                        <Form.Control.Feedback type='invalid' hidden={!touched.anamnesis}>
+                                        <Form.Control.Feedback type='invalid' style={{ display: 'block' }} hidden={!touched.anamnesis}>
                                             {errors.anamnesis}
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                     <Form.Group id='completionText'>
                                         <Form.Label>{library.completionText}</Form.Label>
                                         <TextEditField
-                                            id='completionTextField'
+                                            fieldId='completionTextField'
                                             value={completionText}
-                                            onChange={(value) => {
+                                            handleChange={(value) => {
+                                                setFieldTouched('completionText', true, true)
                                                 setCompletionText(value)
                                                 setFieldValue('completionText', value)
                                             }}
-                                            isInvalid={errors.completionText && touched.completionText}
-                                            onBlur={handleBlur}
+                                            invalid={errors.completionText && touched.completionText}
                                         />
-                                        <Form.Control.Feedback type='invalid' hidden={!touched.completionText}>
+                                        <Form.Control.Feedback type='invalid' style={{ display: 'block' }} hidden={!touched.completionText}>
                                             {errors.completionText}
                                         </Form.Control.Feedback>
                                     </Form.Group>
@@ -377,7 +377,7 @@ const CaseForm = ({ caseToEdit }) => {
                                                         addSample={addSample}
                                                         error={errors.sample}
                                                         onChange={setFieldValue}
-                                                        handleBlur={handleBlur}
+                                                        setFieldTouched={setFieldTouched}
                                                         touched={touched.sample}
                                                     ></AddSample>
                                                 </Card.Body>

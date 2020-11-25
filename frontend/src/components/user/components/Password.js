@@ -1,10 +1,13 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-const Password = ({ password, label, setPassword, onChange, error, touched, handleBlur, instruction }) => {
+const Password = ({ password, label, setPassword, onChange, error, touched, setFieldTouched, instruction }) => {
     const handleChange = (event) => {
         event.preventDefault()
         if (setPassword) {
+            if(!touched && setFieldTouched) {
+                setFieldTouched('password', true, true)
+            }
             setPassword(event.target.value)
         }
         onChange('password', event.target.value)
@@ -18,7 +21,6 @@ const Password = ({ password, label, setPassword, onChange, error, touched, hand
                 value={password}
                 placeholder='***********'
                 onChange={handleChange}
-                onBlur={handleBlur}
             />
             <Form.Text muted>
                 {instruction}
