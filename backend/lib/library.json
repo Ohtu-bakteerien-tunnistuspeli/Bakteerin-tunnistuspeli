@@ -217,7 +217,10 @@
                 "controlImage": "Kontrollikuva",
                 "positiveDefault": "Positiivinen oletus",
                 "negativeDefault": "Negatiivinen oletus",
-                "noTests": "Ei Testejä"
+                "noTests": "Ei Testejä",
+                "test": "Testi",
+                "dye": "Värjäys",
+                "culture": "Viljely"
             },
             "bacteriaImages": {
                 "title": "Bakteerikohtaiset kuvat",
@@ -299,6 +302,7 @@
             "list": {
                 "filterByStudentNumber": "Filtteröi opiskelijanumerolla ",
                 "filterByUsername": "Filtteröi käyttäjänimellä ",
+                "filterByClassGroup": "Filtteröi vuosikurssilla ",
                 "title": "Käyttäjät",
                 "studentNumber": "Opiskelijanumero",
                 "username": "Käyttäjänimi",
