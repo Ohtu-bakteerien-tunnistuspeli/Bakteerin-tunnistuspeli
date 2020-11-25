@@ -1,11 +1,11 @@
 describe('Test management', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/init')
-        cy.login({ username: 'admin', password: 'admin' })
+        cy.login({ username: 'admin', password: 'adminadmin' })
     })
 
     it('User cannot access test management', () => {
-        cy.login({ username: 'user', password: 'user' })
+        cy.login({ username: 'user', password: 'useruser10' })
         cy.get('div').should('not.contain', 'Testien hallinta')
     })
 

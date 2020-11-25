@@ -10,7 +10,7 @@ const Email = ({ email, setEmail, onChange, error, touched, handleBlur }) => {
         onChange('email', event.target.value)
     }
     return (
-        <Form.Group controlId='username'>
+        <Form.Group controlId='email'>
             <Form.Label>{library.email}</Form.Label>
             <Form.Control
                 type='text'

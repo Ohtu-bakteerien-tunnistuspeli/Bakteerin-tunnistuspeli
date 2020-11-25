@@ -1,11 +1,11 @@
 describe('User management', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/init')
-        cy.login({ username: 'admin', password: 'admin' })
+        cy.login({ username: 'admin', password: 'adminadmin' })
     })
 
     it('User cannot access user management', () => {
-        cy.login({ username: 'user', password: 'user' })
+        cy.login({ username: 'user', password: 'useruser10' })
         cy.get('div').should('not.contain', 'Käyttäjien hallinta')
     })
 
@@ -46,15 +46,15 @@ describe('User management', () => {
 
     describe('Promote', () => {
         it('User can be promoted', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('not.contain', 'Käyttäjien hallinta')
-            cy.login({ username: 'admin', password: 'admin' })
+            cy.login({ username: 'admin', password: 'adminadmin' })
             cy.contains('Käyttäjien hallinta').click()
             cy.get('#promoteUser').click({ force: true })
             cy.get('#confirmField').type('user')
             cy.get('#confirm').click()
             cy.contains('Käyttäjän user ylennys onnistui.')
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('contain', 'Käyttäjien hallinta')
         })
 
@@ -67,14 +67,14 @@ describe('User management', () => {
         })
 
         it('Can quit promoting', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('not.contain', 'Käyttäjien hallinta')
-            cy.login({ username: 'admin', password: 'admin' })
+            cy.login({ username: 'admin', password: 'adminadmin' })
             cy.contains('Käyttäjien hallinta').click()
             cy.get('#promoteUser').click()
             cy.get('#confirmField').type('user')
             cy.get('.close').click()
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('not.contain', 'Käyttäjien hallinta')
         })
     })
@@ -89,15 +89,15 @@ describe('User management', () => {
         })
 
         it('User can be demoted', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('contain', 'Käyttäjien hallinta')
-            cy.login({ username: 'admin', password: 'admin' })
+            cy.login({ username: 'admin', password: 'adminadmin' })
             cy.contains('Käyttäjien hallinta').click()
             cy.get('#demoteUser').click({ force: true })
             cy.get('#confirmField').type('user')
             cy.get('#confirm').click()
             cy.contains('Käyttäjän user alennus onnistui.')
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('not.contain', 'Käyttäjien hallinta')
         })
 
@@ -110,14 +110,14 @@ describe('User management', () => {
         })
 
         it('Can quit demoting', () => {
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('contain', 'Käyttäjien hallinta')
-            cy.login({ username: 'admin', password: 'admin' })
+            cy.login({ username: 'admin', password: 'adminadmin' })
             cy.contains('Käyttäjien hallinta').click()
             cy.get('#demoteUser').click({ force: true })
             cy.get('#confirmField').type('user')
             cy.get('.close').click()
-            cy.login({ username: 'user', password: 'user' })
+            cy.login({ username: 'user', password: 'useruser10' })
             cy.get('div').should('contain', 'Käyttäjien hallinta')
         })
     })

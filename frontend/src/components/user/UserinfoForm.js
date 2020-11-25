@@ -182,6 +182,7 @@ const UserInfoForm = ({ user }) => {
                                         onBlur={handleBlur}
                                         setEmail={setNewEmail}></Email>
                                     <Password typeControlId='password'
+                                        controlId='password'
                                         password={password}
                                         label={library.password}
                                         onChange={setFieldValue}
@@ -190,6 +191,7 @@ const UserInfoForm = ({ user }) => {
                                         onBlur={handleBlur}
                                         setPassword={setNewPassword}></Password>
                                     <Password typeControlId='passwordAgain'
+                                        controlId='passwordAgain'
                                         password={passwordAgain}
                                         label={library.passwordAgain}
                                         onChange={setFieldValue}

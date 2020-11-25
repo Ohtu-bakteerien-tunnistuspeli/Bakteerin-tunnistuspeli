@@ -182,6 +182,7 @@ const Register = () => {
                                     {errors.classGroup}
                                 </Form.Control.Feedback>
                                 <Password password={values.password}
+                                    controlId='password'
                                     label={library.password}
                                     onChange={setFieldValue}
                                     error={errors.password}

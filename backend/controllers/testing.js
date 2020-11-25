@@ -97,20 +97,20 @@ router.post('/init', async (request, response) => {
         await User.deleteMany({})
 
         const saltRounds = 10
-        let passwordHash = await bcrypt.hash('user', saltRounds)
+        let passwordHash = await bcrypt.hash('useruser10', saltRounds)
         const user = new User({
             username: 'user',
-            email: 'example@com',
+            email: 'user@example.com',
             studentNumber: '1234567',
             classGroup: 'C-12',
             admin: false,
             passwordHash
         })
         await user.save()
-        passwordHash = await bcrypt.hash('admin', saltRounds)
+        passwordHash = await bcrypt.hash('adminadmin', saltRounds)
         const admin = new User({
             username: 'admin',
-            email: 'examples@com',
+            email: 'admin@examples.com',
             studentNumber: '',
             classGroup: '',
             admin: true,

@@ -2,7 +2,7 @@ describe('credit management', () => {
     beforeEach(() => {
         cy.request('POST', 'http://localhost:3001/api/testing/init')
         cy.request('POST', 'http://localhost:3001/api/testing/credits')
-        cy.login({ username: 'admin', password: 'admin' })
+        cy.login({ username: 'admin', password: 'adminadmin' })
     })
 
     describe('Filtering credits', () => {
