@@ -69,6 +69,11 @@
             }
         },
         "bacteria": {
+            "reducer":{
+                "addSuccess": "Bakteeri lisätty onnistuneesti",
+                "deleteSuccess": "Bakteeri poistettu onnistuneesti",
+                "editSuccess": "Bakteeria muokattu onnistuneesti"
+            },
             "list": {
                 "filterByName": "Filtteröi nimellä ",
                 "title": "Bakteerit",

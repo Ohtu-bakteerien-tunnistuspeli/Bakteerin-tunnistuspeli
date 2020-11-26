@@ -37,12 +37,13 @@ export const getBacteria = (token) => {
 }
 
 export const addBacteria = (name, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.bacteria.reducer
         const bacterium = await bacteriaService.add(name, token)
         if (bacterium.error) {
             dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: 'Bakteeri lisätty onnistuneesti', success: true, show: true }))
+            dispatch(setNotification({ message: library.addSuccess, success: true, show: true }))
             dispatch({
                 type: 'ADD_BACTERIUM',
                 data: bacterium
@@ -52,12 +53,13 @@ export const addBacteria = (name, token) => {
 }
 
 export const deleteBacterium = (bacterium, token) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.bacteria.reducer
         const res = await bacteriaService.deleteBacterium(bacterium.id, token)
         if (res.status !== 204) {
             dispatch(setNotification({ message: res.error, success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: 'Bakteeri poistettu onnistuneesti', success: true, show: true }))
+            dispatch(setNotification({ message: library.deleteSuccess, success: true, show: true }))
             dispatch({
                 type: 'DELETE_BACTERIUM',
                 data: bacterium
@@ -67,12 +69,13 @@ export const deleteBacterium = (bacterium, token) => {
 }
 
 export const updateBacterium = (id, name, token, setIsModified, setNewName) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const library = getState()?.language?.library.frontend.bacteria.reducer
         const bacterium = await bacteriaService.update(id, name, token)
         if (bacterium.error) {
             dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
-            dispatch(setNotification({ message: 'Bakteeria muokattu onnistuneesti', success: true, show: true }))
+            dispatch(setNotification({ message: library.editSuccess, success: true, show: true }))
             dispatch({
                 type: 'UPDATE_BACTERIUM',
                 data: bacterium
