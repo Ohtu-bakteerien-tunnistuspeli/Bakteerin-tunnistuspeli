@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
-const Password = ({ password, label, setPassword, onChange, error, touched, setFieldTouched, instruction, controlId }) => {
+const Password = ({ password, namedClass, label, setPassword, onChange, error, touched, setFieldTouched, instruction, controlId }) => {
     const handleChange = (event) => {
         event.preventDefault()
         if (setPassword) {
@@ -14,7 +14,7 @@ const Password = ({ password, label, setPassword, onChange, error, touched, setF
     }
     return (
         <Form.Group controlId={controlId}>
-            <Form.Label className="required-field">{label}</Form.Label>
+            <Form.Label className={namedClass}>{label}</Form.Label>
             <Form.Control
                 type='password'
                 isInvalid={error && touched}
