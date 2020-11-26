@@ -40,7 +40,7 @@ export const addBacteria = (name, token) => {
     return async dispatch => {
         const bacterium = await bacteriaService.add(name, token)
         if (bacterium.error) {
-            dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false }))
+            dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
             dispatch(setNotification({ message: 'Bakteeri lisätty onnistuneesti', success: true, show: true }))
             dispatch({
@@ -55,7 +55,7 @@ export const deleteBacterium = (bacterium, token) => {
     return async dispatch => {
         const res = await bacteriaService.deleteBacterium(bacterium.id, token)
         if (res.status !== 204) {
-            dispatch(setNotification({ message: res.error, success: false }))
+            dispatch(setNotification({ message: res.error, success: false, show: true }))
         } else {
             dispatch(setNotification({ message: 'Bakteeri poistettu onnistuneesti', success: true, show: true }))
             dispatch({
@@ -70,7 +70,7 @@ export const updateBacterium = (id, name, token, setIsModified, setNewName) => {
     return async dispatch => {
         const bacterium = await bacteriaService.update(id, name, token)
         if (bacterium.error) {
-            dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false }))
+            dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false, show: true }))
         } else {
             dispatch(setNotification({ message: 'Bakteeria muokattu onnistuneesti', success: true, show: true }))
             dispatch({

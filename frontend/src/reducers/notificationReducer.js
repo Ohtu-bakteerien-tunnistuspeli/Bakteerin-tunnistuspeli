@@ -3,9 +3,6 @@ const reducer = (state = '', action) => {
     case 'SET NOTIFICATION' : {
         return action.notification
     }
-    case 'CLEAR NOTIFICATION' : {
-        return action.notification
-    }
     default: return state
     }
 }
@@ -22,18 +19,6 @@ export const setNotification = ( notification ) => {
         }
         dispatch({
             type: 'SET NOTIFICATION',
-            notification: notification
-        })
-    }
-}
-
-export const clearNotification = ( notification ) => {
-    return async dispatch => {
-        if(notification !== '') {
-            dispatch(setNotification(''))
-        }
-        dispatch({
-            type: 'CLEAR NOTIFICATION',
             notification: notification
         })
     }
