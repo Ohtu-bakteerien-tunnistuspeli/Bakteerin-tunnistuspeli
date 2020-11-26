@@ -13,7 +13,7 @@ const Notification = () => {
 
     /* style parameters */
     const style = {
-        position: 'absolute',
+        position: 'fixed',
         'borderColor': 'green',
         'borderWidth': 'thin',
         top: '80px',
@@ -25,7 +25,7 @@ const Notification = () => {
     }
 
     const styleFail = {
-        position: 'absolute',
+        position: 'fixed',
         'borderColor': '#9B870C',
         'borderWidth': 'thin',
         top: '80px',
