@@ -102,7 +102,7 @@ export const updateUserinfo = (username, email, studentNumber, classGroup, oldPa
         const library = getState()?.language?.library.frontend.users.reducer
         const userInfo = await userService.update(username, email, studentNumber, classGroup, oldPassword, password, token )
         if (userInfo.error) {
-            dispatch(setNotification({ message: userInfo.error.substring(userInfo.error.indexOf('name: ') + 6), success: false, show: true }))
+            dispatch(setNotification({ message: userInfo.error.substring(userInfo.error.indexOf('name: ') + 1), success: false, show: true }))
         } else {
             dispatch(setNotification({ message: library.editSuccess, success: true, show: true }))
             dispatch({

@@ -43,8 +43,6 @@ const CreditList = () => {
         }
     }
 
-    // classGroup ja käyttäjänimen mukaan myös
-
     useEffect(() => {
 
         const credits2 = [].concat(credits)
