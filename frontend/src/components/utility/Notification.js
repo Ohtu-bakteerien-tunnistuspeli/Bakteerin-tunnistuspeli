@@ -2,8 +2,14 @@ import React , { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Alert } from 'react-bootstrap'
 import { setNotification } from '../../reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
+
 
 const Notification = () => {
+
+    const notification = useSelector(state => state.notification)
+    const [show, setShow] = useState(true)
+    const dispatch = useDispatch()
 
     /* style parameters */
     const style = {
@@ -35,13 +41,10 @@ const Notification = () => {
 
     const onCloseHandler = () => {
         setShow(false)
-        setNotification('')
+        dispatch(setNotification(''))
     }
 
     /* onClose handler End */
-
-    const notification = useSelector(state => state.notification)
-    const [show, setShow] = useState(true)
 
     useEffect(() => {
         setShow(notification.show)
