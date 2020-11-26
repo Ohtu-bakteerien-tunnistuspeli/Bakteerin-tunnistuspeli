@@ -166,6 +166,7 @@ const Register = () => {
                                     setClassgroup={setNewClassgroup} />
                                 <Password typeControlId='password'
                                     controlId={'password'}
+                                    namedClass="required-field"
                                     password={password}
                                     value={password}
                                     label={library.password}
