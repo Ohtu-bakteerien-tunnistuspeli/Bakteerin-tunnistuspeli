@@ -355,6 +355,47 @@ describe('it is possible to do tests', () => {
             .expect(200)
         expect(res.body.correct).toBeTruthy()
     })
+
+    test('last test group that only contains extra tests is not required', async () => {
+        const caseToAdd = new Case({
+            name: 'Test case3',
+            anamnesis: 'Test case3',
+            bacterium: initialBacterium,
+            samples: initialSamples,
+            testGroups:
+                [
+                    [ // Group 1
+                        {
+                            tests: [
+                                { test: addedTests[0], positive: true }
+                            ],
+                            isRequired: true
+                        }
+                    ],
+                    [ // Group 2
+                        {
+                            tests: [
+                                { test: addedTests[1], positive: true }
+                            ],
+                            isRequired: false
+                        }
+                    ]
+                ],
+        })
+        const testCaseAdded = await caseToAdd.save()
+
+        const data = [
+            testMap['test0']
+        ]
+        let res = await api
+            .post(`/api/game/${testCaseAdded.id}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.correct).toBeTruthy()
+        expect(res.body.requiredDone).toBeTruthy()
+        expect(res.body.allDone).toBeFalsy()
+    })
 })
 
 describe('it is possible to do multiple tests', () => {

@@ -113,6 +113,17 @@ gameRouter.post('/:id/checkTests', async (request, response) => {
                 }
             }
 
+            while (currentRequiredTests.length === 0 && testGroups.length > groupIndex) {
+                const newGroups = testGroups[groupIndex]
+                const req = newGroups.filter(group => group.isRequired === true)
+                let extra = newGroups.filter(group => group.isRequired === false)
+                extra = extra.map(e => e.tests)
+                extra = [].concat.apply([], extra)
+                extraTests = [...extraTests, ...extra]
+                currentRequiredTests = [...currentRequiredTests, ...req.map(test => test.tests)]
+                groupIndex = groupIndex + 1
+            }
+
             let requiredDone = false
             let allDone = false
 
