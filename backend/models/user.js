@@ -37,7 +37,7 @@ const userSchema = mongoose.Schema({
                     return true
                 }
                 if (group) {
-                    return /C-+\d+/.test(group)
+                    return /C-+\d+$/.test(group)
                 }
                 return true
             },
