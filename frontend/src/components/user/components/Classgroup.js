@@ -6,12 +6,14 @@ const Classgroup = ({ classgroup, setClassgroup, onChange, error, touched, setFi
     const library = useSelector(state => state.language)?.library?.frontend.user.components
     const handleChange = (event) => {
         event.preventDefault()
+        console.log('handlechange')
         if (!touched) {
             setFieldTouched('classGroup', true, true)
         }
         setClassgroup(event.target.value)
-        onChange('classGroup', event.target.value ? `C-${event.target.value}` : null)
+        onChange('classGroup', event.target.value ? `C-${event.target.value}` : '')
     }
+    console.log('here')
     return (
         <Form.Group controlId='classGroup'>
             <Form.Label>{library.classGroup}</Form.Label>
@@ -21,11 +23,13 @@ const Classgroup = ({ classgroup, setClassgroup, onChange, error, touched, setFi
                 </InputGroup.Prepend>
                 <Form.Control
                     className="choose-class-field"
-                    type='number'
+                    type='tel'
                     name='classGroup'
                     isInvalid={error && touched}
                     value={classgroup}
                     onChange={handleChange}
+                    onClick={handleChange}
+                    onFocus={handleChange}
                 />
             </InputGroup>
             <Form.Control.Feedback type='invalid' hidden={!touched}>

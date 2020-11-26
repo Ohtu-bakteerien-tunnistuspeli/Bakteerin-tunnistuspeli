@@ -30,6 +30,12 @@ const userSchema = mongoose.Schema({
         type: String,
         validate: {
             validator: (group) => {
+                if(group === 'C-') {
+                    return true
+                }
+                if(group === 'C- ') {
+                    return true
+                }
                 if (group) {
                     return /C-+\d+/.test(group)
                 }

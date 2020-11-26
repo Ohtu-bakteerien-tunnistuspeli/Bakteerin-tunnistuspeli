@@ -88,11 +88,18 @@ const UserInfoForm = ({ user }) => {
             .email(validation.email.validationMessage)
             .max(validation.email.maxlength, validation.email.maxMessage),
         classGroup: Yup.string()
-            .test('unique', validation.classGroup.validationMessage, (classGroup) => {
+            .test(validation.classGroup.validationMessage, (classGroup) => {
+                console.log(classGroup)
                 if (!classGroup) {
                     return true
                 }
-                return /^C-[0-9]+$/.test(classGroup) || /^[0-9]+$/.test(classGroup)
+                if(classGroup === '') {
+                    return true
+                }
+                if(classGroup === 'C-') {
+                    return true
+                }
+                return /^C-[0-9]+$|^C-$|^C-\s*$/.test(classGroup)
             })
             .max(validation.classGroup.maxlength, validation.classGroup.maxMessage),
         studentNumber: Yup.string()
@@ -160,76 +167,77 @@ const UserInfoForm = ({ user }) => {
                         }) => {
                             return (
                                 <Form
-                                    noValidate
                                     onSubmit={handleSubmit}
                                     encType='multipart/form-data'>
-                                    <ValidatedTextField
-                                        value={username}
-                                        username={username}
-                                        onChange={setFieldValue}
-                                        error={errors.username}
-                                        touched={touched.username}
-                                        setFieldTouched={setFieldTouched}
-                                        setValue={setNewUsername}
-                                        fieldId='username' />
-                                    <ValidatedTextField
-                                        value={email}
-                                        email={email}
-                                        onChange={setFieldValue}
-                                        error={errors.email}
-                                        touched={touched.email}
-                                        setFieldTouched={setFieldTouched}
-                                        setValue={setNewEmail}
-                                        fieldId='email' />
-                                    <Password typeControlId='password'
-                                        controlId={'password'}
-                                        value={password}
-                                        password={password}
-                                        label={library.password}
-                                        onChange={setFieldValue}
-                                        error={errors.password}
-                                        touched={touched.password}
-                                        setFieldTouched={setFieldTouched}
-                                        setPassword={setNewPassword} />
-                                    <Password typeControlId='passwordAgain'
-                                        controlId={'passwordAgain'}
-                                        value={passwordAgain}
-                                        password={passwordAgain}
-                                        label={library.passwordAgain}
-                                        onChange={setFieldValue}
-                                        error={errors.password}
-                                        touched={touched.password}
-                                        setPassword={setNewPasswordAgain} />
-                                    <ValidatedTextField
-                                        value={studentNumber}
-                                        studentnumber={studentNumber}
-                                        onChange={setFieldValue}
-                                        error={errors.studentNumber}
-                                        touched={touched.studentNumber}
-                                        setFieldTouched={setFieldTouched}
-                                        setValue={setNewStudentNumber}
-                                        fieldId='studentNumber' />
-                                    <Classgroup
-                                        value={classGroup}
-                                        classgroup={classGroup}
-                                        onChange={setFieldValue}
-                                        error={errors.classGroup}
-                                        touched={touched.classGroup}
-                                        setFieldTouched={setFieldTouched}
-                                        setClassgroup={setNewClassgroup} />
-                                    <div>
-                                        <br></br>
-                                        <Form.Label>{library.warning}</Form.Label>
-                                        <Form.Control
-                                            type="password"
-                                            id="confirmField"
-                                            onChange={(event) => setConfirmText(event.target.value)}
-                                        />
+                                    <Form.Group>
+                                        <ValidatedTextField
+                                            value={username}
+                                            username={username}
+                                            onChange={setFieldValue}
+                                            error={errors.username}
+                                            touched={touched.username}
+                                            setFieldTouched={setFieldTouched}
+                                            setValue={setNewUsername}
+                                            fieldId='username' />
+                                        <ValidatedTextField
+                                            value={email}
+                                            email={email}
+                                            onChange={setFieldValue}
+                                            error={errors.email}
+                                            touched={touched.email}
+                                            setFieldTouched={setFieldTouched}
+                                            setValue={setNewEmail}
+                                            fieldId='email' />
+                                        <Password typeControlId='password'
+                                            controlId={'password'}
+                                            value={password}
+                                            password={password}
+                                            label={library.password}
+                                            onChange={setFieldValue}
+                                            error={errors.password}
+                                            touched={touched.password}
+                                            setFieldTouched={setFieldTouched}
+                                            setPassword={setNewPassword} />
+                                        <Password typeControlId='passwordAgain'
+                                            controlId={'passwordAgain'}
+                                            value={passwordAgain}
+                                            password={passwordAgain}
+                                            label={library.passwordAgain}
+                                            onChange={setFieldValue}
+                                            error={errors.password}
+                                            touched={touched.password}
+                                            setPassword={setNewPasswordAgain} />
+                                        <ValidatedTextField
+                                            value={studentNumber}
+                                            studentnumber={studentNumber}
+                                            onChange={setFieldValue}
+                                            error={errors.studentNumber}
+                                            touched={touched.studentNumber}
+                                            setFieldTouched={setFieldTouched}
+                                            setValue={setNewStudentNumber}
+                                            fieldId='studentNumber' />
+                                        <Classgroup
+                                            value={`C-${classGroup}`}
+                                            classgroup={classGroup}
+                                            onChange={() => {setFieldValue(); console.log('setvalue')}}
+                                            error={errors.classGroup}
+                                            touched={touched.classGroup}
+                                            setFieldTouched={setFieldTouched}
+                                            setClassgroup={setNewClassgroup} />
+                                        <div>
+                                            <br></br>
+                                            <Form.Label>{library.warning}</Form.Label>
+                                            <Form.Control
+                                                type="password"
+                                                id="confirmField"
+                                                onChange={(event) => setConfirmText(event.target.value)}
+                                            />
 
-                                        <Button id="updateUserInfo" variant='success' type="submit">
-                                            {library.executeButton}
-                                        </Button>
-                                    </div>
+                                            <Button id="updateUserInfo" variant='success' type="submit">
+                                                {library.executeButton}
+                                            </Button>
+                                        </div>
+                                    </Form.Group>
                                 </Form>
                             )
                         }}

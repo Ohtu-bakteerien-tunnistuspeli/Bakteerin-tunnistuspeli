@@ -25,7 +25,7 @@ const Register = () => {
     const [password, setNewPassword] = useState(null)
     const [email, setNewEmail] = useState(null)
     const [studentNumber, setNewStudentNumber] = useState(null)
-    const [classGroup, setNewClassgroup] = useState(null)
+    const [classGroup, setNewClassgroup] = useState('')
     const checkPassWord = require('zxcvbn') // eslint-disable-line
 
     const UserSchema = Yup.object().shape({
@@ -72,11 +72,18 @@ const Register = () => {
             .email(validation.email.validationMessage)
             .max(validation.email.maxlength, validation.email.maxMessage),
         classGroup: Yup.string()
-            .test('unique', validation.classGroup.validationMessage, (classGroup) => {
+            .test(validation.classGroup.validationMessage, (classGroup) => {
+                console.log(classGroup)
                 if (!classGroup) {
                     return true
                 }
-                return /^C-[0-9]+$/.test(classGroup)
+                if(classGroup === '') {
+                    return true
+                }
+                if(classGroup === 'C-') {
+                    return true
+                }
+                return /^C-[0-9]*$|^C-$|^C-\s*$/.test(classGroup)
             })
             .max(validation.classGroup.maxlength, validation.classGroup.maxMessage),
         studentNumber: Yup.string()
