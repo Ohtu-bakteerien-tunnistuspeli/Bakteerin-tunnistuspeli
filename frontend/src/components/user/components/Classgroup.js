@@ -6,14 +6,13 @@ const Classgroup = ({ classgroup, setClassgroup, onChange, error, touched, setFi
     const library = useSelector(state => state.language)?.library?.frontend.user.components
     const handleChange = (event) => {
         event.preventDefault()
-        console.log('handlechange')
         if (!touched) {
             setFieldTouched('classGroup', true, true)
         }
         setClassgroup(event.target.value)
         onChange('classGroup', event.target.value ? `C-${event.target.value}` : '')
     }
-    console.log('here')
+
     return (
         <Form.Group controlId='classGroup'>
             <Form.Label>{library.classGroup}</Form.Label>
