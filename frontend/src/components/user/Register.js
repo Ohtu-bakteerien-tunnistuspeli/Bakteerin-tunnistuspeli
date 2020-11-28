@@ -21,10 +21,10 @@ const Register = () => {
     const [accept, setAccept] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [showModal2, setShowModal2] = useState(false)
-    const [username, setNewUsername] = useState(null)
-    const [password, setNewPassword] = useState(null)
-    const [email, setNewEmail] = useState(null)
-    const [studentNumber, setNewStudentNumber] = useState(null)
+    const [username, setNewUsername] = useState('')
+    const [password, setNewPassword] = useState('')
+    const [email, setNewEmail] = useState('')
+    const [studentNumber, setNewStudentNumber] = useState('')
     const [classGroup, setNewClassgroup] = useState('')
     const checkPassWord = require('zxcvbn') // eslint-disable-line
 
