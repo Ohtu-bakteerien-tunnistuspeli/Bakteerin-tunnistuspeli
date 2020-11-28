@@ -524,12 +524,12 @@ describe('modifying user', () => {
         const res = await api
             .put('/api/user')
             .set('Authorization', `bearer ${loginResponse.body.token}`)
-            .send({ password: 'pass' })
+            .send({ password: 'password' })
             .expect(200)
         const body = res.body
         expect(body.username).toEqual('usernameNew')
         expect(body.email).toEqual('examples111@com')
-        expect(body.stundentNumber).toEqual('7897089')
+        expect(body.studentNumber).toEqual('7897089')
         expect(body.classGroup).toEqual('C-122')
         expect(body.admin).toBeFalsy()
         await api
