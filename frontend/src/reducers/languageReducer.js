@@ -1,5 +1,5 @@
-import languageService from '../services/language'
-import { setNotification } from '../reducers/notificationReducer'
+import validation from './../lib/validation.json'
+import library from './../lib/library.json'
 
 const reducer = (state = null, action) => {
     switch (action.type) {
@@ -12,27 +12,11 @@ const reducer = (state = null, action) => {
 
 export const getLanguage = () => {
     return async dispatch => {
-        const langText = window.localStorage.getItem('language')
-        if (langText) {
-            const language = JSON.parse(langText)
-            dispatch({
-                type: 'GET_LANGUAGE',
-                data: language
-            })
-        } else {
-            let validation = await languageService.getValidation()
-            let library = await languageService.getLibrary()
-            if (validation.error || library.error) {
-                dispatch(setNotification({ message: 'Tapahtui virhe kirjastoja hakiessa. Päivitä sivu./Error happened When getting library. Refresh page.', success: false, show: true }))
-            } else {
-                const language = { validation, library }
-                window.localStorage.setItem('language', JSON.stringify(language))
-                dispatch({
-                    type: 'GET_LANGUAGE',
-                    data: language
-                })
-            }
-        }
+        const language = { validation, library }
+        dispatch({
+            type: 'GET_LANGUAGE',
+            data: language
+        })
     }
 }
 
