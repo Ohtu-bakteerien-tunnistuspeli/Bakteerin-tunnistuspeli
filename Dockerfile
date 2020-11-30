@@ -1,6 +1,7 @@
 FROM node:14-alpine
 WORKDIR /app/backend
 COPY ./frontend/ ../frontend/
+COPY ./lib/ ../lib/
 
 RUN cd ../frontend && \
        npm ci --production && \
