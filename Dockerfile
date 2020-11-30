@@ -10,6 +10,7 @@ COPY ./backend/ .
 
 RUN npm ci --production  && \
     npm run build:ui && \
+    npm run library && \
     rm -rf /app/frontend/node_modules/*
 
 EXPOSE 3001

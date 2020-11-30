@@ -5,3 +5,5 @@ backend/app.json
 */images/*
 */cypress/screenshots/*
 */cypress/videos/*
+backend/lib/
+frontend/src/lib/
