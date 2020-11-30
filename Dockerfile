@@ -9,8 +9,8 @@ RUN cd ../frontend && \
 COPY ./backend/ .
 
 RUN npm ci --production  && \
-    npm run build:ui && \
     npm run library && \
+    npm run build:ui && \
     rm -rf /app/frontend/node_modules/*
 
 EXPOSE 3001
