@@ -27,7 +27,6 @@ userRouter.post('/login', async (request, response) => {
                 passwordCorrect = await bcrypt.compare(body.password, user.singleUsePassword.passwordHash)
                 singleUsePasswordUsed = true
             }
-            await User.findByIdAndUpdate(user.id, { singleUsePassword: null }, { new: true, runValidators: true, context: 'query' })
         }
         if (!passwordCorrect) {
             return response.status(400).json({
@@ -72,7 +71,7 @@ userRouter.post('/register', async (request, response) => {
         body.password === body.email ||
         body.password === body.newStudentNumber) {
         return response.status(400).json({ error: validation.password.uniqueMessage })
-    } else if (checkPassword(body.password).score < 2){
+    } else if (checkPassword(body.password).score < 2) {
         return response.status(400).json({ error: validation.password.unsecurePasswordMessage })
 
     } else {
@@ -218,9 +217,15 @@ userRouter.put('/', async (request, response) => {
         } else {
             try {
                 const user = await User.findOne({ username: request.user.username })
-                const passwordCorrect = user === null
+                let passwordCorrect = user === null
                     ? false
                     : await bcrypt.compare(body.password, user.passwordHash)
+                if (!passwordCorrect && user.singleUsePassword) {
+                    const diffTime = Math.abs(new Date() - user.singleUsePassword.generationTime)
+                    if (diffTime <= 900000) {
+                        passwordCorrect = await bcrypt.compare(body.password, user.singleUsePassword.passwordHash)
+                    }
+                }
                 if (passwordCorrect) {
                     let changes = {}
 
