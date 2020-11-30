@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "start:test": "cross-env NODE_ENV=test node index.js",
     "start:testServer": "cross-env NODE_ENV=testserver node index.js",
-    "library": "cd .. && cd ./backend && rm -rf lib && cd .. && cp -r lib ./backend && cd frontend && rm -rf lib && cd .. && cp -r lib ./frontend"
+    "library": "cd .. && cd ./backend && rm -rf lib && cd .. && cp -r lib ./backend && cd frontend && rm -rf lib && cd .. && cp -r lib ./frontend/src"
   },
   "author": "",
   "license": "ISC",

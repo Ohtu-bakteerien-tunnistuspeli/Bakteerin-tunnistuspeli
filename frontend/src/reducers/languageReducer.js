@@ -1,5 +1,5 @@
-import validation from './../lib/validation.json'
-import library from './../lib/library.json'
+import Validation from '../lib/validation.json'
+import Library from '../lib/library.json'
 
 const reducer = (state = null, action) => {
     switch (action.type) {
@@ -12,7 +12,7 @@ const reducer = (state = null, action) => {
 
 export const getLanguage = () => {
     return async dispatch => {
-        const language = { validation, library }
+        const language = { validation: Validation, library: Library }
         dispatch({
             type: 'GET_LANGUAGE',
             data: language

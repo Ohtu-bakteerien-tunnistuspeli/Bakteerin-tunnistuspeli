@@ -29,7 +29,7 @@
     "lint": "eslint .",
     "cypress:open": "cypress open",
     "test:e2e": "cypress run",
-    "library": "cd .. && cd ./backend && rm -rf lib && cd .. && cp -r lib ./backend && cd frontend && rm -rf lib && cd .. && cp -r lib ./frontend"
+    "library": "cd .. && cd ./backend && rm -rf lib && cd .. && cp -r lib ./backend && cd frontend && rm -rf lib && cd .. && cp -r lib ./frontend/src"
   },
   "eslintConfig": {
     "extends": "react-app"

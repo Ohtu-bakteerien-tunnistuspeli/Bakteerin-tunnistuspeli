@@ -6,4 +6,4 @@ backend/app.json
 */cypress/screenshots/*
 */cypress/videos/*
 backend/lib/
-frontend/lib/
+frontend/src/lib/
