@@ -234,8 +234,8 @@ describe('Case management', () => {
 
             cy.contains('Etusivu').click()
             cy.get('#caseTable').contains('Maatilatapaus').click()
-            cy.contains('Toiminnot').click()
-            cy.get('[type="checkbox"]').eq('0').check()
+            cy.contains('Tutkimukset').click()
+            cy.get('[type="radio"]').eq('0').check()
             cy.get('#checkSamples').click()
             cy.contains('Eskuliiniveriagar').click()
             cy.wait(500)

@@ -382,6 +382,7 @@ const CaseForm = ({ caseToEdit }) => {
                                                         deleteSample={deleteSample}></Samples>
                                                     <AddSample
                                                         sample={sample}
+                                                        samples={samples}
                                                         setSample={setSample}
                                                         addSample={addSample}
                                                         error={errors.sample}

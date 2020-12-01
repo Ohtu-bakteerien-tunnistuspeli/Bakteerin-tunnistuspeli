@@ -33,6 +33,9 @@
                 "uniqueMessage": "Näyte on jo lisätty listaan.",
                 "uniqueStart": "Näytettä ",
                 "uniqueEnd": " yritetään käyttää tapauksessa useampaan kertaan."
+            },
+            "rightAnswer": {
+                "onlyOneRight": "Vain yksi näyte saa olla oikea vastaus."
             }
         },
         "hints": {

@@ -372,10 +372,11 @@
         "gamePage": {
             "tabs": {
                 "anamnesis": "Anamneesi",
-                "functions": "Toiminnot",
+                "functions": "Tutkimukset",
                 "tests": "Testejä",
                 "results": "Tuloksia",
-                "diagnosis": "Diagnoosi"
+                "diagnosis": "Diagnoosi",
+                "samples": "Näytteet"
             },
             "samplesTab": {
                 "title": "Näytteenotto",
