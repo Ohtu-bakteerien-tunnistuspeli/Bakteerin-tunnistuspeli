@@ -70,6 +70,7 @@ const UserInfoForm = ({ user }) => {
         setNewClassgroup(user.classGroup.substring(2))
         setNewPassword('')
         setNewPasswordAgain('')
+        setConfirmText('')
     }
 
 
