@@ -37,6 +37,7 @@ export const getGame = (history, id, token) => {
             let game = {
                 case: receivedCase,
                 samplesCorrect: false,
+                correctSample: '',
                 requiredTestsDone: false,
                 allTestsDone: false,
                 bacteriumCorrect: false,
@@ -53,10 +54,10 @@ export const getGame = (history, id, token) => {
     }
 }
 
-export const checkSamples = (game, samples, token) => {
+export const checkSamples = (game, selectedSample, token, setTestTab) => {
     return async (dispatch, getState) => {
         const library = getState()?.language?.library.frontend.gamePage.reducer
-        const checkSample = await gameService.sampleCheck(game.case.id, samples, token)
+        const checkSample = await gameService.sampleCheck(game.case.id, { samples: [selectedSample] }, token)
         if (checkSample.error) {
             dispatch(setNotification({ message: checkSample.error, success: false, show: true }))
         } else {
@@ -64,8 +65,9 @@ export const checkSamples = (game, samples, token) => {
                 dispatch(setNotification({ message: library.samplesCorrect, success: true, show: true }))
                 dispatch({
                     type: 'CHECK_SAMPLES',
-                    data: { ...game, samplesCorrect: true }
+                    data: { ...game, samplesCorrect: true, correctSample: selectedSample }
                 })
+                setTestTab('testejä')
             } else {
                 dispatch(setNotification({ message: library.samplesWrong, success: false, show: true }))
             }
@@ -95,7 +97,7 @@ export const checkTests = (game, test, token, setTestTab) => {
                 })
                 setTestTab('tuloksia')
             } else {
-                if(checkTest.hint) {
+                if (checkTest.hint) {
                     dispatch(setNotification({ message: checkTest.hint, success: false, show: true }))
                 } else {
                     dispatch(setNotification({ message: library.testWrong, success: false, show: true }))

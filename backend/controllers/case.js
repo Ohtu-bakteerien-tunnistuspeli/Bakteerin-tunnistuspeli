@@ -13,7 +13,7 @@ const isCompletionDone = (caseToCheck) => {
     return false
 }
 const isComplete = (caseToCheck) => {
-    if (caseToCheck.bacterium && caseToCheck.anamnesis && isCompletionDone(caseToCheck) && caseToCheck.samples && caseToCheck.testGroups) {
+    if (caseToCheck.bacterium && caseToCheck.anamnesis && isCompletionDone(caseToCheck) && caseToCheck.samples.filter(sample => sample.rightAnswer).length === 1 && caseToCheck.testGroups) {
         return true
     }
     return false
@@ -54,7 +54,7 @@ caseRouter.get('/', async (request, response) => {
                 model: 'Bacterium'
             }
         }).populate({
-            path:'hints.test',
+            path: 'hints.test',
             model: 'Test'
         })
         response.json(cases.map(caseToMap => caseToMap.toJSON()))
@@ -106,6 +106,10 @@ caseRouter.post('/', upload.fields([{ name: 'completionImage', maxCount: 1 }]), 
                     } else {
                         checkedDescList.push(descList[i])
                     }
+                }
+                if (newCase.samples.filter(sample => sample.rightAnswer).length > 1) {
+                    deleteUploadedImages(request)
+                    return response.status(400).json({ error: validation.samples.rightAnswer.onlyOneRight })
                 }
             }
             if (request.body.testGroups) {
@@ -229,6 +233,10 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                         checkedDescList.push(descList[i])
                     }
                 }
+                if (changes.samples.filter(sample => sample.rightAnswer).length > 1) {
+                    deleteUploadedImages(request)
+                    return response.status(400).json({ error: validation.samples.rightAnswer.onlyOneRight })
+                }
             }
             if (request.body.testGroups) {
                 request.body.testGroups = JSON.parse(request.body.testGroups)
@@ -286,7 +294,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                     model: 'Bacterium'
                 }
             }).populate({
-                path:'hints.test',
+                path: 'hints.test',
                 model: 'Test'
             })
             for (let i = 0; i < oldLinks.length; i++) {
@@ -341,7 +349,7 @@ caseRouter.put('/:id/hints', async (request, response) => {
                     model: 'Bacterium'
                 }
             }).populate({
-                path:'hints.test',
+                path: 'hints.test',
                 model: 'Test'
             })
             return response.status(200).json(updatedCase)
