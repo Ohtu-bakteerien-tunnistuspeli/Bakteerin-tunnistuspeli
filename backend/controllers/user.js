@@ -121,6 +121,23 @@ userRouter.delete('/:id', async (request, response) => {
     }
 })
 
+userRouter.post('/comparePass/:id', async (request, response) => {
+    if (request.user && (request.user.admin || String(request.user.id) === String(request.params.id))) {
+        const body = request.body
+        const userToCheck = await User.findById(request.params.id)
+        let correct = false
+        if (body.confirmText) {
+            correct = await bcrypt.compare(body.confirmText, userToCheck.passwordHash)
+        }
+        if (correct) {
+            return response.status(200).end()
+        }
+        return response.status(400).json({ error: library.wrongPassword })
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
 userRouter.put('/:id/promote', async (request, response) => {
     if (request.user && request.user.admin) {
         try {
