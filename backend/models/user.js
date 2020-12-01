@@ -14,7 +14,7 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    singleUsePassword: {
+    temporaryPassword: {
         passwordHash: {
             type: String
         },
@@ -78,7 +78,7 @@ userSchema.set('toJSON', {
         delete returnedObject._id
         delete returnedObject.__v
         delete returnedObject.passwordHash
-        delete returnedObject.singleUsePassword
+        delete returnedObject.temporaryPassword
     }
 })
 userSchema.plugin(uniqueValidator, { message: validation.uniqueMessage })

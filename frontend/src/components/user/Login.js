@@ -39,7 +39,7 @@ const Login = () => {
                     <Button id="submit" variant="primary" type="submit">
                         {library.button}
                     </Button>
-                    <Form.Label>{library.forgetPasswordStart}<Link to={`/${routeLibrary.singleUsePassword}`}>{library.forgetPasswordMid}</Link>{library.forgetPasswordEnd}</Form.Label>
+                    <Form.Label>{library.forgetPasswordStart}<Link to={`/${routeLibrary.temporaryPassword}`}>{library.forgetPasswordMid}</Link>{library.forgetPasswordEnd}</Form.Label>
                 </Form.Group>
             </Form>
         </div>

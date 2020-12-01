@@ -48,7 +48,7 @@ export const login = (username, password, history) => {
             dispatch(getBacteria(user.token))
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
-            if (user.singleUsePasswordUsed) {
+            if (user.temporaryPasswordUsed) {
                 dispatch(setNotification({ message: `${library.singleLoginMessageStart}${username}${library.singleLoginMessageEnd}`, success: true, show: true }))
                 history.push(`/${routeLibrary.profile}`)
             } else {
@@ -131,9 +131,9 @@ export const register = (username, email, studentNumber, classGroup, password, h
 }
 
 
-export const generateSingleUsePassword = (username, email, history) => {
+export const generateTemporaryPassword = (username, email, history) => {
     return async dispatch => {
-        let response = await userService.singleUsePasswordGenerate({ username, email })
+        let response = await userService.temporaryPasswordGenerate({ username, email })
         if (response.error) {
             dispatch(setNotification({ message: response.error, success: false, show: true }))
         } else {

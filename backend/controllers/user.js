@@ -13,7 +13,7 @@ const checkPassword = require('zxcvbn')
 userRouter.post('/login', async (request, response) => {
     const body = request.body
     const user = await User.findOne({ username: body.username })
-    let singleUsePasswordUsed = false
+    let temporaryPasswordUsed = false
     try {
         if (!user) {
             return response.status(400).json({
@@ -21,11 +21,11 @@ userRouter.post('/login', async (request, response) => {
             })
         }
         let passwordCorrect = await bcrypt.compare(body.password, user.passwordHash)
-        if (!passwordCorrect && user.singleUsePassword) {
-            const diffTime = Math.abs(new Date() - user.singleUsePassword.generationTime)
+        if (!passwordCorrect && user.temporaryPassword) {
+            const diffTime = Math.abs(new Date() - user.temporaryPassword.generationTime)
             if (diffTime <= 900000) {
-                passwordCorrect = await bcrypt.compare(body.password, user.singleUsePassword.passwordHash)
-                singleUsePasswordUsed = true
+                passwordCorrect = await bcrypt.compare(body.password, user.temporaryPassword.passwordHash)
+                temporaryPasswordUsed = true
             }
         }
         if (!passwordCorrect) {
@@ -54,7 +54,7 @@ userRouter.post('/login', async (request, response) => {
             email: user.email,
             studentNumber: user.studentNumber,
             id: user._id,
-            singleUsePasswordUsed
+            temporaryPasswordUsed
         })
 })
 
@@ -153,7 +153,7 @@ userRouter.put('/:id/demote', async (request, response) => {
     }
 })
 
-userRouter.post('/singleusepassword', async (request, response) => {
+userRouter.post('/temporarypassword', async (request, response) => {
     const user = await User.findOne({ username: request.body.username })
     if (user && user.email === request.body.email) {
         try {
@@ -189,17 +189,17 @@ userRouter.post('/singleusepassword', async (request, response) => {
                     },
                 })
             }
-            const singleUsePassword = uuidv4()
+            const temporaryPassword = uuidv4()
             await transporter.sendMail({
                 from: config.EMAILUSER,
                 to: user.email,
-                subject: library.singleUsePasswordEmailSubject,
-                text: `${library.singleUsePasswordEmailTextStart}${singleUsePassword}${library.singleUsePasswordEmailTextEnd}`,
-                html: `${library.singleUsePasswordEmailHtmlStart}${singleUsePassword}${library.singleUsePasswordEmailHtmlEnd}`,
+                subject: library.temporaryPasswordEmailSubject,
+                text: `${library.temporaryPasswordEmailTextStart}${temporaryPassword}${library.temporaryPasswordEmailTextEnd}`,
+                html: `${library.temporaryPasswordEmailHtmlStart}${temporaryPassword}${library.temporaryPasswordEmailHtmlEnd}`,
             })
             const saltRounds = 10
-            const passwordHash = await bcrypt.hash(singleUsePassword, saltRounds)
-            await User.findByIdAndUpdate(user.id, { singleUsePassword: { passwordHash, generationTime: new Date() } }, { new: true, runValidators: true, context: 'query' })
+            const passwordHash = await bcrypt.hash(temporaryPassword, saltRounds)
+            await User.findByIdAndUpdate(user.id, { temporaryPassword: { passwordHash, generationTime: new Date() } }, { new: true, runValidators: true, context: 'query' })
         } catch (error) {
             return response.status(400).json({ error: library.emailError })
         }
@@ -220,10 +220,10 @@ userRouter.put('/', async (request, response) => {
                 let passwordCorrect = user === null
                     ? false
                     : await bcrypt.compare(body.password, user.passwordHash)
-                if (!passwordCorrect && user.singleUsePassword) {
-                    const diffTime = Math.abs(new Date() - user.singleUsePassword.generationTime)
+                if (!passwordCorrect && user.temporaryPassword) {
+                    const diffTime = Math.abs(new Date() - user.temporaryPassword.generationTime)
                     if (diffTime <= 900000) {
-                        passwordCorrect = await bcrypt.compare(body.password, user.singleUsePassword.passwordHash)
+                        passwordCorrect = await bcrypt.compare(body.password, user.temporaryPassword.passwordHash)
                     }
                 }
                 if (passwordCorrect) {

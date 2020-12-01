@@ -45,9 +45,9 @@ const update = (username, email, studentNumber, classGroup, oldPassword, passwor
             .catch(error => error.response.data)
     }
 }
-const singleUsePasswordGenerate = (credentials) => {
-    return axios.post(`${baseUrl}/singleusepassword`, credentials).then(response => response.data).catch(error => error.response.data)
+const temporaryPasswordGenerate = (credentials) => {
+    return axios.post(`${baseUrl}/temporarypassword`, credentials).then(response => response.data).catch(error => error.response.data)
 }
 
-export default { get, login, register, deleteUser, promote, demote, update, singleUsePasswordGenerate }
+export default { get, login, register, deleteUser, promote, demote, update, temporaryPasswordGenerate }
 

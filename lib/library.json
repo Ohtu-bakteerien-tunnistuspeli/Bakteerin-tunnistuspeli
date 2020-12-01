@@ -26,13 +26,13 @@
         "user": {
             "invalidUsernameOrPassword": "Invalid username or password",
             "userNotFound": "Annettua käyttäjää ei löydy tietokannasta.",
-            "singleUsePasswordEmailSubject": "Bakteeripelin kertakäyttöinen salasana",
-            "singleUsePasswordEmailTextStart": "Kertakäyttöinen salasanasi on \"",
-            "singleUsePasswordEmailTextEnd": "\". Salasana vanhentuu 15min kuluttua.",
-            "singleUsePasswordEmailHtmlStart": "<p>Kertakäyttöinen salasanasi on \"<span style=\"color: black; background: black; span:hover { color: white }\">",
-            "singleUsePasswordEmailHtmlEnd": "</span>\". Salasana vanhentuu 15min kuluttua.</p>",
+            "temporaryPasswordEmailSubject": "Bakteeripelin väliaikainen salasana",
+            "temporaryPasswordEmailTextStart": "Väliaikainen salasanasi on \"",
+            "temporaryPasswordEmailTextEnd": "\". Salasana vanhentuu 15min kuluttua.",
+            "temporaryPasswordEmailHtmlStart": "<p>Väliaikainen salasanasi on \"<span style=\"color: black; background: black; span:hover { color: white }\">",
+            "temporaryPasswordEmailHtmlEnd": "</span>\". Salasana vanhentuu 15min kuluttua.</p>",
             "emailError": "Sähköpostia ei voitu lähettää.",
-            "emailSuccessStart": "Kertakäyttöinen salasana lähetetty sähöpostiosoitteeseen ",
+            "emailSuccessStart": "Väliaikainen salasana lähetetty sähöpostiosoitteeseen ",
             "emailSuccessEnd": ".",
             "userNotFoundOrEmailWrong": "Käyttäjää ei löytynyt tai sähköposti on väärä.",
             "wrongPassword": "Väärä salasana."
@@ -50,7 +50,7 @@
             "profile": "profiilini",
             "login": "kirjautuminen",
             "register": "rekisteroityminen",
-            "singleUsePassword": "kertakayttoinensalasana"
+            "temporaryPassword": "valiaikainenSalasana"
         },
         "app": {
             "inactivityMessage": "Sinut kirjattiin ulos automaattisesti, koska olet ollut pitkään epäaktiivisena.",
@@ -284,11 +284,11 @@
                 "registerMessageStart": "Rekisteröidyit onnistuneesti, ",
                 "registerMessageEnd": "."
             },
-            "singleUsePassword": {
-                "title": "Kertakäyttöisen salasanan luonti",
+            "temporaryPassword": {
+                "title": "Väliaikaisen salasanan luonti",
                 "username": "Käyttäjänimi:",
                 "email": "Sähköpostiosoite:",
-                "button": "Luo kertakäyttöinen salasana"
+                "button": "Luo väliaikainen salasana"
             },
             "components": {
                 "classGroup": "Vuosikurssi",

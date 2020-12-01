@@ -186,7 +186,7 @@ app.use('/api/game', gameRouter)
 const creditRouter = require('./controllers/credit')
 app.use('/api/credit', creditRouter)
 app.use(security.authorizationHandler)
-app.get(new RegExp(`/(${library.bacteriaList}|${library.caseList}|${library.testList}|${library.creditList}|${library.userList}|${library.game}|${library.profile}|${library.login}|${library.register}|${library.singleUsePassword})$`), (req, res) => {
+app.get(new RegExp(`/(${library.bacteriaList}|${library.caseList}|${library.testList}|${library.creditList}|${library.userList}|${library.game}|${library.profile}|${library.login}|${library.register}|${library.temporaryPassword})$`), (req, res) => {
     res.sendFile(`${__dirname}/build/index.html`, (err) => {
         if (err) {
             res.status(500).send(err)

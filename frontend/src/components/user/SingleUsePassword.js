@@ -1,17 +1,17 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { generateSingleUsePassword } from '../../reducers/userReducer'
+import { generateTemporaryPassword } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 const SingleUsePassword = () => {
-    const library = useSelector(state => state.language)?.library?.frontend.user.singleUsePassword
+    const library = useSelector(state => state.language)?.library?.frontend.user.temporaryPassword
     const dispatch = useDispatch()
     const history = useHistory()
     const handleSingleUsePassword = async (event) => {
         event.preventDefault()
         const username = event.target.username.value
         const email = event.target.email.value
-        dispatch(generateSingleUsePassword(username, email, history))
+        dispatch(generateTemporaryPassword(username, email, history))
     }
     return (
         <div>

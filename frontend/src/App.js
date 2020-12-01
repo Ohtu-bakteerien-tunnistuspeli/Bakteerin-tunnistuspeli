@@ -206,7 +206,7 @@ const App = () => {
                                 <Route path={`/${library.routes.register}`}>
                                     <Register />
                                 </Route>
-                                <Route path={`/${library.routes.singleUsePassword}`}>
+                                <Route path={`/${library.routes.temporaryPassword}`}>
                                     <SingleUsePassword />
                                 </Route>
                                 <Route path='/'>
