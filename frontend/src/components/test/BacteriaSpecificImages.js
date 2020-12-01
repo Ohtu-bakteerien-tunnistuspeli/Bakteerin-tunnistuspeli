@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Form, Image } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
@@ -8,6 +8,8 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
     addBacteriumSpecificImage, removeBacteriaSpecificImage,
     marginStyle, onChange, error, addedBacteriaImage }) => {
     const library = useSelector(state => state.language)?.library?.frontend.test.bacteriaImages
+    const [inputResetter, newInput] = useState(0) //eslint-disable-line
+
     const handleChange = (event) => {
         event.preventDefault()
         setBacterium(event.target.value)
@@ -17,6 +19,9 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
     const handleAdd = (event) => {
         event.preventDefault()
         onChange('bacteriumName', '')
+        event.target.value = null
+        const reset = Math.random()
+        newInput(inputResetter + reset)
         addBacteriumSpecificImage()
     }
 
@@ -58,6 +63,7 @@ const BacteriaSpecificImages = ({ controlId, setBacterium, bacteria,
                 {error}
             </Form.Control.Feedback>
             <Form.Control
+                key={inputResetter}
                 style={marginStyle}
                 name='bacteriaSpecificImage'
                 type='file'
