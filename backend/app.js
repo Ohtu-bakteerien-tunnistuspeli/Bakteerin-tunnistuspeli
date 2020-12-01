@@ -193,6 +193,7 @@ app.get(new RegExp(`/(${library.bacteriaList}|${library.caseList}|${library.test
         }
     })
 })
+
 app.get('*', (req, res) => {
     res.status(404).sendFile(`${__dirname}/utils/error.html`)
 })
