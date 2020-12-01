@@ -49,7 +49,7 @@ export const login = (username, password, history) => {
             dispatch(getTests(user.token))
             dispatch(getCases(user.token))
             if (user.singleUsePasswordUsed) {
-                dispatch(setNotification({ message: `${library.singelLoginMessageStart}${username}${library.singelLoginMessageEnd}`, success: true, show: true }))
+                dispatch(setNotification({ message: `${library.singleLoginMessageStart}${username}${library.singleLoginMessageEnd}`, success: true, show: true }))
                 history.push(`/${routeLibrary.profile}`)
             } else {
                 dispatch(setNotification({ message: `${library.loginMessageStart}${username}${library.loginMessageEnd}`, success: true, show: true }))
