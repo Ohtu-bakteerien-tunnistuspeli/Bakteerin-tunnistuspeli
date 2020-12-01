@@ -19,7 +19,7 @@ describe('Profile management', () => {
             })
             it('User can delete itself', () => {
                 cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('user')
+                cy.get('#confirmField').type('useruser10')
                 cy.get('#confirm').click()
                 cy.contains('Kirjaudu Bakteeripeliin')
                 cy.get('#username').type('user')
@@ -36,7 +36,7 @@ describe('Profile management', () => {
 
             it('Can quit deleting itself', () => {
                 cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('user')
+                cy.get('#confirmField').type('useruser10')
                 cy.get('.close').click()
                 cy.contains('Oma profiilini')
             })
@@ -174,7 +174,7 @@ describe('Profile management', () => {
 
             it('Can quit deleting itself', () => {
                 cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('admin')
+                cy.get('#confirmField').type('adminadmin')
                 cy.get('.close').click()
                 cy.contains('Oma profiilini')
             })
@@ -191,7 +191,7 @@ describe('Profile management', () => {
 
             it('Admin can delete itself', () => {
                 cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('admin')
+                cy.get('#confirmField').type('adminadmin')
                 cy.get('#confirm').click()
                 cy.contains('Kirjaudu Bakteeripeliin')
                 cy.get('#username').type('admin')
