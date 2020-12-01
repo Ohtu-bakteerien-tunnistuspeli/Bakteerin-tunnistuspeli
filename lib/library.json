@@ -219,7 +219,7 @@
                 "validationError": "Testiä ei voida lisätä, tarkista lisäämäsi syötteet."
             },
             "list": {
-                "imageInstruct": "Voit laajentaa lisättyjä kuvua klikkaamalla niitä.",
+                "imageInstruct": "Voit laajentaa lisättyjä kuvia klikkaamalla niitä.",
                 "filterByName": "Filtteröi nimellä ",
                 "filterByType": "Filtteröi tyypillä ",
                 "title": "Testit",
