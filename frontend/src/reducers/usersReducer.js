@@ -45,10 +45,12 @@ export const getUsers = (token) => {
 export const deleteUser = (user, token, confirmText, handleClose, history) => {
     return async (dispatch, getState) => {
         const library = getState()?.language?.library.frontend.users.reducer
-        const pass = await userService.checkPassword({ id: user.id, token: token, confirmText: confirmText })
-        if (pass.status !== 200) {
-            dispatch(setNotification({ message: pass.error, success: false, show: true }))
-            return
+        if (confirmText && handleClose) {
+            const pass = await userService.checkPassword({ id: user.id, token: token, confirmText: confirmText })
+            if (pass.status !== 200) {
+                dispatch(setNotification({ message: pass.error, success: false, show: true }))
+                return
+            }
         }
         const res = await userService.deleteUser(user.id, token)
         if (res.status !== 204) {
