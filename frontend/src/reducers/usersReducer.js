@@ -1,6 +1,7 @@
 import userService from '../services/user'
 import { setNotification } from './notificationReducer'
 import { setUser } from './userReducer'
+import  { getCredits } from './creditReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
@@ -105,6 +106,7 @@ export const updateUserinfo = (username, email, studentNumber, classGroup, oldPa
             dispatch(setNotification({ message: userInfo.error.substring(userInfo.error.indexOf('name: ') + 1), success: false, show: true }))
         } else {
             dispatch(setNotification({ message: library.editSuccess, success: true, show: true }))
+            dispatch(getCredits(token))
             dispatch({
                 type: 'UPDATE_USERINFO',
                 data: userInfo
