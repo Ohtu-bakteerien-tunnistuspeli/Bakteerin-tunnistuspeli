@@ -45,9 +45,15 @@ const update = (username, email, studentNumber, classGroup, oldPassword, passwor
             .catch(error => error.response.data)
     }
 }
+
+const checkPassword = ({ id, token, confirmText }) => {
+    const config = { headers: { Authorization: token } }
+    return axios.post(`${baseUrl}/comparePass/${id}`, { confirmText: confirmText }, config).then(response => response).catch(error => error.response.data)
+}
+
 const temporaryPasswordGenerate = (credentials) => {
     return axios.post(`${baseUrl}/temporarypassword`, credentials).then(response => response.data).catch(error => error.response.data)
 }
 
-export default { get, login, register, deleteUser, promote, demote, update, temporaryPasswordGenerate }
+export default { get, login, register, deleteUser, promote, demote, update, temporaryPasswordGenerate, checkPassword }
 
