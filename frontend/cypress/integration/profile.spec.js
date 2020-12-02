@@ -31,6 +31,7 @@ describe('Profile management', () => {
             it('Cannot delete itself without giving correct confirmation text', () => {
                 cy.get('#deleteUser').click()
                 cy.get('#confirmField').type('use')
+                cy.get('#confirm').click()
                 cy.wait(500)
                 cy.contains('Väärä salasana')
             })
@@ -170,6 +171,7 @@ describe('Profile management', () => {
             it('Cannot delete itself without giving correct confirmation text', () => {
                 cy.get('#deleteUser').click()
                 cy.get('#confirmField').type('dmin')
+                cy.get('#confirm').click()
                 cy.wait(500)
                 cy.contains('Väärä salasana')
             })
