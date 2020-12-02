@@ -31,6 +31,7 @@ describe('Profile management', () => {
             it('Cannot delete itself without giving correct confirmation text', () => {
                 cy.get('#deleteUser').click()
                 cy.get('#confirmField').type('use')
+                cy.wait(500)
                 cy.get('#confirm').should('be.disabled')
             })
 
@@ -169,6 +170,7 @@ describe('Profile management', () => {
             it('Cannot delete itself without giving correct confirmation text', () => {
                 cy.get('#deleteUser').click()
                 cy.get('#confirmField').type('dmin')
+                cy.wait(500)
                 cy.get('#confirm').should('be.disabled')
             })
 
