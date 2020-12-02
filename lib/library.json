@@ -420,7 +420,7 @@
             "button": "Poista käyttäjätunnus",
             "modalHeaderStart": "Käyttäjän ",
             "modalHeaderEnd": " poistamisen varmennus",
-            "warning": "Olet poistamassa käyttäjätunnustasi. Et voi palauttaa käyttäjätunnustasi, kun olet sen poistanut. Käyttäjätunnuksen poistaminen poistaa myös suoritukset. Jos olet varma, että haluat poistaa käyttäjätunnksesi, niin kirjoita käyttäjänimesi ja paina nappia poistaaksesi profiilisi.",
+            "warning": "Olet poistamassa käyttäjätunnustasi. Et voi palauttaa käyttäjätunnustasi, kun olet sen poistanut. Käyttäjätunnuksen poistaminen poistaa myös suoritukset. Jos olet varma, että haluat poistaa käyttäjätunnuksesi, niin kirjoita salasana ja paina nappia poistaaksesi profiilisi.",
             "executeButton": "Poista käyttäjä",
             "userInfo": {
                 "username": "Käyttäjänimi:",
