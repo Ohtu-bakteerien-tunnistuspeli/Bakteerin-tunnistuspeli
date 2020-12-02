@@ -32,7 +32,7 @@ describe('Profile management', () => {
                 cy.get('#deleteUser').click()
                 cy.get('#confirmField').type('use')
                 cy.wait(500)
-                cy.get('#confirm').should('be.disabled')
+                cy.contains('Väärä salasana')
             })
 
             it('Can quit deleting itself', () => {
@@ -171,7 +171,7 @@ describe('Profile management', () => {
                 cy.get('#deleteUser').click()
                 cy.get('#confirmField').type('dmin')
                 cy.wait(500)
-                cy.get('#confirm').should('be.disabled')
+                cy.contains('Väärä salasana')
             })
 
             it('Can quit deleting itself', () => {
