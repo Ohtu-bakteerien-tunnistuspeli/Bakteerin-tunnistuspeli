@@ -26,7 +26,7 @@ describe('Game', () => {
     })
 
     it('User can check the image copyrights from the footer', () => {
-        cy.contains('Kuvien Käyttöoikeudet').click()
+        cy.contains('Kuvien käyttöoikeudet').click()
         cy.contains('Bakteeripelin kuvien käyttöoikeude')
     })
 
@@ -192,7 +192,7 @@ describe('Game', () => {
         })
 
         it('User can still check the image copyrights from the footer', () => {
-            cy.contains('Kuvien Käyttöoikeudet').click()
+            cy.contains('Kuvien käyttöoikeudet').click()
             cy.contains('Bakteeripelin kuvien käyttöoikeudet')
         })
 

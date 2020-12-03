@@ -73,7 +73,7 @@ export const updateBacterium = (id, name, token, setIsModified, setNewName) => {
         const library = getState()?.language?.library.frontend.bacteria.reducer
         const bacterium = await bacteriaService.update(id, name, token)
         if (bacterium.error) {
-            dispatch(setNotification({ message: bacterium.error.substring(bacterium.error.indexOf('name: ') + 6), success: false, show: true }))
+            dispatch(setNotification({ message: bacterium.error.replace('Validation failed: ', '').replace('name: ', ''), success: false, show: true }))
         } else {
             dispatch(setNotification({ message: library.editSuccess, success: true, show: true }))
             dispatch({

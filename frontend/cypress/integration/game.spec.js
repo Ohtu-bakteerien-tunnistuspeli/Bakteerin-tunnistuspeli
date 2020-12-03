@@ -69,7 +69,7 @@ describe('Playing game', () => {
             cy.get('#checkSamples').click()
             cy.get('#testView').should('contain', 'Viljelyt')
             cy.get('#testView').should('contain', 'Testit')
-            cy.get('#testView').should('contain', 'Värjäys')
+            cy.get('#testView').should('contain', 'Värjäykset')
             cy.contains('Testi ei kuulu testiryhmiin').click()
             cy.wait(500)
             cy.contains('Väärä vastaus')
@@ -120,7 +120,7 @@ describe('Playing game', () => {
             cy.contains('Testejä').click()
             cy.contains('Penisilliinin sietokoe agarvaluamenetelmällä').click({ force: true })
             cy.wait(500)
-            cy.contains('Oikea vastaus. Kaikki vaaditut testit tehty.')
+            cy.contains('Oikea vastaus. Kaikki pakolliset testit tehty.')
         })
 
         it('User can see results after clicking a right test and without clicking "Tulokset" first', () => {
