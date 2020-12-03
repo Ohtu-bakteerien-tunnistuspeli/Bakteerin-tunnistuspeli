@@ -380,14 +380,14 @@
             },
             "samplesTab": {
                 "title": "Näytteenotto",
-                "whatSample": "Millaisen näytteen otat?",
+                "whatSample": "Millaisen näytteen otat? Valitse yksi seuraavista vaihtoehdoista.",
                 "takeSample": "Ota näyte"
             },
             "testsTab": {
                 "title": "Laboratoriotutkimukset",
                 "culture": "Viljelyt",
                 "tests": "Testit",
-                "dye": "Värjäys",
+                "dye": "Värjäykset",
                 "other": "Muut"
             },
             "resultsTab": {
@@ -408,7 +408,7 @@
                 "samplesCorrect": "Oikea vastaus.",
                 "samplesWrong": "Väärä vastaus.",
                 "allTestsDone": "Oikea vastaus. Kaikki testit tehty.",
-                "requiredTestsDone": "Oikea vastaus. Kaikki vaaditut testit tehty.",
+                "requiredTestsDone": "Oikea vastaus. Kaikki pakolliset testit tehty.",
                 "testCorrect": "Oikea vastaus.",
                 "testWrong": "Väärä vastaus.",
                 "bacteriumCorrect": "Oikea vastaus.",
