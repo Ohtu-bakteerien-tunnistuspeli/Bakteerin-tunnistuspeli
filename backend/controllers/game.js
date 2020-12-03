@@ -3,6 +3,7 @@ const Case = require('../models/case')
 const Credit = require('../models/credit')
 const config = require('../utils/config')
 const library = config.library.backend.game
+
 gameRouter.get('/:id', async (request, response) => {
     if (request.user) {
         try {
@@ -68,7 +69,7 @@ gameRouter.post('/:id/checkTests', async (request, response) => {
             let currentRequiredTests = []
             let groupIndex = 0
 
-            if (!testsToCheck || testsToCheck.length === 0) {
+            if (!testsToCheck) {
                 return response.status(400).json({ error: library.testError })
             }
             let latestTestForCase
@@ -133,6 +134,10 @@ gameRouter.post('/:id/checkTests', async (request, response) => {
 
             if (requiredDone && extraTests.length === 0) {
                 allDone = true
+            }
+
+            if (testsToCheck.length === 0) {
+                return response.status(200).json({ allDone, requiredDone })
             }
 
             let imageUrl

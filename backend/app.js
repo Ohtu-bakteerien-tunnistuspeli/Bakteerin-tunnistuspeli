@@ -152,6 +152,34 @@ if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
             })
             await initialCase.save()
 
+            const initialCase2 = new Case({
+                name: 'Maitotila 2',
+                bacterium: bac1,
+                anamnesis: 'Vasemman takaneljänneksen maito on hiukan kokkareista...',
+                completionText: 'You completed the initial case!',
+                hints: [],
+                samples: [
+                    {
+                        description: 'Maitonäyte Muurikin kaikista neljänneksistä',
+                        rightAnswer: true
+                    },
+                    {
+                        description: 'Tankkimaitonäyte',
+                        rightAnswer: false
+                    },
+                    {
+                        description: 'Ulostenäyte Muurikilta',
+                        rightAnswer: false
+                    },
+                    {
+                        description: 'Virtsanäyte Muurikilta',
+                        rightAnswer: false
+                    }
+                ],
+                testGroups: [],
+                complete: true
+            })
+            await initialCase2.save()
         })
     })
 
