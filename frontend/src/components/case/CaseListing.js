@@ -21,7 +21,7 @@ const CaseListing = ({ caseItem, admin, deleteCase }) => {
                             </svg>
                         </Button>
                         <HintForm caseToUpdate={caseItem}></HintForm>
-                        <CaseForm caseToEdit={caseItem}></CaseForm>
+                        <CaseForm caseToEdit={caseItem} modify={true}></CaseForm>
                     </td>
                 </tr>
                 :
