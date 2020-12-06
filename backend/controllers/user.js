@@ -73,9 +73,15 @@ userRouter.post('/register', async (request, response) => {
         return response.status(400).json({ error: validation.password.uniqueMessage })
     } else if (checkPassword(body.password).score < 2) {
         return response.status(400).json({ error: validation.password.unsecurePasswordMessage })
-
     } else {
         try {
+            if (!body.classGroup) {
+                body.classGroup = ''
+            }
+            if (!body.studentNumber) {
+                body.studentNumber = ''
+            }
+
             const saltRounds = 10
             const passwordHash = await bcrypt.hash(body.password, saltRounds)
             const user = new User({
@@ -266,11 +272,11 @@ userRouter.put('/', async (request, response) => {
                         }
                     }
 
-                    if (body.newStudentNumber) {
+                    if (body.newStudentNumber || body.newStudentNumber === '') {
                         changes = { ...changes, studentNumber: body.newStudentNumber }
                     }
 
-                    if (body.newClassGroup) {
+                    if (body.newClassGroup || body.newClassGroup === '') {
                         changes = { ...changes, classGroup: body.newClassGroup }
                     }
 
