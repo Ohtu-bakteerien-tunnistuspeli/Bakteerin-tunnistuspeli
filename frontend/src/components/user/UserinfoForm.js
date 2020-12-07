@@ -7,6 +7,7 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import ValidatedTextField from './components/ValidatedTextField'
 import Password from './components/Password'
+import PasswordQualityIndicator from './components/PasswordQualityIndicator'
 import Classgroup from './components/Classgroup'
 import { setNotification } from '../../reducers/notificationReducer'
 
@@ -73,7 +74,7 @@ const UserInfoForm = ({ user }) => {
         setConfirmText('')
     }
 
-
+    const checkPassWord = require('zxcvbn') // eslint-disable-line
     /* schema for validation */
     const UserinfoSchema = Yup.object().shape({
         username: Yup.string()
@@ -81,8 +82,37 @@ const UserInfoForm = ({ user }) => {
             .max(validation.username.maxlength, validation.username.maxMessage)
             .required(validation.username.requiredMessage),
         password: Yup.string()
+            .required(validation.password.requiredMessage)
             .min(validation.password.minlength, validation.password.minMessage)
-            .max(validation.password.maxlength, validation.password.maxMessage),
+            .max(validation.password.maxlength, validation.password.maxMessage)
+            .test('secure', validation.password.unsecurePasswordMessage, (password) => {
+                if (password) {
+                    if (checkPassWord(password).score < 2) {
+                        return false
+                    }
+                }
+                return true
+            })
+            .when('username', {
+                is: true,
+                then: Yup.string().notOneOf([Yup.ref('username'), null], validation.password.uniqueMessage),
+                otherwise: Yup.string().required(validation.password.requiredMessage)
+            })
+            .when('email', {
+                is: true,
+                then: Yup.string().notOneOf([Yup.ref('email'), null], validation.password.uniqueMessage),
+                otherwise: Yup.string().required(validation.password.requiredMessage)
+            })
+            .when('classGroup', {
+                is: true,
+                then: Yup.string().notOneOf([Yup.ref('classGroup'), null], validation.password.uniqueMessage),
+                otherwise: Yup.string().required(validation.password.requiredMessage)
+            })
+            .when('studentNumber', {
+                is: true,
+                then: Yup.string().notOneOf([Yup.ref('studentNumber'), null], validation.password.uniqueMessage),
+                otherwise: Yup.string().required(validation.password.requiredMessage)
+            }),
         passwordAgain: Yup.string(),
         email: Yup.string()
             .required(validation.email.requiredMessage)
@@ -163,7 +193,8 @@ const UserInfoForm = ({ user }) => {
                             errors,
                             setFieldValue,
                             touched,
-                            setFieldTouched
+                            setFieldTouched,
+                            values
                         }) => {
                             return (
                                 <Form
@@ -198,6 +229,10 @@ const UserInfoForm = ({ user }) => {
                                             touched={touched.password}
                                             setFieldTouched={setFieldTouched}
                                             setPassword={setNewPassword} />
+                                        <PasswordQualityIndicator
+                                            value={checkPassWord(values.password).score}
+                                            show={values.password.length > 0}
+                                            messages={validation.password} />
                                         <Password typeControlId='passwordAgain'
                                             controlId={'passwordAgain'}
                                             value={passwordAgain}

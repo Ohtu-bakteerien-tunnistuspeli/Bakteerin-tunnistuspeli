@@ -268,6 +268,13 @@ userRouter.put('/', async (request, response) => {
                             return response.status(400).json({ error: validation.password.minMessage })
                         } else if (body.newPassword.length > validation.password.maxlength) {
                             return response.status(400).json({ error: validation.password.maxMessage })
+                        } else if (body.newPassword === body.newUsername ||
+                            body.newPassword === body.newClassGroup ||
+                            body.newPassword === body.newEmail ||
+                            body.newPassword === body.newStudentNumber) {
+                            return response.status(400).json({ error: validation.password.uniqueMessage })
+                        } else if (checkPassword(body.newPassword).score < 2) {
+                            return response.status(400).json({ error: validation.password.unsecurePasswordMessage })
                         } else {
                             const saltRounds = 10
                             const passwordHash = await bcrypt.hash(body.newPassword, saltRounds)

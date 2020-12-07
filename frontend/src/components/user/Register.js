@@ -76,10 +76,10 @@ const Register = () => {
                 if (!classGroup) {
                     return true
                 }
-                if(classGroup === '') {
+                if (classGroup === '') {
                     return true
                 }
-                if(classGroup === 'C-') {
+                if (classGroup === 'C-') {
                     return true
                 }
                 return /^C-[0-9]*$|^C-$|^C-\s*$/.test(classGroup)
@@ -184,8 +184,7 @@ const Register = () => {
                                 <PasswordQualityIndicator
                                     value={checkPassWord(values.password).score}
                                     show={values.password.length > 0}
-                                    messages={validation.password}
-                                ></PasswordQualityIndicator>
+                                    messages={validation.password} />
                                 <Form.Label className="required-field">{library.passwordAgain}</Form.Label>
                                 <Form.Control
                                     type='password'

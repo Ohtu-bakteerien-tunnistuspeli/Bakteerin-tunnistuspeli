@@ -6,11 +6,11 @@ const Password = ({ password, namedClass, label, setPassword, onChange, error, t
         event.preventDefault()
         if (setPassword) {
             if(!touched && setFieldTouched) {
-                setFieldTouched('password', true, true)
+                setFieldTouched(controlId, true, true)
             }
             setPassword(event.target.value)
         }
-        onChange('password', event.target.value)
+        onChange(controlId, event.target.value)
     }
     return (
         <Form.Group controlId={controlId}>
