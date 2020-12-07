@@ -48,6 +48,7 @@ export const deleteUser = (user, token) => {
         if (res.status !== 204) {
             dispatch(setNotification({ message: res.error, success: false, show: true }))
         } else {
+            dispatch(getCredits(token))
             dispatch({
                 type: 'DELETE_USER',
                 data: user

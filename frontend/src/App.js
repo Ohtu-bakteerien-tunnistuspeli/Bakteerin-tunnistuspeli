@@ -4,7 +4,7 @@ import Idle from 'react-idle'
 import { useDispatch, useSelector } from 'react-redux'
 import { returnUser, logout } from './reducers/userReducer'
 import Login from './components/user/Login'
-import SingleUsePassword from './components/user/SingleUsePassword'
+import TemporaryPassword from './components/user/TemporaryPassword'
 import Register from './components/user/Register'
 import FrontPage from './components/FrontPage'
 import BacteriaList from './components/bacteria/BacteriaList'
@@ -118,7 +118,7 @@ const App = () => {
                     </Nav>
                     <Nav.Link href='#' as='span'>
                         {user
-                            ? <p className='nav-text'><em>{library.app.navigationBar.loggedIn}</em><Link to={`/${library.routes.profile}`} className='logged-user' >{user.username}</Link></p>
+                            ? <p className='nav-text'><em>{library.app.navigationBar.loggedIn}</em><Link to={`/${library.routes.profile}`} className='logged-user' >{user.username.length < 20 ? user.username : `${user.username.substring(0,20)}...`}</Link></p>
                             : <Link to={`/${library.routes.login}`} className='link'>{library.app.navigationBar.login}</Link>
                         }
                     </Nav.Link>
@@ -207,7 +207,7 @@ const App = () => {
                                     <Register />
                                 </Route>
                                 <Route path={`/${library.routes.temporaryPassword}`}>
-                                    <SingleUsePassword />
+                                    <TemporaryPassword />
                                 </Route>
                                 <Route path='/'>
                                     <Redirect to={`/${library.routes.login}`} />

@@ -21,7 +21,7 @@ const BacteriumListing = ({ bacterium, deleteBact, updateBact, isAdmin }) => {
                 {isModified ?
                     <input className='small-margin' value={newName} id='editField' onChange={({ target }) => setNewName(target.value)} />
                     :
-                    <>{bacterium.name}</>
+                    <>{bacterium.name.length < 50 ? bacterium.name : `${bacterium.name.substring(0,50)}...`}</>
                 }
 
             </td>

@@ -286,7 +286,7 @@
             },
             "temporaryPassword": {
                 "title": "Väliaikaisen salasanan luonti",
-                "username": "Käyttäjänimi:",
+                "username": "Käyttäjänimi tai opiskelijanumero:",
                 "email": "Sähköpostiosoite:",
                 "button": "Luo väliaikainen salasana"
             },
@@ -346,7 +346,12 @@
                     "modalHeaderEnd": " poistamisen varmennus",
                     "warning": "Kirjoita käyttäjän nimi ja paina nappia poistaaksesi käyttäjä ja käyttäjän suoritukset.",
                     "executeButton": "Poista käyttäjä"
-                }
+                },
+                "showUser": "Näytä tiedot",
+                "studentNumber": "Opiskelijanumero:",
+                "username": "Käyttäjänimi:",
+                "classGroup": "Vuosikurssi:",
+                "email": "Sähköposti:"
             },
             "reducer": {
                 "deleteSuccessStart": "Käyttäjän ",

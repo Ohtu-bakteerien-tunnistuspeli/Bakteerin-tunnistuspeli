@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { generateTemporaryPassword } from '../../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
-const SingleUsePassword = () => {
+const TemporaryPassword = () => {
     const library = useSelector(state => state.language)?.library?.frontend.user.temporaryPassword
     const dispatch = useDispatch()
     const history = useHistory()
@@ -39,4 +39,4 @@ const SingleUsePassword = () => {
     )
 }
 
-export default SingleUsePassword
+export default TemporaryPassword
