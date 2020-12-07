@@ -42,6 +42,14 @@ const UserList = () => {
     }, [filterByUsername, filterByStudentNumber, filterByClassGroup, users])
 
     useEffect(() => {
+        return () => {
+            if (timer) {
+                clearTimeout(timer)
+            }
+        }
+    }, [timer])
+
+    useEffect(() => {
         const users2 = [].concat(users)
         if (orderByStudentNumber === '' && orderByUsername === '') {
             setUsersToShow(users)
