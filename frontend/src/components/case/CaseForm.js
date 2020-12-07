@@ -65,8 +65,6 @@ const CaseForm = ({ caseToEdit }) => {
     const [imgPreview, setImgPreview] = useState(caseToEdit && caseToEdit.completionImage && caseToEdit.completionImage.url ? caseToEdit.completionImage.url : '')
     /* states end*/
 
-    caseToEdit ? console.log(caseToEdit) : ''
-
     /* modal */
     const [show, setShow] = useState(false)
     const handleShow = () => {

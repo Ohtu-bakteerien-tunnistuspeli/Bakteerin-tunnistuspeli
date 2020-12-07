@@ -56,6 +56,7 @@ export const deleteUser = (user, token, confirmText, handleClose, history) => {
         if (res.status !== 204) {
             dispatch(setNotification({ message: res.error, success: false, show: true }))
         } else {
+            dispatch(getCredits(token))
             if (handleClose) {
                 handleClose()
                 dispatch(logout(history))

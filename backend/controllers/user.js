@@ -177,7 +177,10 @@ userRouter.put('/:id/demote', async (request, response) => {
 })
 
 userRouter.post('/temporarypassword', async (request, response) => {
-    const user = await User.findOne({ username: request.body.username })
+    let user = await User.findOne({ username: request.body.username })
+    if (!user) {
+        user = await User.findOne({ studentNumber: request.body.username })
+    }
     if (user && user.email === request.body.email) {
         try {
             let transporter
@@ -192,7 +195,7 @@ userRouter.post('/temporarypassword', async (request, response) => {
                     auth: {
                         user: config.EMAILUSER,
                         pass: config.EMAILPASSWORD,
-                    },
+                    }
                 })
             } else if (config.EMAILHOST.includes('helsinki')) {
                 transporter = nodemailer.createTransport({
