@@ -54,7 +54,7 @@ const UserInfoForm = ({ user }) => {
         } else if (password === passwordAgain) {
             try {
                 dispatch(updateUserinfo(username,
-                    email, studentNumber,`C-${classGroup}`, oldPassword, password,
+                    email, studentNumber, `C-${classGroup}`, oldPassword, password,
                     token, handleClose
                 ))
             } catch (e) {
@@ -89,14 +89,14 @@ const UserInfoForm = ({ user }) => {
             .email(validation.email.validationMessage)
             .max(validation.email.maxlength, validation.email.maxMessage),
         classGroup: Yup.string()
-            .test(validation.classGroup.validationMessage, (classGroup) => {
+            .test('validation', validation.classGroup.validationMessage, (classGroup) => {
                 if (!classGroup) {
                     return true
                 }
-                if(classGroup === '') {
+                if (classGroup === '') {
                     return true
                 }
-                if(classGroup === 'C-') {
+                if (classGroup === 'C-') {
                     return true
                 }
                 return /^C-[0-9]+$|^C-$|^C-\s*$|[0-9]+$/.test(classGroup)

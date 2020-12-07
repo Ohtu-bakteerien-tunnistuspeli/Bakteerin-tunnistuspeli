@@ -72,7 +72,7 @@ const Register = () => {
             .email(validation.email.validationMessage)
             .max(validation.email.maxlength, validation.email.maxMessage),
         classGroup: Yup.string()
-            .test(validation.classGroup.validationMessage, (classGroup) => {
+            .test('validation', validation.classGroup.validationMessage, (classGroup) => {
                 if (!classGroup) {
                     return true
                 }
