@@ -18,8 +18,8 @@ const register = (credentials) => {
     return request.then(response => response).catch(error => error.response.data)
 }
 
-const deleteUser = (id, token) => {
-    const config = { headers: { Authorization: token } }
+const deleteUser = (id, confirmText, token) => {
+    const config = { headers: { Authorization: token, data: JSON.stringify(confirmText) } }
     return axios.delete(`${baseUrl}/${id}`, config).then(response => response).catch(error => error.response.data)
 }
 
@@ -46,14 +46,9 @@ const update = (username, email, studentNumber, classGroup, oldPassword, passwor
     }
 }
 
-const checkPassword = ({ id, token, confirmText }) => {
-    const config = { headers: { Authorization: token } }
-    return axios.post(`${baseUrl}/comparePass/${id}`, { confirmText: confirmText }, config).then(response => response).catch(error => error.response.data)
-}
-
 const temporaryPasswordGenerate = (credentials) => {
     return axios.post(`${baseUrl}/temporarypassword`, credentials).then(response => response.data).catch(error => error.response.data)
 }
 
-export default { get, login, register, deleteUser, promote, demote, update, temporaryPasswordGenerate, checkPassword }
+export default { get, login, register, deleteUser, promote, demote, update, temporaryPasswordGenerate }
 
