@@ -46,11 +46,13 @@ const GamePage = () => {
         }
     }
 
+    console.log(game.case.anamnesis)
+
     return (
         <>
             <Tabs activeKey={tab} onSelect={(k) => setTab(k)}>
                 <Tab eventKey='anamneesi' title={library.tabs.anamnesis}>
-                    <p style={{ padding: '20px' }}><FormattedText value={game.case.anamnesis} /></p>
+                    <p style={{ padding: '20px' }}><FormattedText value={game.case.anamnesis && game.case.anamnesis !== 'undefined' && game.case.anamnesis !== '<p>undefined</p>' ? game.case.anamnesis : ''} /></p>
                 </Tab>
                 <Tab eventKey='toiminnot' title={library.tabs.functions}>
                     <Tabs activeKey={testTab} onSelect={(k) => setTestTab(k)}>
