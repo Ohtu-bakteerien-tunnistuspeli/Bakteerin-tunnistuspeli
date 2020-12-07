@@ -69,14 +69,14 @@ describe('Profile management', () => {
 
             it('User can change their password', () => {
                 cy.contains('Muokkaa käyttäjätietoja').click()
-                cy.get('#password').type('useruser123')
-                cy.get('#passwordAgain').type('useruser123')
+                cy.get('#password').type('bakteeripelin12@b59tautiC')
+                cy.get('#passwordAgain').type('bakteeripelin12@b59tautiC')
                 cy.get('#confirmField').type('useruser10')
                 cy.get('#updateUserInfo').click()
                 cy.wait(500)
                 cy.contains('Kirjaudu ulos').click()
                 cy.get('#username').type('user')
-                cy.get('#password').type('useruser123')
+                cy.get('#password').type('bakteeripelin12@b59tautiC')
                 cy.get('#submit').click()
                 cy.contains('Etusivu')
             })
