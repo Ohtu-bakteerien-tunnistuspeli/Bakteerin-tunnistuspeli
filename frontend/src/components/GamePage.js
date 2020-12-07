@@ -46,8 +46,6 @@ const GamePage = () => {
         }
     }
 
-    console.log(game.case.anamnesis)
-
     return (
         <>
             <Tabs activeKey={tab} onSelect={(k) => setTab(k)}>
@@ -60,7 +58,7 @@ const GamePage = () => {
                             <h1>{library.samplesTab.title}</h1>
                             <Form id='samples' onSubmit={(event) => sampleSubmit(event)}>
                                 <Form.Label>{library.samplesTab.whatSample}</Form.Label>
-                                {game.case.samples.map((sample, i) => <Form.Check key={i} type='radio' name='sample' label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)} disabled={game.samplesCorrect && sample.description !== game.correctSample} defaultChecked={sample.description === game.correctSample ? 'checked' : null} />)}
+                                {game.case.samples.map((sample, i) => <Form.Check key={i} type='radio' name='sample' label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)} disabled={game.samplesCorrect && sample.description !== game.correctSample} defaultChecked={sample.description === game.correctSample ? 'checked' : ''} />)}
                                 <Button
                                     variant='success'
                                     type='submit'
