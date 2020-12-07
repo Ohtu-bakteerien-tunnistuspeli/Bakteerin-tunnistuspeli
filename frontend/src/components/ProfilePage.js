@@ -2,7 +2,6 @@ import React from 'react'
 import ConfirmWindow from './utility/ConfirmWindow.js'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteUser } from '../reducers/usersReducer'
-import { logout } from '../reducers/userReducer'
 import { useHistory } from 'react-router-dom'
 import ProfilePageUserInfo from './ProfilePageUserInfo'
 import UserinfoForm from './user/UserinfoForm'
@@ -13,9 +12,8 @@ const ProfilePage = () => {
     const credits = useSelector(state => state.credit)
     const history = useHistory()
     const dispatch = useDispatch()
-    const userDelete = () => {
-        dispatch(deleteUser(user, user.token))
-        dispatch(logout(history))
+    const userDelete = ({ confirmText, handleClose }) => {
+        dispatch(deleteUser(user, user.token, confirmText, handleClose, history))
     }
 
     return (
@@ -34,6 +32,8 @@ const ProfilePage = () => {
                 functionToExecute={userDelete}
                 executeButtonText={library.executeButton}
                 executeButtonVariant='danger'
+                password={true}
+                parameter={true}
             />
             <div>
                 <UserinfoForm user={user}></UserinfoForm>

@@ -73,9 +73,15 @@ userRouter.post('/register', async (request, response) => {
         return response.status(400).json({ error: validation.password.uniqueMessage })
     } else if (checkPassword(body.password).score < 2) {
         return response.status(400).json({ error: validation.password.unsecurePasswordMessage })
-
     } else {
         try {
+            if (!body.classGroup) {
+                body.classGroup = ''
+            }
+            if (!body.studentNumber) {
+                body.studentNumber = ''
+            }
+
             const saltRounds = 10
             const passwordHash = await bcrypt.hash(body.password, saltRounds)
             const user = new User({
@@ -116,6 +122,23 @@ userRouter.delete('/:id', async (request, response) => {
         } catch (error) {
             return response.status(400).json({ error: error.message })
         }
+    } else {
+        throw Error('JsonWebTokenError')
+    }
+})
+
+userRouter.post('/comparePass/:id', async (request, response) => {
+    if (request.user && (request.user.admin || String(request.user.id) === String(request.params.id))) {
+        const body = request.body
+        const userToCheck = await User.findById(request.params.id)
+        let correct = false
+        if (body.confirmText) {
+            correct = await bcrypt.compare(body.confirmText, userToCheck.passwordHash)
+        }
+        if (correct) {
+            return response.status(200).end()
+        }
+        return response.status(400).json({ error: library.wrongPassword })
     } else {
         throw Error('JsonWebTokenError')
     }
@@ -252,11 +275,11 @@ userRouter.put('/', async (request, response) => {
                         }
                     }
 
-                    if (body.newStudentNumber) {
+                    if (body.newStudentNumber || body.newStudentNumber === '') {
                         changes = { ...changes, studentNumber: body.newStudentNumber }
                     }
 
-                    if (body.newClassGroup) {
+                    if (body.newClassGroup || body.newClassGroup === '') {
                         changes = { ...changes, classGroup: body.newClassGroup }
                     }
 

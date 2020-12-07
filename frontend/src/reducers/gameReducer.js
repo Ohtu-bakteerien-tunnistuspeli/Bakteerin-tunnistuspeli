@@ -31,15 +31,18 @@ export const getGame = (history, id, token) => {
     return async (dispatch, getState) => {
         const library = getState()?.language?.library.frontend.routes
         const receivedCase = await gameService.get(id, token)
+        const initialGameStates = await gameService.testCheck(id, { tests: [] }, token)
         if (receivedCase.error) {
             dispatch(setNotification({ message: receivedCase.error, success: false, show: true }))
+        } else if (initialGameStates.error) {
+            dispatch(setNotification({ message: initialGameStates.error, success: false, show: true }))
         } else {
             let game = {
                 case: receivedCase,
                 samplesCorrect: false,
                 correctSample: '',
-                requiredTestsDone: false,
-                allTestsDone: false,
+                requiredTestsDone: initialGameStates.requiredDone,
+                allTestsDone: initialGameStates.allDone,
                 bacteriumCorrect: false,
                 correctTests: [],
                 testResults: [],
