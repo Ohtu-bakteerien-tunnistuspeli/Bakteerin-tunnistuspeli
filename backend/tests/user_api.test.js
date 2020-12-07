@@ -11,8 +11,22 @@ beforeEach(async () => {
     await User.deleteMany({})
     const adminPassword = await bcrypt.hash('admin', 10)
     const userPassword = await bcrypt.hash('password', 10)
-    const admin = new User({ username: 'adminNew', passwordHash: adminPassword, admin: true, email: 'example11@com', studentNumber: '', classGroup: '' })
-    const user = new User({ username: 'usernameNew', passwordHash: userPassword, admin: false, email: 'examples111@com', studentNumber: '7897089', classGroup: 'C-122' })
+    const admin = new User({
+        username: 'adminNew',
+        passwordHash: adminPassword,
+        admin: true,
+        email: 'example11@com',
+        studentNumber: '',
+        classGroup: ''
+    })
+    const user = new User({
+        username: 'usernameNew',
+        passwordHash: userPassword,
+        admin: false,
+        email: 'examples111@com',
+        studentNumber: '7897089',
+        classGroup: 'C-122'
+    })
     await admin.save()
     await user.save()
 })
@@ -193,6 +207,76 @@ describe('register ', () => {
             .post('/api/user/login')
             .send(invalidUsers[8])
             .expect(400)
+    })
+
+    test('if student number is not given empty string will be used instead', async () => {
+        const user = {
+            username: 'newUser12',
+            password: 'test password hotairballoon',
+            email: 'example@example.fi',
+        }
+        await api
+            .post('/api/user/register')
+            .send(user)
+            .expect(200)
+        const loginRes = await api
+            .post('/api/user/login')
+            .send(user)
+            .expect(200)
+        expect(loginRes.body.studentNumber).toEqual('')
+    })
+
+    test('if student number is null empty string will be used instead', async () => {
+        const user = {
+            username: 'newUser12',
+            password: 'test password hotairballoon',
+            email: 'example@example.fi',
+            studentNumber: null
+        }
+        await api
+            .post('/api/user/register')
+            .send(user)
+            .expect(200)
+        const loginRes = await api
+            .post('/api/user/login')
+            .send(user)
+            .expect(200)
+        expect(loginRes.body.studentNumber).toEqual('')
+    })
+
+    test('if class group is not given empty string will be used instead', async () => {
+        const user = {
+            username: 'newUser12',
+            password: 'test password hotairballoon',
+            email: 'example@example.fi',
+        }
+        await api
+            .post('/api/user/register')
+            .send(user)
+            .expect(200)
+        const loginRes = await api
+            .post('/api/user/login')
+            .send(user)
+            .expect(200)
+        expect(loginRes.body.classGroup).toEqual('')
+    })
+
+    test('if student number is null empty string will be used instead', async () => {
+        const user = {
+            username: 'newUser12',
+            password: 'test password hotairballoon',
+            email: 'example@example.fi',
+            classGroup: null
+        }
+        await api
+            .post('/api/user/register')
+            .send(user)
+            .expect(200)
+        const loginRes = await api
+            .post('/api/user/login')
+            .send(user)
+            .expect(200)
+        expect(loginRes.body.classGroup).toEqual('')
     })
 })
 
@@ -704,6 +788,39 @@ describe('modifying user', () => {
                 .expect(400)
             expect(res.body.error).toContain('Väärä salasana.')
         })
+
+        test('cannot change student number to null', async () => {
+            const loginResponse = await api
+                .post('/api/user/login')
+                .send({
+                    username: 'adminNew',
+                    password: 'admin'
+                })
+                .expect(200)
+            const res = await api
+                .put('/api/user')
+                .set('Authorization', `bearer ${loginResponse.body.token}`)
+                .send({ password: 'admin', newStudentNumber: null })
+                .expect(200)
+            expect(res.body.studentNumber).toEqual('')
+        })
+
+        test('can change student number to empty', async () => {
+            const loginResponse = await api
+                .post('/api/user/login')
+                .send({
+                    username: 'usernameNew',
+                    password: 'password'
+                })
+                .expect(200)
+            expect(loginResponse.body.studentNumber).toEqual('7897089')
+            const res = await api
+                .put('/api/user')
+                .set('Authorization', `bearer ${loginResponse.body.token}`)
+                .send({ password: 'password', newStudentNumber: '' })
+                .expect(200)
+            expect(res.body.studentNumber).toEqual('')
+        })
     })
 
     describe('changing email', () => {
@@ -811,6 +928,39 @@ describe('modifying user', () => {
                 .send({ newClassGroup: 'C-168' })
                 .expect(400)
             expect(res.body.error).toContain('Salasana on pakollinen.')
+        })
+
+        test('cannot change class group to null', async () => {
+            const loginResponse = await api
+                .post('/api/user/login')
+                .send({
+                    username: 'adminNew',
+                    password: 'admin'
+                })
+                .expect(200)
+            const res = await api
+                .put('/api/user')
+                .set('Authorization', `bearer ${loginResponse.body.token}`)
+                .send({ password: 'admin', newClassGroup: null })
+                .expect(200)
+            expect(res.body.classGroup).toEqual('')
+        })
+
+        test('can change class group to empty', async () => {
+            const loginResponse = await api
+                .post('/api/user/login')
+                .send({
+                    username: 'usernameNew',
+                    password: 'password'
+                })
+                .expect(200)
+            expect(loginResponse.body.classGroup).toEqual('C-122')
+            const res = await api
+                .put('/api/user')
+                .set('Authorization', `bearer ${loginResponse.body.token}`)
+                .send({ password: 'password', newClassGroup: '' })
+                .expect(200)
+            expect(res.body.classGroup).toEqual('')
         })
     })
 
