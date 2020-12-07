@@ -344,6 +344,7 @@ describe('delete', () => {
         await api
             .delete(`/api/user/${user.id}`)
             .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .set('data', '"password"')
             .expect(204)
         await api
             .post('/api/user/login')
@@ -429,6 +430,7 @@ describe('delete', () => {
         await api
             .delete(`/api/user/${user.id}`)
             .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .set('data', '"password"')
             .expect(204)
         credit = await Credit.findOne({ user })
         expect(credit).toBeNull()
