@@ -28,7 +28,7 @@ const GamePage = () => {
 
     const sampleSubmit = (event) => {
         event.preventDefault()
-        if(selectedSample) {
+        if (selectedSample) {
             dispatch(checkSamples(game, selectedSample, user.token, setTestTab))
         }
     }
@@ -58,7 +58,7 @@ const GamePage = () => {
                             <h1>{library.samplesTab.title}</h1>
                             <Form id='samples' onSubmit={(event) => sampleSubmit(event)}>
                                 <Form.Label>{library.samplesTab.whatSample}</Form.Label>
-                                {game.case.samples.map((sample, i) => <Form.Check key={i} type='radio' name='sample' label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)} disabled={game.samplesCorrect && sample.description !== game.correctSample} checked={sample.description === game.correctSample ? 'checked' : null}></Form.Check>)}
+                                {game.case.samples.map((sample, i) => <Form.Check key={i} type='radio' name='sample' label={sample.description} onChange={() => sampleCheckBoxChange(sample.description)} disabled={game.samplesCorrect && sample.description !== game.correctSample} defaultChecked={sample.description === game.correctSample ? 'checked' : null} />)}
                                 <Button
                                     variant='success'
                                     type='submit'
