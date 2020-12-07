@@ -26,6 +26,14 @@ const CaseList = () => {
         }, 1000))
     }, [filterByName, cases])
 
+    useEffect(() => {
+        return () => {
+            if (timer) {
+                clearTimeout(timer)
+            }
+        }
+    }, [timer])
+
     const delCase = caseToDelete => {
         dispatch(deleteCase(caseToDelete, user.token))
     }

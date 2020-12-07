@@ -27,6 +27,14 @@ const BacteriaList = () => {
         }, 1000))
     }, [filterByBacteriaName, bacteria])
 
+    useEffect(() => {
+        return () => {
+            if (timer) {
+                clearTimeout(timer)
+            }
+        }
+    }, [timer])
+
     const deleteBact = bacterium => {
         dispatch(deleteBacterium(bacterium, user.token))
     }

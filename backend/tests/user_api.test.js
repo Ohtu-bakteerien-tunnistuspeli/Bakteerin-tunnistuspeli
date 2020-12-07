@@ -344,6 +344,7 @@ describe('delete', () => {
         await api
             .delete(`/api/user/${user.id}`)
             .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .set('data', '"password"')
             .expect(204)
         await api
             .post('/api/user/login')
@@ -429,6 +430,7 @@ describe('delete', () => {
         await api
             .delete(`/api/user/${user.id}`)
             .set('Authorization', `bearer ${loggedUser.body.token}`)
+            .set('data', '"password"')
             .expect(204)
         credit = await Credit.findOne({ user })
         expect(credit).toBeNull()
@@ -660,13 +662,13 @@ describe('modifying user', () => {
             await api
                 .put('/api/user')
                 .set('Authorization', `bearer ${loginResponse.body.token}`)
-                .send({ password: 'password', newPassword: 'newPassword123' })
+                .send({ password: 'password', newPassword: 'test password hotairballoon' })
                 .expect(200)
             await api
                 .post('/api/user/login')
                 .send({
                     username: 'usernameNew',
-                    password: 'newPassword123'
+                    password: 'test password hotairballoon'
                 })
                 .expect(200)
         })
@@ -1032,7 +1034,7 @@ describe('modifying user', () => {
                 .send({
                     password: 'admin',
                     newUsername: 'newname',
-                    newPassword: 'newPassword',
+                    newPassword: 'test password hotairballoon',
                     newEmail: 'newmail@email',
                     newStudentNumber: '211323',
                     newClassGroup: 'C-24'
@@ -1046,7 +1048,7 @@ describe('modifying user', () => {
                 .post('/api/user/login')
                 .send({
                     username: 'newname',
-                    password: 'newPassword'
+                    password: 'test password hotairballoon'
                 })
                 .expect(200)
         })
