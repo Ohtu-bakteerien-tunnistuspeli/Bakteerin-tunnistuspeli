@@ -82,7 +82,6 @@ const UserInfoForm = ({ user }) => {
             .max(validation.username.maxlength, validation.username.maxMessage)
             .required(validation.username.requiredMessage),
         password: Yup.string()
-            .required(validation.password.requiredMessage)
             .min(validation.password.minlength, validation.password.minMessage)
             .max(validation.password.maxlength, validation.password.maxMessage)
             .test('secure', validation.password.unsecurePasswordMessage, (password) => {
@@ -92,26 +91,6 @@ const UserInfoForm = ({ user }) => {
                     }
                 }
                 return true
-            })
-            .when('username', {
-                is: true,
-                then: Yup.string().notOneOf([Yup.ref('username'), null], validation.password.uniqueMessage),
-                otherwise: Yup.string().required(validation.password.requiredMessage)
-            })
-            .when('email', {
-                is: true,
-                then: Yup.string().notOneOf([Yup.ref('email'), null], validation.password.uniqueMessage),
-                otherwise: Yup.string().required(validation.password.requiredMessage)
-            })
-            .when('classGroup', {
-                is: true,
-                then: Yup.string().notOneOf([Yup.ref('classGroup'), null], validation.password.uniqueMessage),
-                otherwise: Yup.string().required(validation.password.requiredMessage)
-            })
-            .when('studentNumber', {
-                is: true,
-                then: Yup.string().notOneOf([Yup.ref('studentNumber'), null], validation.password.uniqueMessage),
-                otherwise: Yup.string().required(validation.password.requiredMessage)
             }),
         passwordAgain: Yup.string(),
         email: Yup.string()
@@ -260,7 +239,7 @@ const UserInfoForm = ({ user }) => {
                                             setFieldTouched={setFieldTouched}
                                             setClassgroup={setNewClassgroup} />
                                         <div>
-                                            <br></br>
+                                            <br/>
                                             <Form.Label>{library.warning}</Form.Label>
                                             <Form.Control
                                                 type="password"

@@ -36,7 +36,7 @@ const demote = (id, token) => {
 const update = (username, email, studentNumber, classGroup, oldPassword, password, token) => {
     const config = { headers: { Authorization: token } }
     if (password === '') {
-        return axios.put(baseUrl, { newUsername: username, newEmail: email, password: oldPassword, newPassword: oldPassword, newStudentNumber: studentNumber, newClassGroup: classGroup }, config)
+        return axios.put(baseUrl, { newUsername: username, newEmail: email, password: oldPassword, newStudentNumber: studentNumber, newClassGroup: classGroup }, config)
             .then(response => response.data)
             .catch(error => error.response.data)
     } else {
