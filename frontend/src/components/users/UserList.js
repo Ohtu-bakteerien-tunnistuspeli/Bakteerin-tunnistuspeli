@@ -26,43 +26,48 @@ const UserList = () => {
             if (filterByStudentNumber === '' && filterByUsername === '' && filterByClassGroup === '') {
                 setUsersToShow(users)
             } else {
-                if (filterByStudentNumber === ''  && filterByClassGroup === '') {
+                if (filterByStudentNumber === '' && filterByClassGroup === '') {
                     setUsersToShow(users.filter(user => user.username && user.username.toLowerCase().startsWith(filterByUsername.toLowerCase())))
-                } else if (filterByUsername === ''  && filterByClassGroup === '') {
+                } else if (filterByUsername === '' && filterByClassGroup === '') {
                     setUsersToShow(users.filter(user => user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)))
                 } else if (filterByUsername === '' && filterByStudentNumber === '') {
                     setUsersToShow(users.filter(user => user.classGroup && user.classGroup.toLowerCase().startsWith(filterByClassGroup.toLowerCase())))
                 } else {
                     setUsersToShow(users.filter(user => user.username && user.username.toLowerCase().startsWith(filterByUsername.toLowerCase())
-                                                        && user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)
-                                                        && user.classGroup && user.classGroup.toLowerCase().startsWith(filterByClassGroup.toLowerCase())))
+                        && user.studentNumber && user.studentNumber.startsWith(filterByStudentNumber)
+                        && user.classGroup && user.classGroup.toLowerCase().startsWith(filterByClassGroup.toLowerCase())))
                 }
             }
         }, 1000))
     }, [filterByUsername, filterByStudentNumber, filterByClassGroup, users])
 
     useEffect(() => {
+        return () => {
+            if (timer) {
+                clearTimeout(timer)
+            }
+        }
+    }, [timer])
 
+    useEffect(() => {
         const users2 = [].concat(users)
-
-        if(orderByStudentNumber === '' && orderByUsername === '') {
+        if (orderByStudentNumber === '' && orderByUsername === '') {
             setUsersToShow(users)
         }
-        if(orderByStudentNumber !== '' || orderByUsername !== '') {
-            if(orderByStudentNumber === 'Descending' && orderByUsername === '') {
+        if (orderByStudentNumber !== '' || orderByUsername !== '') {
+            if (orderByStudentNumber === 'Descending' && orderByUsername === '') {
                 setUsersToShow(users2.sort((user1, user2) => user1.studentNumber.localeCompare(user2.studentNumber)))
-            } else if(orderByStudentNumber === 'Ascending' && orderByUsername === '') {
+            } else if (orderByStudentNumber === 'Ascending' && orderByUsername === '') {
                 setUsersToShow(users2.sort((user1, user2) => user2.studentNumber.localeCompare(user1.studentNumber)))
-            } else if(orderByUsername === 'Ascending' && orderByStudentNumber === '') {
+            } else if (orderByUsername === 'Ascending' && orderByStudentNumber === '') {
                 setUsersToShow(users2.sort((user1, user2) => user2.username.localeCompare(user1.username)))
-            } else if(orderByUsername  === 'Descending' && orderByStudentNumber === '') {
+            } else if (orderByUsername === 'Descending' && orderByStudentNumber === '') {
                 setUsersToShow(users2.sort((user1, user2) => user1.username.localeCompare(user2.username)))
             } else {
                 setUsersToShow(users)
             }
         }
-
-    },[orderByStudentNumber, orderByUsername])
+    }, [orderByStudentNumber, orderByUsername])
 
     const userDelete = (userToDelete) => {
         dispatch(deleteUser(userToDelete, user.token))
@@ -76,23 +81,47 @@ const UserList = () => {
     return (
         <div>
             <h2>{library.title}</h2>
-            {library.filterByStudentNumber}<input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
-            {library.filterByUsername}<input id='usernameFilter' type='text' value={filterByUsername} onChange={({ target }) => setFilterByUsername(target.value)}></input>&nbsp;
-            {library.filterByClassGroup}<input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
-            <div></div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>{library.filterByStudentNumber}</td>
+                        <td><input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)} /></td>
+                    </tr>
+                    <tr>
+                        <td>{library.filterByUsername}</td>
+                        <td><input id='usernameFilter' type='text' value={filterByUsername} onChange={({ target }) => setFilterByUsername(target.value)} /></td>
+                    </tr>
+                    <tr>
+                        <td>{library.filterByClassGroup}</td>
+                        <td> <input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)} /></td>
+                    </tr>
+                </tbody>
+            </table>
             <h6>{library.orderInstructions}</h6>
-            {library.orderByStudentNumber}
-            <select id='orderByStudentNumber' type= 'text' value={orderByStudentNumber} onChange={({ target }) => setOrderByStudentNumber(target.value)}>
-                <option value=''></option>
-                <option value='Ascending'>{library.ascending}</option>
-                <option value='Descending'>{library.descending}</option>
-            </select>&nbsp;
-            {library.orderByUsername}
-            <select id='orderByUsername' type= 'text' value={orderByUsername} onChange={({ target }) => setOrderByUsername(target.value)}>
-                <option value=''></option>
-                <option value='Ascending'>{library.ascending}</option>
-                <option value='Descending'>{library.descending}</option>
-            </select>&nbsp;
+            <table>
+                <tbody>
+                    <tr>
+                        <td>{library.orderByStudentNumber}</td>
+                        <td>
+                            <select id='orderByStudentNumber' type='text' value={orderByStudentNumber} onChange={({ target }) => setOrderByStudentNumber(target.value)}>
+                                <option value=''></option>
+                                <option value='Ascending'>{library.ascending}</option>
+                                <option value='Descending'>{library.descending}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{library.orderByUsername}</td>
+                        <td>
+                            <select id='orderByUsername' type='text' value={orderByUsername} onChange={({ target }) => setOrderByUsername(target.value)}>
+                                <option value=''></option>
+                                <option value='Ascending'>{library.ascending}</option>
+                                <option value='Descending'>{library.descending}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             {users.length !== 0 ?
                 <Table id='userTable'>
                     <thead>

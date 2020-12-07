@@ -30,10 +30,10 @@ const Classgroup = ({ classgroup, setClassgroup, onChange, error, touched, setFi
                     onClick={handleChange}
                     onFocus={handleChange}
                 />
+                <Form.Control.Feedback type='invalid' hidden={!touched}>
+                    {error}
+                </Form.Control.Feedback>
             </InputGroup>
-            <Form.Control.Feedback type='invalid' hidden={!touched}>
-                {error}
-            </Form.Control.Feedback>
         </Form.Group>
     )
 }

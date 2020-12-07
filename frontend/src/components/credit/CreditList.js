@@ -37,6 +37,14 @@ const CreditList = () => {
         }, 1000))
     }, [filterByClassGroup, filterByStudentNumber, credits])
 
+    useEffect(() => {
+        return () => {
+            if (timer) {
+                clearTimeout(timer)
+            }
+        }
+    }, [timer])
+
     const deleteCredits = () => {
         if (window.confirm(library.deleteConfirm)) {
             dispatch(creditsDelete(creditsToShow.map(credit => credit.id), user.token))
@@ -47,57 +55,81 @@ const CreditList = () => {
 
         const credits2 = [].concat(credits)
 
-        if(orderByStudentNumber === '' && orderByClassGroup === '' && orderByUsername === '') {
+        if (orderByStudentNumber === '' && orderByClassGroup === '' && orderByUsername === '') {
             setCreditsToShow(credits)
         }
 
-        if(orderByUsername === 'Descending' && orderByStudentNumber === '' && orderByClassGroup === '') {
+        if (orderByUsername === 'Descending' && orderByStudentNumber === '' && orderByClassGroup === '') {
             setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.username.localeCompare(credit1.user.username)))
         }
 
-        if(orderByUsername === 'Ascending' && orderByStudentNumber === '' && orderByClassGroup === '') {
+        if (orderByUsername === 'Ascending' && orderByStudentNumber === '' && orderByClassGroup === '') {
             setCreditsToShow(credits2.sort((credit1, credit2) => credit1.user.username.localeCompare(credit2.user.username)))
         }
 
-        if(orderByStudentNumber !== '' || orderByClassGroup !== '' || orderByUsername === '') {
-            if(orderByStudentNumber === 'Descending' && orderByClassGroup === '' && orderByUsername === '') {
+        if (orderByStudentNumber !== '' || orderByClassGroup !== '' || orderByUsername === '') {
+            if (orderByStudentNumber === 'Descending' && orderByClassGroup === '' && orderByUsername === '') {
                 setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.studentNumber.localeCompare(credit1.user.studentNumber)))
-            } else if(orderByClassGroup === 'Ascending' && orderByStudentNumber === '' && orderByUsername === '') {
+            } else if (orderByClassGroup === 'Ascending' && orderByStudentNumber === '' && orderByUsername === '') {
                 setCreditsToShow(credits2.sort((credit1, credit2) => credit2.user.classGroup.localeCompare(credit1.user.classGroup)))
-            } else if(orderByClassGroup === 'Descending' && orderByStudentNumber === '' && orderByUsername === '') {
+            } else if (orderByClassGroup === 'Descending' && orderByStudentNumber === '' && orderByUsername === '') {
                 setCreditsToShow(credits2.sort((credit1, credit2) => credit1.user.classGroup.localeCompare(credit2.user.classGroup)))
             } else {
                 setCreditsToShow(credits)
             }
         }
-    }, [ orderByStudentNumber, orderByClassGroup, orderByUsername ])
+    }, [orderByStudentNumber, orderByClassGroup, orderByUsername])
 
     return (
         <div>
             <h2>{library.title}</h2>
-            {library.filterByClassGroup}<input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)}></input>&nbsp;
-            {library.filterByStudentNumber}<input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)}></input>&nbsp;
-            <div></div>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>{library.filterByClassGroup}</td>
+                        <td><input id='classGroupFilter' type='text' value={filterByClassGroup} onChange={({ target }) => setFilterByClassGroup(target.value)} /></td>
+                    </tr>
+                    <tr>
+                        <td>{library.filterByStudentNumber}</td>
+                        <td><input id='studentNumberFilter' type='text' value={filterByStudentNumber} onChange={({ target }) => setFilterByStudentNumber(target.value)} /></td>
+                    </tr>
+                </tbody>
+            </table>
             <h6>{library.sortingInstructions}</h6>
-            <div></div>
-            {library.orderByStudentNumber}
-            <select id='orderByStudentNumber' type= 'text' value={orderByStudentNumber} onChange={({ target }) => setOrderByStudentNumber(target.value)}>
-                <option value=''></option>
-                <option value='Ascending'>{library.ascending}</option>
-                <option value='Descending'>{library.descending}</option>
-            </select>&nbsp;
-            {library.orderByClassGroup}
-            <select id='orderByClassGroup' type= 'text' value={orderByClassGroup} onChange={({ target }) => setOrderByClassGroup(target.value)}>
-                <option value=''></option>
-                <option value='Ascending'>{library.ascending}</option>
-                <option value='Descending'>{library.descending}</option>
-            </select>&nbsp;
-            {library.orderByUsername}
-            <select id='orderByUsername' type= 'text' value={orderByUsername} onChange={({ target }) => setOrderByUsername(target.value)}>
-                <option value=''></option>
-                <option value='Ascending'>{library.ascending}</option>
-                <option value='Descending'>{library.descending}</option>
-            </select>&nbsp;
+            <table>
+                <tbody>
+                    <tr>
+                        <td>{library.orderByStudentNumber}</td>
+                        <td>
+                            <select id='orderByStudentNumber' type='text' value={orderByStudentNumber} onChange={({ target }) => setOrderByStudentNumber(target.value)}>
+                                <option value=''></option>
+                                <option value='Ascending'>{library.ascending}</option>
+                                <option value='Descending'>{library.descending}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{library.orderByClassGroup}</td>
+                        <td>
+                            <select id='orderByClassGroup' type='text' value={orderByClassGroup} onChange={({ target }) => setOrderByClassGroup(target.value)}>
+                                <option value=''></option>
+                                <option value='Ascending'>{library.ascending}</option>
+                                <option value='Descending'>{library.descending}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{library.orderByUsername}</td>
+                        <td>
+                            <select id='orderByUsername' type='text' value={orderByUsername} onChange={({ target }) => setOrderByUsername(target.value)}>
+                                <option value=''></option>
+                                <option value='Ascending'>{library.ascending}</option>
+                                <option value='Descending'>{library.descending}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             {credits.length !== 0 ?
                 <Table borderless hover>
                     <thead>

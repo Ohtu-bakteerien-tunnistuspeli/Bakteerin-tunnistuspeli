@@ -396,6 +396,44 @@ describe('it is possible to do tests', () => {
         expect(res.body.requiredDone).toBeTruthy()
         expect(res.body.allDone).toBeFalsy()
     })
+
+    test('empty list can be posted to check if case can be completed without testing', async () => {
+        const caseToAdd = new Case({
+            name: 'Test case3',
+            anamnesis: 'Test case3',
+            bacterium: initialBacterium,
+            samples: initialSamples,
+            testGroups:
+                [
+                    [ // Group 1
+                        {
+                            tests: [
+                                { test: addedTests[0], positive: true }
+                            ],
+                            isRequired: false
+                        }
+                    ],
+                    [ // Group 2
+                        {
+                            tests: [
+                                { test: addedTests[1], positive: true }
+                            ],
+                            isRequired: false
+                        }
+                    ]
+                ],
+        })
+        const testCaseAdded = await caseToAdd.save()
+
+        const data = []
+        const res = await api
+            .post(`/api/game/${testCaseAdded.id}/checkTests`)
+            .set('Authorization', `bearer ${adminUserToken}`)
+            .send({ tests: data })
+            .expect(200)
+        expect(res.body.allDone).toBeFalsy()
+        expect(res.body.requiredDone).toBeTruthy()
+    })
 })
 
 describe('it is possible to do multiple tests', () => {
@@ -485,15 +523,6 @@ describe('it is possible to do multiple tests', () => {
 })
 
 describe('correct errors are given', () => {
-    test('when empty list is posted', async () => {
-        const data = []
-        const res = await api
-            .post(`/api/game/${addedCaseId}/checkTests`)
-            .set('Authorization', `bearer ${adminUserToken}`)
-            .send({ tests: data })
-            .expect(400)
-        expect(res.body.error).toContain('Testin lähettämisessä tapahtui virhe.')
-    })
 
     test('when no list is posted', async () => {
         const res = await api

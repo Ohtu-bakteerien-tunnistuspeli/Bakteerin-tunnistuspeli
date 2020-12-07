@@ -11,7 +11,7 @@ const CaseListing = ({ caseItem, admin, deleteCase }) => {
         <>
             {admin ?
                 <tr>
-                    <td>{caseItem.name}</td>
+                    <td>{caseItem.name.length < 40 ? caseItem.name : `${caseItem.name.substring(0, 40)}...`}</td>
                     <td>{caseItem.completionImage ? <ModalImage imageUrl={caseItem.completionImage.url} width={'10%'} height={'10%'} /> : <></>}</td>
                     <td>
                         <Button variant='danger' style={{ float: 'right', margin: '2px' }} id='deleteCase' onClick={() => { if (window.confirm(library.deleteConfirm)) { deleteCase(caseItem) } }}>{library.delete}
@@ -21,7 +21,7 @@ const CaseListing = ({ caseItem, admin, deleteCase }) => {
                             </svg>
                         </Button>
                         <HintForm caseToUpdate={caseItem}></HintForm>
-                        <CaseForm caseToEdit={caseItem}></CaseForm>
+                        <CaseForm caseToEdit={caseItem} modify={true}></CaseForm>
                     </td>
                 </tr>
                 :

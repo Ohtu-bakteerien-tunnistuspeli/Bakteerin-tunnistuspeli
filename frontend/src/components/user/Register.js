@@ -72,14 +72,14 @@ const Register = () => {
             .email(validation.email.validationMessage)
             .max(validation.email.maxlength, validation.email.maxMessage),
         classGroup: Yup.string()
-            .test(validation.classGroup.validationMessage, (classGroup) => {
+            .test('validation', validation.classGroup.validationMessage, (classGroup) => {
                 if (!classGroup) {
                     return true
                 }
-                if(classGroup === '') {
+                if (classGroup === '') {
                     return true
                 }
-                if(classGroup === 'C-') {
+                if (classGroup === 'C-') {
                     return true
                 }
                 return /^C-[0-9]*$|^C-$|^C-\s*$/.test(classGroup)
@@ -184,8 +184,7 @@ const Register = () => {
                                 <PasswordQualityIndicator
                                     value={checkPassWord(values.password).score}
                                     show={values.password.length > 0}
-                                    messages={validation.password}
-                                ></PasswordQualityIndicator>
+                                    messages={validation.password} />
                                 <Form.Label className="required-field">{library.passwordAgain}</Form.Label>
                                 <Form.Control
                                     type='password'

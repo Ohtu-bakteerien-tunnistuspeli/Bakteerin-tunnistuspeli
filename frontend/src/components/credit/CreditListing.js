@@ -11,9 +11,9 @@ const CreditListing = ({ credit, admin }) => {
         <tr key={credit.id}>
             {admin ?
                 <>
-                    <td>{credit.user.studentNumber}</td>
-                    <td>{credit.user.username}</td>
-                    <td>{credit.user.classGroup}</td>
+                    <td>{credit.user.studentNumber < 20 ? credit.user.studentNumber : `${credit.user.studentNumber.substring(0,20)}...`}</td>
+                    <td>{credit.user.username.length < 20 ? credit.user.username : `${credit.user.username.substring(0,20)}...`}</td>
+                    <td>{credit.user.classGroup === 'C-' ? '' : credit.user.classGroup}</td>
                     <td>
                         <Button id='creditShowLink' className='small-margin-float-right' variant='primary' onClick={handleShow}>{library.showCredits}</Button>
                         <Modal show={show} size='lg' scrollable='true' onHide={handleClose} >
@@ -21,7 +21,7 @@ const CreditListing = ({ credit, admin }) => {
                             <Modal.Body>
                                 {`${library.studentNumber} ${credit.user.studentNumber}`}<br />
                                 {`${library.username} ${credit.user.username}`}<br />
-                                {`${library.classGroup} ${credit.user.classGroup}`}<br />
+                                {`${library.classGroup} ${credit.user.classGroup === 'C-' ? '' : credit.user.classGroup}`}<br />
                                 {`${library.email} ${credit.user.email}`}<br />
                                 {library.credits}
                                 <Table>

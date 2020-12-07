@@ -36,7 +36,7 @@ const ConfirmWindow = ({ listedUser, buttonId, modalOpenButtonText, modalOpenBut
                     }
                     { parameter ?
                         <Button id="confirm" variant={executeButtonVariant} type="button" onClick={() => {
-                            functionToExecute(confirmText)
+                            functionToExecute({ confirmText, handleClose })
                         }}>{executeButtonText}</Button>
                         :
                         <Button id="confirm" variant={executeButtonVariant} type="button" disabled={confirmText !== listedUser.username} onClick={() => {

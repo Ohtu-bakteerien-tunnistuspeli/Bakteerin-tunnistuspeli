@@ -7,6 +7,7 @@ import * as Yup from 'yup'
 import { Formik } from 'formik'
 import ValidatedTextField from './components/ValidatedTextField'
 import Password from './components/Password'
+import PasswordQualityIndicator from './components/PasswordQualityIndicator'
 import Classgroup from './components/Classgroup'
 import { setNotification } from '../../reducers/notificationReducer'
 
@@ -54,7 +55,7 @@ const UserInfoForm = ({ user }) => {
         } else if (password === passwordAgain) {
             try {
                 dispatch(updateUserinfo(username,
-                    email, studentNumber,`C-${classGroup}`, oldPassword, password,
+                    email, studentNumber, `C-${classGroup}`, oldPassword, password,
                     token, handleClose
                 ))
             } catch (e) {
@@ -73,7 +74,7 @@ const UserInfoForm = ({ user }) => {
         setConfirmText('')
     }
 
-
+    const checkPassWord = require('zxcvbn') // eslint-disable-line
     /* schema for validation */
     const UserinfoSchema = Yup.object().shape({
         username: Yup.string()
@@ -82,21 +83,29 @@ const UserInfoForm = ({ user }) => {
             .required(validation.username.requiredMessage),
         password: Yup.string()
             .min(validation.password.minlength, validation.password.minMessage)
-            .max(validation.password.maxlength, validation.password.maxMessage),
+            .max(validation.password.maxlength, validation.password.maxMessage)
+            .test('secure', validation.password.unsecurePasswordMessage, (password) => {
+                if (password) {
+                    if (checkPassWord(password).score < 2) {
+                        return false
+                    }
+                }
+                return true
+            }),
         passwordAgain: Yup.string(),
         email: Yup.string()
             .required(validation.email.requiredMessage)
             .email(validation.email.validationMessage)
             .max(validation.email.maxlength, validation.email.maxMessage),
         classGroup: Yup.string()
-            .test(validation.classGroup.validationMessage, (classGroup) => {
+            .test('validation', validation.classGroup.validationMessage, (classGroup) => {
                 if (!classGroup) {
                     return true
                 }
-                if(classGroup === '') {
+                if (classGroup === '') {
                     return true
                 }
-                if(classGroup === 'C-') {
+                if (classGroup === 'C-') {
                     return true
                 }
                 return /^C-[0-9]+$|^C-$|^C-\s*$|[0-9]+$/.test(classGroup)
@@ -163,7 +172,8 @@ const UserInfoForm = ({ user }) => {
                             errors,
                             setFieldValue,
                             touched,
-                            setFieldTouched
+                            setFieldTouched,
+                            values
                         }) => {
                             return (
                                 <Form
@@ -198,6 +208,10 @@ const UserInfoForm = ({ user }) => {
                                             touched={touched.password}
                                             setFieldTouched={setFieldTouched}
                                             setPassword={setNewPassword} />
+                                        <PasswordQualityIndicator
+                                            value={checkPassWord(values.password).score}
+                                            show={values.password.length > 0}
+                                            messages={validation.password} />
                                         <Password typeControlId='passwordAgain'
                                             controlId={'passwordAgain'}
                                             value={passwordAgain}
@@ -225,7 +239,7 @@ const UserInfoForm = ({ user }) => {
                                             setFieldTouched={setFieldTouched}
                                             setClassgroup={setNewClassgroup} />
                                         <div>
-                                            <br></br>
+                                            <br/>
                                             <Form.Label>{library.warning}</Form.Label>
                                             <Form.Control
                                                 type="password"

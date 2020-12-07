@@ -73,9 +73,15 @@ userRouter.post('/register', async (request, response) => {
         return response.status(400).json({ error: validation.password.uniqueMessage })
     } else if (checkPassword(body.password).score < 2) {
         return response.status(400).json({ error: validation.password.unsecurePasswordMessage })
-
     } else {
         try {
+            if (!body.classGroup) {
+                body.classGroup = ''
+            }
+            if (!body.studentNumber) {
+                body.studentNumber = ''
+            }
+
             const saltRounds = 10
             const passwordHash = await bcrypt.hash(body.password, saltRounds)
             const user = new User({
@@ -104,7 +110,26 @@ userRouter.get('/', async (request, response) => {
 })
 
 userRouter.delete('/:id', async (request, response) => {
-    if (request.user && (request.user.admin || String(request.user.id) === String(request.params.id))) {
+    if (request.user && String(request.user.id) === String(request.params.id)) {
+        try {
+            const userToDelete = await User.findById(request.params.id)
+            let correct = false
+            if (request.headers.data) {
+                correct = await bcrypt.compare(request.headers.data.substring(1, request.headers.data.length-1), userToDelete.passwordHash)
+            }
+            if (!correct) {
+                return response.status(400).json({ error: library.wrongPassword })
+            }
+            const creditToDelete = await Credit.findOne({ user: userToDelete })
+            await User.findByIdAndRemove(request.params.id)
+            if (creditToDelete) {
+                await Credit.findByIdAndRemove(creditToDelete.id)
+            }
+            response.status(204).end()
+        } catch (error) {
+            return response.status(400).json({ error: error.message })
+        }
+    } else if (request.user && request.user.admin) {
         try {
             const userToDelete = await User.findById(request.params.id)
             const creditToDelete = await Credit.findOne({ user: userToDelete })
@@ -154,7 +179,10 @@ userRouter.put('/:id/demote', async (request, response) => {
 })
 
 userRouter.post('/temporarypassword', async (request, response) => {
-    const user = await User.findOne({ username: request.body.username })
+    let user = await User.findOne({ username: request.body.username })
+    if (!user) {
+        user = await User.findOne({ studentNumber: request.body.username })
+    }
     if (user && user.email === request.body.email) {
         try {
             let transporter
@@ -169,7 +197,7 @@ userRouter.post('/temporarypassword', async (request, response) => {
                     auth: {
                         user: config.EMAILUSER,
                         pass: config.EMAILPASSWORD,
-                    },
+                    }
                 })
             } else if (config.EMAILHOST.includes('helsinki')) {
                 transporter = nodemailer.createTransport({
@@ -242,6 +270,13 @@ userRouter.put('/', async (request, response) => {
                             return response.status(400).json({ error: validation.password.minMessage })
                         } else if (body.newPassword.length > validation.password.maxlength) {
                             return response.status(400).json({ error: validation.password.maxMessage })
+                        } else if (body.newPassword === body.newUsername ||
+                            body.newPassword === body.newClassGroup ||
+                            body.newPassword === body.newEmail ||
+                            body.newPassword === body.newStudentNumber) {
+                            return response.status(400).json({ error: validation.password.uniqueMessage })
+                        } else if (checkPassword(body.newPassword).score < 2) {
+                            return response.status(400).json({ error: validation.password.unsecurePasswordMessage })
                         } else {
                             const saltRounds = 10
                             const passwordHash = await bcrypt.hash(body.newPassword, saltRounds)
@@ -249,11 +284,11 @@ userRouter.put('/', async (request, response) => {
                         }
                     }
 
-                    if (body.newStudentNumber) {
+                    if (body.newStudentNumber || body.newStudentNumber === '') {
                         changes = { ...changes, studentNumber: body.newStudentNumber }
                     }
 
-                    if (body.newClassGroup) {
+                    if (body.newClassGroup || body.newClassGroup === '') {
                         changes = { ...changes, classGroup: body.newClassGroup }
                     }
 

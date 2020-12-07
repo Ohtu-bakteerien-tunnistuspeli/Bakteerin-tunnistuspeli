@@ -23,7 +23,7 @@ const ProfilePageUserInfo = ({ credit, user }) => {
                     </tr>
                     <tr>
                         <td><b>{library.classGroup}</b></td>
-                        <td> {user.classGroup} </td>
+                        <td> {user.classGroup === 'C-' ? '' : user.classGroup} </td>
                     </tr>
                 </tbody>
             </Table>

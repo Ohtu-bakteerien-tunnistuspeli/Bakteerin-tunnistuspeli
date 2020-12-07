@@ -19,7 +19,7 @@ describe('Profile management', () => {
             })
             it('User can delete itself', () => {
                 cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('user')
+                cy.get('#confirmField').type('useruser10')
                 cy.get('#confirm').click()
                 cy.contains('Kirjaudu Bakteeripeliin')
                 cy.get('#username').type('user')
@@ -31,12 +31,14 @@ describe('Profile management', () => {
             it('Cannot delete itself without giving correct confirmation text', () => {
                 cy.get('#deleteUser').click()
                 cy.get('#confirmField').type('use')
-                cy.get('#confirm').should('be.disabled')
+                cy.get('#confirm').click()
+                cy.wait(500)
+                cy.contains('Väärä salasana')
             })
 
             it('Can quit deleting itself', () => {
                 cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('user')
+                cy.get('#confirmField').type('useruser10')
                 cy.get('.close').click()
                 cy.contains('Oma profiilini')
             })
@@ -67,14 +69,14 @@ describe('Profile management', () => {
 
             it('User can change their password', () => {
                 cy.contains('Muokkaa käyttäjätietoja').click()
-                cy.get('#password').type('useruser123')
-                cy.get('#passwordAgain').type('useruser123')
+                cy.get('#password').type('bakteeripelin12@b59tautiC')
+                cy.get('#passwordAgain').type('bakteeripelin12@b59tautiC')
                 cy.get('#confirmField').type('useruser10')
                 cy.get('#updateUserInfo').click()
                 cy.wait(500)
                 cy.contains('Kirjaudu ulos').click()
                 cy.get('#username').type('user')
-                cy.get('#password').type('useruser123')
+                cy.get('#password').type('bakteeripelin12@b59tautiC')
                 cy.get('#submit').click()
                 cy.contains('Etusivu')
             })
@@ -169,12 +171,14 @@ describe('Profile management', () => {
             it('Cannot delete itself without giving correct confirmation text', () => {
                 cy.get('#deleteUser').click()
                 cy.get('#confirmField').type('dmin')
-                cy.get('#confirm').should('be.disabled')
+                cy.get('#confirm').click()
+                cy.wait(500)
+                cy.contains('Väärä salasana')
             })
 
             it('Can quit deleting itself', () => {
                 cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('admin')
+                cy.get('#confirmField').type('adminadmin')
                 cy.get('.close').click()
                 cy.contains('Oma profiilini')
             })
@@ -191,7 +195,7 @@ describe('Profile management', () => {
 
             it('Admin can delete itself', () => {
                 cy.get('#deleteUser').click()
-                cy.get('#confirmField').type('admin')
+                cy.get('#confirmField').type('adminadmin')
                 cy.get('#confirm').click()
                 cy.contains('Kirjaudu Bakteeripeliin')
                 cy.get('#username').type('admin')

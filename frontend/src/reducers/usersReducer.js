@@ -2,6 +2,7 @@ import userService from '../services/user'
 import { setNotification } from './notificationReducer'
 import { setUser } from './userReducer'
 import  { getCredits } from './creditReducer'
+import { logout } from '../reducers/userReducer'
 
 const reducer = (state = [], action) => {
     switch (action.type) {
@@ -41,13 +42,20 @@ export const getUsers = (token) => {
     }
 }
 
-export const deleteUser = (user, token) => {
+export const deleteUser = (user, token, confirmText, handleClose, history) => {
     return async (dispatch, getState) => {
         const library = getState()?.language?.library.frontend.users.reducer
-        const res = await userService.deleteUser(user.id, token)
+        const res = await userService.deleteUser(user.id, confirmText, token)
         if (res.status !== 204) {
             dispatch(setNotification({ message: res.error, success: false, show: true }))
         } else {
+            if(!confirmText) {
+                dispatch(getCredits(token))
+            }
+            if (handleClose) {
+                handleClose()
+                dispatch(logout(history))
+            }
             dispatch({
                 type: 'DELETE_USER',
                 data: user

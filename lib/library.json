@@ -286,7 +286,7 @@
             },
             "temporaryPassword": {
                 "title": "Väliaikaisen salasanan luonti",
-                "username": "Käyttäjänimi:",
+                "username": "Käyttäjänimi tai opiskelijanumero:",
                 "email": "Sähköpostiosoite:",
                 "button": "Luo väliaikainen salasana"
             },
@@ -346,7 +346,12 @@
                     "modalHeaderEnd": " poistamisen varmennus",
                     "warning": "Kirjoita käyttäjän nimi ja paina nappia poistaaksesi käyttäjä ja käyttäjän suoritukset.",
                     "executeButton": "Poista käyttäjä"
-                }
+                },
+                "showUser": "Näytä tiedot",
+                "studentNumber": "Opiskelijanumero:",
+                "username": "Käyttäjänimi:",
+                "classGroup": "Vuosikurssi:",
+                "email": "Sähköposti:"
             },
             "reducer": {
                 "deleteSuccessStart": "Käyttäjän ",
@@ -362,10 +367,10 @@
             "copyright": "© Copyright 2020 Helsingin yliopisto.",
             "gdbr": "Käyttöehdot",
             "privacy": "Tietosuojailmoitus",
-            "imageCopyright": "Kuvien Käyttöoikeudet"
+            "imageCopyright": "Kuvien käyttöoikeudet"
         },
         "frontPage": {
-            "introductionTextStart": "Pelissä tutkitaan bakteriologinen näyte laboratoriossa. Pelin alussa saat näkyviin tapauksen anamneesin, jonka perusteella voit miettiä minkälaisesta taudinaiheuttajasta ja sairaudesta voisi olla kyse. Voit luoda itsellesi yhden tai useamman työhypoteesin. Tämän jälkeen valitset millaisen näytteen haluat eläimestä ottaa tutkimuksia varten. Sitten voit lähteä tutkimaan näytettä laboratoriossa.",
+            "introductionTextStart": "Pelissä tutkitaan bakteriologinen näyte laboratoriossa. Pelin alussa saat näkyviin tapauksen anamneesin, jonka perusteella voit miettiä minkälaisesta taudinaiheuttajasta ja sairaudesta voisi olla kyse. Voit luoda itsellesi yhden tai useamman työhypoteesin. Tämän jälkeen valitset millaisen näytteen haluat eläimestä ottaa tutkimuksia varten. Sitten voit lähteä tutkimaan näytettä laboratoriossa. Diagnoosia voit yrittää vasta kun olet suorittanut kaikki pakolliset testit. Pakollisten testien lisäksi voit mahdollisesti tapauksesta riippuen suorittaa myös ylimääräisiä, vapaaehtoisia testejä.",
             "introductionTextEnd": "Pelin tarkoituksena ei ole pelkästään oikean vastauksen löytäminen, vaan myös näytteen johdonmukainen ja systemaattinen laboratoriodiagnostiikka ilman suurempia kiertoteitä. Ratkaisevaa on tällöin käytännönläheinen ajattelutapa ja olosuhteiden mukainen eteneminen.",
             "noCases": "Ei tapauksia"
         },
@@ -380,14 +385,14 @@
             },
             "samplesTab": {
                 "title": "Näytteenotto",
-                "whatSample": "Millaisen näytteen otat?",
+                "whatSample": "Millaisen näytteen otat? Valitse yksi seuraavista vaihtoehdoista.",
                 "takeSample": "Ota näyte"
             },
             "testsTab": {
                 "title": "Laboratoriotutkimukset",
                 "culture": "Viljelyt",
                 "tests": "Testit",
-                "dye": "Värjäys",
+                "dye": "Värjäykset",
                 "other": "Muut"
             },
             "resultsTab": {
@@ -408,7 +413,7 @@
                 "samplesCorrect": "Oikea vastaus.",
                 "samplesWrong": "Väärä vastaus.",
                 "allTestsDone": "Oikea vastaus. Kaikki testit tehty.",
-                "requiredTestsDone": "Oikea vastaus. Kaikki vaaditut testit tehty.",
+                "requiredTestsDone": "Oikea vastaus. Kaikki pakolliset testit tehty.",
                 "testCorrect": "Oikea vastaus.",
                 "testWrong": "Väärä vastaus.",
                 "bacteriumCorrect": "Oikea vastaus.",
@@ -420,7 +425,7 @@
             "button": "Poista käyttäjätunnus",
             "modalHeaderStart": "Käyttäjän ",
             "modalHeaderEnd": " poistamisen varmennus",
-            "warning": "Olet poistamassa käyttäjätunnustasi. Et voi palauttaa käyttäjätunnustasi, kun olet sen poistanut. Käyttäjätunnuksen poistaminen poistaa myös suoritukset. Jos olet varma, että haluat poistaa käyttäjätunnksesi, niin kirjoita käyttäjänimesi ja paina nappia poistaaksesi profiilisi.",
+            "warning": "Olet poistamassa käyttäjätunnustasi. Et voi palauttaa käyttäjätunnustasi, kun olet sen poistanut. Käyttäjätunnuksen poistaminen poistaa myös suoritukset. Jos olet varma, että haluat poistaa käyttäjätunnuksesi, niin kirjoita salasana ja paina nappia poistaaksesi profiilisi.",
             "executeButton": "Poista käyttäjä",
             "userInfo": {
                 "username": "Käyttäjänimi:",
