@@ -160,7 +160,7 @@ const GamePage = () => {
                     <h1>{library.diagnosisTab.title}</h1>
                     {game.bacteriumCorrect ?
                         <>
-                            <p style={{ padding: '10px' }}><FormattedText value={game.case.completionText} /></p>
+                            <p style={{ padding: '10px' }}><FormattedText value={game.case.completionText ? game.case.completionText : ''} /></p>
                             {game.completionImageUrl ?
                                 <>
                                     <p className='instruct-img'>{library.resultsTab.imageInstruct}</p>
