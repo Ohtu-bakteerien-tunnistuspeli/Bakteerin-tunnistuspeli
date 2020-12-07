@@ -31,13 +31,21 @@ const TestList = () => {
         }, 1000))
     }, [filterByTestName, filterByTestType, tests])
 
+    useEffect(() => {
+        return () => {
+            if (timer) {
+                clearTimeout(timer)
+            }
+        }
+    }, [timer])
+
     return (
         <div>
             <h2>{library.title}</h2>
             <p className='instruct-img'>{library.imageInstruct}</p>
             {library.filterByName}<input id='testNameFilter' type='text' value={filterByTestName} onChange={({ target }) => setFilterByTestName(target.value)}></input>&nbsp;
             {library.filterByType}
-            <select id='testTypeFilter' type= 'text' value={filterByTestType} onChange={({ target }) => setFilterByTestType(target.value)}>
+            <select id='testTypeFilter' type='text' value={filterByTestType} onChange={({ target }) => setFilterByTestType(target.value)}>
                 <option value=''></option>
                 <option value='Testi'>{library.test}</option>
                 <option value='Viljely'>{library.culture}</option>

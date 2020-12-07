@@ -37,6 +37,14 @@ const CreditList = () => {
         }, 1000))
     }, [filterByClassGroup, filterByStudentNumber, credits])
 
+    useEffect(() => {
+        return () => {
+            if (timer) {
+                clearTimeout(timer)
+            }
+        }
+    }, [timer])
+
     const deleteCredits = () => {
         if (window.confirm(library.deleteConfirm)) {
             dispatch(creditsDelete(creditsToShow.map(credit => credit.id), user.token))
