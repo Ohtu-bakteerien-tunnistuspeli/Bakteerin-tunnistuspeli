@@ -62,6 +62,7 @@ const CaseForm = ({ caseToEdit }) => {
     const [testGroupAccordion, setTestGroupAccodrion] = useState('0')
     const [testGroupManagement, setTestGroupManagement] = useState(true)
     const [imgPreview, setImgPreview] = useState('')
+    const [inputResetter, newInput] = useState(0)
     /* states end*/
 
     /* modal */
@@ -247,6 +248,15 @@ const CaseForm = ({ caseToEdit }) => {
             setCompletionImage(INITIAL_STATE)
         }
     }
+
+    const cancelImgChange = (event) => {
+        event.preventDefault()
+        event.target.value = null
+        const reset = Math.random()
+        newInput(inputResetter + reset)
+        setImgPreview('')
+        setCompletionImage(INITIAL_STATE)
+    }
     /* image end */
 
     const testGroupSwitch = (a, b) => {
@@ -336,46 +346,59 @@ const CaseForm = ({ caseToEdit }) => {
                                         <Form.Control.Feedback type='invalid' style={{ display: 'block' }} hidden={!touched.completionText}>
                                             {errors.completionText}
                                         </Form.Control.Feedback>
+                                        <br></br>
                                     </Form.Group>
-                                    {caseToEdit ?
-                                        <Form.Group controlId='editCompletionImage'>
-                                            <Form.Label style={marginStyle}>{library.completionImage}</Form.Label>
-                                            <br />
-                                            <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
-                                            <Form.Control
-                                                style={marginStyle}
-                                                name='editCompletionImg'
-                                                value={completionImage.image}
-                                                type='file'
-                                                accept=".png, .jpg, .jpeg"
-                                                onChange={handleImageAdd}
-                                            />
-                                            {img && caseToEdit.completionImage ?
-                                                <>
-                                                    <Image src={`/${caseToEdit.completionImage.url}`} thumbnail width={100} />
-                                                    <Button variant='danger' style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>{library.deleteCompletionImage}
-                                                        <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
-                                                            <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z' />
-                                                            <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
-                                                        </svg>
-                                                    </Button>
-                                                </>
-                                                :
-                                                <></>
-                                            }
-                                        </Form.Group> :
-                                        <Form.Group controlId='completionImage'>
-                                            <Form.Label>{library.completionImage}</Form.Label>
-                                            <br />
-                                            <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
-                                            <Form.Control
-                                                name='completionImage'
-                                                type='file'
-                                                value={completionImage.image}
-                                                accept=".png, .jpg, .jpeg"
-                                                onChange={handleImageAdd} />
-                                        </Form.Group>
-                                    }
+                                    <div style={ { marginBottom: '40px' } }>
+                                        {caseToEdit ?
+                                            <Form.Group controlId='editCompletionImage'>
+                                                <Form.Label style={marginStyle}>{library.completionImage}</Form.Label>
+                                                <br />
+                                                {imgPreview !== '' ?
+                                                    <>
+                                                        <p style={ { marginLeft: '10px', marginTop: '20px', marginBottom: '10px', fontSize: '0.8em' } }>{ library.newImage }</p>
+                                                        <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
+                                                        <Button variant='warning' style={ { marginLeft: '30px' } } id='cancelImage' onClick={ cancelImgChange }>{library.cancelAddedImage}</Button>
+                                                    </>
+                                                    :
+                                                    <></>
+                                                }
+                                                <Form.Control
+                                                    key={inputResetter}
+                                                    style={{ marginLeft: '10px', marginTop: '20px', marginBottom: '10px', marginRight: '15px' }}
+                                                    name='editCompletionImg'
+                                                    value={completionImage.image}
+                                                    type='file'
+                                                    accept=".png, .jpg, .jpeg"
+                                                    onChange={handleImageAdd}
+                                                />
+                                                {img && caseToEdit.completionImage ?
+                                                    <>
+                                                        <p style={ { marginLeft: '10px', marginTop: '20px', marginBottom: '0', fontSize: '0.8em' } }>{ library.oldImage }</p>
+                                                        <Image style={marginStyle} src={`/${caseToEdit.completionImage.url}`} thumbnail width={100} />
+                                                        <Button variant='danger' style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>{library.deleteCompletionImage}
+                                                            <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
+                                                                <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z' />
+                                                                <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
+                                                            </svg>
+                                                        </Button>
+                                                    </>
+                                                    :
+                                                    <></>
+                                                }
+                                            </Form.Group> :
+                                            <Form.Group controlId='completionImage' style={{ marginBottom: '20px' }}>
+                                                <Form.Label>{library.completionImage}</Form.Label>
+                                                <br />
+                                                <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
+                                                <Form.Control
+                                                    name='completionImage'
+                                                    type='file'
+                                                    value={completionImage.image}
+                                                    accept=".png, .jpg, .jpeg"
+                                                    onChange={handleImageAdd} />
+                                            </Form.Group>
+                                        }
+                                    </div>
                                     <Accordion activeKey={samplesAccordion}>
                                         <Card>
                                             <Accordion.Toggle as={Card.Header} onClick={() => setSamplesAccodrion(samplesAccordion === '-1' ? '0' : '-1')}><Form.Label>{library.samples.titleStart}{samplesAccordion === '-1' ? library.samples.toShow : library.samples.toHide}{library.samples.titleEnd}</Form.Label></Accordion.Toggle>
