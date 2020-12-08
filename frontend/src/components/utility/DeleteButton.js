@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap'
 
 const DeleteButton = ({ id, onClick, text }) =>
     <Button variant='danger'
+        style={{ marginLeft: '10px' }}
         id={id}
         onClick={onClick}>{text}
         <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
