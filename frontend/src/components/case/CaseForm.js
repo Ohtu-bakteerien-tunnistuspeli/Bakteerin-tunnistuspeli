@@ -7,7 +7,7 @@ import Name from './components/Name.js'
 import TextEditField from './components/TextEditField'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCase } from '../../reducers/caseReducer'
-import { Modal, Button, Form, Accordion, Card } from 'react-bootstrap'
+import { Modal, Button, Form, Accordion, Card, Image } from 'react-bootstrap'
 import Notification from '../utility/Notification.js'
 import * as Yup from 'yup'
 import { Formik } from 'formik'
@@ -39,7 +39,6 @@ const CaseForm = ({ caseToEdit }) => {
     /* initial parameters end*/
 
     /* parameters for style */
-    const borderStyle = { borderStyle: 'solid', borderColor: 'black', borderWidth: 'thin' }
     const marginStyle = { margin: '10px' }
     /* parameters for style end*/
 
@@ -62,7 +61,7 @@ const CaseForm = ({ caseToEdit }) => {
     const [addedTests, setAddedTests] = useState(caseToEdit ? testsFromTestGroups : [])
     const [testGroupAccordion, setTestGroupAccodrion] = useState('0')
     const [testGroupManagement, setTestGroupManagement] = useState(true)
-    const [imgPreview, setImgPreview] = useState(caseToEdit && caseToEdit.completionImage && caseToEdit.completionImage.url ? caseToEdit.completionImage.url : '')
+    const [imgPreview, setImgPreview] = useState('')
     /* states end*/
 
     /* modal */
@@ -149,15 +148,16 @@ const CaseForm = ({ caseToEdit }) => {
     const resetCaseForm = () => {
         setName(caseToEdit ? caseToEdit.name : '')
         setBacteriumId(caseToEdit ? caseToEdit.bacterium.id : '')
-        setAnamnesis(caseToEdit ? caseToEdit.anamnesis : '')
-        setCompletionText(caseToEdit ? caseToEdit.completionText : '')
+        setAnamnesis(caseToEdit  && caseToEdit.anamnesis ? caseToEdit.anamnesis : '')
+        setCompletionText(caseToEdit && caseToEdit.completionText ? caseToEdit.completionText : '')
+        setCompletionImage(INITIAL_STATE)
         setDeleteEndImage(false)
         setImg(caseToEdit && caseToEdit.completionImage ? true : false)
         setSample({ description: '', rightAnswer: false })
         setSamples(caseToEdit ? caseToEdit.samples : [])
         setTestGroups(caseToEdit ? caseToEdit.testGroups.map(testGroup => testGroup.slice().map(testForCase => { return { ...testForCase, tests: testForCase.tests.slice() } })) : [])
         setAddedTests(caseToEdit ? testsFromTestGroups : [])
-        setImgPreview(caseToEdit && caseToEdit.completionImage && caseToEdit.completionImage.url ? caseToEdit.completionImage.url : '')
+        setImgPreview('')
     }
     /* form control end */
 
@@ -235,7 +235,6 @@ const CaseForm = ({ caseToEdit }) => {
         newTestGroups[testGroupIndex][testForCaseIndex].tests[testIndex].positive = !testGroups[testGroupIndex][testForCaseIndex].tests[testIndex].positive
         setTestGroups(newTestGroups)
     }
-
     /* testgroup control end */
 
     /* image */
@@ -243,10 +242,9 @@ const CaseForm = ({ caseToEdit }) => {
         if (event.target.files[0]) {
             setImgPreview(URL.createObjectURL(event.target.files[0]))
             setCompletionImage(event.target.files[0])
-            setImg(true)
-            setDeleteEndImage(false)
         } else {
             setImgPreview('')
+            setCompletionImage(INITIAL_STATE)
         }
     }
     /* image end */
@@ -342,10 +340,7 @@ const CaseForm = ({ caseToEdit }) => {
                                     {caseToEdit ?
                                         <Form.Group controlId='editCompletionImage'>
                                             <Form.Label style={marginStyle}>{library.completionImage}</Form.Label>
-                                            {img ?
-                                                <p style={borderStyle}>{library.completionImageGiven}</p>
-                                                : <></>
-                                            }
+                                            <br />
                                             <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
                                             <Form.Control
                                                 style={marginStyle}
@@ -353,41 +348,32 @@ const CaseForm = ({ caseToEdit }) => {
                                                 value={completionImage.image}
                                                 type='file'
                                                 accept=".png, .jpg, .jpeg"
-                                                onChange={({ target }) => { setCompletionImage(target.files[0]); setImg(true); setDeleteEndImage(false); setImgPreview(URL.createObjectURL(target.files[0])) }}
+                                                onChange={handleImageAdd}
                                             />
-                                            {img ?
-                                                <Button variant='danger' style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true); setImgPreview('') }}>{library.deleteCompletionImage}
-                                                    <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
-                                                        <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z' />
-                                                        <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
-                                                    </svg>
-                                                </Button>
+                                            {img && caseToEdit.completionImage ?
+                                                <>
+                                                    <Image src={`/${caseToEdit.completionImage.url}`} thumbnail width={100} />
+                                                    <Button variant='danger' style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true) }}>{library.deleteCompletionImage}
+                                                        <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
+                                                            <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z' />
+                                                            <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
+                                                        </svg>
+                                                    </Button>
+                                                </>
                                                 :
                                                 <></>
                                             }
                                         </Form.Group> :
                                         <Form.Group controlId='completionImage'>
                                             <Form.Label>{library.completionImage}</Form.Label>
-                                            {img ?
-                                                <p style={borderStyle}>{library.completionImageGiven}</p>
-                                                : <></>
-                                            }
+                                            <br />
                                             <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
                                             <Form.Control
                                                 name='completionImage'
-                                                type='file' value={completionImage.image}
+                                                type='file'
+                                                value={completionImage.image}
                                                 accept=".png, .jpg, .jpeg"
                                                 onChange={handleImageAdd} />
-                                            {img ?
-                                                <Button variant='danger' style={marginStyle} id='deleteImage' onClick={() => { setImg(false); setDeleteEndImage(true); setImgPreview('') }}>{library.deleteCompletionImage}
-                                                    <svg width='1em' height='1em' viewBox='0 0 16 16' className='bi bi-trash' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
-                                                        <path d='M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z' />
-                                                        <path fillRule='evenodd' d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z' />
-                                                    </svg>
-                                                </Button>
-                                                :
-                                                <></>
-                                            }
                                         </Form.Group>
                                     }
                                     <Accordion activeKey={samplesAccordion}>

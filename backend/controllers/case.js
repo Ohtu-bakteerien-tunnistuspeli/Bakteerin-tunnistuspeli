@@ -211,13 +211,17 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                 }
                 changes.bacterium = bacterium
             }
-            if (request.body.anamnesis) {
+            if (request.body.anamnesis || request.body.anamnesis === '') {
                 changes.anamnesis = request.body.anamnesis
             }
             if (request.body.completionText || request.body.completionText === '') {
                 changes.completionText = request.body.completionText
             }
-            if (request.files && request.files.completionImage && deleteEndImage === 'false') {
+            if (deleteEndImage === 'true') {
+                oldLinks.push(caseToUpdate.completionImage.url)
+                changes.completionImage = null
+            }            
+            if (request.files && request.files.completionImage) {
                 oldLinks.push(caseToUpdate.completionImage.url)
                 changes.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }
             }
@@ -277,10 +281,6 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
                     testGroups.push(newTestGroup)
                 }
                 changes.testGroups = testGroups
-            }
-            if (deleteEndImage === 'true') {
-                oldLinks.push(caseToUpdate.completionImage.url)
-                changes.completionImage = null
             }
             changes.complete = isComplete(changes)
             let updatedCase = await Case.findByIdAndUpdate(request.params.id, changes, { new: true, runValidators: true, context: 'query' })
