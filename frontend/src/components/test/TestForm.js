@@ -211,6 +211,21 @@ const TestForm = ({ testToEdit }) => {
         }
     }
 
+    const cancelPosChange = () => {
+        setImgPreviewPos('')
+        setPositiveResultImage(INITIAL_STATE)
+    }
+
+    const cancelNegChange = () => {
+        setImgPreviewNeg('')
+        setNegativeImage(INITIAL_STATE)
+    }
+
+    const cancelCtrlChange = () => {
+        setImgPreviewCtrl('')
+        setControlImage(INITIAL_STATE)
+    }
+
     return (
         <div>
             <Modal>
@@ -275,93 +290,108 @@ const TestForm = ({ testToEdit }) => {
                                         setTestType={setTestType}
                                         setFieldTouched={setFieldTouched}></Type>
 
-                                    <AddImage
-                                        title={library.controlImage}
-                                        name='controlImage'
-                                        value={controlImage.image}
-                                        setImage={setControlImage}
-                                        imgPreview={imgPreviewCtrl}
-                                        setImgPreview={setImgPreviewCtrl}
-                                    ></AddImage>
-                                    {testToEdit ?
-                                        <Form.Group controlId='editControlImage'>
-                                            {ctrl && testToEdit.controlImage ?
-                                                <>
-                                                    <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100} />
-                                                    <DeleteButton
-                                                        id='deleteControl'
-                                                        onClick={() => {
-                                                            setCtrl(false)
-                                                            setDeletePhotos({ ...deletePhotos, ctrl: true })
-                                                        }}
-                                                        text={library.deleteControlImage}
-                                                    ></DeleteButton>
-                                                </>
-                                                : <></>
-                                            }
-                                        </Form.Group>
-                                        :
-                                        null
-                                    }
+                                    <div style={{ padding:'10px', border: '1px solid #cccccc', borderRadius: '5px', marginTop: '40px', marginLeft: 0 }}>
+                                        <AddImage
+                                            title={library.controlImage}
+                                            name='controlImage'
+                                            value={controlImage.image}
+                                            setImage={setControlImage}
+                                            imgPreview={imgPreviewCtrl}
+                                            setImgPreview={setImgPreviewCtrl}
+                                            handleCancel={cancelCtrlChange}
+                                            library={library}
+                                        ></AddImage>
+                                        {testToEdit ?
+                                            <Form.Group controlId='editControlImage'>
+                                                {ctrl && testToEdit.controlImage ?
+                                                    <>
+                                                        <p style={ { marginLeft: '10px', marginTop: '20px', marginBottom: '0', fontSize: '0.8em' } }>{ library.oldImage }</p>
+                                                        <Image src={`/${testToEdit.controlImage.url}`} thumbnail width={100} />
+                                                        <DeleteButton
+                                                            id='deleteControl'
+                                                            onClick={() => {
+                                                                setCtrl(false)
+                                                                setDeletePhotos({ ...deletePhotos, ctrl: true })
+                                                            }}
+                                                            text={library.deleteControlImage}
+                                                        ></DeleteButton>
+                                                    </>
+                                                    : <></>
+                                                }
+                                            </Form.Group>
+                                            :
+                                            null
+                                        }
+                                    </div>
 
-                                    <AddImage
-                                        title={library.positiveDefault}
-                                        name='posImg'
-                                        value={positiveResultImage.image}
-                                        setImage={setPositiveResultImage}
-                                        imgPreview={imgPreviewPos}
-                                        setImgPreview={setImgPreviewPos}
-                                    ></AddImage>
+                                    <div style={{ padding:'10px', border: '1px solid #cccccc', borderRadius: '5px' }}>
+                                        <AddImage
+                                            title={library.positiveDefault}
+                                            name='posImg'
+                                            value={positiveResultImage.image}
+                                            setImage={setPositiveResultImage}
+                                            imgPreview={imgPreviewPos}
+                                            setImgPreview={setImgPreviewPos}
+                                            handleCancel={cancelPosChange}
+                                            library={library}
+                                        ></AddImage>
 
-                                    {testToEdit ?
-                                        <Form.Group controlId='editPositiveResultImage'>
-                                            {pos && testToEdit.positiveResultImage ?
-                                                <>
-                                                    <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100} />
-                                                    <DeleteButton
-                                                        id='deletePositive'
-                                                        onClick={() => {
-                                                            setPos(false)
-                                                            setDeletePhotos({ ...deletePhotos, pos: true })
-                                                        }}
-                                                        text={library.deletePositiveImage}
-                                                    ></DeleteButton>
-                                                </>
-                                                : <></>
-                                            }
-                                        </Form.Group>
-                                        :
-                                        null
-                                    }
+                                        {testToEdit ?
+                                            <Form.Group controlId='editPositiveResultImage'>
+                                                {pos && testToEdit.positiveResultImage ?
+                                                    <>
+                                                        <p style={ { marginLeft: '10px', marginTop: '20px', marginBottom: '0', fontSize: '0.8em' } }>{ library.oldImage }</p>
+                                                        <Image src={`/${testToEdit.positiveResultImage.url}`} thumbnail width={100} />
+                                                        <DeleteButton
+                                                            id='deletePositive'
+                                                            onClick={() => {
+                                                                setPos(false)
+                                                                setDeletePhotos({ ...deletePhotos, pos: true })
+                                                            }}
+                                                            text={library.deletePositiveImage}
+                                                        ></DeleteButton>
+                                                    </>
+                                                    : <></>
+                                                }
+                                            </Form.Group>
+                                            :
+                                            null
+                                        }
+                                    </div>
 
-                                    <AddImage
-                                        title={library.negativeDefault}
-                                        name='negImg'
-                                        value={negativeImage.image}
-                                        setImage={setNegativeImage}
-                                        imgPreview={imgPreviewNeg}
-                                        setImgPreview={setImgPreviewNeg}
-                                    ></AddImage>
-                                    {testToEdit ?
-                                        <Form.Group controlId='editNegativeResultImage'>
-                                            {neg && testToEdit.negativeResultImage ?
-                                                <>
-                                                    <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100} />
-                                                    <DeleteButton
-                                                        id='deleteNegative'
-                                                        onClick={() => {
-                                                            setNeg(false)
-                                                            setDeletePhotos({ ...deletePhotos, neg: true })
-                                                        }}
-                                                        text={library.deleteNegativeImage}
-                                                    ></DeleteButton>
-                                                </>
-                                                : <></>
-                                            }
-                                        </Form.Group>
-                                        :
-                                        null
-                                    }
+                                    <div style={{ padding:'10px', border: '1px solid #cccccc', borderRadius: '5px' }}>
+                                        <AddImage
+                                            title={library.negativeDefault}
+                                            name='negImg'
+                                            value={negativeImage.image}
+                                            setImage={setNegativeImage}
+                                            imgPreview={imgPreviewNeg}
+                                            setImgPreview={setImgPreviewNeg}
+                                            handleCancel={cancelNegChange}
+                                            library={library}
+                                        ></AddImage>
+                                        {testToEdit ?
+                                            <Form.Group controlId='editNegativeResultImage'>
+                                                {neg && testToEdit.negativeResultImage ?
+                                                    <>
+                                                        <p style={ { marginLeft: '10px', marginTop: '20px', marginBottom: '0', fontSize: '0.8em' } }>{ library.oldImage }</p>
+                                                        <Image src={`/${testToEdit.negativeResultImage.url}`} thumbnail width={100} />
+                                                        <DeleteButton
+                                                            id='deleteNegative'
+                                                            onClick={() => {
+                                                                setNeg(false)
+                                                                setDeletePhotos({ ...deletePhotos, neg: true })
+                                                            }}
+                                                            text={library.deleteNegativeImage}
+                                                        ></DeleteButton>
+                                                    </>
+                                                    : <></>
+                                                }
+                                            </Form.Group>
+                                            :
+                                            null
+                                        }
+                                    </div>
 
                                     <BacteriaSpecificImages
                                         controlId={testToEdit ? 'editBacteriaSpecificImages' : 'bacteriaSpecificImages'}
