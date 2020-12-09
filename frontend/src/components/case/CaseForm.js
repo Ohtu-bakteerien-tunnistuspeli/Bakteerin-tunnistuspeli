@@ -389,8 +389,17 @@ const CaseForm = ({ caseToEdit }) => {
                                             <Form.Group controlId='completionImage' style={{ marginBottom: '20px' }}>
                                                 <Form.Label>{library.completionImage}</Form.Label>
                                                 <br />
-                                                <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
+                                                {imgPreview !== '' ?
+                                                    <>
+                                                        <p style={ { marginLeft: '10px', marginTop: '20px', marginBottom: '10px', fontSize: '0.8em' } }>{ library.newImage }</p>
+                                                        <ShowPreviewImage imgPreview ={ imgPreview }></ShowPreviewImage>
+                                                        <Button variant='warning' style={ { marginLeft: '30px' } } id='cancelImage' onClick={ cancelImgChange }>{library.cancelAddedImage}</Button>
+                                                    </>
+                                                    :
+                                                    <></>
+                                                }
                                                 <Form.Control
+                                                    key={inputResetter}
                                                     name='completionImage'
                                                     type='file'
                                                     value={completionImage.image}
