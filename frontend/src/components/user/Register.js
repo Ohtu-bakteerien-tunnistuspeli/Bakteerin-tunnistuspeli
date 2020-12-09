@@ -82,7 +82,7 @@ const Register = () => {
                 if (classGroup === 'C-') {
                     return true
                 }
-                return /^C-[0-9]*$|^C-$|^C-\s*$/.test(classGroup)
+                return /^C-[0-9]*$|^C-$/.test(classGroup)
             })
             .max(validation.classGroup.maxlength, validation.classGroup.maxMessage),
         studentNumber: Yup.string()
