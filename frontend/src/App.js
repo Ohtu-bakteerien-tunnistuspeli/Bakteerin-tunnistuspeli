@@ -218,11 +218,11 @@ const App = () => {
 
                 </div>
             </div>
-            <div className='navbar navbar-inverse navbar-fixed-bottom footer'>
+            <div className='outer-footer'>
                 <Footer className='outer-footer' />
             </div>
             <div className='footer-ghost'></div>
-        </div >
+        </div>
     )
 }
 
