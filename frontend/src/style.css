@@ -15,7 +15,6 @@ body {
     position: relative;
     display: inline-block;
     align-items: center;
-    text-align: center;
 }
 
 @media screen and (hover: none) {
@@ -28,7 +27,6 @@ body {
         position: relative;
         display: inline-block;
         align-items: center;
-        text-align: center;
     }
 }
 
@@ -46,6 +44,7 @@ body {
 
 .container > * {
     margin: 20px;
+    text-align: left;
 }
 
 h2 {
@@ -164,6 +163,7 @@ button {
     min-width: min-content;
     align-content: center;
     align-self: center;
+    text-align: center;
 }
 
 .nav-link {
