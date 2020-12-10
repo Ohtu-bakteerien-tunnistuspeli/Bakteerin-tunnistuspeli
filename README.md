@@ -9,6 +9,8 @@ Software Engineering Lab, Fall 2020, University of Helsinki
 ## Documentation
 * [Bakteerien tunnistuspeli wiki](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/wiki)
 * [Definition of Done](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/wiki/Definition-of-Done)
+* [Installation Instructions](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/wiki/Installation-instructions)
+* [Käyttöopas (User Guide)](https://github.com/Ohtu-bakteerien-tunnistuspeli/Bakteerien-tunnistuspeli/wiki/K%C3%A4ytt%C3%B6ohje)
 
 ## Progress tracking
 
