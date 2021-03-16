@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "formik": "^2.2.1",
     "jodit-react": "^1.0.66",
     "react": "^16.13.1",
