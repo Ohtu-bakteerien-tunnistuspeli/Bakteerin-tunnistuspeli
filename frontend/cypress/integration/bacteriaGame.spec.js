@@ -200,7 +200,7 @@ describe('Game', () => {
             cy.contains('user').click()
             cy.contains('Oma profiilini')
         })
-        
+
     })
 
     describe('After logging in as admin', () => {

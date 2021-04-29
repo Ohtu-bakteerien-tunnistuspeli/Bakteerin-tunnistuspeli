@@ -2,7 +2,7 @@ module.exports = { // eslint-disable-line
     'env': {
         'browser': true,
         'es6': true,
-        //        "cypress/globals": true,
+        'cypress/globals': true,
         //        "jest/globals": true
     },
     'extends': [
@@ -34,7 +34,7 @@ module.exports = { // eslint-disable-line
     },
     'plugins': [
         'react',
-        //       "cypress",
+        'cypress',
         //       "jest"
     ],
     'rules': {

@@ -66,7 +66,7 @@ describe('Test management', () => {
             cy.contains('Cypress Testi')
             cy.get('#testEditButton').click({ force: true })
             cy.get('#deleteTest').click()
-            cy.contains('Test successfully deleted')
+            cy.contains('Testi poistettiin onnistuneesti')
             cy.should('not.contain', 'Cypress Testi')
         })
     })

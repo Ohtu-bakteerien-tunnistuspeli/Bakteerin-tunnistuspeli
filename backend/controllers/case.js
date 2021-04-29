@@ -220,7 +220,7 @@ caseRouter.put('/:id', upload.fields([{ name: 'completionImage', maxCount: 1 }])
             if (deleteEndImage === 'true') {
                 oldLinks.push(caseToUpdate.completionImage.url)
                 changes.completionImage = null
-            }            
+            }
             if (request.files && request.files.completionImage) {
                 oldLinks.push(caseToUpdate.completionImage.url)
                 changes.completionImage = { url: request.files.completionImage[0].filename, contentType: request.files.completionImage[0].mimetype }

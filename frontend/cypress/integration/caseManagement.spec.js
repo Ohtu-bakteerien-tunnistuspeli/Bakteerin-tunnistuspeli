@@ -194,7 +194,7 @@ describe('Case management', () => {
             cy.get('#testGroupTable').contains('Gram-värjäys')
             cy.get('[data-cy=icon]').click()
             cy.get('#testGroupTable').contains('Katalaasitesti')
-            cy.get('#testGroupTable1').contains('Gram-värjäys')                     
+            cy.get('#testGroupTable1').contains('Gram-värjäys')
             cy.get('#addCase').click()
             cy.get('#caseEditButton').click()
             cy.get('#testGroupTable').contains('Katalaasitesti')
